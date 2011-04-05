@@ -6927,3 +6927,381 @@ Completed in 2ms (View: 0, DB: 0) | 200 OK [http://test.host/admin/import]
   [4;35;1mDistrict Load (0.1ms)[0m   [0mSELECT * FROM `districts` WHERE (`districts`.`id` = 76) [0m
   [4;36;1mProvince Load (0.1ms)[0m   [0;1mSELECT * FROM `provinces` WHERE (`provinces`.`id` = 58) [0m
   [4;35;1mSQL (99.4ms)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mBEGIN[0m
+  [4;35;1mProvince Columns (0.5ms)[0m   [0mSHOW FIELDS FROM `provinces`[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mProvince Load (0.3ms)[0m   [0mSELECT `provinces`.id FROM `provinces` WHERE (`provinces`.`code` = BINARY 'p10010') LIMIT 1[0m
+  [4;36;1mProvince Create (0.2ms)[0m   [0;1mINSERT INTO `provinces` (`name`, `created_at`, `code`, `updated_at`, `name_kh`) VALUES('province', '2011-04-05 11:29:48', 'p10010', '2011-04-05 11:29:48', 'province_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mDistrict Columns (0.7ms)[0m   [0;1mSHOW FIELDS FROM `districts`[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mDistrict Create (0.2ms)[0m   [0;1mINSERT INTO `districts` (`name`, `created_at`, `province_id`, `code`, `updated_at`, `name_kh`) VALUES('districtA', '2011-04-05 11:29:48', 59, 'd10010', '2011-04-05 11:29:48', 'district_khmer')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mHealthCenter Columns (0.7ms)[0m   [0;1mSHOW FIELDS FROM `health_centers`[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mHealthCenter Create (0.2ms)[0m   [0;1mINSERT INTO `health_centers` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `name_kh`) VALUES('health_center', '2011-04-05 11:29:48', 'h10010', '2011-04-05 11:29:48', 77, 'health_center_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mVillage Columns (0.7ms)[0m   [0;1mSHOW FIELDS FROM `villages`[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mVillage Create (0.3ms)[0m   [0;1mINSERT INTO `villages` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `health_center_id`, `name_kh`) VALUES('value for name', '2011-04-05 11:29:49', 'v10010', '2011-04-05 11:29:49', 77, 182, 'value for name_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSELECT count(*) AS count_all FROM `villages` [0m
+  [4;35;1mSQL (79.1ms)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mBEGIN[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mProvince Load (0.3ms)[0m   [0;1mSELECT `provinces`.id FROM `provinces` WHERE (`provinces`.`code` = BINARY 'p10010') LIMIT 1[0m
+  [4;35;1mProvince Create (0.2ms)[0m   [0mINSERT INTO `provinces` (`name`, `created_at`, `code`, `updated_at`, `name_kh`) VALUES('province', '2011-04-05 11:29:49', 'p10010', '2011-04-05 11:29:49', 'province_kh')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mDistrict Create (0.2ms)[0m   [0;1mINSERT INTO `districts` (`name`, `created_at`, `province_id`, `code`, `updated_at`, `name_kh`) VALUES('districtA', '2011-04-05 11:29:49', 60, 'd10010', '2011-04-05 11:29:49', 'district_khmer')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mHealthCenter Create (0.2ms)[0m   [0mINSERT INTO `health_centers` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `name_kh`) VALUES('health_center', '2011-04-05 11:29:49', 'h10010', '2011-04-05 11:29:49', 78, 'health_center_kh')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mVillage Create (0.2ms)[0m   [0;1mINSERT INTO `villages` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `health_center_id`, `name_kh`) VALUES('value for name', '2011-04-05 11:29:49', 'v10010', '2011-04-05 11:29:49', 78, 183, 'value for name_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mVillage Create (0.2ms)[0m   [0mINSERT INTO `villages` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `health_center_id`, `name_kh`) VALUES('othervillage', '2011-04-05 11:29:49', 'v10010', '2011-04-05 11:29:49', 78, 183, 'othervillage_kh')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT count(*) AS count_all FROM `villages` [0m
+  [4;36;1mSQL (67.3ms)[0m   [0;1mROLLBACK[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mBEGIN[0m
+  [4;35;1mProvince Columns (0.5ms)[0m   [0mSHOW FIELDS FROM `provinces`[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mProvince Load (0.3ms)[0m   [0mSELECT `provinces`.id FROM `provinces` WHERE (`provinces`.`code` = BINARY 'p10010') LIMIT 1[0m
+  [4;36;1mProvince Create (0.2ms)[0m   [0;1mINSERT INTO `provinces` (`name`, `created_at`, `code`, `updated_at`, `name_kh`) VALUES('province', '2011-04-05 11:30:29', 'p10010', '2011-04-05 11:30:29', 'province_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mDistrict Columns (0.3ms)[0m   [0;1mSHOW FIELDS FROM `districts`[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mDistrict Create (0.2ms)[0m   [0;1mINSERT INTO `districts` (`name`, `created_at`, `province_id`, `code`, `updated_at`, `name_kh`) VALUES('districtA', '2011-04-05 11:30:29', 61, 'd10010', '2011-04-05 11:30:29', 'district_khmer')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mHealthCenter Columns (0.3ms)[0m   [0;1mSHOW FIELDS FROM `health_centers`[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mHealthCenter Create (0.1ms)[0m   [0;1mINSERT INTO `health_centers` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `name_kh`) VALUES('health_center', '2011-04-05 11:30:29', 'h10010', '2011-04-05 11:30:29', 79, 'health_center_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mVillage Columns (0.3ms)[0m   [0;1mSHOW FIELDS FROM `villages`[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mVillage Load (0.2ms)[0m   [0;1mSELECT `villages`.id FROM `villages` WHERE (`villages`.`code` = BINARY 'v10010') LIMIT 1[0m
+  [4;35;1mVillage Create (0.2ms)[0m   [0mINSERT INTO `villages` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `health_center_id`, `name_kh`) VALUES('value for name', '2011-04-05 11:30:29', 'v10010', '2011-04-05 11:30:29', 79, 184, 'value for name_kh')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT count(*) AS count_all FROM `villages` [0m
+  [4;36;1mSQL (90.1ms)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mBEGIN[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mProvince Load (0.3ms)[0m   [0mSELECT `provinces`.id FROM `provinces` WHERE (`provinces`.`code` = BINARY 'p10010') LIMIT 1[0m
+  [4;36;1mProvince Create (0.3ms)[0m   [0;1mINSERT INTO `provinces` (`name`, `created_at`, `code`, `updated_at`, `name_kh`) VALUES('province', '2011-04-05 11:30:29', 'p10010', '2011-04-05 11:30:29', 'province_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mDistrict Create (0.2ms)[0m   [0mINSERT INTO `districts` (`name`, `created_at`, `province_id`, `code`, `updated_at`, `name_kh`) VALUES('districtA', '2011-04-05 11:30:29', 62, 'd10010', '2011-04-05 11:30:29', 'district_khmer')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mHealthCenter Create (0.2ms)[0m   [0;1mINSERT INTO `health_centers` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `name_kh`) VALUES('health_center', '2011-04-05 11:30:29', 'h10010', '2011-04-05 11:30:29', 80, 'health_center_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mVillage Load (0.4ms)[0m   [0mSELECT `villages`.id FROM `villages` WHERE (`villages`.`code` = BINARY 'v10010') LIMIT 1[0m
+  [4;36;1mVillage Create (0.3ms)[0m   [0;1mINSERT INTO `villages` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `health_center_id`, `name_kh`) VALUES('value for name', '2011-04-05 11:30:29', 'v10010', '2011-04-05 11:30:29', 80, 185, 'value for name_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mVillage Load (0.3ms)[0m   [0mSELECT `villages`.id FROM `villages` WHERE (`villages`.`code` = BINARY 'v10010') LIMIT 1[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mROLLBACK TO SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (62.8ms)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mBEGIN[0m
+  [4;35;1mProvince Columns (0.5ms)[0m   [0mSHOW FIELDS FROM `provinces`[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mProvince Load (0.3ms)[0m   [0mSELECT `provinces`.id FROM `provinces` WHERE (`provinces`.`code` = BINARY 'p10010') LIMIT 1[0m
+  [4;36;1mProvince Create (0.3ms)[0m   [0;1mINSERT INTO `provinces` (`name`, `created_at`, `code`, `updated_at`, `name_kh`) VALUES('province', '2011-04-05 11:33:29', 'p10010', '2011-04-05 11:33:29', 'province_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mDistrict Columns (0.7ms)[0m   [0;1mSHOW FIELDS FROM `districts`[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mDistrict Create (0.2ms)[0m   [0;1mINSERT INTO `districts` (`name`, `created_at`, `province_id`, `code`, `updated_at`, `name_kh`) VALUES('districtA', '2011-04-05 11:33:29', 63, 'd10010', '2011-04-05 11:33:29', 'district_khmer')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mHealthCenter Columns (0.7ms)[0m   [0;1mSHOW FIELDS FROM `health_centers`[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mHealthCenter Create (0.2ms)[0m   [0;1mINSERT INTO `health_centers` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `name_kh`) VALUES('health_center', '2011-04-05 11:33:29', 'h10010', '2011-04-05 11:33:29', 81, 'health_center_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mVillage Columns (0.7ms)[0m   [0;1mSHOW FIELDS FROM `villages`[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mVillage Load (0.3ms)[0m   [0;1mSELECT `villages`.id FROM `villages` WHERE (`villages`.`code` = BINARY 'v10010') LIMIT 1[0m
+  [4;35;1mVillage Create (0.2ms)[0m   [0mINSERT INTO `villages` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `health_center_id`, `name_kh`) VALUES('value for name', '2011-04-05 11:33:29', 'v10010', '2011-04-05 11:33:29', 81, 186, 'value for name_kh')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mVillage Load (0.2ms)[0m   [0;1mSELECT `villages`.id FROM `villages` WHERE (`villages`.`code` = BINARY 'v10010') LIMIT 1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mROLLBACK TO SAVEPOINT active_record_1[0m
+  [4;36;1mSQL (65.9ms)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mBEGIN[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mProvince Load (0.2ms)[0m   [0mSELECT `provinces`.id FROM `provinces` WHERE (`provinces`.`code` = BINARY 'p10010') LIMIT 1[0m
+  [4;36;1mProvince Create (0.2ms)[0m   [0;1mINSERT INTO `provinces` (`name`, `created_at`, `code`, `updated_at`, `name_kh`) VALUES('province', '2011-04-05 11:33:29', 'p10010', '2011-04-05 11:33:29', 'province_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mDistrict Create (0.2ms)[0m   [0mINSERT INTO `districts` (`name`, `created_at`, `province_id`, `code`, `updated_at`, `name_kh`) VALUES('districtA', '2011-04-05 11:33:29', 64, 'd10010', '2011-04-05 11:33:29', 'district_khmer')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mHealthCenter Create (0.2ms)[0m   [0;1mINSERT INTO `health_centers` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `name_kh`) VALUES('health_center', '2011-04-05 11:33:29', 'h10010', '2011-04-05 11:33:29', 82, 'health_center_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mVillage Load (0.1ms)[0m   [0mSELECT `villages`.id FROM `villages` WHERE (`villages`.`code` = BINARY 'v10010') LIMIT 1[0m
+  [4;36;1mVillage Create (0.1ms)[0m   [0;1mINSERT INTO `villages` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `health_center_id`, `name_kh`) VALUES('value for name', '2011-04-05 11:33:29', 'v10010', '2011-04-05 11:33:29', 82, 187, 'value for name_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSELECT count(*) AS count_all FROM `villages` [0m
+  [4;35;1mSQL (69.3ms)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mBEGIN[0m
+  [4;35;1mProvince Columns (0.8ms)[0m   [0mSHOW FIELDS FROM `provinces`[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mProvince Load (0.2ms)[0m   [0mSELECT `provinces`.id FROM `provinces` WHERE (`provinces`.`code` = BINARY 'p10010') LIMIT 1[0m
+  [4;36;1mProvince Create (0.2ms)[0m   [0;1mINSERT INTO `provinces` (`name`, `created_at`, `code`, `updated_at`, `name_kh`) VALUES('province', '2011-04-05 11:35:03', 'p10010', '2011-04-05 11:35:03', 'province_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mDistrict Columns (0.4ms)[0m   [0;1mSHOW FIELDS FROM `districts`[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mDistrict Create (0.2ms)[0m   [0;1mINSERT INTO `districts` (`name`, `created_at`, `province_id`, `code`, `updated_at`, `name_kh`) VALUES('districtA', '2011-04-05 11:35:03', 65, 'd10010', '2011-04-05 11:35:03', 'district_khmer')[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mHealthCenter Columns (0.3ms)[0m   [0;1mSHOW FIELDS FROM `health_centers`[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mHealthCenter Create (0.1ms)[0m   [0;1mINSERT INTO `health_centers` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `name_kh`) VALUES('health_center', '2011-04-05 11:35:03', 'h10010', '2011-04-05 11:35:03', 83, 'health_center_kh')[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mVillage Columns (0.3ms)[0m   [0;1mSHOW FIELDS FROM `villages`[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mVillage Load (0.1ms)[0m   [0;1mSELECT `villages`.id FROM `villages` WHERE (`villages`.`code` = BINARY 'v10010') LIMIT 1[0m
+  [4;35;1mVillage Create (0.1ms)[0m   [0mINSERT INTO `villages` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `health_center_id`, `name_kh`) VALUES('value for name', '2011-04-05 11:35:03', 'v10010', '2011-04-05 11:35:03', 83, 188, 'value for name_kh')[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mVillage Load (0.1ms)[0m   [0;1mSELECT `villages`.id FROM `villages` WHERE (`villages`.`code` = BINARY 'v10010') LIMIT 1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mROLLBACK TO SAVEPOINT active_record_1[0m
+  [4;36;1mSQL (96.3ms)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mBEGIN[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mProvince Load (0.3ms)[0m   [0mSELECT `provinces`.id FROM `provinces` WHERE (`provinces`.`code` = BINARY 'p10010') LIMIT 1[0m
+  [4;36;1mProvince Create (0.2ms)[0m   [0;1mINSERT INTO `provinces` (`name`, `created_at`, `code`, `updated_at`, `name_kh`) VALUES('province', '2011-04-05 11:35:03', 'p10010', '2011-04-05 11:35:03', 'province_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mDistrict Create (0.2ms)[0m   [0mINSERT INTO `districts` (`name`, `created_at`, `province_id`, `code`, `updated_at`, `name_kh`) VALUES('districtA', '2011-04-05 11:35:03', 66, 'd10010', '2011-04-05 11:35:03', 'district_khmer')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mHealthCenter Create (0.2ms)[0m   [0;1mINSERT INTO `health_centers` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `name_kh`) VALUES('health_center', '2011-04-05 11:35:03', 'h10010', '2011-04-05 11:35:03', 84, 'health_center_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mVillage Load (0.3ms)[0m   [0mSELECT `villages`.id FROM `villages` WHERE (`villages`.`code` = BINARY 'v10010') LIMIT 1[0m
+  [4;36;1mVillage Create (0.2ms)[0m   [0;1mINSERT INTO `villages` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `health_center_id`, `name_kh`) VALUES('value for name', '2011-04-05 11:35:03', 'v10010', '2011-04-05 11:35:03', 84, 189, 'value for name_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSELECT count(*) AS count_all FROM `villages` [0m
+  [4;35;1mSQL (49.7ms)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mBEGIN[0m
+  [4;35;1mProvince Columns (0.5ms)[0m   [0mSHOW FIELDS FROM `provinces`[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mProvince Load (0.3ms)[0m   [0mSELECT `provinces`.id FROM `provinces` WHERE (`provinces`.`code` = BINARY 'p10010') LIMIT 1[0m
+  [4;36;1mProvince Create (0.2ms)[0m   [0;1mINSERT INTO `provinces` (`name`, `created_at`, `code`, `updated_at`, `name_kh`) VALUES('province', '2011-04-05 11:36:01', 'p10010', '2011-04-05 11:36:01', 'province_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mDistrict Columns (0.7ms)[0m   [0;1mSHOW FIELDS FROM `districts`[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mDistrict Create (0.1ms)[0m   [0;1mINSERT INTO `districts` (`name`, `created_at`, `province_id`, `code`, `updated_at`, `name_kh`) VALUES('districtA', '2011-04-05 11:36:01', 67, 'd10010', '2011-04-05 11:36:01', 'district_khmer')[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mHealthCenter Columns (0.3ms)[0m   [0;1mSHOW FIELDS FROM `health_centers`[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mHealthCenter Create (0.2ms)[0m   [0;1mINSERT INTO `health_centers` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `name_kh`) VALUES('health_center', '2011-04-05 11:36:01', 'h10010', '2011-04-05 11:36:01', 85, 'health_center_kh')[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mVillage Columns (0.5ms)[0m   [0;1mSHOW FIELDS FROM `villages`[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mVillage Load (0.1ms)[0m   [0;1mSELECT `villages`.id FROM `villages` WHERE (`villages`.`code` = BINARY 'v10010') LIMIT 1[0m
+  [4;35;1mVillage Create (0.1ms)[0m   [0mINSERT INTO `villages` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `health_center_id`, `name_kh`) VALUES('value for name', '2011-04-05 11:36:01', 'v10010', '2011-04-05 11:36:01', 85, 190, 'value for name_kh')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mVillage Load (0.2ms)[0m   [0;1mSELECT `villages`.id FROM `villages` WHERE (`villages`.`code` = BINARY 'v10010') LIMIT 1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mROLLBACK TO SAVEPOINT active_record_1[0m
+  [4;36;1mSQL (89.4ms)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mBEGIN[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mProvince Load (0.3ms)[0m   [0mSELECT `provinces`.id FROM `provinces` WHERE (`provinces`.`code` = BINARY 'p10010') LIMIT 1[0m
+  [4;36;1mProvince Create (0.3ms)[0m   [0;1mINSERT INTO `provinces` (`name`, `created_at`, `code`, `updated_at`, `name_kh`) VALUES('province', '2011-04-05 11:36:01', 'p10010', '2011-04-05 11:36:01', 'province_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mDistrict Create (0.2ms)[0m   [0mINSERT INTO `districts` (`name`, `created_at`, `province_id`, `code`, `updated_at`, `name_kh`) VALUES('districtA', '2011-04-05 11:36:01', 68, 'd10010', '2011-04-05 11:36:01', 'district_khmer')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mHealthCenter Create (0.2ms)[0m   [0;1mINSERT INTO `health_centers` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `name_kh`) VALUES('health_center', '2011-04-05 11:36:01', 'h10010', '2011-04-05 11:36:01', 86, 'health_center_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mVillage Load (0.3ms)[0m   [0mSELECT `villages`.id FROM `villages` WHERE (`villages`.`code` = BINARY 'v10010') LIMIT 1[0m
+  [4;36;1mVillage Create (0.2ms)[0m   [0;1mINSERT INTO `villages` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `health_center_id`, `name_kh`) VALUES('value for name', '2011-04-05 11:36:01', 'v10010', '2011-04-05 11:36:01', 86, 191, 'value for name_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSELECT count(*) AS count_all FROM `villages` [0m
+  [4;35;1mSQL (84.1ms)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mBEGIN[0m
+  [4;35;1mProvince Columns (0.5ms)[0m   [0mSHOW FIELDS FROM `provinces`[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mProvince Load (0.3ms)[0m   [0mSELECT `provinces`.id FROM `provinces` WHERE (`provinces`.`code` = BINARY 'p10010') LIMIT 1[0m
+  [4;36;1mProvince Create (0.2ms)[0m   [0;1mINSERT INTO `provinces` (`name`, `created_at`, `code`, `updated_at`, `name_kh`) VALUES('province', '2011-04-05 11:36:37', 'p10010', '2011-04-05 11:36:37', 'province_kh')[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mDistrict Columns (0.4ms)[0m   [0;1mSHOW FIELDS FROM `districts`[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mDistrict Create (0.1ms)[0m   [0;1mINSERT INTO `districts` (`name`, `created_at`, `province_id`, `code`, `updated_at`, `name_kh`) VALUES('districtA', '2011-04-05 11:36:37', 69, 'd10010', '2011-04-05 11:36:37', 'district_khmer')[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mHealthCenter Columns (0.3ms)[0m   [0;1mSHOW FIELDS FROM `health_centers`[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mHealthCenter Create (0.1ms)[0m   [0;1mINSERT INTO `health_centers` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `name_kh`) VALUES('health_center', '2011-04-05 11:36:37', 'h10010', '2011-04-05 11:36:37', 87, 'health_center_kh')[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mVillage Columns (0.3ms)[0m   [0;1mSHOW FIELDS FROM `villages`[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mVillage Load (0.1ms)[0m   [0;1mSELECT `villages`.id FROM `villages` WHERE (`villages`.`code` = BINARY 'v10010') LIMIT 1[0m
+  [4;35;1mVillage Create (0.1ms)[0m   [0mINSERT INTO `villages` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `health_center_id`, `name_kh`) VALUES('value for name', '2011-04-05 11:36:37', 'v10010', '2011-04-05 11:36:37', 87, 192, 'value for name_kh')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (95.5ms)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mBEGIN[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mProvince Load (0.3ms)[0m   [0;1mSELECT `provinces`.id FROM `provinces` WHERE (`provinces`.`code` = BINARY 'p10010') LIMIT 1[0m
+  [4;35;1mProvince Create (0.2ms)[0m   [0mINSERT INTO `provinces` (`name`, `created_at`, `code`, `updated_at`, `name_kh`) VALUES('province', '2011-04-05 11:36:37', 'p10010', '2011-04-05 11:36:37', 'province_kh')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mDistrict Create (0.2ms)[0m   [0;1mINSERT INTO `districts` (`name`, `created_at`, `province_id`, `code`, `updated_at`, `name_kh`) VALUES('districtA', '2011-04-05 11:36:37', 70, 'd10010', '2011-04-05 11:36:37', 'district_khmer')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mHealthCenter Create (0.2ms)[0m   [0mINSERT INTO `health_centers` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `name_kh`) VALUES('health_center', '2011-04-05 11:36:37', 'h10010', '2011-04-05 11:36:37', 88, 'health_center_kh')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mVillage Load (0.3ms)[0m   [0;1mSELECT `villages`.id FROM `villages` WHERE (`villages`.`code` = BINARY 'v10010') LIMIT 1[0m
+  [4;35;1mVillage Create (0.2ms)[0m   [0mINSERT INTO `villages` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `health_center_id`, `name_kh`) VALUES('value for name', '2011-04-05 11:36:37', 'v10010', '2011-04-05 11:36:37', 88, 193, 'value for name_kh')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT count(*) AS count_all FROM `villages` [0m
+  [4;36;1mSQL (43.0ms)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mBEGIN[0m
+  [4;35;1mProvince Columns (0.5ms)[0m   [0mSHOW FIELDS FROM `provinces`[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mProvince Load (0.3ms)[0m   [0mSELECT `provinces`.id FROM `provinces` WHERE (`provinces`.`code` = BINARY 'p10010') LIMIT 1[0m
+  [4;36;1mProvince Create (0.2ms)[0m   [0;1mINSERT INTO `provinces` (`name`, `created_at`, `code`, `updated_at`, `name_kh`) VALUES('province', '2011-04-05 11:37:57', 'p10010', '2011-04-05 11:37:57', 'province_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mDistrict Columns (0.5ms)[0m   [0;1mSHOW FIELDS FROM `districts`[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mDistrict Create (0.2ms)[0m   [0;1mINSERT INTO `districts` (`name`, `created_at`, `province_id`, `code`, `updated_at`, `name_kh`) VALUES('districtA', '2011-04-05 11:37:57', 71, 'd10010', '2011-04-05 11:37:57', 'district_khmer')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mHealthCenter Columns (0.7ms)[0m   [0;1mSHOW FIELDS FROM `health_centers`[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mHealthCenter Create (0.2ms)[0m   [0;1mINSERT INTO `health_centers` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `name_kh`) VALUES('health_center', '2011-04-05 11:37:57', 'h10010', '2011-04-05 11:37:57', 89, 'health_center_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mVillage Columns (0.7ms)[0m   [0;1mSHOW FIELDS FROM `villages`[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mVillage Load (0.3ms)[0m   [0;1mSELECT `villages`.id FROM `villages` WHERE (`villages`.`code` = BINARY 'v10010') LIMIT 1[0m
+  [4;35;1mVillage Create (0.2ms)[0m   [0mINSERT INTO `villages` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `health_center_id`, `name_kh`) VALUES('value for name', '2011-04-05 11:37:57', 'v10010', '2011-04-05 11:37:57', 89, 194, 'value for name_kh')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mVillage Load (0.2ms)[0m   [0;1mSELECT `villages`.id FROM `villages` WHERE (`villages`.`code` = BINARY 'v10010') LIMIT 1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mROLLBACK TO SAVEPOINT active_record_1[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSELECT count(*) AS count_all FROM `villages` [0m
+  [4;35;1mSQL (96.7ms)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mBEGIN[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mProvince Load (0.3ms)[0m   [0;1mSELECT `provinces`.id FROM `provinces` WHERE (`provinces`.`code` = BINARY 'p10010') LIMIT 1[0m
+  [4;35;1mProvince Create (0.2ms)[0m   [0mINSERT INTO `provinces` (`name`, `created_at`, `code`, `updated_at`, `name_kh`) VALUES('province', '2011-04-05 11:37:57', 'p10010', '2011-04-05 11:37:57', 'province_kh')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mDistrict Create (0.2ms)[0m   [0;1mINSERT INTO `districts` (`name`, `created_at`, `province_id`, `code`, `updated_at`, `name_kh`) VALUES('districtA', '2011-04-05 11:37:57', 72, 'd10010', '2011-04-05 11:37:57', 'district_khmer')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mHealthCenter Create (0.2ms)[0m   [0mINSERT INTO `health_centers` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `name_kh`) VALUES('health_center', '2011-04-05 11:37:57', 'h10010', '2011-04-05 11:37:57', 90, 'health_center_kh')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mVillage Load (0.3ms)[0m   [0;1mSELECT `villages`.id FROM `villages` WHERE (`villages`.`code` = BINARY 'v10010') LIMIT 1[0m
+  [4;35;1mVillage Create (0.2ms)[0m   [0mINSERT INTO `villages` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `health_center_id`, `name_kh`) VALUES('value for name', '2011-04-05 11:37:57', 'v10010', '2011-04-05 11:37:57', 90, 195, 'value for name_kh')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT count(*) AS count_all FROM `villages` [0m
+  [4;36;1mSQL (44.0ms)[0m   [0;1mROLLBACK[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mBEGIN[0m
+  [4;35;1mProvince Columns (0.5ms)[0m   [0mSHOW FIELDS FROM `provinces`[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mProvince Load (0.3ms)[0m   [0mSELECT `provinces`.id FROM `provinces` WHERE (`provinces`.`code` = BINARY 'p10010') LIMIT 1[0m
+  [4;36;1mProvince Create (0.2ms)[0m   [0;1mINSERT INTO `provinces` (`name`, `created_at`, `code`, `updated_at`, `name_kh`) VALUES('province', '2011-04-05 11:38:25', 'p10010', '2011-04-05 11:38:25', 'province_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mDistrict Columns (0.7ms)[0m   [0;1mSHOW FIELDS FROM `districts`[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mDistrict Create (0.2ms)[0m   [0;1mINSERT INTO `districts` (`name`, `created_at`, `province_id`, `code`, `updated_at`, `name_kh`) VALUES('districtA', '2011-04-05 11:38:25', 73, 'd10010', '2011-04-05 11:38:25', 'district_khmer')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mHealthCenter Columns (0.7ms)[0m   [0;1mSHOW FIELDS FROM `health_centers`[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mHealthCenter Create (0.2ms)[0m   [0;1mINSERT INTO `health_centers` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `name_kh`) VALUES('health_center', '2011-04-05 11:38:25', 'h10010', '2011-04-05 11:38:25', 91, 'health_center_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mVillage Columns (0.7ms)[0m   [0;1mSHOW FIELDS FROM `villages`[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mVillage Load (0.3ms)[0m   [0;1mSELECT `villages`.id FROM `villages` WHERE (`villages`.`code` = BINARY 'v10010') LIMIT 1[0m
+  [4;35;1mVillage Create (0.2ms)[0m   [0mINSERT INTO `villages` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `health_center_id`, `name_kh`) VALUES('value for name', '2011-04-05 11:38:25', 'v10010', '2011-04-05 11:38:25', 91, 196, 'value for name_kh')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mVillage Load (0.2ms)[0m   [0;1mSELECT `villages`.id FROM `villages` WHERE (`villages`.`code` = BINARY 'v10010') LIMIT 1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mROLLBACK TO SAVEPOINT active_record_1[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSELECT count(*) AS count_all FROM `villages` [0m
+  [4;35;1mSQL (84.2ms)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mBEGIN[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mProvince Load (0.3ms)[0m   [0;1mSELECT `provinces`.id FROM `provinces` WHERE (`provinces`.`code` = BINARY 'p10010') LIMIT 1[0m
+  [4;35;1mProvince Create (0.2ms)[0m   [0mINSERT INTO `provinces` (`name`, `created_at`, `code`, `updated_at`, `name_kh`) VALUES('province', '2011-04-05 11:38:25', 'p10010', '2011-04-05 11:38:25', 'province_kh')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mDistrict Create (0.2ms)[0m   [0;1mINSERT INTO `districts` (`name`, `created_at`, `province_id`, `code`, `updated_at`, `name_kh`) VALUES('districtA', '2011-04-05 11:38:25', 74, 'd10010', '2011-04-05 11:38:25', 'district_khmer')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mHealthCenter Create (0.2ms)[0m   [0mINSERT INTO `health_centers` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `name_kh`) VALUES('health_center', '2011-04-05 11:38:25', 'h10010', '2011-04-05 11:38:25', 92, 'health_center_kh')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mVillage Load (0.3ms)[0m   [0;1mSELECT `villages`.id FROM `villages` WHERE (`villages`.`code` = BINARY 'v10010') LIMIT 1[0m
+  [4;35;1mVillage Create (0.2ms)[0m   [0mINSERT INTO `villages` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `health_center_id`, `name_kh`) VALUES('value for name', '2011-04-05 11:38:25', 'v10010', '2011-04-05 11:38:25', 92, 197, 'value for name_kh')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT count(*) AS count_all FROM `villages` [0m
+  [4;36;1mSQL (51.7ms)[0m   [0;1mROLLBACK[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mBEGIN[0m
+  [4;35;1mProvince Columns (0.5ms)[0m   [0mSHOW FIELDS FROM `provinces`[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mProvince Load (0.3ms)[0m   [0mSELECT `provinces`.id FROM `provinces` WHERE (`provinces`.`code` = BINARY 'p10010') LIMIT 1[0m
+  [4;36;1mProvince Create (0.2ms)[0m   [0;1mINSERT INTO `provinces` (`name`, `created_at`, `code`, `updated_at`, `name_kh`) VALUES('province', '2011-04-05 11:38:46', 'p10010', '2011-04-05 11:38:46', 'province_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mDistrict Columns (0.7ms)[0m   [0;1mSHOW FIELDS FROM `districts`[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mDistrict Create (0.2ms)[0m   [0;1mINSERT INTO `districts` (`name`, `created_at`, `province_id`, `code`, `updated_at`, `name_kh`) VALUES('districtA', '2011-04-05 11:38:46', 75, 'd10010', '2011-04-05 11:38:46', 'district_khmer')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mHealthCenter Columns (0.7ms)[0m   [0;1mSHOW FIELDS FROM `health_centers`[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mHealthCenter Create (0.2ms)[0m   [0;1mINSERT INTO `health_centers` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `name_kh`) VALUES('health_center', '2011-04-05 11:38:46', 'h10010', '2011-04-05 11:38:46', 93, 'health_center_kh')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mVillage Columns (0.7ms)[0m   [0;1mSHOW FIELDS FROM `villages`[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mVillage Load (0.3ms)[0m   [0;1mSELECT `villages`.id FROM `villages` WHERE (`villages`.`code` = BINARY 'v10010') LIMIT 1[0m
+  [4;35;1mVillage Create (0.2ms)[0m   [0mINSERT INTO `villages` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `health_center_id`, `name_kh`) VALUES('value for name', '2011-04-05 11:38:46', 'v10010', '2011-04-05 11:38:46', 93, 198, 'value for name_kh')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mVillage Load (0.2ms)[0m   [0;1mSELECT `villages`.id FROM `villages` WHERE (`villages`.`code` = BINARY 'v10010') LIMIT 1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mROLLBACK TO SAVEPOINT active_record_1[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSELECT count(*) AS count_all FROM `villages` [0m
+  [4;35;1mSQL (83.6ms)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mBEGIN[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mProvince Load (0.3ms)[0m   [0;1mSELECT `provinces`.id FROM `provinces` WHERE (`provinces`.`code` = BINARY 'p10010') LIMIT 1[0m
+  [4;35;1mProvince Create (0.3ms)[0m   [0mINSERT INTO `provinces` (`name`, `created_at`, `code`, `updated_at`, `name_kh`) VALUES('province', '2011-04-05 11:38:46', 'p10010', '2011-04-05 11:38:46', 'province_kh')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mDistrict Create (0.2ms)[0m   [0;1mINSERT INTO `districts` (`name`, `created_at`, `province_id`, `code`, `updated_at`, `name_kh`) VALUES('districtA', '2011-04-05 11:38:46', 76, 'd10010', '2011-04-05 11:38:46', 'district_khmer')[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mRELEASE SAVEPOINT active_record_1[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSAVEPOINT active_record_1[0m
+  [4;35;1mHealthCenter Create (0.2ms)[0m   [0mINSERT INTO `health_centers` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `name_kh`) VALUES('health_center', '2011-04-05 11:38:46', 'h10010', '2011-04-05 11:38:46', 94, 'health_center_kh')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSAVEPOINT active_record_1[0m
+  [4;36;1mVillage Load (0.3ms)[0m   [0;1mSELECT `villages`.id FROM `villages` WHERE (`villages`.`code` = BINARY 'v10010') LIMIT 1[0m
+  [4;35;1mVillage Create (0.2ms)[0m   [0mINSERT INTO `villages` (`name`, `created_at`, `code`, `updated_at`, `district_id`, `health_center_id`, `name_kh`) VALUES('value for name', '2011-04-05 11:38:46', 'v10010', '2011-04-05 11:38:46', 94, 199, 'value for name_kh')[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mRELEASE SAVEPOINT active_record_1[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT count(*) AS count_all FROM `villages` [0m
+  [4;36;1mSQL (60.8ms)[0m   [0;1mROLLBACK[0m

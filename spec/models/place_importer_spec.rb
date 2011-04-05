@@ -25,9 +25,5 @@ describe PlaceImporter do
     kralapeas.district.province.name.should == "Battambang"
     kralapeas.district.province.name_kh.should == ")at;dMbg"
     kralapeas.district.province.code.should == "02"
-
-
-
-
   end
 end

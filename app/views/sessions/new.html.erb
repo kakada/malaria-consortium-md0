@@ -1,0 +1,20 @@
+<h1>Please login</h1>
+<%form_for(:session,:url=>sessions_path) do |form|%>
+  <%#:session<=> name = session[]%>
+  <div class="field" >
+    <%= form.label :email  %>
+    <%= form.text_field :email %>
+  </div>
+
+  <div class="field" >
+    <%= form.label :password  %>
+    <%= form.password_field :password %>
+  </div>
+
+  <div class="field action">
+    <%= form.submit "Sign in" %>
+  </div>
+
+
+
+<%end%>

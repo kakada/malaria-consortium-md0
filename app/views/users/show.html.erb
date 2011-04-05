@@ -1,0 +1,15 @@
+<table>
+  <tr>
+    <td>Name </td>
+    <td> <%=h @user.user_name %> </td>
+  </tr>
+
+  <tr>
+    <td>Email </td>
+    <td> <%=h @user.email%> </td>
+  </tr>
+  <tr>
+    <td>Password </td>
+    <td> <%=h "*"*@user.password.size %> </td>
+  </tr>
+</table>

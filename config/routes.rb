@@ -23,10 +23,26 @@ ActionController::Routing::Routes.draw do |map|
   #     products.resources :comments
   #     products.resources :sales, :collection => { :recent => :get }
   #   end
-
+  map.root :controller=>:page ,:action => :home
   map.resources :provinces , :has_many => :districts
   map.resources :districts , :has_many => :villages
+  map.resources :sessions
+  map.resources :users
 
+  #map.import_places "a/import" ,:controller =>:admin, :action=>:import
+
+  #map.root "/", :controller =>:page , :action=>:home
+
+
+  map.resources :sessions, :only =>[:new,:create,:destroy]
+  map.signin '/signin', :controller=>:sessions, :action=>:new
+  map.signout '/signout', :controller=>:sessions, :action=>:destroy
+
+
+	map.contact '/contact' , :controller => :page, :action => 'contact'
+	map.about '/about', :controller => :page ,:action => :about
+
+	map.signup "/signup" ,:controller => :users, :action => :new
   
   # Sample resource route within a namespace:
   #   map.namespace :admin do |admin|

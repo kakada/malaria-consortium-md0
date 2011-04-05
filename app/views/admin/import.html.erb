@@ -1,0 +1,10 @@
+<h2>Import places:</h2>
+<% form_for(:admin,:url=>"/admin/upload_csv", :html => {:multipart=>true}) do |form| %>
+  <div class="field">
+    <%= form.label :csvfile, "Upload csv" %>
+    <%= form.file_field :csvfile %>
+  </div>
+  <div class="field action">
+   <%= form.submit :Upload %>
+  </div>
+<% end %>

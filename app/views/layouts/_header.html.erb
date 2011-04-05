@@ -1,0 +1,19 @@
+<div id="header" class="round" >
+    <%= link_to  image_tag("logo.png", :alt => "Marlaria", :class => "round logo"),root_url %>
+    <ul class="navigation round " style="float:right;"  >
+        <li><%= link_to "Dashboad", root_path %> </li>
+        <% if !signed_in? %>
+          <li> <span>|</span> <%= link_to "Sign up", signup_path %></li>
+          <li> <span>|</span> <%= link_to "Sign in", signin_path %>  </li>
+        <% else %>
+          <%if admin? %>
+            <li> <span>|</span> <%= link_to "Admin", "/admin/import"  %></li>
+          <%end%>
+
+          <li> <span>|</span> <%= link_to "Profile", current_user  %></li> 
+          <li> <span>|</span> <%= link_to "Setting", edit_user_path(current_user)  %></li>
+          <li> <span>|</span> <%= link_to "Sign out", signout_path %></li>
+        <%  end %>
+
+    </ul>
+</div>

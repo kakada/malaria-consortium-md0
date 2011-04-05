@@ -1,0 +1,217 @@
+  [4;36;1mSQL (0.5ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (90.0ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.1ms)[0m   [0mPRAGMA index_list("schema_migrations")[0m
+  [4;36;1mSQL (64.6ms)[0m   [0;1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;35;1mSQL (0.2ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSELECT version FROM schema_migrations[0m
+Migrating to CreateProvinces (20110404103237)
+  [4;35;1mSQL (0.6ms)[0m   [0mCREATE TABLE "provinces" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "name_kh" varchar(255), "code" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20110404103237')[0m
+Migrating to CreateDistricts (20110404103257)
+  [4;35;1mSQL (0.5ms)[0m   [0mCREATE TABLE "districts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "name_kh" varchar(255), "code" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20110404103257')[0m
+Migrating to CreateVillages (20110404103316)
+  [4;35;1mSQL (0.5ms)[0m   [0mCREATE TABLE "villages" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "name_kh" varchar(255), "code" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20110404103316')[0m
+Migrating to CreateHealthCenters (20110404103341)
+  [4;35;1mSQL (0.5ms)[0m   [0mCREATE TABLE "health_centers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "name_kh" varchar(255), "code" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20110404103341')[0m
+  [4;35;1mSQL (0.2ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSELECT version FROM schema_migrations[0m
+  [4;35;1mSQL (0.1ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mPRAGMA index_list("districts")[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mPRAGMA index_list("health_centers")[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mPRAGMA index_list("provinces")[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mPRAGMA index_list("villages")[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (135.8ms)[0m   [0mCREATE TABLE `schema_migrations` (`version` varchar(255) NOT NULL) ENGINE=InnoDB[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mSHOW KEYS FROM `schema_migrations`[0m
+  [4;35;1mSQL (267.4ms)[0m   [0mCREATE UNIQUE INDEX `unique_schema_migrations` ON `schema_migrations` (`version`)[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateProvinces (20110404103237)
+  [4;36;1mSQL (154.9ms)[0m   [0;1mCREATE TABLE `provinces` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(255), `name_kh` varchar(255), `code` varchar(255), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB[0m
+  [4;35;1mSQL (58.0ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20110404103237')[0m
+Migrating to CreateDistricts (20110404103257)
+  [4;36;1mSQL (155.6ms)[0m   [0;1mCREATE TABLE `districts` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(255), `name_kh` varchar(255), `code` varchar(255), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB[0m
+  [4;35;1mSQL (58.1ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20110404103257')[0m
+Migrating to CreateVillages (20110404103316)
+  [4;36;1mSQL (122.4ms)[0m   [0;1mCREATE TABLE `villages` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(255), `name_kh` varchar(255), `code` varchar(255), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB[0m
+  [4;35;1mSQL (41.5ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20110404103316')[0m
+Migrating to CreateHealthCenters (20110404103341)
+  [4;36;1mSQL (122.3ms)[0m   [0;1mCREATE TABLE `health_centers` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(255), `name_kh` varchar(255), `code` varchar(255), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB[0m
+  [4;35;1mSQL (41.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20110404103341')[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSELECT version FROM schema_migrations[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (0.8ms)[0m   [0mSHOW FIELDS FROM `districts`[0m
+  [4;36;1mSQL (0.8ms)[0m   [0;1mdescribe `districts`[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSHOW KEYS FROM `districts`[0m
+  [4;36;1mSQL (0.7ms)[0m   [0;1mSHOW FIELDS FROM `health_centers`[0m
+  [4;35;1mSQL (0.6ms)[0m   [0mdescribe `health_centers`[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSHOW KEYS FROM `health_centers`[0m
+  [4;35;1mSQL (0.7ms)[0m   [0mSHOW FIELDS FROM `provinces`[0m
+  [4;36;1mSQL (0.9ms)[0m   [0;1mdescribe `provinces`[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSHOW KEYS FROM `provinces`[0m
+  [4;36;1mSQL (1.3ms)[0m   [0;1mSHOW FIELDS FROM `villages`[0m
+  [4;35;1mSQL (0.7ms)[0m   [0mdescribe `villages`[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSHOW KEYS FROM `villages`[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateProvinces (20110404103237)
+Migrating to CreateDistricts (20110404103257)
+Migrating to CreateVillages (20110404103316)
+Migrating to CreateHealthCenters (20110404103341)
+Migrating to AddReferencesKey (20110404104355)
+  [4;36;1mSQL (0.0ms)[0m   [0;1mMysql::Error: Table 'malaria_dev.district' doesn't exist: ALTER TABLE `district` ADD `province_id` int(11)[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateProvinces (20110404103237)
+Migrating to CreateDistricts (20110404103257)
+Migrating to CreateVillages (20110404103316)
+Migrating to CreateHealthCenters (20110404103341)
+Migrating to AddReferencesKey (20110404104355)
+  [4;36;1mSQL (0.0ms)[0m   [0;1mMysql::Error: Table 'malaria_dev.district' doesn't exist: ALTER TABLE `district` ADD `province_id` int(11)[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateProvinces (20110404103237)
+Migrating to CreateDistricts (20110404103257)
+Migrating to CreateVillages (20110404103316)
+Migrating to CreateHealthCenters (20110404103341)
+Migrating to AddReferencesKey (20110404104355)
+  [4;36;1mSQL (293.1ms)[0m   [0;1mALTER TABLE `districts` ADD `province_id` int(11)[0m
+  [4;35;1mSQL (267.7ms)[0m   [0mALTER TABLE `villages` ADD `district_id` int(11)[0m
+  [4;36;1mSQL (251.0ms)[0m   [0;1mALTER TABLE `villages` ADD `health_center_id` int(11)[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mMysql::Error: Table 'malaria_dev.health_center' doesn't exist: ALTER TABLE `health_center` ADD `district_id` int(11)[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateProvinces (20110404103237)
+Migrating to CreateDistricts (20110404103257)
+Migrating to CreateVillages (20110404103316)
+Migrating to CreateHealthCenters (20110404103341)
+Migrating to AddReferencesKey (20110404104355)
+  [4;36;1mSQL (0.0ms)[0m   [0;1mMysql::Error: Duplicate column name 'province_id': ALTER TABLE `districts` ADD `province_id` int(11)[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (137.4ms)[0m   [0mCREATE TABLE `schema_migrations` (`version` varchar(255) NOT NULL) ENGINE=InnoDB[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mSHOW KEYS FROM `schema_migrations`[0m
+  [4;35;1mSQL (225.7ms)[0m   [0mCREATE UNIQUE INDEX `unique_schema_migrations` ON `schema_migrations` (`version`)[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateProvinces (20110404103237)
+  [4;36;1mSQL (138.1ms)[0m   [0;1mCREATE TABLE `provinces` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(255), `name_kh` varchar(255), `code` varchar(255), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB[0m
+  [4;35;1mSQL (49.7ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20110404103237')[0m
+Migrating to CreateDistricts (20110404103257)
+  [4;36;1mSQL (163.9ms)[0m   [0;1mCREATE TABLE `districts` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(255), `name_kh` varchar(255), `code` varchar(255), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB[0m
+  [4;35;1mSQL (58.0ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20110404103257')[0m
+Migrating to CreateVillages (20110404103316)
+  [4;36;1mSQL (163.8ms)[0m   [0;1mCREATE TABLE `villages` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(255), `name_kh` varchar(255), `code` varchar(255), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB[0m
+  [4;35;1mSQL (58.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20110404103316')[0m
+Migrating to CreateHealthCenters (20110404103341)
+  [4;36;1mSQL (180.8ms)[0m   [0;1mCREATE TABLE `health_centers` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(255), `name_kh` varchar(255), `code` varchar(255), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB[0m
+  [4;35;1mSQL (58.1ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20110404103341')[0m
+Migrating to AddReferencesKey (20110404104355)
+  [4;36;1mSQL (290.7ms)[0m   [0;1mALTER TABLE `districts` ADD `province_id` int(11)[0m
+  [4;35;1mSQL (251.0ms)[0m   [0mALTER TABLE `villages` ADD `district_id` int(11)[0m
+  [4;36;1mSQL (227.5ms)[0m   [0;1mALTER TABLE `villages` ADD `health_center_id` int(11)[0m
+  [4;35;1mSQL (276.1ms)[0m   [0mALTER TABLE `health_centers` ADD `district_id` int(11)[0m
+  [4;36;1mSQL (58.0ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20110404104355')[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSELECT version FROM schema_migrations[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mSHOW FIELDS FROM `districts`[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mdescribe `districts`[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSHOW KEYS FROM `districts`[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSHOW FIELDS FROM `health_centers`[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mdescribe `health_centers`[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSHOW KEYS FROM `health_centers`[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mSHOW FIELDS FROM `provinces`[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mdescribe `provinces`[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSHOW KEYS FROM `provinces`[0m
+  [4;35;1mSQL (0.7ms)[0m   [0mSHOW FIELDS FROM `villages`[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mdescribe `villages`[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSHOW KEYS FROM `villages`[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to AddReferencesKey (20110404104355)
+  [4;36;1mSQL (291.5ms)[0m   [0;1mALTER TABLE `districts` DROP `province_id`[0m
+  [4;35;1mSQL (309.5ms)[0m   [0mALTER TABLE `villages` DROP `district_id`[0m
+  [4;36;1mSQL (276.1ms)[0m   [0;1mALTER TABLE `villages` DROP `health_center_id`[0m
+  [4;35;1mSQL (459.5ms)[0m   [0mALTER TABLE `health_centers` DROP `district_id`[0m
+  [4;36;1mSQL (49.6ms)[0m   [0;1mDELETE FROM schema_migrations WHERE version = '20110404104355'[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSELECT version FROM schema_migrations[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (0.8ms)[0m   [0;1mSHOW FIELDS FROM `districts`[0m
+  [4;35;1mSQL (0.6ms)[0m   [0mdescribe `districts`[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSHOW KEYS FROM `districts`[0m
+  [4;35;1mSQL (0.7ms)[0m   [0mSHOW FIELDS FROM `health_centers`[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mdescribe `health_centers`[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSHOW KEYS FROM `health_centers`[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mSHOW FIELDS FROM `provinces`[0m
+  [4;35;1mSQL (0.7ms)[0m   [0mdescribe `provinces`[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSHOW KEYS FROM `provinces`[0m
+  [4;35;1mSQL (0.7ms)[0m   [0mSHOW FIELDS FROM `villages`[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mdescribe `villages`[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSHOW KEYS FROM `villages`[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateProvinces (20110404103237)
+Migrating to CreateDistricts (20110404103257)
+Migrating to CreateVillages (20110404103316)
+Migrating to CreateHealthCenters (20110404103341)
+Migrating to AddReferencesKey (20110404104355)
+  [4;36;1mSQL (296.5ms)[0m   [0;1mALTER TABLE `districts` ADD `province_id` int(11)[0m
+  [4;35;1mSQL (259.1ms)[0m   [0mALTER TABLE `villages` ADD `district_id` int(11)[0m
+  [4;36;1mSQL (226.2ms)[0m   [0;1mALTER TABLE `villages` ADD `health_center_id` int(11)[0m
+  [4;35;1mSQL (250.9ms)[0m   [0mALTER TABLE `health_centers` ADD `district_id` int(11)[0m
+  [4;36;1mSQL (49.6ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20110404104355')[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSELECT version FROM schema_migrations[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mSHOW FIELDS FROM `districts`[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mdescribe `districts`[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSHOW KEYS FROM `districts`[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mSHOW FIELDS FROM `health_centers`[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mdescribe `health_centers`[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSHOW KEYS FROM `health_centers`[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSHOW FIELDS FROM `provinces`[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mdescribe `provinces`[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSHOW KEYS FROM `provinces`[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSHOW FIELDS FROM `villages`[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mdescribe `villages`[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSHOW KEYS FROM `villages`[0m

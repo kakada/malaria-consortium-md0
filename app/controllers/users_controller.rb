@@ -3,12 +3,19 @@ class UsersController < ApplicationController
   before_filter :authenticate, :only=>[:edit,:update,:show]
   before_filter :correct_user, :only=>[:edit,:update,:show]
 
-  @placeable = find_placeable
+  
   #@users = @placeable.users
 
   #GET sign-in  new_user_path
+  def index
+    @placeable = find_placeable
+    #@users = @placeable.users
+  end
+
+
   def new
 		@title = "Sign up"
+    @placeable = find_placeable
 		@user = User.new
   end
 
@@ -40,24 +47,29 @@ class UsersController < ApplicationController
 
   #POST user/  users_path
   def create
-    @user = User.new params[:user]
+    @placeable = find_placeable
+
+    @user = @placeable.users.build(params[:user])
+    @user.role = @placeable.class.to_s
+    
     if @user.save
       flash[:success] = "Profile page"
       sign_in(@user)
-      redirect_to @user
+      redirect_to :id =>nil #to go to index
     else
-      render :new
+      render :action=>:new
       @title = "Sign up"
-    end
+    end  
   end
 
   #find_placeable type
   def find_placeable
     params.each do |name,value|
-      if name =~/(.)+_id$/
-        return $1.classify.constantize.find value
+      if name =~/(.+)_id$/
+        return $1.classify.constantize.find(value.to_i)
       end
     end
+    nil
   end
 
 

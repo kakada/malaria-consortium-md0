@@ -1,5 +1,5 @@
-<h2> Sign up </h2>
-<%form_for [@placeable, @user] do |form|%>
+<h2> Edit user </h2>
+<%form_for [@placeable, User.new] do |form|%>
   <div>
     <%= form.error_messages %>
     <%#=form.errors.count%>
@@ -29,7 +29,8 @@
       <%= form.password_field :phone_number %>
   </div>
 
+
   <div class="field action">
-    <%= form.submit "Sign up" %>
+    <%= form.submit "Update" %>
   </div>
 <%end%>

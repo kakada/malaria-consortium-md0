@@ -27,5 +27,8 @@ config.action_mailer.delivery_method = :test
 # like if you have constraints or database-specific column types
 # config.active_record.schema_format = :sql
 
+config.gem 'webrat' , :source => "http://gems.github.com"
 config.gem "factory_girl"
-config.gem 'rspec-rails', :version => '>= 1.3.2', :lib => false unless File.directory?(File.join(Rails.root, 'vendor/plugins/rspec-rails'))
+config.gem 'test-unit', :lib => 'test/unit',  :version => '<2.0'
+config.gem "rspec", :lib => false, :version => '<2.0'
+config.gem 'rspec-rails', :version => "1.3.2", :lib => false unless File.directory?(File.join(Rails.root, 'vendor/plugins/rspec-rails'))

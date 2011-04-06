@@ -1,0 +1,23 @@
+development:
+  url: foo
+  account: foo
+  application: foo
+  password: foo
+  incoming_username: foo
+  incoming_password: foo
+
+production:
+  url: foo
+  account: foo
+  application: foo
+  password: foo
+  incoming_username: foo
+  incoming_password: foo
+
+test:
+  url: foo
+  account: foo
+  application: foo
+  password: foo
+  incoming_username: foo
+  incoming_password: foo

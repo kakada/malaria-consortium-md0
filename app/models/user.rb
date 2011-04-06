@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
   belongs_to :place, :polymorphic => true
 
+  validates_confirmation_of :password
+
 
   before_save :encrypt_password
 

@@ -1,5 +1,6 @@
 class AdminController < ApplicationController
-
+  before_filter :authenticate
+  
   #GET /admin/import
   def import
     @title ="Upload"

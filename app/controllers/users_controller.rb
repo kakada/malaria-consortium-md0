@@ -47,6 +47,10 @@ class UsersController < ApplicationController
     end
   end
 
+  #place
+  
+
+
    
 
 end

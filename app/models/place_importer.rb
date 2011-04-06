@@ -52,6 +52,7 @@ class PlaceImporter
                        :district_id =>district.id,
                        :health_center_id =>health_center.id
       }
-      Village.create!(village_attr)
+     village = Village.new(village_attr)
+     village.save
   end
 end

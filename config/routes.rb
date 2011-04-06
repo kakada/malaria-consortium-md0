@@ -24,10 +24,14 @@ ActionController::Routing::Routes.draw do |map|
   #     products.resources :sales, :collection => { :recent => :get }
   #   end
   map.root :controller=>:page ,:action => :home
-  map.resources :provinces , :has_many => :districts
-  map.resources :districts , :has_many => :villages
+
+  map.resources :provinces , :has_many => [:districts, :users]
+  map.resources :districts , :has_many => [:health_centers,:villages, :users]
+  map.resources :health_centers, :has_many =>[:villages, :users]
+  map.resources :villages , :has_many => :users
+
   map.resources :sessions
-  map.resources :users
+  #map.resources :users
 
   #map.import_places "a/import" ,:controller =>:admin, :action=>:import
 

@@ -2,6 +2,10 @@ class UsersController < ApplicationController
 
   before_filter :authenticate, :only=>[:edit,:update,:show]
   before_filter :correct_user, :only=>[:edit,:update,:show]
+
+  @placeable = find_placeable
+  #@users = @placeable.users
+
   #GET sign-in  new_user_path
   def new
 		@title = "Sign up"
@@ -47,8 +51,14 @@ class UsersController < ApplicationController
     end
   end
 
-  #place
-  
+  #find_placeable type
+  def find_placeable
+    params.each do |name,value|
+      if name =~/(.)+_id$/
+        return $1.classify.constantize.find value
+      end
+    end
+  end
 
 
    

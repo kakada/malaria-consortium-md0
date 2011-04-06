@@ -1,5 +1,7 @@
 # use glob syntax.
 syntax: glob
 nbproject/*
+log/*
+
 
 

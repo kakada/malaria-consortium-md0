@@ -4,4 +4,8 @@ class District < ActiveRecord::Base
 	belongs_to :province
 
   extend Place
+
+  def district
+    self
+  end
 end

@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
 
   validates_confirmation_of :password
 
+  validates_presence_of :phone_number, :unless => Proc.new {|user| user.phone_number.nil?}
 
   before_save :encrypt_password
 
@@ -13,6 +14,22 @@ class User < ActiveRecord::Base
 
 	end
 
+  def district
+    if place.respond_to?(:district)
+      place.district
+    else
+      nil
+    end
+  end
+
+  def province
+    if place.respond_to?(:province)
+      place.province
+    else
+      nil
+    end
+  end
+
 	def has_password? submitted_pwd
 		self.encrypted_password = encrypt submitted_pwd
 	end
@@ -20,6 +37,14 @@ class User < ActiveRecord::Base
   def remember_me!
     self.remember_token = encrypt("#{salt}--#{id}")
     save_without_validation
+  end
+
+  def alert_numbers
+    national_users = User.find_all_by_role("national")
+
+    recipients = User.phone_numbers self.district.users
+    recipients.concat User.phone_numbers self.province.users
+    recipients.concat User.phone_numbers national_users
   end
 
 	private
@@ -42,4 +67,12 @@ class User < ActiveRecord::Base
 			Digest::SHA2.hexdigest(string)
       string
 		end
+
+    def self.phone_numbers users
+      phone_numbers = []
+      users.each do |user|
+        phone_numbers << user.phone_number unless user.phone_number.nil?
+      end
+      phone_numbers
+    end
 end

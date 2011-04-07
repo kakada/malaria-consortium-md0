@@ -4,4 +4,8 @@ class HealthCenter < ActiveRecord::Base
 	belongs_to :district
 
   extend Place
+
+  def province
+    district.province
+  end
 end

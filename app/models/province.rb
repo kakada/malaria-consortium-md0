@@ -7,7 +7,7 @@ class Province < ActiveRecord::Base
 
  extend Place
  
- 
-
- 
+ def province
+   self
+ end
 end

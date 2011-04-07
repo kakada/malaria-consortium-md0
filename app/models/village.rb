@@ -7,4 +7,7 @@ class Village < ActiveRecord::Base
 
   extend Place
 
+  def province
+    district.province
+  end
 end

@@ -1,25 +1,16 @@
 require 'spec_helper'
+require 'test_helper'
 
 describe Report do
   before(:each) do
-    @health_center = HealthCenter.create!(:name => "foohc", :name_kh => "foohc", :code => "HC")
-    @another_health_center = HealthCenter.create!(:name => "barhc", 
-                                                  :name_kh => "barhc", 
-                                                  :code => "barHC")
+    @health_center = health_center "foohc"
+    village "fooville", "12345678", @health_center.id    
+    village "barville", "87654321"
+    
+    @hc_user = user "8558190", @health_center
 
-    @village = Village.create!(:name => "fooville", 
-                                :name_kh => "fooville", 
-                                :code => "12345678",
-                                :health_center_id => @health_center.id)
-    
-    @another_village = Village.create!(:name => "barville", 
-                                        :name_kh => "barville", 
-                                        :code => "87654321",
-                                        :health_center_id => @another_health_center.id)    
-    
-    @user = User.create!(:phone_number => "8558190", 
-                          :place_id => @health_center.id, 
-                          :place_type => "HealthCenter") 
+    @valid_message = {:from => "sms://8558190", :body => "F123M12345678"}
+    @valid_recipients = ["1", "2", "3", "4", "5"]
   end
   
   describe "invalid message" do
@@ -57,12 +48,24 @@ describe Report do
   
   describe "valid message" do
     it "should return the valid message with detail" do
-      message = {:from => "sms://8558190", :body => "F123M12345678"}
-      response = Report.process message
-      response[:to].should == message[:from]
-      response[:body].should == Report.successful_report("F", 123, "Male", "12345678")
-    end  
-  end  
-  
-  
+      User.should_receive(:find_by_phone_number).with("8558190").and_return(@hc_user)
+      @hc_user.stub!(:alert_numbers).and_return(@valid_recipients)
+
+      response = Report.process @valid_message
+
+      recipients = response.map { |reply| reply[:to] }
+      recipients.should =~ [@hc_user.phone_number.to_sms_addr].concat(@valid_recipients.map {|phone_number| phone_number.to_sms_addr})
+
+      response.each do |reply|
+        reply[:from].should == Report.from_app
+        reply[:body].should == Report.successful_report("F", 123, "Male", "12345678")
+
+        assert_nuntium_fields reply
+      end
+    end
+
+    def assert_nuntium_fields data
+      [:from,:body,:to].should =~ data.keys
+    end
+  end    
 end

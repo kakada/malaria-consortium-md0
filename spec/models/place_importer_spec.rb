@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'spec_helper'
 
 describe PlaceImporter do
@@ -5,7 +7,6 @@ describe PlaceImporter do
     file = File.join(File.dirname(__FILE__),"test.csv")
     PlaceImporter.import(file)
 
-    puts Province.all.map &:name
     Province.count.should == 2
     District.count.should == 3
     HealthCenter.count.should == 8

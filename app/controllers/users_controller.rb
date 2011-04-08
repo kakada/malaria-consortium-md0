@@ -55,7 +55,7 @@ class UsersController < ApplicationController
     if @user.save
       flash[:success] = "Profile page"
       sign_in(@user)
-      redirect_to :id =>nil #to go to index
+      redirect_to "/users/#{@user.id}"
     else
       render :action=>:new
       @title = "Sign up"
@@ -70,6 +70,42 @@ class UsersController < ApplicationController
       end
     end
     nil
+  end
+
+
+  def data_entry
+    pro_takao =  Province.new(:name=>"Takao", :name_kh=>"Takao",:code => "98888881")
+    
+    district_takao1 = District.new(:name=>"Laem1", :name_kh=>"Laem_kh1",:code => "88888881",:province_id =>pro_takao.id)
+    district_takao1.save
+    
+    district_takao2 = District.new(:name=>"Laem2", :name_kh=>"Laem_kh2",:code => "88888882",:province_id =>pro_takao.id)
+    district_takao2.save
+
+
+    hc_takao1 = HealthCenter.new(:name=>"Hc1", :name_kh=>"Hc1_kh1",:code => "78888881",:district_id =>district_takao1.id)
+    hc_takao1.save
+    
+    hc_takao2 = HealthCenter.new(:name=>"Hc2", :name_kh=>"Hc1_kh2",:code => "78888882",:district_id =>district_takao1.id)
+    hc_takao2.save
+
+
+    village1 = Village.new(:name=>"Vl1",
+          :name_kh=>"Vl1",:code => "68888881",
+          :district_id =>district_takao1.id,
+          :health_center_id => hc_takao1.id )
+    village1.save
+
+    village2 = Village.new(:name=>"Vl2",
+          :name_kh=>"Vl2",:code => "68888882",
+          :district_id =>district_takao1.id,
+          :health_center_id => hc_takao1.id )
+    village2.save
+
+
+
+    render :text=>"success"
+
   end
 
 

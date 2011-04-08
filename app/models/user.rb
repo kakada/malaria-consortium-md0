@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
 
   def remember_me!
     self.remember_token = encrypt("#{salt}--#{id}")
-    save_without_validation
+    save(false)
   end
 
   def alert_numbers

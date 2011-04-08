@@ -16,7 +16,7 @@ class SessionsController < ApplicationController
 
     else
       sign_in @user
-      redirect_back_or @user
+      redirect_back_or "/page/home" #@user
     end
   end
 

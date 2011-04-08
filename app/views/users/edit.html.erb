@@ -1,12 +1,12 @@
 <h2> Edit user </h2>
-<%form_for [@placeable, User.new] do |form|%>
+<%form_for [@placeable, @user] do |form|%>
   <div>
-    <%= form.error_messages %>
+    <%#= form.error_messages %>
     <%#=form.errors.count%>
   </div>
   <div class="field">
-      <%= form.label :name %>
-      <%= form.text_field :name%>
+      <%= form.label :user_name %>
+      <%= form.text_field :user_name%>
   </div>
 
   <div class="field">
@@ -15,13 +15,8 @@
   </div>
 
   <div class="field">
-      <%= form.label :password %>
-      <%= form.password_field :password %>
-  </div>
-
-  <div class="field">
-      <%= form.label :password_confirmation %>
-      <%= form.password_field :password_confirmation %>
+      <%= form.label :phone_number %>
+      <%= form.text_field :phone_number%>
   </div>
 
   <div class="field action">

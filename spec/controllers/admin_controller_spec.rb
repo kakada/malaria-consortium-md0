@@ -1,5 +1,4 @@
 require 'spec_helper'
-
 describe AdminController do
 
   #Delete this example and add some real ones
@@ -9,8 +8,14 @@ describe AdminController do
 
   describe "import csv" do
     describe "show import form sucess" do
+      before(:each) do
+        @user = national_user "12345678"
+      end
 
       it "should render at /admin/import" do
+        test_sign_in(@user) #sign the user in
+        controller.signed_in?.should be_true #make sure it was signed
+        
         get "import"
         response.should render_template "import"
       end

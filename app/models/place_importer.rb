@@ -1,8 +1,8 @@
-require "faster_csv"
+require 'csv'
 class PlaceImporter
   
   def self.import file
-    FasterCSV.foreach(file, { :headers => :first_row, :skip_blanks => true }) do |row|
+    CSV.foreach(file, { :headers => :first_row, :skip_blanks => true }) do |row|
       province_attr = {
         :name=>row[0],
         :name_kh => row[1],

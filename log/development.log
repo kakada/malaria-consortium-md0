@@ -3915,3 +3915,43 @@ DEPRECATION WARNING: ActionController::Base.cookie_verifier_secret= is deprecate
   [1m[35mSQL (41.7ms)[0m  INSERT INTO `schema_migrations` (version) VALUES ('20110405022243')
   [1m[36mSQL (41.6ms)[0m  [1mINSERT INTO `schema_migrations` (version) VALUES ('20110405025052')[0m
   [1m[35mSQL (41.7ms)[0m  INSERT INTO `schema_migrations` (version) VALUES ('20110405050722')
+DEPRECATION WARNING: ActionController::Base.cookie_verifier_secret= is deprecated. Please configure it on your application with config.secret_token=. (called from <top (required)> at /home/chenseng/projects/local/config/initializers/cookie_verification_secret.rb:7)
+
+
+Started GET "/data_entry" for 127.0.0.1 at 2011-04-08 18:16:59 +0700
+  Processing by UsersController#data_entry as HTML
+  [1m[36mSQL (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  SHOW TABLES
+  [1m[36mProvince Load (0.4ms)[0m  [1mSELECT `provinces`.`id` FROM `provinces` WHERE (`provinces`.`code` = BINARY '98888881') LIMIT 1[0m
+  [1m[35mSQL (0.4ms)[0m  describe `provinces`
+  [1m[36mAREL (0.3ms)[0m  [1mINSERT INTO `provinces` (`name`, `name_kh`, `code`, `created_at`, `updated_at`) VALUES ('Takao', 'Takao', '98888881', '2011-04-08 11:17:00', '2011-04-08 11:17:00')[0m
+  [1m[35mSQL (53.6ms)[0m  COMMIT
+  [1m[36mSQL (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  describe `districts`
+  [1m[36mAREL (0.2ms)[0m  [1mINSERT INTO `districts` (`name`, `name_kh`, `code`, `created_at`, `updated_at`, `province_id`) VALUES ('Laem1', 'Laem_kh1', '88888881', '2011-04-08 11:17:00', '2011-04-08 11:17:00', 1)[0m
+  [1m[35mSQL (43.9ms)[0m  COMMIT
+  [1m[36mSQL (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mAREL (0.3ms)[0m  INSERT INTO `districts` (`name`, `name_kh`, `code`, `created_at`, `updated_at`, `province_id`) VALUES ('Laem2', 'Laem_kh2', '88888882', '2011-04-08 11:17:00', '2011-04-08 11:17:00', 1)
+  [1m[36mSQL (48.1ms)[0m  [1mCOMMIT[0m
+  [1m[35mSQL (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mdescribe `health_centers`[0m
+  [1m[35mAREL (0.2ms)[0m  INSERT INTO `health_centers` (`name`, `name_kh`, `code`, `created_at`, `updated_at`, `district_id`) VALUES ('Hc1', 'Hc1_kh1', '78888881', '2011-04-08 11:17:00', '2011-04-08 11:17:00', 1)
+  [1m[36mSQL (47.3ms)[0m  [1mCOMMIT[0m
+  [1m[35mSQL (0.1ms)[0m  BEGIN
+  [1m[36mVillage Load (0.3ms)[0m  [1mSELECT `villages`.`id` FROM `villages` WHERE (`villages`.`code` = BINARY '68888881') LIMIT 1[0m
+  [1m[35mSQL (0.7ms)[0m  describe `villages`
+  [1m[36mAREL (0.2ms)[0m  [1mINSERT INTO `villages` (`name`, `name_kh`, `code`, `created_at`, `updated_at`, `district_id`, `health_center_id`) VALUES ('Vl1', 'Vl1', '68888881', '2011-04-08 11:17:00', '2011-04-08 11:17:00', 1, 1)[0m
+  [1m[35mSQL (46.3ms)[0m  COMMIT
+  [1m[36mSQL (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mVillage Load (0.4ms)[0m  SELECT `villages`.`id` FROM `villages` WHERE (`villages`.`code` = BINARY '68888882') LIMIT 1
+  [1m[36mAREL (0.2ms)[0m  [1mINSERT INTO `villages` (`name`, `name_kh`, `code`, `created_at`, `updated_at`, `district_id`, `health_center_id`) VALUES ('Vl2', 'Vl2', '68888882', '2011-04-08 11:17:00', '2011-04-08 11:17:00', 1, 1)[0m
+  [1m[35mSQL (47.2ms)[0m  COMMIT
+  [1m[36mSQL (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  describe `users`
+  [1m[36mAREL (0.3ms)[0m  [1mINSERT INTO `users` (`user_name`, `password`, `phone_number`, `role`, `created_at`, `updated_at`, `place_id`, `place_type`, `salt`, `remember_token`, `encrypted_password`, `email`) VALUES (NULL, NULL, '85517808707', NULL, '2011-04-08 11:17:00', '2011-04-08 11:17:00', 1, 'Province', NULL, NULL, NULL, NULL)[0m
+  [1m[35mSQL (43.3ms)[0m  COMMIT
+  [1m[36mSQL (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mAREL (0.3ms)[0m  INSERT INTO `users` (`user_name`, `password`, `phone_number`, `role`, `created_at`, `updated_at`, `place_id`, `place_type`, `salt`, `remember_token`, `encrypted_password`, `email`) VALUES (NULL, NULL, '85511819281', NULL, '2011-04-08 11:17:00', '2011-04-08 11:17:00', 1, 'HealthCenter', NULL, NULL, NULL, NULL)
+  [1m[36mSQL (56.5ms)[0m  [1mCOMMIT[0m
+Rendered text template (0.0ms)
+Completed 200 OK in 688ms (Views: 11.0ms | ActiveRecord: 392.6ms)

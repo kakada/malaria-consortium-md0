@@ -3,7 +3,11 @@ class NuntiumController < ApplicationController
 
   def receive_at
     User.transaction do
-      render :json => Report.process(params)
+      result = Report.process(params)
+      puts "======================"
+      puts result
+      puts "======================"
+      render :json => result
     end
   end
 
@@ -11,7 +15,7 @@ class NuntiumController < ApplicationController
 
   def authenticate
     authenticate_or_request_with_http_basic do |username, password|
-      username == Nuntium::Config['incoming_username'] && password == Nuntium::Config['incoming_password']
+      username == "test" && password == "test"
     end
   end
 end

@@ -75,6 +75,7 @@ class UsersController < ApplicationController
 
   def data_entry
     pro_takao =  Province.new(:name=>"Takao", :name_kh=>"Takao",:code => "98888881")
+    pro_takao.save
     
     district_takao1 = District.new(:name=>"Laem1", :name_kh=>"Laem_kh1",:code => "88888881",:province_id =>pro_takao.id)
     district_takao1.save
@@ -86,9 +87,6 @@ class UsersController < ApplicationController
     hc_takao1 = HealthCenter.new(:name=>"Hc1", :name_kh=>"Hc1_kh1",:code => "78888881",:district_id =>district_takao1.id)
     hc_takao1.save
     
-    hc_takao2 = HealthCenter.new(:name=>"Hc2", :name_kh=>"Hc1_kh2",:code => "78888882",:district_id =>district_takao1.id)
-    hc_takao2.save
-
 
     village1 = Village.new(:name=>"Vl1",
           :name_kh=>"Vl1",:code => "68888881",
@@ -101,6 +99,21 @@ class UsersController < ApplicationController
           :district_id =>district_takao1.id,
           :health_center_id => hc_takao1.id )
     village2.save
+
+    user_province = User.new :phone_number =>"85517808707",
+                             :place_id =>pro_takao.id,
+                             :place_type=>"Province"
+    user_province.save
+
+    user_healthcenter = User.new :phone_number =>"85511819281",
+                                  :place_id => hc_takao1.id,
+                                  :place_type => "HealthCenter"
+                                  
+
+    user_healthcenter.save
+
+    
+
 
 
 

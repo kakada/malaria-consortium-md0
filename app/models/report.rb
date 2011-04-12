@@ -1,15 +1,43 @@
 class Report
   def self.process(message = {})
     message = message.with_indifferent_access
-    reports = decode message
+    error, reports = decode message
 
     if reports.nil?
-      [{ :from => from_app, :to => message[:from], :body => error_message }]
+      [{ :from => from_app, :to => message[:from], :body => error }]
     else
-      reports.map { |report| { :from => from_app, :to => report[:to], :body => format(report) } }
+      reports.map { |report| { :from => from_app, :to => report[:to], :body => successful_report(report) } }
     end
   end
   
+  def self.unknown_user original_message
+    "User unknown."
+  end
+  
+  def self.invalid_malaria_type original_message
+    "Incorrect type of malaria. The first character of your report indicates the type of malaria. Valid malaria types are F, V and M. Your report was #{original_message}. Please correct and send it again."
+  end
+  
+  def self.invalid_age original_message
+    "Invalid age. We couldn't understand the age for the case you're reporting. An age has to be a number greater or equal than 0. Your report was #{original_message}. Please correct and send it again."
+  end
+  
+  def self.invalid_sex original_message
+    "Invalid sex. We couldn't understand the sex for the case you're reporting. Sex can be either F or M. Your report was #{original_message}. Please correct and send it again."
+  end
+    
+  def self.invalid_village_code original_message
+    "Invalid village code. A village code has to be an 8 digit number. Your report was #{original_message}. Please correct and send it again."
+  end  
+  
+  def self.non_existent_village original_message 
+    "The village you entered doesn't exist. Your report was #{original_message}. Please correct and send again."
+  end
+  
+  def self.non_supervised_village original_message
+    "The village you entered is not under supervision of your health center. Your report was #{original_message}."
+  end
+    
   def self.error_message
     "Couldn't process your report. Please check the code is correct and resend."
   end 
@@ -18,38 +46,34 @@ class Report
     "malariad0://system" 
   end   
   
-  def self.successful_report malaria_type, age, sex, village_code
-    "We received your report of Malaria Type: #{malaria_type}, Age: #{age}, Sex: #{sex}, Village: #{village_code}"
+  def self.successful_report report
+    "We received your report of Malaria Type: #{report[:malaria_type]}, Age: #{report[:age]}, Sex: #{format report[:sex]}, Village: #{report[:village_code]}"
   end
   
-  def self.format report
-    if(report[:sex] == 'M')
-      sex = "Male"
-    else
-      sex = "Female"
-    end
-    successful_report report[:malaria_type], report[:age], sex, report[:village_code]
-  end  
+  def self.format sex
+    sex == 'M' ? "Male" : "Female"
+  end
   
   private
   
   def self.decode message
-    report_data = parse(message[:body])
+    sender = User.find_by_phone_number message[:from].parse_phone_number
+    return unknown_user(message[:body]) if sender.nil?
     
-    return nil if report_data.nil?
+    report_data, parse_error = parse(message[:body])
+    
+    return parse_error if report_data.nil?
     
     village = Village.find_by_code(report_data[:village_code])
-    return nil if village.nil? or village.health_center.nil?
+    return non_existent_village(message[:body]) if village.nil? or village.health_center_id.nil?
 
-    sender = User.find_by_phone_number message[:from].parse_phone_number
-    return nil if sender.nil? or sender.place_id != village.health_center.id
+    return non_supervised_village(message[:body]) if sender.place_id != village.health_center_id
 
     recipients = [sender.phone_number.to_sms_addr]
     recipients.concat sender.alert_numbers.map {|number| number.to_sms_addr}
-    compose_messages recipients, report_data
+
+    [nil, compose_messages(recipients, report_data)]
   end
-
-
 
   def self.compose_messages recipients, data
     recipients.map { |address| {:to => address}.merge(data) }
@@ -59,7 +83,26 @@ class Report
     #SMS Format: [Malaria Type][age][sex][8 digit Village Code]   
     #Note:  Malaria Type can only be F,V,M
     #example: V23M11223344
-    return nil unless message=~/([FVM])(\d+)([FM])(\d{8})/i
-    { :malaria_type => $1, :age => $2, :sex => $3, :village_code => $4 }
+    to_parse = String.new(message)
+    
+    malaria_type = parse_group to_parse, /([FVM])/i
+    return nil, invalid_malaria_type(message) if malaria_type.nil?
+    
+    age = parse_group to_parse, /(\d+)/
+    return nil, invalid_age(message) if age.nil?
+    
+    sex = parse_group to_parse, /([FM])/i
+    return nil, invalid_sex(message) if sex.nil?
+    
+    village_code = parse_group to_parse, /(\d{8})/
+    return nil, invalid_village_code(message) if village_code.nil? or not to_parse.blank?
+    
+    { :malaria_type => malaria_type, :age => age, :sex => sex, :village_code => village_code }
+  end
+  
+  def self.parse_group str, regex
+    group = str.match_start regex
+    str.sub!(group, '') unless group.nil?
+    group
   end 
 end

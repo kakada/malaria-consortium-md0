@@ -42,6 +42,7 @@ class User < ActiveRecord::Base
   def alert_numbers
     national_users = User.find_all_by_role("national")
 
+    recipients = []
     recipients = User.phone_numbers self.district.users
     recipients.concat User.phone_numbers self.province.users
     recipients.concat User.phone_numbers national_users

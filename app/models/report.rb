@@ -57,7 +57,7 @@ class Report
   private
 
   def self.decode message
-    sender = User.find_by_phone_number message[:from].parse_phone_number
+    sender = User.find_by_phone_number message[:from].without_protocol
     return unknown_user(message[:body]) if sender.nil?
 
     report_data, parse_error = parse(message[:body])
@@ -69,8 +69,8 @@ class Report
 
     return non_supervised_village(message[:body]) if sender.place_id != village.health_center_id
 
-    recipients = [sender.phone_number.to_sms_addr]
-    recipients.concat sender.alert_numbers.map {|number| number.to_sms_addr}
+    recipients = [sender.phone_number.with_sms_protocol]
+    recipients.concat sender.alert_numbers.map {|number| number.with_sms_protocol}
 
     [nil, compose_messages(recipients, report_data)]
   end

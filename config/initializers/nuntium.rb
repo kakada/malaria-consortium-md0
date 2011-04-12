@@ -5,12 +5,3 @@ class Nuntium
   end
 end
 
-class String
-  def to_sms_addr
-    "sms://"+ self
-  end
-
-  def parse_phone_number
-    self.split('://')[1]
-  end
-end

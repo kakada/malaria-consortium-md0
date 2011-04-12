@@ -4,7 +4,7 @@ class Report
     reports = decode message
 
     if reports.nil?
-      { :from => from_app, :to => message[:from], :body => error_message }
+      [{ :from => from_app, :to => message[:from], :body => error_message }]
     else
       reports.map { |report| { :from => from_app, :to => report[:to], :body => format(report) } }
     end

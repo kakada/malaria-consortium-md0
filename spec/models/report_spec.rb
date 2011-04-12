@@ -15,9 +15,13 @@ describe Report do
   describe "invalid message" do
     def assert_response_error message
       response = Report.process(message)
-      response[:to].should == message[:from]
-      response[:body].should == Report.error_message
-      response[:from].should == Report.from_app
+      
+      response.is_a?(Array).should == true
+      response.size.should == 1
+      
+      response[0][:to].should == message[:from]
+      response[0][:body].should == Report.error_message
+      response[0][:from].should == Report.from_app
     end
     
     it "should return error message invalid malaria type" do      
@@ -61,6 +65,15 @@ describe Report do
 
         assert_nuntium_fields reply
       end
+    end
+    
+    it "should return an array of hashes even if there's only one hash" do
+      User.should_receive(:find_by_phone_number).with("8558190").and_return(@hc_user)
+      @hc_user.stub!(:alert_numbers).and_return([])
+      
+      response = Report.process @valid_message
+      response.is_a?(Array).should == true
+      response.size.should == 1
     end
 
     def assert_nuntium_fields data

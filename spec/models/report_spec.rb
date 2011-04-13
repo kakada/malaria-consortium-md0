@@ -70,11 +70,8 @@ describe Report do
 
       response.each do |reply|
         reply[:from].should == Report.from_app
-        reply[:body].should == Report.successful_report(:malaria_type => "F",
-                                                        :age => "123",
-                                                        :sex => "M",
-                                                        :village_code => "12345678")
 
+        assert_successful_body reply
         assert_nuntium_fields reply
       end
     end
@@ -88,8 +85,37 @@ describe Report do
       response.size.should == 1
     end
 
+    it "should support reports with heading and trailing spaces" do
+      User.should_receive(:find_by_phone_number).with("8558190").and_return(@hc_user)
+      @hc_user.stub!(:alert_numbers).and_return([])
+      
+      message_with_spaces = @valid_message.clone
+      message_with_spaces[:body] = "    " + message_with_spaces[:body] + "     "
+      
+      response = Report.process message_with_spaces
+      assert_successful_body response[0]
+    end  
+
+    it "should support sender with heading and trailing spaces" do
+      User.should_receive(:find_by_phone_number).with("8558190").and_return(@hc_user)
+      @hc_user.stub!(:alert_numbers).and_return([])
+      
+      sender_with_spaces = @valid_message.clone
+      sender_with_spaces[:from] = "    sms://8558190    "
+      
+      response = Report.process sender_with_spaces
+      assert_successful_body response[0]
+    end
+
     def assert_nuntium_fields data
       [:from,:body,:to].should =~ data.keys
+    end
+    
+    def assert_successful_body msg
+      msg[:body].should == Report.successful_report(:malaria_type => "F",
+                                                      :age => "123",
+                                                      :sex => "M",
+                                                      :village_code => "12345678")
     end
   end
 end

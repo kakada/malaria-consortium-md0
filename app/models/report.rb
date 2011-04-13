@@ -53,7 +53,7 @@ class Report
   private
 
   def self.decode message
-    sender = User.find_by_phone_number message[:from].without_protocol
+    sender = User.find_by_phone_number message[:from].without_protocol.strip
     return unknown_user(message[:body]) if sender.nil?
 
     report_data, parse_error = parse message[:body]
@@ -79,7 +79,9 @@ class Report
     #SMS Format: [Malaria Type][age][sex][8 digit Village Code]
     #Note:  Malaria Type can only be F,V,M
     #example: V23M11223344
-    scanner = StringScanner.new message
+    scan_message = message.strip.sub(" ", "").sub(",", "")
+    
+    scanner = StringScanner.new scan_message
 
     malaria_type = scanner.scan /[FVM]/i
     return nil, invalid_malaria_type(message) if malaria_type.nil?

@@ -1,6 +1,6 @@
 class AddSaltAndRememberTokenToUsers < ActiveRecord::Migration
   def self.up
-    add_column :users , :salt ,:string
+    add_column :users, :salt, :string
     add_column :users, :remember_token ,:string
     add_column :users, :encrypted_password, :string
   end

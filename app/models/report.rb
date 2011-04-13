@@ -37,15 +37,7 @@ class Report
   def self.non_supervised_village original_message
     "The village you entered is not under supervision of your health center. Your report was #{original_message}. Please correct and send again."
   end
-<<<<<<< local
-  
-=======
 
-  def self.error_message
-    "Couldn't process your report. Please check the code is correct and resend."
-  end
-
->>>>>>> other
   def self.from_app
     "malariad0://system"
   end
@@ -64,14 +56,14 @@ class Report
     sender = User.find_by_phone_number message[:from].without_protocol
     return unknown_user(message[:body]) if sender.nil?
 
-    report_data, parse_error = parse(message[:body])
+    report_data, parse_error = parse message[:body]
 
     return parse_error if report_data.nil?
 
-    village = Village.find_by_code(report_data[:village_code])
-    return non_existent_village(message[:body]) if village.nil? or village.health_center_id.nil?
+    village = Place.find_by_code report_data[:village_code]
+    return non_existent_village(message[:body]) if village.nil? or village.place_type != Place::Village
 
-    return non_supervised_village(message[:body]) if sender.place_id != village.health_center_id
+    return non_supervised_village(message[:body]) if sender.place_id != village.parent_id
 
     recipients = [sender.phone_number.with_sms_protocol]
     recipients.concat sender.alert_numbers.map {|number| number.with_sms_protocol}

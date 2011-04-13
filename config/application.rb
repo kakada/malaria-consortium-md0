@@ -39,5 +39,7 @@ module Local
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
+    
+    config.secret_token = '3c662d33277a4f9cdeeadc61af4ca19606d249a247d85092c34aa123d76e2764243fba16c5cc3b019106f6116c7113af994873164afcbf33a77ba546866ef164'
   end
 end

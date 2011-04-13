@@ -22,8 +22,8 @@ describe User do
 
   it "should return phone numbers of user from district, province , national" do
 
-    province1 = Province.create! :name => "Pro1", :code => "Pro1"
-    district1 = District.create! :name => "Dist1", :code => "Dist1" ,:province_id =>province1.id
+    province1 = Place.create! :name => "Pro1", :code => "Pro1", :place_type => Place::Province
+    district1 = Place.create! :name => "Dist1", :code => "Dist1" ,:parent_id =>province1.id, :place_type => Place::OD
     
     hc1 = health_center "hc1", district1.id
     

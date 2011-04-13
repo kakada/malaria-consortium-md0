@@ -1,40 +1,25 @@
-# This file is auto-generated from the current state of the database. Instead of editing this file, 
-# please use the migrations feature of Active Record to incrementally modify your database, and
-# then regenerate this schema definition.
+# This file is auto-generated from the current state of the database. Instead
+# of editing this file, please use the migrations feature of Active Record to
+# incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your database schema. If you need
-# to create the application database on another system, you should be using db:schema:load, not running
-# all the migrations from scratch. The latter is a flawed and unsustainable approach (the more migrations
+# Note that this schema.rb definition is the authoritative source for your
+# database schema. If you need to create the application database on another
+# system, you should be using db:schema:load, not running all the migrations
+# from scratch. The latter is a flawed and unsustainable approach (the more migrations
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110405051938) do
+ActiveRecord::Schema.define(:version => 20110413081330) do
 
-  create_table "districts", :force => true do |t|
+  create_table "places", :force => true do |t|
     t.string   "name"
     t.string   "name_kh"
     t.string   "code"
+    t.integer  "parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "province_id"
-  end
-
-  create_table "health_centers", :force => true do |t|
-    t.string   "name"
-    t.string   "name_kh"
-    t.string   "code"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "district_id"
-  end
-
-  create_table "provinces", :force => true do |t|
-    t.string   "name"
-    t.string   "name_kh"
-    t.string   "code"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string   "place_type"
   end
 
   create_table "users", :force => true do |t|
@@ -45,21 +30,10 @@ ActiveRecord::Schema.define(:version => 20110405051938) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "place_id"
-    t.string   "place_type"
     t.string   "salt"
     t.string   "remember_token"
     t.string   "encrypted_password"
     t.string   "email"
-  end
-
-  create_table "villages", :force => true do |t|
-    t.string   "name"
-    t.string   "name_kh"
-    t.string   "code"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "district_id"
-    t.integer  "health_center_id"
   end
 
 end

@@ -35,13 +35,17 @@ class Report
   end
 
   def self.non_supervised_village original_message
-    "The village you entered is not under supervision of your health center. Your report was #{original_message}."
+    "The village you entered is not under supervision of your health center. Your report was #{original_message}. Please correct and send again."
   end
+<<<<<<< local
+  
+=======
 
   def self.error_message
     "Couldn't process your report. Please check the code is correct and resend."
   end
 
+>>>>>>> other
   def self.from_app
     "malariad0://system"
   end

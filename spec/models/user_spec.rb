@@ -43,4 +43,10 @@ describe User do
 
     recipients.should =~["1234511", "1234512","123458", "1234591", "1234592"]
   end
+
+  it "should not be able to report unless she's in a health center or village" do
+    [user("1"), user("2", od("2")), user("3", province("3"))].each do |u|
+      u.can_report?().should == false
+    end
+  end
 end

@@ -13,6 +13,10 @@ class Report
   def self.unknown_user original_message
     "User unknown."
   end
+  
+  def self.user_should_belong_to_hc_or_village
+    "Access denied. User should either belong to a health center or be Village Malaria Worker."
+  end
 
   def self.invalid_malaria_type original_message
     "Incorrect type of malaria. The first character of your report indicates the type of malaria. Valid malaria types are F, V and M. Your report was #{original_message}. Please correct and send it again."
@@ -54,8 +58,11 @@ class Report
 
   def self.decode message
     sender = User.find_by_phone_number message[:from].without_protocol.strip
-    return unknown_user(message[:body]) if sender.nil?
-
+    
+    return unknown_user(message[:body]) if sender.nil? 
+    
+    return user_should_belong_to_hc_or_village if not sender.can_report?
+    
     report_data, parse_error = parse message[:body]
 
     return parse_error if report_data.nil?

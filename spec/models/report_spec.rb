@@ -56,6 +56,17 @@ describe Report do
     it "should return unknown user before any other error" do
       assert_response_error Report.unknown_user(""), :from => "sms://31783123", :body => ""
     end
+    
+    it "should return error when user can't report" do
+      user = user "1"
+      User.should_receive(:find_by_phone_number).with("1").and_return(user)
+      user.should_receive(:can_report?).and_return(false)
+
+      message = @valid_message.clone
+      message[:from] = "sms://1"
+      
+      assert_response_error Report.user_should_belong_to_hc_or_village, message
+    end    
   end
 
   describe "valid message" do

@@ -30,6 +30,10 @@ class User < ActiveRecord::Base
     recipients.concat User.phone_numbers national_users
   end
   
+  def can_report?
+    not place_id.nil? and (place.place_type == Place::Village or place.place_type == Place::HealthCenter)
+  end
+  
   def od
     place.od
   end

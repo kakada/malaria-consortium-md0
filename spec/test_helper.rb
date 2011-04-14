@@ -7,8 +7,16 @@ def village name, code, health_center_id = nil
                 :place_type => Place::Village)
 end
 
-def user number, place
-  User.create!(:phone_number => number, :place_id => place.id)
+def od name
+  Place.create!(:name => name, :name_kh => name, :code => name, :place_type => Place::OD)
+end
+
+def province name
+  Place.create!(:name => name, :name_kh => name, :code => name, :place_type => Place::Province)
+end
+
+def user number, place = nil
+  User.create!(:phone_number => number, :place_id => place.nil? ? nil : place.id)
 end
 
 def national_user number

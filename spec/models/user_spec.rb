@@ -49,4 +49,18 @@ describe User do
       u.can_report?().should == false
     end
   end
+  
+  it "should be able to report if she's in a health center or village" do
+    [user("1", village("1")), user("2", health_center("2"))].each do |u|
+      u.can_report?().should == true
+    end
+  end
+  
+  it "should provide the correct parser" do
+    parser = user("1", health_center("1")).report_parser
+    parser.class.should == HCReportParser
+    
+    parser = user("2", village("2")).report_parser
+    parser.class.should == VMWReportParser
+  end
 end

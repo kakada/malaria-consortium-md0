@@ -34,6 +34,17 @@ class User < ActiveRecord::Base
     not place_id.nil? and (place.place_type == Place::Village or place.place_type == Place::HealthCenter)
   end
   
+  def report_parser
+    case place.place_type
+    when Place::Village
+      VMWReportParser.new
+    when Place::HealthCenter
+      HCReportParser.new self
+    else
+      nil
+    end
+  end
+  
   def od
     place.od
   end

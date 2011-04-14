@@ -3,12 +3,15 @@ require 'spec_helper'
 describe Report do
   before(:each) do
     @health_center = health_center "foohc"
-    village "fooville", "12345678", @health_center.id
+    @village = village "fooville", "12345678", @health_center.id
     village "barville", "87654321", health_center("barhc").id
 
     @hc_user = user "8558190", @health_center
+    @vmw_user = user "8558191", @village
 
     @valid_message = {:from => "sms://8558190", :body => "F123M12345678"}
+    @valid_vmw_message = {:from => "sms://8558191", :body => "F123M."}
+    
     @valid_recipients = ["1", "2", "3", "4", "5"]
   end
 
@@ -23,34 +26,19 @@ describe Report do
       response[0][:body].should == expected_response
       response[0][:from].should == Report.from_app
     end
-
-    it "should return error message invalid malaria type" do
-      assert_response_error Report.invalid_malaria_type("A123M12345678"),
-                              :from => "sms://8558190", :body => "A123M12345678"
-    end
-
-    it "should return error message invalid age" do
-      assert_response_error Report.invalid_age("FAM12345678"), :from => "sms://8558190", :body => "FAM12345678"
-    end
-
-    it "should return error message invalid sex" do
-      assert_response_error Report.invalid_sex("F123J12345678"), :from => "sms://8558190", :body => "F123J12345678"
-    end
-
-    it "should return error message invalid village code" do
-      assert_response_error Report.invalid_village_code("F123MAAAAAA"), :from => "sms://8558190", :body => "F123MAAAAAA"
-    end
-
-    it "should return error invalid village code when village code is longer than expected" do
-      assert_response_error Report.invalid_village_code("F123M123456789"), :from => "sms://8558190", :body => "F123M123456789"
-    end
-
-    it "should return error message when village code doesnt exist" do
-      assert_response_error Report.non_existent_village("F123M11111111"), :from => "sms://8558190", :body => "F123M11111111"
-    end
-
-    it "should return error message when village isnt supervised by user's health center" do
-      assert_response_error Report.non_supervised_village("F123M87654321"), :from => "sms://8558190", :body => "F123M87654321"
+    
+    describe "invalid syntax" do
+      it "should return error message provided by parser" do        
+        parser = {}
+        
+        User.should_receive(:find_by_phone_number).with("8558190").and_return(@hc_user)
+        @hc_user.should_receive(:report_parser).and_return(parser)
+        parser.should_receive(:parse).with("F123MAAAAAA").and_return(parser)
+        parser.should_receive(:errors?).and_return(true)
+        parser.should_receive(:error).and_return("parser error")
+        
+        assert_response_error "parser error", :from => "sms://8558190", :body => "F123MAAAAAA"
+      end
     end
 
     it "should return unknown user before any other error" do
@@ -70,10 +58,12 @@ describe Report do
   end
 
   describe "valid message" do
-    it "should return the valid message with detail" do
+    it "should return human readable message with details" do
       User.should_receive(:find_by_phone_number).with("8558190").and_return(@hc_user)
       @hc_user.stub!(:alert_numbers).and_return(@valid_recipients)
-
+      
+      setup_successful_parser "successful report"
+      
       response = Report.process @valid_message
 
       recipients = response.map { |reply| reply[:to] }
@@ -82,7 +72,7 @@ describe Report do
       response.each do |reply|
         reply[:from].should == Report.from_app
 
-        assert_successful_body reply
+        reply[:body].should == "successful report"
         assert_nuntium_fields reply
       end
     end
@@ -96,37 +86,29 @@ describe Report do
       response.size.should == 1
     end
 
-    it "should support reports with heading and trailing spaces" do
-      User.should_receive(:find_by_phone_number).with("8558190").and_return(@hc_user)
-      @hc_user.stub!(:alert_numbers).and_return([])
-      
-      message_with_spaces = @valid_message.clone
-      message_with_spaces[:body] = "    " + message_with_spaces[:body] + "     "
-      
-      response = Report.process message_with_spaces
-      assert_successful_body response[0]
-    end  
-
     it "should support sender with heading and trailing spaces" do
       User.should_receive(:find_by_phone_number).with("8558190").and_return(@hc_user)
       @hc_user.stub!(:alert_numbers).and_return([])
+      
+      setup_successful_parser "successful report"
       
       sender_with_spaces = @valid_message.clone
       sender_with_spaces[:from] = "    sms://8558190    "
       
       response = Report.process sender_with_spaces
-      assert_successful_body response[0]
+      response[0][:body].should == "successful report"
     end
 
     def assert_nuntium_fields data
       [:from,:body,:to].should =~ data.keys
     end
     
-    def assert_successful_body msg
-      msg[:body].should == Report.successful_report(:malaria_type => "F",
-                                                      :age => "123",
-                                                      :sex => "M",
-                                                      :village_code => "12345678")
+    def setup_successful_parser success_message
+      parser = {}
+      @hc_user.should_receive(:report_parser).and_return(parser)
+      parser.should_receive(:parse).with(@valid_message[:body]).and_return(parser)
+      parser.should_receive(:errors?).and_return(false)
+      parser.should_receive(:parsed_data).and_return(:human_readable_report => success_message)
     end
   end
 end

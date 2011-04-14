@@ -34,6 +34,7 @@ describe Place do
       }
       
     end
+    
     describe "Create new instance" do
       it "should create a new instance given valid attributes" do
         village = Place.create!(@valid_attributes)
@@ -41,6 +42,7 @@ describe Place do
         Place.villages.count.should == 1
       end
     end
+    
     describe "No duplicate code" do
       it "should not create a duplicated village with duplicate code" do
         village = Place.new(@valid_attributes)

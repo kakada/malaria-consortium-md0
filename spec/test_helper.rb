@@ -2,7 +2,7 @@ def health_center code, od_id=nil
   Place.create!(:name => code, :name_kh => code, :code => code, :parent_id => od_id, :place_type => Place::HealthCenter)
 end
 
-def village name, code, health_center_id = nil
+def village name, code = nil, health_center_id = nil
   Place.create!(:name => name, :name_kh => name, :code => code, :parent_id => health_center_id,
                 :place_type => Place::Village)
 end

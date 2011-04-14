@@ -3,5 +3,5 @@ syntax: glob
 nbproject/*
 log/*
 .git/*
-.log
-.orig
+*.log
+*.orig

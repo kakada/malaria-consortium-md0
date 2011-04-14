@@ -7,11 +7,11 @@ describe PlaceImporter do
     file = File.join(File.dirname(__FILE__),"test.csv")
     PlaceImporter.import(file)
 
-    Place.provinces.count.should == 2
-    Place.ods.count.should == 3
-    Place.health_centers.count.should == 8
-    Place.villages.count.should == 51
-    
+    Province.count.should == 2
+    OD.count.should == 3
+    HealthCenter.count.should == 8
+    Village.count.should == 51
+
     kralapeas = Place.find_by_code "2010104"
     kralapeas.name.should == "Svay Bei Daeum"
     kralapeas.name_kh.should == "sVaybIedIm"

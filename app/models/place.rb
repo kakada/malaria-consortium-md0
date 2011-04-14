@@ -2,40 +2,33 @@ class Place < ActiveRecord::Base
   has_many :users
   has_many :sub_places, :class_name => "Place", :foreign_key => "parent_id"
   belongs_to :parent, :class_name => "Place"
-  
+
   validates_uniqueness_of :code
-  
-  Place::Country = "Country"
-  Place::Province = "Province"
-  Place::OD = "OD"
-  Place::HealthCenter = "HealthCenter"
-  Place::Village = "Village"
-  
-  def self.find_or_create attr
-     place = self.find_by_code(attr[:code])
-     if place.nil?
-       place = self.new attr
-       place.save
-     end
-     place
+
+  Country = "Country"
+  Province = "Province"
+  OD = "OD"
+  HealthCenter = "HealthCenter"
+  Village = "Village"
+
+  Place.constants(false).each do |constant|
+    # Define classes for each of the previous constants, so instead of
+    #
+    #   Place.find_by_place_type_and_name Place::Country, "foo"
+    #
+    # we can do
+    #
+    #   Country.find_by_name "foo"
+    class_eval %Q(
+      class ::#{constant} < Place
+        default_scope where(:place_type => Place::#{constant})
+      end
+    )
+
+    # Define has_many :provinces, etc., that will restrict the sub_places to the correct places types
+    has_many constant.to_s.tableize.to_sym, :class_name => "Place", :foreign_key => "parent_id", :conditions => {:place_type => constant.to_s}
   end
-  
-  def self.provinces 
-    Place.find_all_by_place_type Province
-  end
-  
-  def self.ods
-    Place.find_all_by_place_type OD
-  end
-  
-  def self.health_centers
-    Place.find_all_by_place_type HealthCenter
-  end
-  
-  def self.villages
-    Place.find_all_by_place_type Village
-  end
-  
+
   def health_center
     case place_type
     when Place::Village
@@ -46,7 +39,7 @@ class Place < ActiveRecord::Base
       nil
     end
   end
-  
+
   def od
     case place_type
     when Place::Village
@@ -59,9 +52,9 @@ class Place < ActiveRecord::Base
       nil
     end
   end
-  
+
   def province
-    case place_type 
+    case place_type
     when Place::Village, Place::HealthCenter
       od.province
     when Place::OD
@@ -73,3 +66,4 @@ class Place < ActiveRecord::Base
     end
   end
 end
+

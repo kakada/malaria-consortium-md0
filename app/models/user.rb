@@ -75,10 +75,6 @@ class User < ActiveRecord::Base
   end
 
   def self.phone_numbers users
-    phone_numbers = []
-    users.each do |user|
-      phone_numbers << user.phone_number unless user.phone_number.nil?
-    end
-    phone_numbers
+    users.map { |u| u.phone_number }.reject { |n| n.nil? }
   end
 end

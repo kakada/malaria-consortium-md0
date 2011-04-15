@@ -8,18 +8,16 @@ describe Place do
              :code => "p10010",
              })
 
-      od = OD.create!({
+      od = province.ods.create!({
             :name=>"districtA",
             :name_kh => "district_khmer",
-            :code => "d10010",
-            :parent_id => province.id,
+            :code => "d10010"
         })
 
-      health_center = HealthCenter.create!({
+      health_center = od.health_centers.create!({
           :name => "health_center",
           :name_kh => "health_center_kh",
-          :code => "h10010",
-          :parent_id => od.id,
+          :code => "h10010"
         })
 
       @valid_attributes = {
@@ -31,7 +29,7 @@ describe Place do
       }
 
     end
-    
+
     describe "Create new instance" do
       it "should create a new instance given valid attributes" do
         village = Place.create!(@valid_attributes)
@@ -39,7 +37,7 @@ describe Place do
         Village.count.should == 1
       end
     end
-    
+
     describe "No duplicate code" do
       it "should not create a duplicated village with duplicate code" do
         village = Place.new(@valid_attributes)

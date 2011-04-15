@@ -24,9 +24,9 @@ describe User do
 
     province1 = Place.create! :name => "Pro1", :code => "Pro1", :place_type => Place::Province
     district1 = Place.create! :name => "Dist1", :code => "Dist1" ,:parent_id =>province1.id, :place_type => Place::OD
-    
+
     hc1 = health_center "hc1", district1.id
-    
+
     user_hc1 = user "123456", hc1
 
     user_ds1 = user "1234511", district1
@@ -46,20 +46,20 @@ describe User do
 
   it "should not be able to report unless she's in a health center or village" do
     [user("1"), user("2", od("2")), user("3", province("3"))].each do |u|
-      u.can_report?().should == false
+      u.can_report?().should be_false
     end
   end
-  
+
   it "should be able to report if she's in a health center or village" do
     [user("1", village("1")), user("2", health_center("2"))].each do |u|
-      u.can_report?().should == true
+      u.can_report?().should be_true
     end
   end
-  
+
   it "should provide the correct parser" do
     parser = user("1", health_center("1")).report_parser
     parser.class.should == HCReportParser
-    
+
     parser = user("2", village("2")).report_parser
     parser.class.should == VMWReportParser
   end

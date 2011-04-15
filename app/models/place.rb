@@ -27,6 +27,13 @@ class Place < ActiveRecord::Base
 
     # Define has_many :provinces, etc., that will restrict the sub_places to the correct places types
     has_many constant.to_s.tableize.to_sym, :class_name => "Place", :foreign_key => "parent_id", :conditions => {:place_type => constant.to_s}
+
+    # Define question methods to ask if a place is of a given place type, i.e.: place.village?
+    class_eval %Q(
+      def #{constant.to_s.tableize.singularize}?
+        place_type == #{constant}
+      end
+    )
   end
 
   def health_center

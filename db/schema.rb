@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110413081330) do
+ActiveRecord::Schema.define(:version => 20110417050334) do
 
   create_table "places", :force => true do |t|
     t.string   "name"
@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(:version => 20110413081330) do
     t.integer  "parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "place_type"
+    t.string   "type"
   end
 
   create_table "users", :force => true do |t|

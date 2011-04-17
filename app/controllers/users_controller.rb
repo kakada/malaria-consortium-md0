@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   before_filter :authenticate, :only=>[:edit,:update,:show]
   before_filter :correct_user, :only=>[:edit,:update,:show]
 
-  
+
   #@users = @placeable.users
 
   #GET sign-in  new_user_path
@@ -30,7 +30,7 @@ class UsersController < ApplicationController
 		@user = User.find params[:id]
 	end
 
-  #PUT users/1 
+  #PUT users/1
   def update
     @user = User.find(params[:id])
     if(!@user.nil?)
@@ -42,7 +42,7 @@ class UsersController < ApplicationController
       @title = "Edit user"
       render "edit"
     end
-    
+
   end
 
   #POST user/  users_path
@@ -51,7 +51,7 @@ class UsersController < ApplicationController
 
     @user = @placeable.users.build(params[:user])
     @user.role = @placeable.class.to_s
-    
+
     if @user.save
       flash[:success] = "Profile page"
       sign_in(@user)
@@ -59,7 +59,7 @@ class UsersController < ApplicationController
     else
       render :action=>:new
       @title = "Sign up"
-    end  
+    end
   end
 
   #find_placeable type
@@ -76,17 +76,17 @@ class UsersController < ApplicationController
   def data_entry
     pro_takao =  Province.new(:name=>"Takao", :name_kh=>"Takao",:code => "98888881")
     pro_takao.save
-    
+
     district_takao1 = District.new(:name=>"Laem1", :name_kh=>"Laem_kh1",:code => "88888881",:province_id =>pro_takao.id)
     district_takao1.save
-    
+
     district_takao2 = District.new(:name=>"Laem2", :name_kh=>"Laem_kh2",:code => "88888882",:province_id =>pro_takao.id)
     district_takao2.save
 
 
     hc_takao1 = HealthCenter.new(:name=>"Hc1", :name_kh=>"Hc1_kh1",:code => "78888881",:district_id =>district_takao1.id)
     hc_takao1.save
-    
+
 
     village1 = Village.new(:name=>"Vl1",
           :name_kh=>"Vl1",:code => "68888881",
@@ -102,17 +102,17 @@ class UsersController < ApplicationController
 
     user_province = User.new :phone_number =>"85517808707",
                              :place_id =>pro_takao.id,
-                             :place_type=>"Province"
+                             :type=>"Province"
     user_province.save
 
     user_healthcenter = User.new :phone_number =>"85511819281",
                                   :place_id => hc_takao1.id,
-                                  :place_type => "HealthCenter"
-                                  
+                                  :type => "HealthCenter"
+
 
     user_healthcenter.save
 
-    
+
 
 
 
@@ -122,6 +122,6 @@ class UsersController < ApplicationController
   end
 
 
-   
+
 
 end

@@ -2,6 +2,8 @@ require 'spec_helper'
 require 'test_helper'
 
 describe User do
+  include Helpers
+
   before(:each) do
     @valid_attributes = {
       :user_name => "value for user_name",

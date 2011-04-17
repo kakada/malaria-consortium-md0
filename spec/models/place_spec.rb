@@ -25,14 +25,13 @@ describe Place do
         :name_kh => "value for name_kh",
         :code => "v10010",
         :parent_id => health_center.id,
-        :place_type => Place::Village
       }
 
     end
 
     describe "Create new instance" do
       it "should create a new instance given valid attributes" do
-        village = Place.create!(@valid_attributes)
+        village = Village.create!(@valid_attributes)
         village.should_not be_nil
         Village.count.should == 1
       end
@@ -40,11 +39,11 @@ describe Place do
 
     describe "No duplicate code" do
       it "should not create a duplicated village with duplicate code" do
-        village = Place.new(@valid_attributes)
+        village = Village.new(@valid_attributes)
         village.save
 
         invalid = @valid_attributes.merge :name=>"othervillage" ,:name_kh => "othervillage_kh"
-        village = Place.new(invalid)
+        village = Village.new(invalid)
         village.save
 
         Village.count.should == 1

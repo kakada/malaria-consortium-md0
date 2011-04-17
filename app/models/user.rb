@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
 
   before_save :encrypt_password
 
+  delegate :od, :province, :to => :place
+
   def self.authenticate(email, pwd)
     user = User.find_by_email(email)
     return nil if user.nil?
@@ -35,22 +37,7 @@ class User < ActiveRecord::Base
   end
 
   def report_parser
-    case place.place_type
-    when Place::Village
-      VMWReportParser.new
-    when Place::HealthCenter
-      HCReportParser.new self
-    else
-      nil
-    end
-  end
-
-  def od
-    place.od
-  end
-
-  def province
-    place.province
+    place.report_parser self
   end
 
   private

@@ -5,72 +5,65 @@ class Place < ActiveRecord::Base
 
   validates_uniqueness_of :code
 
-  Country = "Country"
-  Province = "Province"
-  OD = "OD"
-  HealthCenter = "HealthCenter"
-  Village = "Village"
+  Types = ["Country", "Province", "OD", "HealthCenter", "Village"]
 
-  Place.constants(false).each do |constant|
-    # Define classes for each of the previous constants, so instead of
-    #
-    #   Place.find_by_place_type_and_name Place::Country, "foo"
-    #
-    # we can do
-    #
-    #   Country.find_by_name "foo"
+  Types.each do |constant|
+    # Define classes for each place
     class_eval %Q(
       class ::#{constant} < Place
-        default_scope where(:place_type => Place::#{constant})
+        default_scope where(:type => "#{constant}")
       end
     )
 
     # Define has_many :provinces, etc., that will restrict the sub_places to the correct places types
-    has_many constant.to_s.tableize.to_sym, :class_name => "Place", :foreign_key => "parent_id", :conditions => {:place_type => constant.to_s}
+    has_many constant.tableize.to_sym, :class_name => constant, :foreign_key => "parent_id"
+
+    # Define generic methods to get the village, country, etc., of a place.
+    # This base class just returns self if the type is the name of the method, otherwise nil.
+    class_eval %Q(
+      def #{constant.tableize.singularize}
+        type == "#{constant}" ? self : nil
+      end
+    )
 
     # Define question methods to ask if a place is of a given place type, i.e.: place.village?
     class_eval %Q(
-      def #{constant.to_s.tableize.singularize}?
-        place_type == #{constant}
+      def #{constant.tableize.singularize}?
+        type == "#{constant}"
       end
     )
   end
 
-  def health_center
-    case place_type
-    when Place::Village
-      parent
-    when Place::HealthCenter
-      self
-    else
-      nil
-    end
+  # Returns a report parsers for this place type and user
+  def report_parser(user)
+    nil
   end
+end
 
-  def od
-    case place_type
-    when Place::Village
-      health_center.od
-    when Place::HealthCenter
-      parent
-    when Place::OD
-      self
-    else
-      nil
-    end
+class Province
+  alias_method :country, :parent
+end
+
+class OD
+  alias_method :province, :parent
+end
+
+class Village
+  alias_method :health_center, :parent
+  delegate :od, :to => :health_center
+  delegate :province, :to => :od
+
+  def report_parser(user)
+    VMWReportParser.new
   end
+end
 
-  def province
-    case place_type
-    when Place::Village, Place::HealthCenter
-      od.province
-    when Place::OD
-      parent
-    when Place::Province
-      self
-    else
-      nil
-    end
+class HealthCenter
+  alias_method :od, :parent
+  delegate :province, :to => :od
+
+  def report_parser(user)
+    HCReportParser.new user
   end
 end
 

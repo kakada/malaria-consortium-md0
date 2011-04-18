@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
 
   before_save :encrypt_password
 
-  delegate :od, :province, :to => :place
+  delegate :health_center, :od, :province, :to => :place
 
   def self.authenticate(email, pwd)
     user = User.find_by_email(email)
@@ -27,7 +27,9 @@ class User < ActiveRecord::Base
     national_users = User.find_all_by_role("national")
 
     recipients = []
-    recipients = User.phone_numbers od.users
+    
+    recipients.concat User.phone_numbers health_center.users unless place.health_center? 
+    recipients.concat User.phone_numbers od.users
     recipients.concat User.phone_numbers province.users
     recipients.concat User.phone_numbers national_users
   end

@@ -5,3 +5,6 @@ log/*
 .git/*
 *.log
 *.orig
+tmp/*
+tmp/pids/*
+public/placescsv/*

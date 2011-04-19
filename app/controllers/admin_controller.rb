@@ -14,7 +14,9 @@ class AdminController < ApplicationController
       file.write(params[:admin][:csvfile].read)
     end
     
-    PlaceImporter.new(file_name).import
+    #PlaceImporter.new(file_name).import
+
+    render :json => { :name =>params[:admin][:csvfile].original_filename }, :content_type => 'text/html'
   end
 
 

@@ -1,10 +1,43 @@
-<h2>Import places:</h2>
-<% form_for(:admin,:url=>"/admin/upload_csv", :html => {:multipart=>true}) do |form| %>
-  <div class="field">
-    <%= form.label :csvfile, "Upload csv" %>
-    <%= form.file_field :csvfile %>
-  </div>
-  <div class="field action">
-   <%= form.submit :Upload %>
-  </div>
+<% content_for :head do %>
+  	<%= stylesheet_link_tag('jquery.fileupload-ui') %>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
+	<%= javascript_include_tag 'jquery.fileupload', 'jquery.fileupload-ui' %>
+	
+	<script type="text/javascript" charset="utf-8"> 
+	   $(function () {
+	  $('.upload').fileUploadUI({
+	        uploadTable: $('.upload_files'),
+	        downloadTable: $('.download_files'),
+	        buildUploadRow: function (files, index) {
+	            var file = files[index];
+	            return $('<tr><td>' + file.name + '<\/td>' +
+	                    '<td class="file_upload_progress"><div><\/div><\/td>' +
+	                    '<td class="file_upload_cancel">' +
+	                    '<button class="ui-state-default ui-corner-all" title="Cancel">' +
+	                    '<span class="ui-icon ui-icon-cancel">Cancel<\/span>' +
+	                    '<\/button><\/td><\/tr>');
+	        },
+			buildDownloadRow: function (file) {
+			            return $('<tr><td>' + file.name + '<\/td><\/tr>');
+			        }
+	    });
+	});
+	</script>
 <% end %>
+
+<h2>Import places:</h2>
+<div class="files">
+	<% form_for(:admin,:url=>"/admin/upload_csv", :html => {:multipart=>true, :class => "upload"}) do |form| %>
+		<%= form.file_field :csvfile %>
+		<div>Upload file</div>
+	<% end %>
+	<table class="upload_files">
+	</table>
+	<table class="download_files">
+	</table>
+	<div id="file_upload_progress" class="js file_upload_progress">
+		<div style="display:none;"></div>
+	</div> 
+</div>
+        

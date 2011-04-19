@@ -1,8 +1,10 @@
 <h3>Users</h3>
 <%=will_paginate @users %>
-<table width="100%" class="table-grid" >
+<div class="clear"> </div>
+<table width="100%" class="table-grid round" >
   <thead>
     <tr>
+      <th width="30"><%= t("No") %>   </th>
       <th><%= t("Name") %>   </th>
       <th><%= t("Email") %>  </th>
       <th><%= t("Phone") %>  </th>
@@ -14,10 +16,11 @@
       cls ="impair" if index%2 != 0
   %>
     <tr class="<%=cls%>">
+      <td><%= index+1 %> </td>
       <td><%= user.user_name %> </td>
       <td><%= user.email %>  </td>
       <td><%= user.phone_number %>  </td>
-      <td><%= Place.find(user.place_id).name  %>  </td>
+      <td><%= user.place.name %>  </td>
     </tr>
   <% end %>
 </table>

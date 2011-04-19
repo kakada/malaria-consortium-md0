@@ -34,6 +34,7 @@ gem 'mysql2'
 #   gem 'webrat'
 # end
 gem 'will_paginate', :git => 'git://github.com/mislav/will_paginate.git', :branch => 'rails3'
+gem 'jquery-rails'
 
 group :development, :test do
   gem "autotest"

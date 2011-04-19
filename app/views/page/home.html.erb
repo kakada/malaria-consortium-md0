@@ -1,9 +1,14 @@
-<h3>Welcome to malaria admin panel</h3>
-<br />
-<br />
+<h2>Welcome to malaria admin panel</h2>
+
 <div class="icon-wrapper">
     <div class="icon">
-      <%= link_to image_tag('users.png')+"<span>Add Users</span>".html_safe,"/admin/newusers" %>
+      <%= link_to image_tag('add-user.png')+"<span>Add Users</span>".html_safe,"/admin/newusers",:class=>"round" %>
+    </div>
+</div>
+
+<div class="icon-wrapper">
+    <div class="icon">
+      <%= link_to image_tag('users.png')+"<span>List of Users</span>".html_safe,"/admin/users",:class=>"round" %>
     </div>
 </div>
 

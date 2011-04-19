@@ -1,17 +1,33 @@
 <%=javascript_include_tag "jquery-1.5.2.min" %>
-<%  form_for(:admin,:url=>"createusers") do |form|  %>
-<table class="table-grid">
+<% form_for(:admin,:url=>"importbuckusers") do |form|  %>
+
+<h2> Register buck users: </h2>
+
+<div class="field round">
+  <%= form.label :csvfile, "Upload csv" %>
+  <%= form.file_field :csvfile %>
+  <%=submit_tag  "Upload" ,:class=> "btn"  %>
+  <div class="clear"> </div>
+</div>
+<br />
+  
+
+<% end %>
+
+<% form_for(:admin,:url=>"createusers") do |form|  %>
+<table class="table-grid round" >
   <thead>
     <tr>
-      <td><%= t("Name") %> </td>
-      <td><%= t("Email") %>  </td>
-      <td><%= t("Password") %>  </td>
-      <td><%= t("Phone") %>  </td>
-      <td><%= t("Place") %>  </td>
+      <th><%= t("Name") %> </th>
+      <th><%= t("Email") %>  </th>
+      <th><%= t("Password") %>  </th>
+      <th><%= t("Phone") %>  </th>
+      <th><%= t("Place") %>  </th>
     </tr>
   </thead>
   
   <tbody id="bodyRow">
+    <tr style="line-height:0.5" ><td colspan="5">&nbsp;</td></tr>
     <tr id="sourceRow">
       <td><%= text_field_tag  "user_name","",:class=>"input", %> </td>
       <td><%= text_field_tag  "email","",:class=>"input"  %>  </td>
@@ -32,7 +48,9 @@
   </tfoot>
 
 </table>
- <%=submit_tag  "Submit" ,:class=> "btn"  %>
+<div class="right-content">
+  <%=submit_tag  "Submit" ,:class=> "btn"  %>
+</div>
 <%end%>
 <script type="text/javascript">
   $(function(){

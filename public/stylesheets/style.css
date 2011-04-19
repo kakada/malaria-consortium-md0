@@ -89,6 +89,9 @@ a.signup_button {
 }
 .field label{
     display: block;
+    float: left;
+    line-height: 2;
+    width: 120px;
 }
 .fieldWithErrors {
     padding: 2px;
@@ -136,7 +139,7 @@ div.icon {
     text-align: center;
 }
 div.icon a {
-    border: 1px solid #EAEAEA;
+    border: 3px solid #EAEAEA;
     color: #565656;
     display: block;
     float: left;
@@ -145,7 +148,10 @@ div.icon a {
     vertical-align: middle;
     width: 108px;
 }
-
+div.icon a:hover{
+    font-weight: bold;
+    border: 3px solid #CCC;
+}
 a:link {
     color: #025A8D;
     outline: medium none;
@@ -168,8 +174,8 @@ div.icon span {
     width: 100%;
 }
 .table-grid tr.head,.table-grid thead {
-    background-color: #ccd;
-    color: #fff;
+    background-color: #eee;
+    color: #999;
 }
 .table-grid input[type=text],.table-grid input[type=password]{
     width: 120px;
@@ -189,10 +195,20 @@ div.icon span {
 }
 .pagination{
     margin: 0 auto;
+    margin-bottom: 10px;
 }
-.pagination a{
-    padding:3px 5px;
+.pagination a,.pagination span {
+    padding:2px 6px;
     background-color: #ffe;
     border:1px solid #fef;
-    margin-bottom: 10px;
+}
+.pagination a:hover{
+   font-weight: bold;
+}
+#sourceRow{
+    margin-top: 10px;
+}
+.right-content{
+    text-align: right;
+    margin-top: 10px;
 }

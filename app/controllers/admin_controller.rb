@@ -26,6 +26,7 @@ class AdminController < ApplicationController
 
   #GET /admin/newusers
   def newusers
+    @title = "Import buck users"
     @places = Place.all
   end
 
@@ -33,5 +34,4 @@ class AdminController < ApplicationController
     User.save_bucks(params[:admin])
     redirect_to :action => :users
   end
-
 end

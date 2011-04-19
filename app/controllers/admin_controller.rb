@@ -1,3 +1,4 @@
+# coding: utf-8
 class AdminController < ApplicationController
   before_filter :authenticate
   
@@ -9,11 +10,11 @@ class AdminController < ApplicationController
   #POST /admin/upload_csv
   def upload_csv  
     file_name = Rails.root.join("public","placescsv", "#{current_user.id}.csv")
-    File.open(file_name,"w+") do |file|
+    File.open(file_name,"w+b") do |file|
       file.write(params[:admin][:csvfile].read)
     end
     
-    PlaceImporter::import(file_name)
+    PlaceImporter.new(file_name).import
   end
 
 
@@ -23,13 +24,11 @@ class AdminController < ApplicationController
     
     @users = User.paginate_user params[:page]
   end
-
   #GET /admin/newusers
   def newusers
     @title = "Import buck users"
     @places = Place.all
   end
-
   def createusers
     User.save_bucks(params[:admin])
     redirect_to :action => :users

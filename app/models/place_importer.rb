@@ -1,27 +1,41 @@
 require 'csv'
 
 class PlaceImporter
-
-  def self.import file
-    CSV.foreach(file, { :headers => :first_row, :skip_blanks => true }) do |row|
-      province = Province.find_or_create_by_code row[2], :name => row[0], :name_kh => row[1]
-      import_od province, row if province.valid?
+  
+  def initialize file
+    @file = file
+    @current_row = nil
+  end
+  
+  def import
+    CSV.foreach(@file, { :headers => :first_row, :skip_blanks => true }) do |row|
+      @current_row = row
+      @parent_id = nil
+      
+      Place.levels.each do |level|
+        place = find_or_create_from_csv level, @parent_id
+        return unless place.valid?
+        
+        @parent_id = place.id
+      end
     end
   end
-
+  
   private
 
-  def self.import_od province, row
-    od = OD.find_or_create_by_code row[5], :name => row[3], :name_kh => row[4], :parent_id => province.id
-    import_health_center od, row if od.valid?
-  end
-
-  def self.import_health_center od, row
-    health_center = HealthCenter.find_or_create_by_code row[9], :name => row[10], :name_kh => row[11], :parent_id => od.id
-    import_village health_center, row if health_center.valid?
-  end
-
-  def self.import_village health_center, row
-    Village.find_or_create_by_code row[17], :name => row[15], :name_kh => row[16], :parent_id => health_center.id
+  CSVIndexes = { 
+                  "province_fields" => { :code => 2, :name => 0, :name_kh => 1 },
+                  "od_fields" => { :code => 8, :name => 6, :name_kh => 7 },
+                  "health_center_fields" => { :code => 9, :name => 10, :name_kh => 11 },
+                  "village_fields" => { :code => 17, :name => 15, :name_kh => 16 }
+                }
+                
+  def find_or_create_from_csv place_type, parent_id = nil
+    fields_indexes = CSVIndexes["#{place_type}Fields".underscore]
+    
+    fields = fields_indexes.merge(fields_indexes) { |k,v| @current_row[v] }
+    fields[:parent_id] = parent_id
+    
+    place_type.constantize.find_or_create_by_code fields[:code], fields
   end
 end

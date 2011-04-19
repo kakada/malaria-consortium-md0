@@ -38,6 +38,10 @@ class Place < ActiveRecord::Base
   def report_parser(user)
     nil
   end
+  
+  def self.levels
+    Types[1..-1]
+  end
 end
 
 class Province

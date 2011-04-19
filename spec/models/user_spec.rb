@@ -22,7 +22,7 @@ describe User do
     User.count.should == 0
   end
 
-  it "should return phone numbers of user from district, province , national" do
+  it "should return phone numbers of user from district, province, national when user is from health center" do
     province1 = Province.create! :name => "Pro1", :code => "Pro1"
     district1 = province1.ods.create! :name => "Dist1", :code => "Dist1"
 
@@ -43,6 +43,31 @@ describe User do
     recipients = user_hc1.alert_numbers
 
     recipients.should =~["1234511", "1234512","123458", "1234591", "1234592"]
+  end
+  
+  it "should return phone numbers of user from health center, district, province, national when user is a village malaria worker" do
+    province1 = Province.create! :name => "Pro1", :code => "Pro1"
+    district1 = province1.ods.create! :name => "Dist1", :code => "Dist1"
+    hc1 = health_center "hc1", district1.id
+    vill1 = village "vill1", "vill1", hc1.id
+
+    user_vill1 = user "1", vill1
+
+    user_hc1 = user "123456", hc1
+
+    user_ds1 = user "1234511", district1
+    user_ds2 = user "1234512", district1
+    user_ds3 = user nil, district1
+
+    user_pro1 = user "123458", province1
+    user_pro2 = user nil, province1
+
+    user_nat1 = national_user "1234591"
+    user_nat2 = national_user "1234592"
+    
+    recipients = user_vill1.alert_numbers
+
+    recipients.should =~ ["123456", "1234511", "1234512","123458", "1234591", "1234592"]
   end
 
   it "should not be able to report unless she's in a health center or village" do

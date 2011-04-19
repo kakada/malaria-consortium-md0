@@ -5,10 +5,12 @@ require 'spec_helper'
 describe PlaceImporter do
   it "should import" do
     file = File.join(File.dirname(__FILE__),"test.csv")
-    PlaceImporter.import(file)
+    importer = PlaceImporter.new file
+    
+    importer.import
 
-    Province.count.should == 2
-    OD.count.should == 3
+    Province.all.map(&:name).should =~ ["Battambang", "Banteay Meanchey"]
+    OD.all.map(&:name).should =~ ["Battambang", "Ou Chrov", "Thma Puok"]
     HealthCenter.count.should == 8
     Village.count.should == 51
 
@@ -20,9 +22,9 @@ describe PlaceImporter do
     kralapeas.health_center.name_kh.should == "kenÞÓ 2"
     kralapeas.health_center.code.should == "20412"
 
-    kralapeas.od.name.should == "Banan"
-    kralapeas.od.name_kh.should == ")aNn"
-    kralapeas.od.code.should == "201"
+    kralapeas.od.name.should == "Battambang"
+    kralapeas.od.name_kh.should == ")at;dMbg"
+    kralapeas.od.code.should == "204"
 
     kralapeas.province.name.should == "Battambang"
     kralapeas.province.name_kh.should == ")at;dMbg"

@@ -1,0 +1,87 @@
+<%=javascript_include_tag "jquery-1.5.2.min" %>
+<%  form_for(:admin,:url=>"createusers") do |form|  %>
+<table class="table-grid">
+  <thead>
+    <tr>
+      <td><%= t("Name") %> </td>
+      <td><%= t("Email") %>  </td>
+      <td><%= t("Password") %>  </td>
+      <td><%= t("Phone") %>  </td>
+      <td><%= t("Place") %>  </td>
+    </tr>
+  </thead>
+  
+  <tbody id="bodyRow">
+    <tr id="sourceRow">
+      <td><%= text_field_tag  "user_name","",:class=>"input", %> </td>
+      <td><%= text_field_tag  "email","",:class=>"input"  %>  </td>
+      <td><%= password_field_tag  "password" ,"",:class=>"input" %>  </td>
+      <td><%= text_field_tag  "phone_number","",:class=>"input"  %>  </td>
+      <td>
+          <%= collection_select(:place, :place_id, Place.all, :id, :name, :prompt => 'Please select place',:class=>"input") %>
+        <div style="float:right;">
+          <%= image_tag "add.png",:class=>"clickable", :id=>"addMoreUser", :alt=>"Add user",:title=>"Add user" %>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="5" align="center" > &nbsp; </td>
+    </tr>
+  </tfoot>
+
+</table>
+ <%=submit_tag  "Submit" ,:class=> "btn"  %>
+<%end%>
+<script type="text/javascript">
+  $(function(){
+    $("#addMoreUser").click(function(){
+      addRow();
+    });
+  })
+
+  function addRow(){
+     var name =  $("#user_name").val();
+     var email = $("#email").val();
+     var password = $("#password").val();
+     var phone = $("#phone_number").val();
+     var select = $("#place_place_id").get(0);
+     var place_id = select.options[select.selectedIndex].value;
+     var place_text = select.options[select.selectedIndex].text;
+
+     var icon = '<div style="float:right;" > <%= image_tag "trash.png",:alt=>"Remove",:title=>"Remove", :class=>"clickable removeRow" %></div> ';
+
+     var tr = "<tr>" +
+              "<td><input type='hidden' name='admin[user_name][]' value='" + name + "' /> " + name +  " </td>" +
+              "<td><input type='hidden' name='admin[email][]' value='" + email + "' /> " + email + " </td>" +
+              "<td><input type='hidden' name='admin[password][]' value='" + password + "' /> " + showPwd(password) + " </td>" +
+              "<td><input type='hidden' name='admin[phone_number][]' value='"+ phone + "' />" + phone + "</td>" +
+              "<td><input type='hidden' name='admin[place_id][]' value='" + place_id  + "' />" + place_text + icon + "</td>" +
+              "</tr>" ;
+
+     var tr_new = $(tr);
+     tr_new.insertBefore($("#sourceRow"));     
+     addIconClick();
+  }
+
+  function addIconClick(){
+    var clickable = $(".removeRow");
+    var last = clickable.length;
+    var clickable_new = clickable.get(last-1);
+
+    $(clickable_new).click(function(){
+       var tr = this.parentNode.parentNode.parentNode;
+       tr.parentNode.removeChild(tr);
+    });
+  }
+
+  function showPwd(pwd){
+    var str = "";
+    for(var i=0;i<pwd.length;i++)
+      str += "*" ;
+    return str;
+  }
+
+
+</script>

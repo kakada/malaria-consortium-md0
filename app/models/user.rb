@@ -43,6 +43,28 @@ class User < ActiveRecord::Base
     place.report_parser self
   end
 
+  #data ={:user_name=>[],:password => [] ,...}
+  def self.save_bucks data
+    data[:user_name].each_with_index do |user_name,i|
+      attrib = {
+         :user_name => user_name,
+         :email => data[:email][i],
+         :password => data[:password][i],
+         :password_confirmation => data[:password][i],
+         :place_id => data[:place_id][i],
+         :phone_number => data[:phone_number][i]
+      }
+
+      user = User.new attrib
+      user.save()
+    end
+  end
+
+  def self.paginate_user page
+    page = (page.nil?)? 1 : page.to_i
+    User.paginate :page=>page, :per_page=>2
+  end
+
   private
   def encrypt_password
     unless password.nil?

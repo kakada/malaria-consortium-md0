@@ -1,7 +1,9 @@
 # coding: utf-8
 class AdminController < ApplicationController
   before_filter :authenticate
-  
+    
+  include AdminHelper  
+    
   #GET /admin/import
   def import
     @title ="Upload"
@@ -14,9 +16,7 @@ class AdminController < ApplicationController
       file.write(params[:admin][:csvfile].read)
     end
     
-    #PlaceImporter.new(file_name).import
-
-    render :json => { :name =>params[:admin][:csvfile].original_filename }, :content_type => 'text/html'
+    @places = PlaceImporter.new(file_name).simulate
   end
 
 

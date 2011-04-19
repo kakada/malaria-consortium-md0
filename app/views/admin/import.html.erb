@@ -18,9 +18,17 @@
 	                    '<span class="ui-icon ui-icon-cancel">Cancel<\/span>' +
 	                    '<\/button><\/td><\/tr>');
 	        },
-			buildDownloadRow: function (file) {
-			            return $('<tr><td>' + file.name + '<\/td><\/tr>');
-			        }
+			parseResponse: function (xhr) {
+			    if (typeof xhr.responseText !== 'undefined') {
+			        return xhr.responseText;
+			    } else {
+			        // Instead of an XHR object, an iframe is used for legacy browsers:
+			        return xhr.contents().text();
+			    }			
+			},
+			onComplete: function (event, files, index, xhr, handler) {
+			    $('.download_files').append(handler.response);
+			}
 	    });
 	});
 	</script>

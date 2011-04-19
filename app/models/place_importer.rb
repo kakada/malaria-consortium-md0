@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'csv'
 
 class PlaceImporter
@@ -8,16 +10,16 @@ class PlaceImporter
   end
   
   def import
-    CSV.foreach(@file, { :headers => :first_row, :skip_blanks => true }) do |row|
-      @current_row = row
-      @parent_id = nil
-      
-      Place.levels.each do |level|
-        place = find_or_create_from_csv level, @parent_id
-        return unless place.valid?
-        
-        @parent_id = place.id
-      end
+    process_csv do |level, parent|
+      fields = fill_fields level, :parent_id => parent ? parent.id : nil
+      level.constantize.find_or_create_by_code fields[:code], fields
+    end
+  end
+  
+  def simulate
+    process_csv do |level, parent|
+      fields = fill_fields level, :parent => parent
+      level.constantize.find_or_initialize_by_code fields[:code], fields
     end
   end
   
@@ -30,12 +32,31 @@ class PlaceImporter
                   "village_fields" => { :code => 17, :name => 15, :name_kh => 16 }
                 }
                 
-  def find_or_create_from_csv place_type, parent_id = nil
+  def process_csv
+     @places = {}
+
+      CSV.foreach(@file, { :headers => :first_row, :skip_blanks => true }) do |row|
+        @current_row = row
+        @parent = nil
+
+        Place.levels.each do |level|
+          place = yield level, @parent
+
+          return unless place.valid?
+          @parent = place
+
+          @places[place.code] = place
+        end
+      end
+
+      @places.values
+  end
+            
+  def fill_fields place_type, extensions
     fields_indexes = CSVIndexes["#{place_type}Fields".underscore]
-    
     fields = fields_indexes.merge(fields_indexes) { |k,v| @current_row[v] }
-    fields[:parent_id] = parent_id
-    
-    place_type.constantize.find_or_create_by_code fields[:code], fields
+    fields[:name_kh].force_encoding("UTF-8")
+    fields.merge!(extensions)
+    fields
   end
 end

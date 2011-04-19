@@ -33,6 +33,8 @@ gem 'mysql2'
 # group :development, :test do
 #   gem 'webrat'
 # end
+gem 'will_paginate', :git => 'git://github.com/mislav/will_paginate.git', :branch => 'rails3'
+
 group :development, :test do
   gem "autotest"
   gem "webrat"

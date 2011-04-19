@@ -6,19 +6,7 @@ Local::Application.routes.draw do
 
   resources :users
 
-  resources :provinces do
-    resources :districts, :users
-  end
-
-  resources :districts do
-    resources :health_centers,:villages, :users
-  end
-
-  resources :health_centers do
-    resources :villages, :users
-  end
-
-  resources :villages do
+  resources :places do
     resources :users
   end
 

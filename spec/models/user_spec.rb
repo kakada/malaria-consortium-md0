@@ -64,4 +64,17 @@ describe User do
     parser = user("2", village("2")).report_parser
     parser.class.should == VMWReportParser
   end
+
+  it "should create 2 users with valid attributes" do
+    @attrib = {
+        :user_name => ["foo","bar"],
+        :email => ["foo@yahoo.com","bar@yahoo.com"],
+        :password => ["123456", "234567"],
+        :phone_number => ["097 5553553", "0975425678"],
+        :place_id => ["1","3"]
+    }
+    User.save_bucks(@attrib)
+    User.count.should == 2  
+  end
+
 end

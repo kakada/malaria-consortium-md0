@@ -1,0 +1,23 @@
+<h3>Users</h3>
+<%=will_paginate @users %>
+<table width="100%" class="table-grid" >
+  <thead>
+    <tr>
+      <th><%= t("Name") %>   </th>
+      <th><%= t("Email") %>  </th>
+      <th><%= t("Phone") %>  </th>
+      <th><%= t("Place") %>  </th>
+    </tr>
+  </thead>
+  <% @users.each_with_index do |user,index| 
+      cls = "pair"
+      cls ="impair" if index%2 != 0
+  %>
+    <tr class="<%=cls%>">
+      <td><%= user.user_name %> </td>
+      <td><%= user.email %>  </td>
+      <td><%= user.phone_number %>  </td>
+      <td><%= Place.find(user.place_id).name  %>  </td>
+    </tr>
+  <% end %>
+</table>

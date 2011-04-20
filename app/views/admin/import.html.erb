@@ -1,7 +1,5 @@
 <% content_for :head do %>
   	<%= stylesheet_link_tag('jquery.fileupload-ui') %>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
 	<%= javascript_include_tag 'jquery.fileupload', 'jquery.fileupload-ui' %>
 	
 	<script type="text/javascript" charset="utf-8"> 
@@ -27,22 +25,23 @@
 			    }			
 			},
 			onComplete: function (event, files, index, xhr, handler) {
-			    $('.download_files').append(handler.response);
+				$('.download_files').html('');
+				$('.download_files').append(handler.response);
 			}
 	    });
 	});
 	</script>
 <% end %>
 
-<h2>Import places:</h2>
+<h2>Import Places</h2>
 <div class="files">
 	<% form_for(:admin,:url=>"/admin/upload_csv", :html => {:multipart=>true, :class => "upload"}) do |form| %>
 		<%= form.file_field :csvfile %>
-		<div>Upload file</div>
+		<div>Upload CSV File</div>
 	<% end %>
 	<table class="upload_files">
 	</table>
-	<table width="100%" class="download_files">
+	<table width="100%" id="download_files" class="download_files">
 	</table>
 	<div id="file_upload_progress" class="js file_upload_progress">
 		<div style="display:none;"></div>

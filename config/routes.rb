@@ -2,7 +2,7 @@ Local::Application.routes.draw do
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
-  root :to => "page#home"
+  root :to => "admin#home"
 
   resources :users
 
@@ -21,6 +21,8 @@ Local::Application.routes.draw do
 	match  "/signup" => "users#new"
 
   match "/data_entry" =>"users#data_entry"
+
+  match "/admin/places/import" => "admin#import_places"
 
 
   # Sample of regular route:

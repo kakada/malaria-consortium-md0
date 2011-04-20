@@ -8,17 +8,18 @@ class AdminController < ApplicationController
   def import
     @title ="Upload"
   end
+  
+  #GET /admin/places/import
+  def import_places
+    PlaceImporter.new(current_user.places_csv_file_name).import
+  end
 
   #POST /admin/upload_csv
   def upload_csv  
-    file_name = Rails.root.join("public","placescsv", "#{current_user.id}.csv")
-    File.open(file_name,"w+b") do |file|
-      file.write(params[:admin][:csvfile].read)
-    end
-    
-    @places = PlaceImporter.new(file_name).simulate
+    current_user.write_places_csv params[:admin][:csvfile]
+    @places = PlaceImporter.new(current_user.places_csv_file_name).simulate
+    render 'upload_csv.html'
   end
-
 
   #GET /admin/users
   def users
@@ -28,7 +29,7 @@ class AdminController < ApplicationController
   end
   #GET /admin/newusers
   def newusers
-    @title = "Import buck users"
+    @title = "Create Users"
     @places = Place.all
   end
   def createusers

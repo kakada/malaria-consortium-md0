@@ -9,10 +9,20 @@ class User < ActiveRecord::Base
   # Delegate country, province, etc., to place
   Place::Types.each { |type| delegate type.tableize.singularize, :to => :place }
 
-  def self.authenticate(email, pwd)
-    user = User.find_by_email(email)
+  def self.authenticate email, pwd
+    user = User.find_by_email email
     return nil if user.nil?
     return user if user.has_password? pwd
+  end
+
+  def write_places_csv source_file
+    File.open(places_csv_file_name,"w+b") do |file|
+      file.write(source_file.read)
+    end
+  end
+  
+  def places_csv_file_name
+    Rails.root.join("public","placescsv", "#{id}.csv")
   end
 
   def has_password? submitted_pwd
@@ -20,12 +30,12 @@ class User < ActiveRecord::Base
   end
 
   def remember_me!
-    self.remember_token = encrypt("#{salt}--#{id}")
-    save(false)
+    self.remember_token = encrypt "#{salt}--#{id}"
+    save false
   end
 
   def alert_numbers
-    national_users = User.find_all_by_role("national")
+    national_users = User.find_all_by_role "national"
 
     recipients = []
 
@@ -56,33 +66,34 @@ class User < ActiveRecord::Base
       }
 
       user = User.new attrib
-      user.save()
+      user.save
     end
   end
 
   def self.paginate_user page
-    page = (page.nil?)? 1 : page.to_i
-    User.paginate :page=>page, :per_page=> 10
+    page = page.nil? ? 1 : page.to_i
+    User.paginate :page => page, :per_page => 10
   end
 
   private
+  
   def encrypt_password
     unless password.nil?
       self.salt = make_salt
-      self.encrypted_password = encrypt(password)
+      self.encrypted_password = encrypt password
     end
   end
 
   def encrypt pwd
-    secure_hash("#{salt}#{pwd}")
+    secure_hash "#{salt}#{pwd}"
   end
 
   def make_salt
-    secure_hash("#{Time.now.utc}#{password}")
+    secure_hash "#{Time.now.utc}#{password}"
   end
 
-  def secure_hash(string)
-    Digest::SHA2.hexdigest(string)
+  def secure_hash string
+    Digest::SHA2.hexdigest string
     string
   end
 

@@ -48,5 +48,12 @@ describe Place do
 
         Village.count.should == 1
       end
+      
+      describe "Description" do
+        it "should be like {place.name} ({place type})" do
+          village = Village.new @valid_attributes
+          village.description.should == "value for name (Village)"
+        end
+      end
     end
 end

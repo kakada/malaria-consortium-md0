@@ -34,9 +34,13 @@ class Place < ActiveRecord::Base
     )
   end
 
-  # Returns a report parsers for this place type and user
+  # Returns a report parser for this place type and user
   def report_parser(user)
     nil
+  end
+  
+  def description
+    "#{name} (#{self.class.name.titleize})"
   end
   
   def self.levels

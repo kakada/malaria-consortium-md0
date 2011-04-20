@@ -7,11 +7,11 @@
           <li> <span>|</span> <%= link_to "Sign in", signin_path %>  </li>
         <% else %>
           <%if admin? %>
-            <li> <span>|</span> <%= link_to "Admin", "/admin/import"  %></li>
+            <li> <span>|</span> <%= link_to "Administration", "/admin/import"  %></li>
           <%end%>
 
           <li> <span>|</span> <%= link_to "Profile", user_url(@current_user)   %></li>
-          <li> <span>|</span> <%= link_to "Setting", edit_user_url(@current_user)  %></li>
+          <li> <span>|</span> <%= link_to "Settings", edit_user_url(@current_user)  %></li>
           <li> <span>|</span> <%= link_to "Sign out", signout_path %></li>
         <%  end %>
 

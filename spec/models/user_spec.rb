@@ -101,5 +101,18 @@ describe User do
     User.save_bucks(@attrib)
     User.count.should == 2  
   end
-
+  
+  it "should write temp place csv to disk" do
+    user = user "1"
+    
+    file_name = File.join(File.dirname(__FILE__),"test.csv")
+    File.open(file_name,"r+b") do |file|
+      user.write_places_csv file
+    end
+    
+    file_name = Rails.root.join("public","placescsv", "#{user.id}.csv")
+    File.exists?(file_name).should == true
+    
+    user.places_csv_file_name.should == file_name
+  end
 end

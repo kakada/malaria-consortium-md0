@@ -91,7 +91,6 @@ a.signup_button {
     display: block;
     float: left;
     line-height: 2;
-    width: 120px;
 }
 .fieldWithErrors {
     padding: 2px;
@@ -169,17 +168,26 @@ div.icon span {
     display: block;
     text-align: center;
 }
+
 .table-grid{
     border: 1px solid #ccc;
     width: 100%;
 }
+
 .table-grid tr.head,.table-grid thead {
     background-color: #eee;
     color: #999;
 }
+
 .table-grid input[type=text],.table-grid input[type=password]{
-    width: 120px;
+	width:100%;
 }
+
+.separator
+{
+	line-height:0.5;
+}
+
 .clickable{
     cursor: pointer;
 }
@@ -205,10 +213,34 @@ div.icon span {
 .pagination a:hover{
    font-weight: bold;
 }
-#sourceRow{
+
+#inputRow{
     margin-top: 10px;
 }
+
+.inputCell
+{
+	padding-right:5px;
+	padding-left:2px;
+}
+
+.validation_error
+{
+	word-wrap:break-word;
+}
+
 .right-content{
     text-align: right;
     margin-top: 10px;
+}
+
+input.error 
+{ 
+	border: 1px solid red; 
+}
+
+label.error 
+{
+	color: red;
+	font-size:10px;
 }

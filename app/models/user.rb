@@ -1,13 +1,28 @@
 class User < ActiveRecord::Base
+  Roles = ["national", "admin"]
+  
   belongs_to :place
+  
+  validates_inclusion_of :role, :in => Roles, :allow_nil => true
+  
+  validates_uniqueness_of :user_name, :allow_nil => true
+  
+  validates_uniqueness_of :email, :allow_nil => true
+  validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :allow_nil => true
 
   validates_confirmation_of :password
-  validates_presence_of :phone_number, :unless => Proc.new {|user| user.phone_number.nil?}
+  
+  validates_uniqueness_of :phone_number, :allow_nil => true
+  validates_presence_of :phone_number, 
+                        :unless => Proc.new {|user| user.phone_number.nil? && !user.user_name.blank? && !user.password.blank?},
+                        :message => "Phone can't be blank, unless you provide a username, a password and an email"
+  validates_format_of :phone_number, :with => /^\d+$/, :unless => Proc.new {|user| user.phone_number.nil?}, :message => "Only numbers allowed"
 
   before_save :encrypt_password
-
+  
   # Delegate country, province, etc., to place
   Place::Types.each { |type| delegate type.tableize.singularize, :to => :place }
+
 
   def self.authenticate email, pwd
     user = User.find_by_email email
@@ -55,7 +70,8 @@ class User < ActiveRecord::Base
 
   #data ={:user_name=>[],:password => [] ,...}
   def self.save_bulk data
-    data[:user_name].each_with_index do |user_name,i|
+    data[:user_name].each_with_index do |user_name, i|
+      
       attrib = {
          :user_name => user_name,
          :email => data[:email][i],

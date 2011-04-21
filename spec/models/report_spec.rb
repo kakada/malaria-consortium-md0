@@ -8,8 +8,8 @@ describe Report do
     @village = village "fooville", "12345678", @health_center.id
     village "barville", "87654321", health_center("barhc").id
 
-    @hc_user = user "8558190", @health_center
-    @vmw_user = user "8558191", @village
+    @hc_user = user :phone_number => "8558190", :place => @health_center
+    @vmw_user = user :phone_number => "8558191", :place => @village
 
     @valid_message = {:from => "sms://8558190", :body => "F123M12345678"}
     @valid_vmw_message = {:from => "sms://8558191", :body => "F123M."}
@@ -48,7 +48,7 @@ describe Report do
     end
 
     it "should return error when user can't report" do
-      user = user "1"
+      user = user(:phone_number => "1")
       User.should_receive(:find_by_phone_number).with("1").and_return(user)
       user.should_receive(:can_report?).and_return(false)
 

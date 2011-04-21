@@ -15,8 +15,8 @@ module Helpers
     Province.create! :name => name, :name_kh => name, :code => name
   end
 
-  def user number, place = nil
-    User.create! :phone_number => number, :place_id => place.nil? ? nil : place.id
+  def user attribs
+    User.create! attribs
   end
 
   def national_user number

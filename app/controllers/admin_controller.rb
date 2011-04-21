@@ -29,7 +29,6 @@ class AdminController < ApplicationController
   
   #GET /admin/newusers
   def newusers
-    p 'called newusers'
     @title = "Create Users"
     @places = Place.all
   end

@@ -6,7 +6,7 @@ describe HCReportParser do
 
   before(:each) do
     @health_center = health_center("hc1")
-    @parser = HCReportParser.new(user("1", @health_center))
+    @parser = HCReportParser.new(user(:phone_number => "1", :place => @health_center))
   end
 
   def assert_error_message error_msg

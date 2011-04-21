@@ -72,19 +72,19 @@ function addRow() {
 	}
 }
 
-  function addIconClick() {
-    var clickable = $(".removeRow");
-    var last = clickable.length;
-    var clickable_new = clickable.get(last-1);
+function addIconClick() {
+	var clickable = $(".removeRow");
+	var last = clickable.length;
+	var clickable_new = clickable.get(last - 1);
 
-    $(clickable_new).click(function(){
-       var tr = this.parentNode.parentNode.parentNode;
-       tr.parentNode.removeChild(tr);
-    });
-  }
+	$(clickable_new).click(function(){
+	   var tr = this.parentNode.parentNode.parentNode;
+	   tr.parentNode.removeChild(tr);
+	});
+}
 
-  function showPwd(pwd) {
-    var str = "";
-    for (var i = 0; i < pwd.length; i++) str += "*" ;
-    return str;
-  }
+function showPwd(pwd) {
+	var str = "";
+	for (var i = 0; i < pwd.length; i++) str += "*" ;
+	return str;
+}

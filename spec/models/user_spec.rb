@@ -98,7 +98,7 @@ describe User do
         :phone_number => ["097 5553553", "0975425678"],
         :place_id => ["1","3"]
     }
-    User.save_bucks(@attrib)
+    User.save_bulk(@attrib)
     User.count.should == 2  
   end
   

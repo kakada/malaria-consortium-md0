@@ -24,16 +24,18 @@ class AdminController < ApplicationController
   #GET /admin/users
   def users
     @title = "User management"
-    
     @users = User.paginate_user params[:page]
   end
+  
   #GET /admin/newusers
   def newusers
+    p 'called newusers'
     @title = "Create Users"
     @places = Place.all
   end
+  
   def createusers
-    User.save_bucks(params[:admin])
+    User.save_bulk(params[:admin])
     redirect_to :action => :users
   end
 end

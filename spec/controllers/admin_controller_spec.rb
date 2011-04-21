@@ -4,7 +4,7 @@ require 'test_helper'
 describe AdminController do
   include Helpers
   before(:each) do
-    @user = national_user "12345678"
+    @user = admin_user "12345678"
     test_sign_in(@user) #sign the user in
     controller.signed_in?.should be_true #make sure it was signed
   end
@@ -20,7 +20,7 @@ describe AdminController do
       response.should be_success
     end
   end
-  #=============================================================================
+  
   describe "createusers" do
       describe "successfully created" do
         before(:each) do
@@ -38,24 +38,11 @@ describe AdminController do
         end
       end
   end
-  #=============================================================================
+
   describe "Show user list admin/users" do
     it "should render the users template" do
       get :users
       response.should render_template "users"
-    end
-  end
-  #=============================================================================
-
-  describe "import csv" do
-    describe "show import form sucess" do
-      it "should render at /admin/import" do
-        test_sign_in(@user) #sign the user in
-        controller.signed_in?.should be_true #make sure it was signed
-
-        get "import"
-        response.should render_template "import"
-      end
     end
   end
 end

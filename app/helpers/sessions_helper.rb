@@ -40,7 +40,7 @@ module SessionsHelper
   end
 
   def store_location
-    session[:redirect_to] = request.request_uri
+    session[:redirect_to] = request.fullpath
   end
 
   def redirect_back_or(default)

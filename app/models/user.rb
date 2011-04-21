@@ -54,7 +54,7 @@ class User < ActiveRecord::Base
   end
 
   #data ={:user_name=>[],:password => [] ,...}
-  def self.save_bucks data
+  def self.save_bulk data
     data[:user_name].each_with_index do |user_name,i|
       attrib = {
          :user_name => user_name,

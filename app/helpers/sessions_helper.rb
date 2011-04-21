@@ -56,6 +56,10 @@ module SessionsHelper
     deny_access unless signed_in?
   end
 
+  def authenticate_admin
+    deny_access unless signed_in? && admin?
+  end
+
   def correct_user
     @user = User.find(params[:id])
     redirect_to root_path unless current_user? @user
@@ -64,7 +68,4 @@ module SessionsHelper
   def admin?
     current_user.role == "admin"
   end
-  
-
-
 end

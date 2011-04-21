@@ -1,11 +1,11 @@
 # coding: utf-8
 class AdminController < ApplicationController
-  before_filter :authenticate
+  before_filter :authenticate_admin
     
   include AdminHelper  
     
   #GET /admin/import
-  def import
+  def confirm_import
     @title ="Upload"
   end
   
@@ -14,11 +14,11 @@ class AdminController < ApplicationController
     PlaceImporter.new(current_user.places_csv_file_name).import
   end
 
-  #POST /admin/upload_csv
-  def upload_csv  
+  #POST /admin/places/upload_places_csv
+  def upload_places_csv  
     current_user.write_places_csv params[:admin][:csvfile]
     @places = PlaceImporter.new(current_user.places_csv_file_name).simulate
-    render 'upload_csv.html'
+    render 'upload_places_csv.html'
   end
 
   #GET /admin/users

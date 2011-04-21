@@ -35,14 +35,17 @@
 
 <h2>Import Places</h2>
 <div class="files">
-	<% form_for(:admin,:url=>"/admin/upload_csv", :html => {:multipart=>true, :class => "upload"}) do |form| %>
+	<%= form_for(:admin, :url => upload_places_csv_path, :html => { :multipart => true, :class => "upload"}) do |form| %>
 		<%= form.file_field :csvfile %>
 		<div>Upload CSV File</div>
 	<% end %>
+	
 	<table class="upload_files">
 	</table>
+	
 	<table width="100%" id="download_files" class="download_files">
 	</table>
+	
 	<div id="file_upload_progress" class="js file_upload_progress">
 		<div style="display:none;"></div>
 	</div> 

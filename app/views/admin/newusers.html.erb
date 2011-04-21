@@ -3,18 +3,7 @@
 	<%= javascript_include_tag 'admin/newusers' %>
 <% end %>
 
-<%= form_for(:admin, :url => "importbuckusers") do |form| %>
-	<h2> Create Users </h2>
-
-	<div class="field round">
-		<%= form.label :csvfile, "Import from CSV file" %>
-		<%= form.file_field :csvfile %>
-		<%= submit_tag "Upload", :class=> "btn"  %>
-		<div class="clear"></div>
-	</div>
-
-	<br />  
-<% end %>
+<h2> Create Users </h2>
 
 <%= form_for(:admin, :url => "createusers", :html => { :id => 'createusers'}) do |form|  %>
 	<table class="table-grid round" >
@@ -32,7 +21,7 @@
 		<tbody id="bodyRow">
 			<tr class="separator"><td colspan="5">&nbsp;</td></tr>
 			<tr id="inputRow">
-				<%= input_cell "user_name" %>
+				<%= input_cell "user_name"%>
 				<%= input_cell "email" %>
 				<%= input_cell "password", :password => true %>
 				<%= input_cell "phone_number" %>

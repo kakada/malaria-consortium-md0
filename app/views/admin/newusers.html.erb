@@ -5,6 +5,10 @@
 
 <h2> Create Users </h2>
 
+<% if @validation_failed %>
+	<h3>Some of the users are invalid, please correct or remove them and try again</h3>
+<% end %>
+
 <%= form_for(:admin, :url => "createusers", :html => { :id => 'createusers'}) do |form|  %>
 	<table class="table-grid round" >
 		<thead>
@@ -17,8 +21,9 @@
 				<th></th>
 			</tr>
 		</thead>
-
 		<tbody id="bodyRow">
+			<%= render :partial => "user", :collection => @users %>
+			
 			<tr class="separator"><td colspan="5">&nbsp;</td></tr>
 			<tr id="inputRow">
 				<%= input_cell "user_name"%>

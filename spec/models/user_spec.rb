@@ -91,12 +91,15 @@ describe User do
   end
 
   it "should create 2 users with valid attributes" do
+    province1 = Province.create! :name => "Pro1", :code => "Pro1"    
+    province2 = Province.create! :name => "Pro1", :code => "Pro2"    
+    
     @attrib = {
         :user_name => ["foo","bar"],
         :email => ["foo@yahoo.com","bar@yahoo.com"],
         :password => ["123456", "234567"],
         :phone_number => ["0975553553", "0975425678"],
-        :place_id => ["1","3"]
+        :place_code => ["Pro1","Pro2"],
     }
     User.save_bulk(@attrib)
     User.count.should == 2  
@@ -114,6 +117,36 @@ describe User do
     File.exists?(file_name).should == true
     
     user.places_csv_file_name.should == file_name
+  end
+  
+  describe "intended place code" do
+    it "should try to find place by code before saving if intended place code is not nil" do
+      province1 = Province.create! :name => "Pro1", :code => "Pro1"    
+      user = User.new :user_name => 'foo', :email => 'fooaddress@foo.com', :password => '123456', :intended_place_code => "Pro1"
+      user.save
+      user.valid?.should be_true
+      user.place.should == province1
+    end
+    
+    it "should cause validation to fail if it doesn't belong to a place" do
+      user = User.new :user_name => 'foo', :email => 'fooaddress@foo.com', :password => '123456', :intended_place_code => "Pro1"
+      user.save
+      user.valid?.should be_false
+      user.errors[:intended_place_code].count.should == 1
+    end
+    
+    it "should not change a user's place upon update if it's nil or empty" do
+      province1 = Province.create! :name => "Pro1", :code => "Pro1"    
+      user = User.create! :user_name => 'foo', :email => 'fooaddress@foo.com', :password => '123456', :place_id => province1.id
+
+      user.intended_place_code = ''
+      user.save
+      user.place_id.should == province1.id
+      
+      user.intended_place_code = nil
+      user.save
+      user.place_id.should == province1.id
+    end
   end
   
   describe "email validations" do

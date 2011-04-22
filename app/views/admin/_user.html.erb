@@ -1,0 +1,12 @@
+<tr>
+	<%= user_cell user, :user_name %>
+	<%= user_cell user, :email %>
+	<%= user_cell user, :password %>
+	<%= user_cell user, :phone_number %>	
+	<%= user_cell user, :intended_place_code, :place_code %>		
+	<td>
+		<div style="float:right;">
+			<img src="/images/trash.png" alt="Remove" title="Remove" class="clickable removeRow"/>
+		</div>
+	</td>
+</tr>

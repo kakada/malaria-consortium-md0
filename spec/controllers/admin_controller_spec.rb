@@ -29,12 +29,12 @@ describe AdminController do
               :email => ["foo@yahoo.com","bar@yahoo.com"],
               :password => ["123456", "234567"],
               :phone_number => ["097 5553553", "0975425678"],
-              :place_id => ["1","3"]
+              :place_code => ["1","3"]
           }
         end
         it "should redirect to users pages " do
           post :createusers ,:admin => @attrib
-          response.should redirect_to :action => :users
+          response.should render_template "saved_users"
         end
       end
   end

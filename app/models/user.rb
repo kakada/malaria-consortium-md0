@@ -1,23 +1,23 @@
 class User < ActiveRecord::Base
   attr_accessor :intended_place_code
-  
+
   Roles = ["national", "admin"]
-  
+
   before_validation :try_fetch_place
-  
+
   belongs_to :place
-  
+
   validates_inclusion_of :role, :in => Roles, :allow_nil => true
-  
+
   validates_uniqueness_of :user_name, :allow_nil => true, :message => 'Belongs to another user'
-  
+
   validates_uniqueness_of :email, :allow_nil => true, :message => 'Belongs to another user'
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :allow_nil => true
 
   validates_confirmation_of :password
-  
+
   validates_uniqueness_of :phone_number, :allow_nil => true, :message => 'Belongs to another user'
-  validates_presence_of :phone_number, 
+  validates_presence_of :phone_number,
                         :unless => Proc.new {|user| !user.email.blank? && !user.user_name.blank? && !user.password.blank?},
                         :message => "Phone can't be blank, unless you provide a username, a password and an email"
   validates_format_of :phone_number, :with => /^\d+$/, :unless => Proc.new {|user| user.phone_number.blank?}, :message => "Only numbers allowed"
@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
   validate :intended_place_code_must_exist
 
   before_save :encrypt_password
-  
+
   # Delegate country, province, etc., to place
   Place::Types.each { |type| delegate type.tableize.singularize, :to => :place }
 
@@ -40,13 +40,13 @@ class User < ActiveRecord::Base
       file.write(source_file.read)
     end
   end
-  
+
   def places_csv_file_name
     Rails.root.join("public","placescsv", "#{id}.csv")
   end
 
   def has_password? submitted_pwd
-    self.encrypted_password = encrypt submitted_pwd
+    self.encrypted_password == encrypt submitted_pwd
   end
 
   def remember_me!
@@ -76,7 +76,7 @@ class User < ActiveRecord::Base
   #data ={:user_name=>[],:password => [] ,...}
   def self.save_bulk data
     users = []
-    data[:user_name].each_with_index do |user_name, i|      
+    data[:user_name].each_with_index do |user_name, i|
       attrib = {
          :user_name => user_name,
          :email => data[:email][i],
@@ -100,7 +100,7 @@ class User < ActiveRecord::Base
   end
 
   private
-  
+
   def encrypt_password
     unless password.nil?
       self.salt = make_salt
@@ -124,14 +124,14 @@ class User < ActiveRecord::Base
   def self.phone_numbers users
     users.map { |u| u.phone_number }.reject { |n| n.nil? }
   end
-  
-  def try_fetch_place 
+
+  def try_fetch_place
     if !intended_place_code.blank? && (place_id.blank? || place.code != intended_place_code)
       should_be_place = Place.find_by_code intended_place_code
       self.place_id = should_be_place.id unless should_be_place.nil?
     end
   end
-  
+
   def intended_place_code_must_exist
     errors.add(:intended_place_code, "Place doesn't exist") if !self.intended_place_code.blank? && (self.place_id.blank? || self.place.code != self.intended_place_code)
   end

@@ -18,7 +18,7 @@ class AdminController < ApplicationController
   def upload_places_csv  
     current_user.write_places_csv params[:admin][:csvfile]
     @places = PlaceImporter.new(current_user.places_csv_file_name).simulate
-    render 'upload_places_csv.html'
+    render 'upload_places_csv.html', :encoding => 'utf-8'
   end
 
   #GET /admin/users

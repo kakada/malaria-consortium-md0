@@ -1,5 +1,5 @@
 <tr>
 	<td><%= place.description %></td>
-	<td><font size="5" face="Limon S1"><%= place.name_kh %></font></td>
+	<td><font size="5" face="Limon S1"><%= place.name_kh unless place.name_kh.nil? %></font></td>
 	<td><%= place.code %></td>
 </tr>

@@ -12,22 +12,14 @@ class PlaceImporter
   def import
     process_csv do |level, parent|
       fields = fill_fields level, :parent_id => parent ? parent.id : nil
-      
-      place = level.constantize.find_by_code fields[:code]
-      return nil if place
-      
-      level.constantize.create!(fields)
+      level.constantize.find_or_create_by_code fields[:code], fields
     end
   end
   
   def simulate
     process_csv do |level, parent|
       fields = fill_fields level, :parent => parent
-      
-      place = level.constantize.find_by_code fields[:code]
-      return nil if place  
-      
-      level.constantize.new fields
+      level.constantize.find_or_initialize_by_code fields[:code], fields
     end
   end
   
@@ -38,8 +30,8 @@ class PlaceImporter
                   "od_fields" => { :code => 8, :name => 6, :name_kh => 7 },
                   "health_center_fields" => { :code => 9, :name => 10, :name_kh => 11 },
                   "village_fields" => { :code => 17, :name => 15, :name_kh => 16 }
-                }       
-         
+                }
+                
   def process_csv
      @places = {}
 
@@ -63,7 +55,7 @@ class PlaceImporter
   def fill_fields place_type, extensions
     fields_indexes = CSVIndexes["#{place_type}Fields".underscore]
     fields = fields_indexes.merge(fields_indexes) { |k,v| @current_row[v] }
-    fields[:name_kh].force_encoding("UTF-8")
+    fields[:name_kh] unless fields[:name_kh].nil?
     fields.merge!(extensions)
     fields
   end

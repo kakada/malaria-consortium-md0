@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
   end
 
   def has_password? submitted_pwd
-    self.encrypted_password == encrypt submitted_pwd
+    self.encrypted_password == encrypt(submitted_pwd)
   end
 
   def remember_me!

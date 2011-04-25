@@ -6,12 +6,12 @@ class AdminController < ApplicationController
     
   #GET /admin/import
   def confirm_import
-    @title ="Upload"
+    PlaceImporter.new(current_user.places_csv_file_name).import    
   end
   
   #GET /admin/places/import
   def import_places
-    PlaceImporter.new(current_user.places_csv_file_name).import
+    @title ="Upload"
   end
 
   #POST /admin/places/upload_places_csv

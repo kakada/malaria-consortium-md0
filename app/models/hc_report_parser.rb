@@ -21,6 +21,7 @@ class HCReportParser < ReportParser
     validate_is_supervised
     return if errors?
 
+    parsed_data[:human_readable_report] = HCReportParser.human_readable_report @parsed_data
     self
   end
 

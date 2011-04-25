@@ -37,8 +37,8 @@ describe HCReportParser do
       @parser.parsed_data[:malaria_type].should == "F"
       @parser.parsed_data[:age].should == "123"
       @parser.parsed_data[:sex].should == "M"
-      @parser.parsed_data[:village_code] == "12345678"
-      @parser.parsed_data[:human_readable_report] == HCReportParser.human_readable_report(@parser.parsed_data)
+      @parser.parsed_data[:village_code].should == "12345678"
+      @parser.parsed_data[:human_readable_report].should == HCReportParser.human_readable_report(@parser.parsed_data)
     end
   end
 

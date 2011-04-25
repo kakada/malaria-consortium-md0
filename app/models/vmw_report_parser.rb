@@ -13,6 +13,7 @@ class VMWReportParser < ReportParser
       parsed_data[:is_mobile_patient] = true
     end
 
+    parsed_data[:human_readable_report] = VMWReportParser.human_readable_report @parsed_data
     self
   end
   

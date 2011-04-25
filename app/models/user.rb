@@ -40,9 +40,15 @@ class User < ActiveRecord::Base
       file.write(source_file.read)
     end
   end
+  
+  def places_csv_directory
+    dir = Rails.root.join "tmp", "placescsv"
+    Dir.mkdir dir unless Dir.exists? dir
+    dir
+  end
 
   def places_csv_file_name
-    Rails.root.join("public","placescsv", "#{id}.csv")
+    Rails.root.join(places_csv_directory, "#{id}.csv")
   end
 
   def has_password? submitted_pwd

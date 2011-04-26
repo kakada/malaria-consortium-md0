@@ -1,0 +1,21 @@
+<table width="100%" class="table-grid round" >
+  <thead>
+    <tr>
+      <th><%= t("Name") %>   </th>
+      <th><%= t("Email") %>  </th>
+      <th><%= t("Phone") %>  </th>
+      <th><%= t("Place") %>  </th>
+    </tr>
+  </thead>
+  <% users.each_with_index do |user,index|
+      cls = "pair"
+      cls = "impair" if index % 2 != 0
+  %>
+    <tr class="<%=cls%>">
+      <td><%= user.user_name %> </td>
+      <td><%= user.email %>  </td>
+      <td><%= user.phone_number %>  </td>
+      <td><%= user.place.nil? ? "" : user.place.description %>  </td>
+    </tr>
+  <% end %>
+</table>

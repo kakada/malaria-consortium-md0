@@ -1,12 +1,19 @@
-<tr>
-	<%= user_cell user, :user_name %>
-	<%= user_cell user, :email %>
-	<%= user_cell user, :password %>
-	<%= user_cell user, :phone_number %>	
-	<%= user_cell user, :intended_place_code, :place_code %>		
-	<td>
-		<div style="float:right;">
-			<img src="/images/trash.png" alt="Remove" title="Remove" class="clickable removeRow"/>
-		</div>
-	</td>
-</tr>
+<% if !users.nil? %>
+  <% users.each_with_index do |user, i| %>
+  <tr >
+          <%= user_cell user, :user_name %>
+          <%= user_cell user, :email %>
+          <%= user_cell user, :password,nil, :password => true %>
+          <%= user_cell user, :phone_number %>
+          <%= user_cell user, :intended_place_code, :place_code %>
+          <td width="68">
+              <div style="float:right;">
+                  <% if !user.errors.empty?  %>
+                    <a rel="<%= i  %>" href="#editFormContainer" class="clickable editRow" ><img src="/images/edit.png" alt="Edit" title="Edit" /></a>
+                  <% end %>
+                  <img src="/images/trash.png" alt="Remove" title="Remove" class="clickable removeRow"/>
+              </div>
+          </td>
+  </tr>
+  <% end %>
+  <% end %>

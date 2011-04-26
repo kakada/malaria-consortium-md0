@@ -87,11 +87,24 @@ class User < ActiveRecord::Base
       }
 
       user = User.new attrib
-      user.save
-      users.push user
+      users.push user   
     end
-
+    
+    if self.validate_users_bulk? users
+      User.transaction  do
+         users.each do |user|
+            user.save
+         end
+      end
+    end
     users
+  end
+
+  def self.validate_users_bulk? users
+    users.each do |user|
+      return false if user.invalid?
+    end
+    true
   end
 
   def self.paginate_user page

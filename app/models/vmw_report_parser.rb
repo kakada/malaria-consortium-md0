@@ -23,7 +23,7 @@ class VMWReportParser < ReportParser
   end
   
   def self.human_readable_report parsed_data
-    "We received your report of #{format_is_mobile parsed_data[:is_mobile_patient]} Malaria Type: #{parsed_data[:malaria_type]}, Age: #{parsed_data[:age]}, Sex: #{format parsed_data[:sex]}"
+    "We received your report of #{format_is_mobile parsed_data[:is_mobile_patient]} Malaria Type: #{parsed_data[:malaria_type]}, Age: #{parsed_data[:age]}, Sex: #{format_sex parsed_data[:sex]}"
   end
   
   def self.format_is_mobile is_mobile_patient

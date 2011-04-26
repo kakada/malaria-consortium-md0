@@ -27,6 +27,11 @@ describe ReportParser do
       assert_error_message ReportParser.invalid_sex("F21J")
     end
     
+    it "should return error message invalid malaria type when report is from hc" do
+      @parser.parse "d12m11111111"
+      assert_error_message ReportParser.invalid_malaria_type "d12m11111111"
+    end
+    
     it "should support reports with heading and trailing spaces" do
       @parser.parse "    F21M     "
       @parser.errors?().should == false

@@ -50,6 +50,6 @@ class ReportParser
   end
   
   def self.format_sex sex
-    sex == 'M' ? "Male" : "Female"
+    sex.downcase == 'M'.downcase ? "Male" : "Female"
   end
 end

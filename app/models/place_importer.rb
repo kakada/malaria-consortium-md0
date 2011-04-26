@@ -19,7 +19,11 @@ class PlaceImporter
   def simulate
     process_csv do |level, parent|
       fields = fill_fields level, :parent => parent
-      level.constantize.find_or_initialize_by_code fields[:code], fields
+      
+      place = level.constantize.find_by_code fields[:code]
+      return nil unless place.nil?
+      
+      level.constantize.new fields
     end
   end
   
@@ -42,7 +46,7 @@ class PlaceImporter
         Place.levels.each do |level|
           place = yield level, @parent
 
-          return unless place.valid?
+          return unless place && place.valid?
           @parent = place
 
           @places[place.code] = place

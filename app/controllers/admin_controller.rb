@@ -4,7 +4,7 @@ class AdminController < ApplicationController
     
   include AdminHelper  
     
-  #GET /admin/import
+  #POST /admin/import
   def confirm_import
     PlaceImporter.new(current_user.places_csv_file_name).import    
   end
@@ -18,6 +18,9 @@ class AdminController < ApplicationController
   def upload_places_csv  
     current_user.write_places_csv params[:admin][:csvfile]
     @places = PlaceImporter.new(current_user.places_csv_file_name).simulate
+  
+    return render 'no_places_to_import.html' if @places.nil? || @places.length == 0
+      
     render 'upload_places_csv.html'
   end
 

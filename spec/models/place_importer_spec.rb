@@ -3,6 +3,11 @@
 require 'spec_helper'
 
 describe PlaceImporter do
+  
+  before(:each) do
+    
+  end
+  
   it "should import" do
     file = File.join(File.dirname(__FILE__),"test.csv")
     importer = PlaceImporter.new file
@@ -65,5 +70,14 @@ describe PlaceImporter do
     kralapeas.province.code.should == "2"    
     
     Place.all.count.should == 0
+  end
+  
+  it "should not show already existent places" do
+    file = File.join(File.dirname(__FILE__),"test.csv")
+    importer = PlaceImporter.new file
+    importer.import
+    
+    new_simulation_result = importer.simulate
+    new_simulation_result.should be_nil
   end
 end

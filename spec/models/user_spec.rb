@@ -30,15 +30,15 @@ describe User do
 
     user_hc1 = user :phone_number => "123456", :place => hc1
 
-    user_ds1 = user :phone_number => "1234511", :place => district1
-    user_ds2 = user :phone_number => "1234512", :place => district1
-    user_ds3 = user :user_name => "foo", :password => '123456', :email => "foo@foo.com", :place => district1
+    user :phone_number => "1234511", :place => district1
+    user :phone_number => "1234512", :place => district1
+    user :user_name => "foo", :password => '123456', :email => "foo@foo.com", :place => district1
 
-    user_pro1 = user :phone_number => "123458", :place => province1
-    user_pro2 = user :user_name => "foo2", :password => '123456', :email => "foo2@foo.com", :place => province1
+    user :phone_number => "123458", :place => province1
+    user :user_name => "foo2", :password => '123456', :email => "foo2@foo.com", :place => province1
 
-    user_nat1 = national_user "1234591"
-    user_nat2 = national_user "1234592"
+    national_user "1234591"
+    national_user "1234592"
 
     recipients = user_hc1.alert_numbers
 
@@ -55,15 +55,15 @@ describe User do
 
     user_hc1 = user :phone_number => "123456", :place => hc1
 
-    user_ds1 = user :phone_number => "1234511", :place => district1
-    user_ds2 = user :phone_number => "1234512", :place => district1
-    user_ds3 = user :user_name => "foo", :password => '123456', :email => "foo@foo.com", :place => district1
+    user :phone_number => "1234511", :place => district1
+    user :phone_number => "1234512", :place => district1
+    user :user_name => "foo", :password => '123456', :email => "foo@foo.com", :place => district1
 
-    user_pro1 = user :phone_number => "123458", :place => province1
-    user_pro2 = user :user_name => "foo2", :password => '123456', :email => "foo2@foo.com", :place => province1
+    user :phone_number => "123458", :place => province1
+    user :user_name => "foo2", :password => '123456', :email => "foo2@foo.com", :place => province1
 
-    user_nat1 = national_user "1234591"
-    user_nat2 = national_user "1234592"
+    national_user "1234591"
+    national_user "1234592"
     
     recipients = user_vill1.alert_numbers
 

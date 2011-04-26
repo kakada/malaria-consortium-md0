@@ -39,6 +39,10 @@ class AdminController < ApplicationController
   def createusers
     @users = User.save_bulk(params[:admin])
     @validation_failed = @users.select(&:invalid?).length > 0
-    render :action => :newusers
+    if(@validation_failed)
+      render :action => :newusers
+    else
+      render :action => :list_bulk
+    end
   end
 end

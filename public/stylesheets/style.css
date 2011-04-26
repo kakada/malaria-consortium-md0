@@ -91,6 +91,7 @@ a.signup_button {
     display: block;
     float: left;
     line-height: 2;
+    width: 130px;
 }
 .fieldWithErrors {
     padding: 2px;
@@ -179,10 +180,17 @@ div.icon span {
     color: #999;
 }
 
-.table-grid input[type=text],.table-grid input[type=password]{
+input[type=text],  input[type=password]{
 	width:100%;
+        border: 1px solid #ccc;
+        -moz-border-radius : 3px;
+        -webkit-border-radius: 3px;
+        border-radius: 3px;
 }
+input[type=text].error,  input[type=password].error{
+        border: 1px solid #f00;
 
+}
 .separator
 {
 	line-height:0.5;
@@ -191,8 +199,13 @@ div.icon span {
 .clickable{
     cursor: pointer;
 }
+.table-grid tr{
+    border-bottom: 1px solid #eee;
+}
 .table-grid td,.table-grid img{
     vertical-align: top;
+    border-bottom: 1px inset #EEEEEE;
+    margin: 5px 0px;
 }
 
 .pair{
@@ -226,12 +239,14 @@ div.icon span {
 
 .validation_error
 {
-	word-wrap:break-word;
+        word-wrap: break-word;
+        color:red;
+        font-size: 10px;
 }
 
 .server
 {
-	color:red;
+	
 	font-size:10px;
 }
 
@@ -250,4 +265,23 @@ label.error
 {
 	color: red;
 	font-size:10px;
+        margin-left: 5px;
+}
+.msg-error{
+    background-image: url(../images/stop.png);
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding: 3px 3px 3px 30px;
+    border: 1px solid #ccc;
+}
+.msg-notice{
+    background-image: url(../images/notify.png);
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding: 3px 3px 3px 30px;
+    border: 1px solid #ccc;
+}
+#editFormContainer{
+    border: 2px solid #ccc;
+    padding: 20px;
 }

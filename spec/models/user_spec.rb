@@ -91,8 +91,8 @@ describe User do
   end
 
   it "should create 2 users with valid attributes" do
-    province1 = Province.create! :name => "Pro1", :code => "Pro1"    
-    province2 = Province.create! :name => "Pro1", :code => "Pro2"    
+    Province.create! :name => "Pro1", :code => "Pro1"    
+    Province.create! :name => "Pro1", :code => "Pro2"    
     
     @attrib = {
         :user_name => ["foo","bar"],
@@ -234,4 +234,5 @@ describe User do
       valid_user.valid?.should be_false
     end
   end
+
 end

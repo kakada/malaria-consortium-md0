@@ -34,7 +34,7 @@ describe AdminController do
         end
         it "should redirect to users pages " do
           post :createusers ,:admin => @attrib
-          response.should render_template "saved_users"
+          response.should render_template "newusers"
         end
       end
   end

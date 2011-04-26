@@ -113,7 +113,7 @@ describe User do
       user.write_places_csv file
     end
     
-    file_name = Rails.root.join("public","placescsv", "#{user.id}.csv")
+    file_name = Rails.root.join("tmp","placescsv", "#{user.id}.csv")
     File.exists?(file_name).should == true
     
     user.places_csv_file_name.should == file_name

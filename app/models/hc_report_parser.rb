@@ -5,9 +5,9 @@ class HCReportParser < ReportParser
   end
 
   def parse message
-
     super(message)
-
+    return if errors?
+    
     village_code = @scanner.scan /\d{8}/
 
     @error = HCReportParser.invalid_village_code(@original_message) if village_code.nil? || !@scanner.eos?

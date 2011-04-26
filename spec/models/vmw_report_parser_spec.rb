@@ -11,6 +11,11 @@ describe VMWReportParser do
     @parser.errors?().should == true
     @parser.error.should == error_message
   end
+
+  it "should return general parser error when malaria type, age or gender are invalid" do
+    @parser.parse "d12m."
+    assert_error_message ReportParser.invalid_malaria_type "d12m."
+  end
   
   it "should return error message report is longer than expected" do
     @parser.parse "F123M11111111"

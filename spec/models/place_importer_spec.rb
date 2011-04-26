@@ -19,7 +19,7 @@ describe PlaceImporter do
     kralapeas.name_kh.should == "sVaybIedIm"
 
     kralapeas.health_center.name.should == "Kantueu II"
-    kralapeas.health_center.name_kh.should == "kenÞÓ 2"
+    kralapeas.health_center.name_kh.force_encoding('utf-8').should == "kenÞÓ 2"
     kralapeas.health_center.code.should == "20412"
 
     kralapeas.od.name.should == "Battambang"
@@ -53,7 +53,7 @@ describe PlaceImporter do
     kralapeas.name_kh.should == "sVaybIedIm"
 
     kralapeas.health_center.name.should == "Kantueu II"
-    kralapeas.health_center.name_kh.should == "kenÞÓ 2"
+    kralapeas.health_center.name_kh.force_encoding('utf-8').should == "kenÞÓ 2"
     kralapeas.health_center.code.should == "20412"
 
     kralapeas.od.name.should == "Battambang"

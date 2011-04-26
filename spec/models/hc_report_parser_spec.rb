@@ -19,6 +19,11 @@ describe HCReportParser do
   end
 
   describe "syntactic" do
+    it "should return general parser error when malaria type, age or gender are invalid" do
+      @parser.parse "d12m11111111"
+      assert_error_message ReportParser.invalid_malaria_type "d12m11111111"
+    end
+    
     it "should return error message invalid village code" do
       @parser.parse "F123MAAAAAA"
       assert_error_message HCReportParser.invalid_village_code("F123MAAAAAA")

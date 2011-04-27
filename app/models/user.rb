@@ -12,14 +12,17 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :user_name, :allow_nil => true, :message => 'Belongs to another user'
 
   validates_uniqueness_of :email, :allow_nil => true, :message => 'Belongs to another user'
-  validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :allow_nil => true
+  validates_format_of :email, :allow_blank => true , :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i,  :message => 'Format not valid'
 
   validates_confirmation_of :password
 
   validates_uniqueness_of :phone_number, :allow_nil => true, :message => 'Belongs to another user'
+  
   validates_presence_of :phone_number,
-                        :unless => Proc.new {|user| !user.email.blank? && !user.user_name.blank? && !user.password.blank?},
+                        :if => Proc.new {|user| user.email.blank? || user.user_name.blank? || user.password.blank?},
                         :message => "Phone can't be blank, unless you provide a username, a password and an email"
+
+
   validates_format_of :phone_number, :with => /^\d+$/, :unless => Proc.new {|user| user.phone_number.blank?}, :message => "Only numbers allowed"
 
   validate :intended_place_code_must_exist

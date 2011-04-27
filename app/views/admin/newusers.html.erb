@@ -53,32 +53,27 @@
   <div id="editFormContainer" class="round" >
       <form id="formUserDir" method="post" action="" >
         <table width="400">
-          <thead>
-            <tr><td colspan="2">&nbsp;</td> </tr>
-          </thead>
-
           <tbody id="editDirFancy" >
             <tr >
               <td class="inputCell" > <%=label_tag :user_name_dir, "User name" %> </td>
-              <%= input_cell :user_name_dir,:class=>"input" %>
+              <%= input_cell :user_name_dir,:class=>"input submitable"  %>
             </tr>
             <tr>
               <td class="inputCell" > <%=label_tag :email_dir, "Email" %> </td>
-              <%= input_cell :email_dir, :class=>"input"  %>
+              <%= input_cell :email_dir, :class=>"input submitable"  %>
             </tr>
             <tr>
               <td class="inputCell" > <%=label_tag :password_dir, "Password" %> </td>
-              <%= input_cell :password_dir , :password =>true,:class=>"input" %>
+              <%= input_cell :password_dir , :password =>true,:class=>"input submitable" %>
             </tr>
             <tr>
               <td class="inputCell" > <%=label_tag :phone_number_dir, "Phone number" %> </td>
-              <%= input_cell :phone_number_dir, :class=>"input"  %>
+              <%= input_cell :phone_number_dir, :class=>"input submitable"  %>
             </tr>
             <tr>
               <td class="inputCell" > <%=label_tag :place_code_dir, "Place code" %> </td>
-              <%= input_cell :place_code_dir, :class=>"input"  %>
+              <%= input_cell :place_code_dir, :class=>"input submitable"  %>
             </tr>
-            <tr><td>&nbsp;</td></tr>
           </tbody>
           <tfoot>
               <tr>

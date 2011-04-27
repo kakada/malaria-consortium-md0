@@ -1,5 +1,5 @@
 .container {
-		width: 800px;
+		width: 1000px;
 		margin: 0 auto;
 	}
 body {
@@ -284,4 +284,7 @@ label.error
 #editFormContainer{
     border: 2px solid #ccc;
     padding: 20px;
+}
+#editDirFancy tr{
+    height: 45px;
 }

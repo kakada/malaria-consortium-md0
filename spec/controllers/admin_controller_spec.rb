@@ -89,4 +89,24 @@ describe AdminController do
       response.should render_template "no_places_to_import"
     end
   end
+
+  describe "Validate user" do
+    it "should render json" do
+      Place.create!(:name => "Phnom penh", :code => "pcode1", :parent_id => 0)
+      attrib = {
+         :user_name => "admin",
+         :email => "admin@yahoo.com",
+         :password => "123456",
+         :password_confirmation => "123456",
+         :intended_place_code =>"pcode1",
+         :phone_number => "0975553553"
+      }
+     
+      get :validate_user , attrib
+      response.content_type.should == "application/json"
+    end
+  end
+
+
+  
 end

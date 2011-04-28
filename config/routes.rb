@@ -26,6 +26,7 @@ Local::Application.routes.draw do
   match "/admin/places/upload_csv" => "admin#upload_places_csv", :as => :upload_places_csv
   match "/admin/places/confirm_import" => "admin#confirm_import", :as => :confirm_import_places
 
+
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action

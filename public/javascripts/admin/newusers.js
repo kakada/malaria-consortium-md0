@@ -4,6 +4,13 @@ $(document).ready(function() {
         //validate createusers form
 	$("#createusers").validate(validateOption());
         $("#formUserDir").validate(validateOption("_dir"));
+        addRoleChange();
+        addRoleChange("_dir");
+
+        //submit data to the server only if there are record in the table
+        $("#createusers").submit(function(){
+           return $("#bodyRow tr").length > 1
+        });
 
 	makeEditSubmitable();
 	$("#addMoreUser").click(function(){	
@@ -40,7 +47,12 @@ $(document).ready(function() {
 
               $("#place_code_dir").val(editTr.children[4].children[0].value);
               rows.children[4].children[1].children[1].innerHTML ='<label for="place_code_dir" generated="true" class="error">' + editTr.children[4].children[2].innerHTML +"</label>";
-           });
+
+              $("#role_dir").val(editTr.children[5].children[0].value);
+              rows.children[5].children[1].children[1].innerHTML ='<label for="role_dir" generated="true" class="error">' + editTr.children[5].children[2].innerHTML +"</label>";
+
+
+            });
         });
         $(".editRow").fancybox({
             'scrolling'		: 'no',
@@ -103,6 +115,8 @@ function insertRowTable(){
     var password = $("#password").val();
     var phone = $("#phone_number").val();
     var place_code = $("#place_code").val();
+    var role = $("#role").val();
+
 
     var icon = '<div style="float:right;"><img src="/images/trash.png" alt="Remove" title="Remove" class="clickable removeRow"/></div>';
 
@@ -112,6 +126,7 @@ function insertRowTable(){
              "<td><input type='hidden' name='admin[password][]' value='" + password + "' /><span> " + showPwd(password) + "</span> </td>" +
              "<td><input type='hidden' name='admin[phone_number][]' value='"+ phone + "' /></span>" + phone + "</span></td>" +
              "<td><input type='hidden' name='admin[place_code][]' value='" + place_code  + "' /></span>" + place_code + "</span></td>" +
+             "<td><input type='hidden' name='admin[role][]' value='" + role  + "' /></span>" + role + "</span></td>" +
              "<td>" + icon + "</td>" +
              "</tr>" ;
 
@@ -144,6 +159,23 @@ function addClickTo(clickable){
 	   var tr = this.parentNode.parentNode.parentNode;
 	   tr.parentNode.removeChild(tr);
 	});
+}
+
+function addRoleChange(suffix){
+    
+    suffix = suffix? suffix: "";
+    var id = "#role"+ suffix ;
+    $(id).change(function(){
+        var value = $(this).val();
+        if( value == "default"){
+          $("#place_code" + suffix)[0].disabled = false;
+        }
+        else if( value == "admin" || value =="national" ){
+             $("#place_code" + suffix)[0].disabled = true;
+             $("#place_code" + suffix).val("");
+        }
+
+    });
 }
 
 function addIconClick() {
@@ -185,14 +217,16 @@ function validateOption(suffix ){
 				number: true,
 				no_duplicates: true
 			};
-    rules["place_code"] = { number: true }
+
+                            
+   
 
     messages = {};
     messages["user_name" + suffix] = { required: "Required unless you provide a phone number" };
     messages["email" + suffix] =  { required: "Required unless you provide a phone number" };
     messages["password"+ suffix] =  { required: "Required unless you provide a phone number" };
     messages["phone_number" + suffix] = { required: "Required unless you provide a username, email and password" }
-
+    messages["place_code" + suffix] = { required: "Required unless user is an admin or national" };
     return  {
                 "rules" : rules,
 		"messages": messages,
@@ -212,6 +246,8 @@ function validateUser(suffix){
     params["phone_number"] = $("#phone_number" + suffix ).val();
     params["password"] = $("#password" + suffix ).val();
     params["place_code"] = $("#place_code" + suffix ).val();
+    params["role"] = $("#role" + suffix ).val();
+
 
     $($("#formUserDir").serializeArray()).each(function(i,elm){
         pos = elm["name"].indexOf(suffix);
@@ -271,5 +307,9 @@ function setTableRow(){
    editTr.children[4].children[0].value = $("#place_code_dir").val();
    editTr.children[4].children[1].innerHTML = $("#place_code_dir").val();
    editTr.children[4].children[2].innerHTML="";
+
+   editTr.children[5].children[0].value = $("#role_dir").val();
+   editTr.children[5].children[1].innerHTML = $("#role_dir").val();
+   editTr.children[5].children[2].innerHTML="";
    parent.$.fancybox.close();
 }

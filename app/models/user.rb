@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   attr_accessor :intended_place_code
 
-  Roles = ["national", "admin"]
+  Roles = ["default", "national", "admin" ]
 
   before_validation :try_fetch_place
 
@@ -92,7 +92,8 @@ class User < ActiveRecord::Base
          :password => data[:password][i],
          :password_confirmation => data[:password][i],
          :intended_place_code => data[:place_code][i],
-         :phone_number => data[:phone_number][i]
+         :phone_number => data[:phone_number][i],
+         :role => data[:role][i]
       }
 
       user = User.new attrib

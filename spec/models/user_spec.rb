@@ -100,6 +100,7 @@ describe User do
         :password => ["123456", "234567"],
         :phone_number => ["0975553553", "0975425678"],
         :place_code => ["Pro1","Pro2"],
+        :role => [User::Roles[0], User::Roles[1] ]
     }
     User.save_bulk(@attrib)
     User.count.should == 2  

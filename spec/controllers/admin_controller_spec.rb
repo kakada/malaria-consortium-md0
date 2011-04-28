@@ -31,7 +31,8 @@ describe AdminController do
               :email => ["foo@yahoo.com","bar@yahoo.com"],
               :password => ["123456", "234567"],
               :phone_number => ["0975553553", "0975425678"],
-              :place_code => ["Pro1","Pro2"]
+              :place_code => ["Pro1","Pro2"],
+              :role => [User::Roles[0], User::Roles[1]]
           }
           #@users = User.save_bulk(@attribs)
           #User.stub(:save_bulk).and_return(@users)
@@ -50,7 +51,8 @@ describe AdminController do
               :email => ["foo@yahoo.com","bar@yahoo.com"],
               :password => ["123456", "234567"],
               :phone_number => ["097 5553553", "0975425678"],
-              :place_code => ["1","3"]
+              :place_code => ["1","3"],
+              :role => [User::Roles[0], User::Roles[0]]
           }
           @valid = {
               :user_name => "admin",

@@ -15,6 +15,18 @@ module AdminHelper
 		element.html_safe
   end
 
+  def select_cell field, user=nil , options = {}
+    element = "<td class=\"inputCell\" >"
+    element << select_tag(field ,options_for_select(User::Roles,  (user.nil?)? "":user.send(field)), options )
+		element << '<div class="validation_error server">'
+    element << ((!user.nil? && user.errors[field]) ? user.errors[field].join(". ") : " ")
+  	element << '</div>'
+		element << "</td>"
+		element.html_safe
+  end
+
+
+
   
   def user_cell user, field, ui_field_name = nil , options = {}
     element = '<td>'

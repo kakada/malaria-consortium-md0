@@ -16,38 +16,39 @@
 		<thead>
 			<tr>
 				<th><%= t("Name") %> </th>
-				<th><%= t("Email") %>  </th>
+				<th width=180 ><%= t("Email") %>  </th>
 				<th><%= t("Password") %>  </th>
-				<th><%= t("Phone") %>  </th>
-				<th><%= t("Place (enter code)") %>  </th>
-				<th></th>
+				<th width ="100" ><%= t("Phone") %>  </th>
+				<th width ="100" ><%= t("Place code") %>  </th>
+                                <th><%= t("Role") %>  </th>
+				<th> </th>
 			</tr>
 		</thead>
 		<tbody id="bodyRow">
 			<%= render :partial => "user", :locals =>{:users => @users} %>
-			
-			<tr class="separator"><td colspan="5">&nbsp;</td></tr>
 			<tr id="inputRow">
 				<%= input_cell "user_name"%>
 				<%= input_cell "email" %>
 				<%= input_cell "password", :password => true %>
 				<%= input_cell "phone_number" %>
 				<%= input_cell "place_code" %>
+                                <%= select_cell :role , nil, :class =>"input submitable"  %>
 				<td>
-			    	<%= image_tag "add.png", :class => "clickable", :id => "addMoreUser", :alt => "Add user", :title => "Add user" %>
+                                  <%= image_tag "add.png", :class => "clickable", :id => "addMoreUser", :alt => "Add user", :title => "Add user" %>
 				</td>
 			</tr>
 		</tbody>
 		<tfoot>
 		  <tr>
-		    <td colspan="5" align="center" > &nbsp; </td>
+		    <td colspan="7" align="center" > &nbsp; </td>
 		  </tr>
 		</tfoot>
 	</table>
 	<div class="right-content">
-	  <%= submit_tag "Submit" ,:class=> "btn" %>
+	  <%= submit_tag "Submit" ,:class=> "btn" ,:name=> "insertSubmit" %>
 	</div>
 <%end%>
+
 
  <div style="display:none;" >
   <div id="editFormContainer" class="round" >
@@ -55,7 +56,7 @@
         <table width="400">
           <tbody id="editDirFancy" >
             <tr >
-              <td class="inputCell" > <%=label_tag :user_name_dir, "User name" %> </td>
+              <td class="inputCell" > <%=label_tag :user_name_dir, "Username" %> </td>
               <%= input_cell :user_name_dir,:class=>"input submitable"  %>
             </tr>
             <tr>
@@ -74,6 +75,12 @@
               <td class="inputCell" > <%=label_tag :place_code_dir, "Place code" %> </td>
               <%= input_cell :place_code_dir, :class=>"input submitable"  %>
             </tr>
+            <tr>
+              <td class="inputCell" > <%=label_tag :role, "Role" %> </td>
+              <%= select_cell :role_dir, nil, :class => "input submitable"  %>
+            </tr>
+
+
           </tbody>
           <tfoot>
               <tr>

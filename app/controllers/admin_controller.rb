@@ -53,7 +53,8 @@ class AdminController < ApplicationController
          :password => params[:password],
          :password_confirmation => params[:password],
          :intended_place_code => params[:place_code],
-         :phone_number => params[:phone_number]
+         :phone_number => params[:phone_number],
+         :role => params[:role]
       }
     user = User.new(attrib)
     user.valid?

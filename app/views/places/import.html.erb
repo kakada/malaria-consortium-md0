@@ -35,7 +35,7 @@
 
 <h2>Import Places</h2>
 <div class="files">
-	<%= form_for(:admin, :url => upload_places_csv_path, :html => { :multipart => true, :class => "upload"}) do |form| %>
+	<%= form_for(:admin, :url => upload_csv_places_path, :html => { :multipart => true, :class => "upload"}) do |form| %>
 		<%= form.file_field :csvfile %>
 		<div>Upload CSV File</div>
 	<% end %>

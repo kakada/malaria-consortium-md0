@@ -52,7 +52,7 @@ describe Place do
       describe "Description" do
         it "should be like {place.name} ({place type})" do
           village = Village.new @valid_attributes
-          village.description.should == "value for name (Village)"
+          village.description.should == "value for name (Village, v10010)"
         end
       end
     end

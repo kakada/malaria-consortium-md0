@@ -1,7 +1,0 @@
-<h3 class="msg-notice round">
-  <%=@users.size  %> user<%= (@users.size >1)?"s":""  %> created
-</h3>
-<%= render :partial=>"list_users" , :locals => {:users =>@users} %>
-<p>
- Go to : <%= link_to "List of users", "/admin/users" %>
-</p>

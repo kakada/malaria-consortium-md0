@@ -36,7 +36,7 @@ module SessionsHelper
   def deny_access
     store_location
     flash[:error] = "Please sign in to access this page"
-    redirect_to signin_path
+    redirect_to signin_sessions_path
   end
 
   def store_location
@@ -57,7 +57,7 @@ module SessionsHelper
   end
 
   def authenticate_admin
-    deny_access unless signed_in? && admin?
+    deny_access unless signed_in? and admin?
   end
 
   def correct_user

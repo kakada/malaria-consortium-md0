@@ -1,36 +1,5 @@
-<h2> Edit user </h2>
-<%form_for [@placeable, User.new] do |form|%>
-  <div>
-    <%#= form.error_messages %>
-    <%#=form.errors.count%>
-  </div>
-  <div class="field">
-      <%= form.label :user_name %>
-      <%= form.text_field :user_name%>
-  </div>
+<h3>Users</h3>
+<%= will_paginate @users %>
+<div class="clear"> </div>
+<%= render :partial => "list_users", :locals => { :users => @users} %>
 
-  <div class="field">
-      <%= form.label :email %>
-      <%= form.text_field :email%>
-  </div>
-
-  <div class="field">
-      <%= form.label :password %>
-      <%= form.password_field :password %>
-  </div>
-
-  <div class="field">
-      <%= form.label :password_confirmation %>
-      <%= form.password_field :password_confirmation %>
-  </div>
-
-  <div class="field">
-      <%= form.label :phone_number %>
-      <%= form.text_field :phone_number %>
-  </div>
-
-
-  <div class="field action">
-    <%= form.submit "Update" %>
-  </div>
-<%end%>

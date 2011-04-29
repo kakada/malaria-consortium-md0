@@ -10,5 +10,4 @@ class PageController < ApplicationController
   def about
 		@title = "about"
   end
-
 end

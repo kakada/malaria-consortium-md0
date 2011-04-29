@@ -2,29 +2,43 @@ Local::Application.routes.draw do
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
-  root :to => "admin#home"
+  root :to => "home#index"
 
-  resources :users
+  resources :users do
+    collection do
+      get "validate"
+    end
+  end
 
   resources :places do
+    collection do
+      get "import"
+      post "upload_csv"
+      post "confirm_import"
+    end
+
     resources :users
   end
 
-  resources :sessions
-
-  resources :sessions, :only =>[:new,:create,:destroy]
-  match '/signin' => "sessions#new"
-  match '/signout' => "sessions#destroy"
-
+  resources :sessions, :only =>[:new,:create,:destroy] do 
+    collection do
+      get "signin"
+      get "signout"
+    end
+  end
+  
+  resources :alerts do
+    collection do
+      get "health_center"
+      get "village"      
+    end
+  end
+  
   match  '/contact' => "page#contact"
 	match  '/about' => "page#about"
+
 	match  "/signup" => "users#new"
-
   match "/data_entry" =>"users#data_entry"
-
-  match "/admin/places/import" => "admin#import_places", :as => :import_places
-  match "/admin/places/upload_csv" => "admin#upload_places_csv", :as => :upload_places_csv
-  match "/admin/places/confirm_import" => "admin#confirm_import", :as => :confirm_import_places
 
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
@@ -78,5 +92,5 @@ Local::Application.routes.draw do
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
-   match ':controller(/:action(/:id(.:format)))'
+  # match ':controller(/:action(/:id(.:format)))'
 end

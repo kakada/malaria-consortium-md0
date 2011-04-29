@@ -1,53 +1,43 @@
 class UsersController < ApplicationController
 
-  before_filter :authenticate, :only=>[:edit,:update,:show]
-  before_filter :correct_user, :only=>[:edit,:update,:show]
-
-
-  #@users = @placeable.users
-
-  #GET sign-in  new_user_path
+  before_filter :authenticate, :only => [:edit, :update, :show]
+  before_filter :correct_user, :only => [:edit, :update, :show]
+  
+  #GET /users
   def index
-    #@users = @placeable.users
+    @title = "User management"
+    @users = User.paginate_user params[:page]
   end
-
-
+  
+  #GET /user/new
   def new
-		@title = "Sign up"
-    @place = Place.find(param[:id])
-		@user = User.new
+    @title = "Create Users"
+    @places = Place.all
   end
-
-  #GET users/1/edit edit_user_path @user
-  def edit
-    @user = User.find(params[:id])
-    @title = "Edit user"
-  end
-
-	#GET /users/1/ user_path @user
-	def show
-		@user = User.find params[:id]
-	end
-
-  #PUT users/1
-  def update
-    @user = User.find(params[:id])
-    if(!@user.nil?)
-      if(@user.update_attributes(params[:user]))
-        flash[:success] = "Profile updated!"
-        redirect_to user_path(@user)
-      end
+  
+  def create
+    @users = User.save_bulk(params[:admin])
+    @validation_failed = @users.select(&:invalid?).length > 0
+    if(@validation_failed)
+      render :action => :new
     else
-      @title = "Edit user"
-      render "edit"
+      render :action => :list_bulk
     end
   end
 
-  #POST user/  users_path
-  def create
-    @place = Place.find(1)
-    @user = @place.users.build(params[:user])
-    render :new
+  def validate
+    attrib = {
+         :user_name => params[:user_name],
+         :email => params[:email],
+         :password => params[:password],
+         :password_confirmation => params[:password],
+         :intended_place_code => params[:place_code],
+         :phone_number => params[:phone_number]
+    }
     
-  end  
+    user = User.new(attrib)
+    user.valid?
+    
+    render :json => user.errors
+  end
 end

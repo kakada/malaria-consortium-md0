@@ -2,15 +2,14 @@
     <%= link_to  image_tag("logo.png", :alt => "Malaria", :class => "round logo"),root_url %>
     <ul class="navigation round " style="float:right;"  >
 		<% if !signed_in? %>
-          <li> <span>|</span> <%= link_to "Sign up", signup_path %></li>
-          <li> <span>|</span> <%= link_to "Sign in", signin_path %>  </li>
+          <li> <span>|</span> <%= link_to "Sign in", signin_sessions_path %>  </li>
         <% else %>
 			<%if admin? %>
-				<li><%= link_to "Administration", root_path %> </li>
+				<li><%= link_to "Home", root_path %> </li>
 			<%end%>
 			<li> <span>|</span> <%= link_to "Profile", user_url(@current_user)   %></li>
 			<li> <span>|</span> <%= link_to "Settings", edit_user_url(@current_user)  %></li>
-			<li> <span>|</span> <%= link_to "Sign out", signout_path %></li>
+			<li> <span>|</span> <%= link_to "Sign out", signout_sessions_path %></li>
         <%  end %>
     </ul>
 </div>

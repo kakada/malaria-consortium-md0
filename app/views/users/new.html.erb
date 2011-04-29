@@ -1,35 +1,88 @@
-<h2> Sign up </h2>
-<%form_for [@place, @user] do |form|%>
-  <div>
-    <%= form.error_messages %>
-    <%#=form.errors.count%>
-  </div>
-  <div class="field">
-      <%= form.label :user_name %>
-      <%= form.text_field :user_name%>
-  </div>
+<% content_for :head do %>
+	<%= javascript_include_tag 'jquery.validate.min' %>
+    <%= javascript_include_tag 'jquery.fancybox-1.3.4' %>
+    <%= stylesheet_link_tag "jquery.fancybox-1.3.4" %>
 
-  <div class="field">
-      <%= form.label :email %>
-      <%= form.text_field :email%>
-  </div>
+	<%= javascript_include_tag 'users/newusers' %>
+<% end %>
 
-  <div class="field">
-      <%= form.label :password %>
-      <%= form.password_field :password %>
-  </div>
+<h2> Create Users </h2>
 
-  <div class="field">
-      <%= form.label :password_confirmation %>
-      <%= form.password_field :password_confirmation %>
-  </div>
+<% if @validation_failed %>
+	<h3 class="msg-error round">Some of the users are invalid, please correct or remove them and try again</h3>
+<% end %>
 
-  <div class="field">
-      <%= form.label :phone_number %>
-      <%= form.text_field :phone_number %>
-  </div>
-
-  <div class="field action">
-    <%= form.submit "Sign up" %>
-  </div>
+<%= form_for(:users, :url => users_url, :html => { :id => 'createusers'}) do |form|  %>
+	<table class="table-grid round" >
+		<thead>
+			<tr>
+				<th><%= t("Name") %> </th>
+				<th><%= t("Email") %>  </th>
+				<th><%= t("Password") %>  </th>
+				<th><%= t("Phone") %>  </th>
+				<th><%= t("Place (enter code)") %>  </th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody id="bodyRow">
+			<%= render :partial => "user", :locals => {:users => @users} %>
+			
+			<tr class="separator"><td colspan="5">&nbsp;</td></tr>
+			<tr id="inputRow">
+				<%= input_cell "user_name"%>
+				<%= input_cell "email" %>
+				<%= input_cell "password", :password => true %>
+				<%= input_cell "phone_number" %>
+				<%= input_cell "place_code" %>
+				<td>
+			    	<%= image_tag "add.png", :class => "clickable", :id => "addMoreUser", :alt => "Add user", :title => "Add user" %>
+				</td>
+			</tr>
+		</tbody>
+		<tfoot>
+		  <tr>
+		    <td colspan="5" align="center" > &nbsp; </td>
+		  </tr>
+		</tfoot>
+	</table>
+	<div class="right-content">
+	  <%= submit_tag "Submit" ,:class=> "btn" %>
+	</div>
 <%end%>
+
+ <div style="display:none;" >
+  <div id="editFormContainer" class="round" >
+      <form id="formUserDir" method="post" action="" >
+        <table width="400">
+          <tbody id="editDirFancy" >
+            <tr >
+              <td class="inputCell" > <%= label_tag :user_name_dir, "User name" %> </td>
+              <%= input_cell :user_name_dir, :class => "input submitable"  %>
+            </tr>
+            <tr>
+              <td class="inputCell" > <%=label_tag :email_dir, "Email" %> </td>
+              <%= input_cell :email_dir, :class=>"input submitable"  %>
+            </tr>
+            <tr>
+              <td class="inputCell" > <%=label_tag :password_dir, "Password" %> </td>
+              <%= input_cell :password_dir , :password =>true,:class=>"input submitable" %>
+            </tr>
+            <tr>
+              <td class="inputCell" > <%=label_tag :phone_number_dir, "Phone number" %> </td>
+              <%= input_cell :phone_number_dir, :class=>"input submitable"  %>
+            </tr>
+            <tr>
+              <td class="inputCell" > <%=label_tag :place_code_dir, "Place code" %> </td>
+              <%= input_cell :place_code_dir, :class=>"input submitable"  %>
+            </tr>
+          </tbody>
+          <tfoot>
+              <tr>
+                <td> </td>
+                <td align="right"><input type="submit" value="Accept" id="editFormSubmit" />  </td>
+              </tr>
+            </tfoot>
+        </table>
+      </form>
+  </div>
+</div>

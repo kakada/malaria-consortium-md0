@@ -1,7 +1,7 @@
 .container {
-		width: 1000px;
-		margin: 0 auto;
-	}
+	margin: 0 auto;
+}
+
 body {
 	background: #7FC9EE;
         color: gray;
@@ -267,24 +267,47 @@ label.error
 	font-size:10px;
         margin-left: 5px;
 }
-.msg-error{
+
+.msg-error, .alert {
     background-image: url(../images/stop.png);
     background-repeat: no-repeat;
     background-position: left center;
     padding: 3px 3px 3px 30px;
     border: 1px solid #ccc;
 }
-.msg-notice{
+
+.msg-notice, .notice {
     background-image: url(../images/notify.png);
     background-repeat: no-repeat;
     background-position: left center;
     padding: 3px 3px 3px 30px;
     border: 1px solid #ccc;
 }
+
 #editFormContainer{
     border: 2px solid #ccc;
     padding: 20px;
 }
+
+.big-button {
+	
+	width:150px;
+	height:30px;
+}
+
+.alert_form_line {
+	margin-top:10px;
+}
+
+#alert-table {
+	margin-top:30px;
+	width:100%;
+}
+
+#alert-controls {
+	padding:20px;
+}
+
 #editDirFancy tr{
     height: 45px;
 }

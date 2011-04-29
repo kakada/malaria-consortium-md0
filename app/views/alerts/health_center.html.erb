@@ -1,0 +1,41 @@
+<%= content_for :head do %>
+	<%= javascript_include_tag 'alerts/health_center.js' %>
+<% end %>
+
+<h2>Alert Settings for Health Centers</h2>
+
+<input type='hidden' id='dyna_attributes' data-refresh='<%= health_center_alerts_path %>' data-blink='<%= !@alert.id.nil? %>'>
+
+<div id="alert_controls">
+<%= form_for @alert, :html => {:class => 'alert_form'} do |f| %>	
+	<div class="alert_form_line">
+		Start alerting OD <%= collection_select(:alert, :recipient_id, @ods, :id, :description) %>
+	</div>
+	<div class="alert_form_line">
+		when the number of messages from <%= collection_select(:alert, :source_id, @hcs, :id, :description, :prompt => "All") %> health center/s in the last seven days 
+	</div>
+	<div class="alert_form_line">
+		surpasses <%= number_field(:alert, :threshold, :min => 0, :default => 0) %>
+		<%= submit_tag(@alert.id ? 'Update Rule' : 'Add Rule', :class => 'big-button')%>
+	</div>
+	<%= hidden_field(:alert, :source_type) %>
+<% end %>
+</div>
+
+<% if @alerts && @alerts.size > 0 %>
+	<table id="alert-table" class="table-grid round">
+		<thead>
+			<tr>
+				<th>OD</th>
+				<th>HC</th>
+				<th>Threshold</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<%= render @alerts, :editing => @alert.id %>
+		</tbody>
+	</table>
+<% else %>
+	<h3>No health center alerts have been created yet</h3>
+<% end %>

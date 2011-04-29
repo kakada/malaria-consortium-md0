@@ -10,7 +10,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110421113158) do
+ActiveRecord::Schema.define(:version => 20110428081923) do
+
+  create_table "alerts", :force => true do |t|
+    t.integer  "threshold"
+    t.integer  "recipient_id"
+    t.integer  "source_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "source_type"
+  end
+
+  add_index "alerts", ["recipient_id"], :name => "fk_alerts_recipient"
+  add_index "alerts", ["source_id"], :name => "fk_alerts_source"
 
   create_table "places", :force => true do |t|
     t.string   "name"

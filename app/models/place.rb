@@ -40,7 +40,7 @@ class Place < ActiveRecord::Base
   end
   
   def description
-    "#{name} (#{self.class.name.titleize})"
+    "#{name} (#{self.class.name.titleize}, #{code})"
   end
   
   def self.levels

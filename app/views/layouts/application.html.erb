@@ -17,6 +17,7 @@
                                 <div id="div_notice">
                                       <% flash.each do |key, value| %>
                                       <div id="div_<%= key %>" class="round flash <%= key %>"><%= value %></div>
+                                        <% break; %>
                                       <% end %>
                                 </div>
 

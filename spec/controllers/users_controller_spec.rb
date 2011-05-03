@@ -37,9 +37,9 @@ describe UsersController do
         put :user_save, @update_attrib_valid
       end
 
-      it "should have a flash notice msg" do
+      it "should set @msg as notice msg" do
         put :user_save, @update_attrib_valid
-        flash["msg-notice"].should == "Update successfully."
+        assigns[:msg].should == {"msg-notice" => "Update successfully."}
       end
 
       it "should render user_cancel template" do
@@ -66,9 +66,9 @@ describe UsersController do
         put :user_save, @update_attrib_invalid
       end
 
-      it "should have a flash error msg" do
+      it "should set @msg as error msg" do
         put :user_save, @update_attrib_invalid
-        flash["msg-error"].should == "Failed to update."
+        assigns[:msg].should  == {"msg-error" => "Failed to update."}
       end
 
       it "should render user_edit template" do

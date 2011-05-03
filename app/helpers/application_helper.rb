@@ -25,8 +25,11 @@ module ApplicationHelper
     flash ||= {}
     element = ""
     flash.each do |key,value|
-      element << "<div class='flash round #{key}'> #{value} </div> "
+      element << "<div id='flash_msg' class='flash round #{key}'>#{value}</div> "
+      break
     end
     element.html_safe
   end
+
+
 end

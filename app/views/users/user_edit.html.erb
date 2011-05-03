@@ -15,11 +15,11 @@
 <td><%= select_tag(:role ,options_for_select(User::Roles,  (@user.nil?)? "" : @user.send(:role)), {} )  %>  </td>
 
 <td>
-  <%=  submit_tag "Update", :id => "saveUser_" + @user.id.to_s, :"data-url"=> url_for("/user_update"), :name => "updateUser" , :class => "updateUser" %>
+  <%=  submit_tag "Save", :id => "saveUser_" + @user.id.to_s, :"data-url"=> url_for("/user_update"), :name => "updateUser" , :class => "updateUser" %>
   <%=  submit_tag "Cancel", :id => "cancelUser_" + @user.id.to_s,:"data-url"=> url_for("/user_cancel/#{@user.id}"), :name => "cancelUser", :class => "cancelUser" %>
 </td>
 <script type="text/javascript" >
-    var msg = "<%=flash_msg flash %>" ;
+    var msg = "<%=flash_msg @msg %>" ;
     $("#saveUser_" + <%= @user.id %> ).click(function(e){
       tr = this.parentNode.parentNode;
       var params = {};
@@ -37,29 +37,32 @@
         data: params,
         method : "post",
         success: function(responseText, status , responseObj){
-          $("#tr_"+params["id"]).html(responseText);
+          updateRow(params["id"], responseText );
           showNotice();
+          if(msg.match(/successfully/i))
+            addForm(true);
         }
       });
       return false;
+      
     });
     
     $("#cancelUser_" + <%= @user.id %> ).click(function(){
-       var params = {};
        var url = $(this).attr("data-url");
-       params["id"] = <%= @user.id %> ;
-       $.ajax({
-        url : url,
-        data: params,
-        method : "get",
-        success: function(responseText, status , responseObj){
-          $("#tr_"+ params["id"]).html(responseText);
-          showNotice();
-        },
-        complete: function(){
-        }
-      });
+       var id  = <%= @user.id %> ;
+       cancelForm(url,id);
       return false;
     });
-    
+
+   function cancelForm(url, id){
+      $.ajax({
+        url : url,
+        method : "get",
+        success: function(responseText, status , responseObj){
+          updateRow(id, responseText) ;
+          showNotice();
+          addForm(true);
+        }
+      });
+   }
   </script>

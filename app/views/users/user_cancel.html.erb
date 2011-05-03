@@ -1,22 +1,16 @@
 <%= render :partial => "user_row", :locals =>{:user =>@user}  %>
 <script type="text/javascript" >
-    msg = "<%=flash_msg flash %>" ;
+    msg = "<%=flash_msg @msg %>" ;
+    activeRow = 0;
     $("#a_<%=  @user.id%>").click(function(e){
+      
       var url = $(this).attr("data-url");
       var id  = $(this).attr("data-rel");
-      $.ajax({
-          url: url,
-          method: "get",
-          success: function(responseText, status, responseObj){
-             $("#tr_"+ id ).html(responseText);
-             
-          },
-          complete: function(){
-            showNotice();
-          }
-      });
-
-      e.preventDefault();
+      if(activeRow){
+          alert("Please complete the current editing row , then start new editing");
+          return false;
+      }
+      getEditForm(url,id);
       return false;
     });
 </script>

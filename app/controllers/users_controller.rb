@@ -86,12 +86,12 @@ class UsersController < ApplicationController
 
     @user = User.find(params[:id].to_i)
 
-    
+    @msg = {}
     if(@user.update_attributes(attributes))
-      flash["msg-notice"] = "Update successfully."
+      @msg["msg-notice"] = "Update successfully."
       render :user_cancel, :layout => false
     else
-      flash["msg-error"] = "Failed to update."
+      @msg["msg-error"] = "Failed to update."
       @user[:intended_place_code] =  params[:intended_place_code]
       render :user_edit, :layout => false
     end

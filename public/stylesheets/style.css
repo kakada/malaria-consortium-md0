@@ -1,6 +1,6 @@
 .container {
 	margin: 0 auto;
-        width: 1000px;
+        width: 1010px;
 }
 
 body {
@@ -209,6 +209,7 @@ input[type=text].error,  input[type=password].error{
     vertical-align: top;
     border-bottom: 1px inset #EEEEEE;
     margin: 5px 0px;
+    text-align: left;
 }
 
 .pair{
@@ -275,22 +276,24 @@ label.error
     background-image: url(../images/stop.png);
     background-repeat: no-repeat;
     background-position: left center;
-    padding: 3px 3px 3px 30px;
-    border: 1px solid #ccc;
+    padding: 5px 5px 5px 30px;
+    border: 2px solid #ccc;
     -moz-border-radius:	4px;
     -webkit-border-radius: 4px;
     border-radius : 4px;
+    background-color: #eee;
 }
 
 .msg-notice, .notice {
     background-image: url(../images/notify.png);
     background-repeat: no-repeat;
     background-position: left center;
-    padding: 3px 3px 3px 30px;
-    border: 1px solid #ccc;
+    padding: 5px 5px 5px 30px;
+    border: 2px solid #ccc;
     -moz-border-radius:	4px;
     -webkit-border-radius: 4px;
     border-radius : 4px;
+    background-color: #eee;
 }
 
 #editFormContainer{

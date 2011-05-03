@@ -5,7 +5,7 @@
 <td><%= user.place.nil? ? "" : user.place.description %>  </td>
 <td><%= user.role %></td>
 <td>
-  <div style="float:right;">
+  <div >
     <%= link_to "Edit", edit_user_path(user) ,:class => "clickable editRow", :id=>"a_#{user.id}", :"data-url" => url_for("/user_edit/#{user.id}") , :"data-rel" => user.id %> |
     <%= link_to "Delete", user_path(user),:method =>:delete, :confirm =>"Are you sure to remove this user" %>
   </div>

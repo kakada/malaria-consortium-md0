@@ -1,12 +1,16 @@
 class UsersController < ApplicationController
 
-  before_filter :authenticate, :only => [:edit, :update, :show]
-  before_filter :correct_user, :only => [:edit, :update, :show]
+  before_filter :authenticate, :only => [:edit, :update]
+  before_filter :correct_user, :only => [:edit, :update]
+
   
   #GET /users
   def index
     @title = "User management"
-    @users = User.paginate_user params[:page]
+    @page = params[:page]
+    @user = User.new
+    @user.intended_place_code = ""
+    @users = User.paginate_user @page
   end
   
   #GET /user/new
@@ -15,29 +19,81 @@ class UsersController < ApplicationController
     @places = Place.all
   end
   
-  def create
-    @users = User.save_bulk(params[:admin])
-    @validation_failed = @users.select(&:invalid?).length > 0
-    if(@validation_failed)
-      render :action => :new
-    else
-      render :action => :list_bulk
-    end
+  #post /users/:id
+  def destroy
+    user = User.find(params[:id])
+    user.delete
+    flash["msg-error"] = "User has been removed"
+    redirect_to :action => "index"
   end
-
-  def validate
-    attrib = {
+  
+  def create
+    attributes = {
          :user_name => params[:user_name],
          :email => params[:email],
          :password => params[:password],
          :password_confirmation => params[:password],
-         :intended_place_code => params[:place_code],
-         :phone_number => params[:phone_number]
+         :phone_number => params[:phone_number],
+         :role => params[:role],
+         :id => params[:id],
+         :intended_place_code => params[:intended_place_code]
     }
+    @user = User.new(attributes)
+    if(@user.save)
+      @user = User.new
+      flash["msg-notice"] = "Successfully created"
+    else
+      @user.intended_place_code = params[:intended_place_code]
+      flash["msg-error"] = "Failed to create"
+    end
     
-    user = User.new(attrib)
-    user.valid?
+    @page = (params[:page].to_i<2) ?1:params[:page].to_i;
+    @users = User.paginate_user @page
+    render :index 
+  end
+
+  #GET user/:id.:format
+  def show
+    @user = User.find(params[:id])
+    respond_to do |format|
+	    format.json { render :json => @user  }
+      format.html { render :show => @user }
+    end
+  end
+
+  def user_cancel
+    @user = User.find(params[:id].to_i)
+    render :layout => false
+  end
+
+  #edit/:id
+  def user_edit
+    @user = User.find params[:id]
+    render :layout => false
+  end
+
+  def user_save
+    attributes = {
+         :user_name => params[:user_name],
+         :email => params[:email],
+         :password => params[:password],
+         :password_confirmation => params[:password],
+         :phone_number => params[:phone_number],
+         :role => params[:role],
+         :id => params[:id],
+         :intended_place_code => params[:intended_place_code]
+    }
+
+    @user = User.find(params[:id].to_i)
+
     
-    render :json => user.errors
+    if(@user.update_attributes(attributes))
+      flash["msg-notice"] = "Update successfully."
+      render :user_cancel, :layout => false
+    else
+      flash["msg-error"] = "Failed to update."
+      @user[:intended_place_code] =  params[:intended_place_code]
+      render :user_edit, :layout => false
+    end
   end
 end

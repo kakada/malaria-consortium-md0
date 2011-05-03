@@ -1,5 +1,6 @@
 .container {
 	margin: 0 auto;
+        width: 1000px;
 }
 
 body {
@@ -80,8 +81,9 @@ a.signup_button {
 	padding: 20px;
 }
 .round {
-	-moz-border-radius:	5px;
-	-webkit-border-radius: 5px;
+	-moz-border-radius:	4px;
+	-webkit-border-radius: 4px;
+        border-radius : 4px;
 }
 
 .field{
@@ -274,6 +276,9 @@ label.error
     background-position: left center;
     padding: 3px 3px 3px 30px;
     border: 1px solid #ccc;
+    -moz-border-radius:	4px;
+    -webkit-border-radius: 4px;
+    border-radius : 4px;
 }
 
 .msg-notice, .notice {
@@ -282,6 +287,9 @@ label.error
     background-position: left center;
     padding: 3px 3px 3px 30px;
     border: 1px solid #ccc;
+    -moz-border-radius:	4px;
+    -webkit-border-radius: 4px;
+    border-radius : 4px;
 }
 
 #editFormContainer{

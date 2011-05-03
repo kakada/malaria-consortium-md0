@@ -14,9 +14,11 @@
 			<%= render 'layouts/header' %>
 
 			<div id="content" class="round">
-				<% flash.each do |key, value| %>
-				<div class="flash <%= key %>"><%= value %></div>
-				<% end %>
+                                <div id="div_notice">
+                                      <% flash.each do |key, value| %>
+                                      <div id="div_<%= key %>" class="round flash <%= key %>"><%= value %></div>
+                                      <% end %>
+                                </div>
 
 				<%= yield %>
 			</div>

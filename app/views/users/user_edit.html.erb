@@ -1,0 +1,65 @@
+<td>
+    <%= hidden_field_tag :id, @user[:id]  %>
+    <%= input_field_tag :user_name, @user  %>
+ 
+</td>
+<td>
+  <%= input_field_tag :email, @user   %>
+</td>
+<td>
+    <%= input_field_tag :phone_number, @user  %>
+</td>
+<td><%= input_field_tag :password, @user , "password"   %>  </td>
+<td><%= input_field_tag :intended_place_code, @user %></td>
+
+<td><%= select_tag(:role ,options_for_select(User::Roles,  (@user.nil?)? "" : @user.send(:role)), {} )  %>  </td>
+
+<td>
+  <%=  submit_tag "Update", :id => "saveUser_" + @user.id.to_s, :"data-url"=> url_for("/user_update"), :name => "updateUser" , :class => "updateUser" %>
+  <%=  submit_tag "Cancel", :id => "cancelUser_" + @user.id.to_s,:"data-url"=> url_for("/user_cancel/#{@user.id}"), :name => "cancelUser", :class => "cancelUser" %>
+</td>
+<script type="text/javascript" >
+    var msg = "<%=flash_msg flash %>" ;
+    $("#saveUser_" + <%= @user.id %> ).click(function(e){
+      tr = this.parentNode.parentNode;
+      var params = {};
+      params["id"] =                  $(tr.children[0].children[0]).val();
+      params["user_name"] =           $(tr.children[0].children[1]).val();
+      params["email"] =               $(tr.children[1].children[0]).val();
+      params["phone_number"] =        $(tr.children[2].children[0]).val();
+      params["password"] =            $(tr.children[3].children[0]).val();
+      params["intended_place_code"] = $(tr.children[4].children[0]).val();
+      params["role"] =                $(tr.children[5].children[0]).val();
+
+      var url = $(this).attr("data-url");
+      $.ajax({
+        url : url,
+        data: params,
+        method : "post",
+        success: function(responseText, status , responseObj){
+          $("#tr_"+params["id"]).html(responseText);
+          showNotice();
+        }
+      });
+      return false;
+    });
+    
+    $("#cancelUser_" + <%= @user.id %> ).click(function(){
+       var params = {};
+       var url = $(this).attr("data-url");
+       params["id"] = <%= @user.id %> ;
+       $.ajax({
+        url : url,
+        data: params,
+        method : "get",
+        success: function(responseText, status , responseObj){
+          $("#tr_"+ params["id"]).html(responseText);
+          showNotice();
+        },
+        complete: function(){
+        }
+      });
+      return false;
+    });
+    
+  </script>

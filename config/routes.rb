@@ -33,12 +33,14 @@ Local::Application.routes.draw do
       get "village"      
     end
   end
+
   
   match  '/contact' => "page#contact"
 	match  '/about' => "page#about"
-
 	match  "/signup" => "users#new"
-  match "/data_entry" =>"users#data_entry"
+  match  "/user_edit/:id" => "users#user_edit"
+  match  "/user_update" => "users#user_save"
+  match  "/user_cancel/:id" => "users#user_cancel"
 
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
@@ -92,5 +94,5 @@ Local::Application.routes.draw do
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
-  # match ':controller(/:action(/:id(.:format)))'
+  match ':controller(/:action(/:id(.:format)))'
 end

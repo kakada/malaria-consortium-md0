@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   attr_accessor :intended_place_code
 
-  Roles = ["national", "admin"]
+  Roles = ["default", "national", "admin" ]
 
   before_validation :try_fetch_place
 
@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   validates_confirmation_of :password
 
   validates_uniqueness_of :phone_number, :allow_nil => true, :message => 'Belongs to another user'
-  
+
   validates_presence_of :phone_number,
                         :if => Proc.new {|user| user.email.blank? || user.user_name.blank? || user.password.blank?},
                         :message => "Phone can't be blank, unless you provide a username, a password and an email"
@@ -43,7 +43,7 @@ class User < ActiveRecord::Base
       file.write(source_file.read)
     end
   end
-  
+
   def places_csv_directory
     dir = Rails.root.join "tmp", "placescsv"
     Dir.mkdir dir unless Dir.exists? dir
@@ -92,13 +92,14 @@ class User < ActiveRecord::Base
          :password => data[:password][i],
          :password_confirmation => data[:password][i],
          :intended_place_code => data[:place_code][i],
-         :phone_number => data[:phone_number][i]
+         :phone_number => data[:phone_number][i],
+         :role => data[:role][i]
       }
 
       user = User.new attrib
-      users.push user   
+      users.push user
     end
-    
+
     if self.validate_users_bulk? users
       User.transaction  do
          users.each do |user|
@@ -121,6 +122,15 @@ class User < ActiveRecord::Base
     User.paginate :page => page, :per_page => 10
   end
 
+  def to_json(options ={})
+     options[:except] ||= [:password,:encrypted_password,:salt,:updated_at,:created_at]
+     super(options)
+  end
+
+  def intended_place_code_must_exist
+    errors.add(:intended_place_code, "Place doesn't exist") if !self.intended_place_code.blank? && (self.place_id.blank? || self.place.code != self.intended_place_code)
+  end
+  
   private
 
   def encrypt_password
@@ -143,6 +153,8 @@ class User < ActiveRecord::Base
     string
   end
 
+  
+
   def self.phone_numbers users
     users.map { |u| u.phone_number }.reject { |n| n.nil? }
   end
@@ -154,7 +166,5 @@ class User < ActiveRecord::Base
     end
   end
 
-  def intended_place_code_must_exist
-    errors.add(:intended_place_code, "Place doesn't exist") if !self.intended_place_code.blank? && (self.place_id.blank? || self.place.code != self.intended_place_code)
-  end
+  
 end

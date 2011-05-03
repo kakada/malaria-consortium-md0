@@ -20,4 +20,13 @@ module ApplicationHelper
     element << "</div>"
     element.html_safe
   end
+
+  def flash_msg(flash)
+    flash ||= {}
+    element = ""
+    flash.each do |key,value|
+      element << "<div class='flash round #{key}'> #{value} </div> "
+    end
+    element.html_safe
+  end
 end

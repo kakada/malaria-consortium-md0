@@ -42,6 +42,7 @@ Local::Application.routes.draw do
   match  "/user_update" => "users#user_save"
   match  "/user_cancel/:id" => "users#user_cancel"
 
+
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action

@@ -182,13 +182,14 @@ div.icon span {
     color: #999;
 }
 
-input[type=text],  input[type=password]{
+.input, input[type=text],  input[type=password]{
 	width:100%;
-        border: 1px solid #ccc;
+        border: 1px solid #999;
         -moz-border-radius : 3px;
         -webkit-border-radius: 3px;
         border-radius: 3px;
 }
+
 input[type=text].error,  input[type=password].error{
         border: 1px solid #f00;
 

@@ -237,9 +237,19 @@ describe User do
   end
 
   describe "setting nuntium custom attributes" do
-    it "should set custom attributes for new user" do
+
+    before(:each) do
+      @nuntium_api.should_not_receive(:set_custom_attributes).with('sms://', anything)
+    end
+
+    it "should set custom attributes for new user in village" do
       @nuntium_api.should_receive(:set_custom_attributes).with('sms://123', {:application => 'foo'})
-      User.create! :phone_number => '123'
+      User.create! :phone_number => '123', :place => village('foo')
+    end
+
+    it "should not set custom attributes for user in province" do
+      @nuntium_api.should_not_receive(:set_custom_attributes)
+      User.create! :phone_number => '123', :place => province('foo')
     end
 
     it "should not set custom attributes if it has no phone" do
@@ -247,10 +257,33 @@ describe User do
       User.create! :user_name => 'user', :password => 'pass', :email => 'user@email.com'
     end
 
+    it "should unset custom attributes if moved to province" do
+      u = User.create! :phone_number => '123', :place => village('foo')
+      @nuntium_api.should_receive(:set_custom_attributes).with('sms://123', {:application => nil})
+      u.place = province('bar')
+      u.save!
+    end
+
     it "should clear the custom attribute when the phone is unset" do
-      u = User.create! :user_name => 'user', :password => 'pass', :email => 'user@email.com', :phone_number => '123'
+      u = User.create! :user_name => 'user', :password => 'pass', :email => 'user@email.com', :phone_number => '123', :place => village('foo')
       @nuntium_api.should_receive(:set_custom_attributes).with('sms://123', {:application => nil})
       u.phone_number = nil
+      u.save!
+    end
+
+    it "should clear custom attributes but not set new ones when moving to province with new number" do
+      u = User.create! :phone_number => '123', :place => village('foo')
+      @nuntium_api.should_receive(:set_custom_attributes).with('sms://123', {:application => nil})
+      @nuntium_api.should_not_receive(:set_custom_attributes).with('sms://456', anything)
+      u.phone_number = '456'
+      u.place = province('bar')
+      u.save!
+    end
+
+    it "should not set or clear custom attributes for new or updated province user" do
+      @nuntium_api.should_not_receive(:set_custom_attributes)
+      u = User.create! :phone_number => '123', :place => province('foo')
+      u.phone_number = '456'
       u.save!
     end
   end

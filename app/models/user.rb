@@ -167,11 +167,24 @@ class User < ActiveRecord::Base
   end
 
   def set_nuntium_custom_attributes
-    if phone_number_changed?
-      Nuntium.new_from_config.set_custom_attributes "sms://#{phone_number_was}", {:application => nil}
+
+    if phone_number_changed? && phone_number_was.present?
+      old_place = place_id_changed? ? Place.find(place_id_was) : place rescue nil
+      if is_reporting_place?(old_place)
+        Nuntium.new_from_config.set_custom_attributes "sms://#{phone_number_was}", {:application => nil}
+      end
     end
     if phone_number.present?
-      Nuntium.new_from_config.set_custom_attributes "sms://#{phone_number}", {:application => Nuntium::Config['application']}
+      if is_reporting_place?(place)
+        Nuntium.new_from_config.set_custom_attributes "sms://#{phone_number}", {:application => Nuntium::Config['application']}
+      elsif !new_record? && !phone_number_changed? && place_id_changed?
+        Nuntium.new_from_config.set_custom_attributes "sms://#{phone_number}", {:application => nil}
+      end
     end
   end
+
+  def is_reporting_place?(place)
+    place.is_a?(HealthCenter) || place.is_a?(Village)
+  end
+
 end

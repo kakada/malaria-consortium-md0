@@ -38,7 +38,9 @@ class UsersController < ApplicationController
          :id => params[:id],
          :intended_place_code => params[:intended_place_code]
     }
+    
     @user = User.new(attributes)
+    
     if(@user.save)
       @user = User.new
       flash["msg-notice"] = "Successfully created"
@@ -47,8 +49,9 @@ class UsersController < ApplicationController
       flash["msg-error"] = "Failed to create"
     end
     
-    @page = (params[:page].to_i<2) ?1:params[:page].to_i;
+    @page = (params[:page].to_i < 2) ? 1 : params[:page].to_i;
     @users = User.paginate_user @page
+    
     render :index 
   end
 

@@ -6,7 +6,8 @@ describe HCReportParser do
 
   before(:each) do
     @health_center = health_center("hc1")
-    @parser = HCReportParser.new(user(:phone_number => "1", :place => @health_center))
+    @user = user :phone_number => "1", :place => @health_center
+    @parser = HCReportParser.new @user
   end
 
   def assert_error_message error_msg
@@ -15,7 +16,9 @@ describe HCReportParser do
   end
 
   def expect_village code, hc_code=nil
-    Place.should_receive(:find_by_code).with(code).and_return village("1", code, hc_code)
+    village = village("1", code, hc_code)
+    Place.should_receive(:find_by_code).with(code).and_return village
+    village
   end
 
   describe "syntactic" do
@@ -35,15 +38,15 @@ describe HCReportParser do
     end
 
     it "should return valid fields when format is correct" do
-      expect_village "12345678", @health_center.id
+      village = expect_village "12345678", @health_center.id
 
       @parser.parse "F123M12345678"
       @parser.errors?().should == false
-      @parser.parsed_data[:malaria_type].should == "F"
-      @parser.parsed_data[:age].should == "123"
-      @parser.parsed_data[:sex].should == "M"
-      @parser.parsed_data[:village_code].should == "12345678"
-      @parser.parsed_data[:human_readable_report].should == HCReportParser.human_readable_report(@parser.parsed_data)
+      @parser.report.malaria_type.should == "F"
+      @parser.report.age.should == 123
+      @parser.report.sex.should == "Male"
+      @parser.report.village_id.should == village.id
+      @parser.report.human_readable
     end
   end
 

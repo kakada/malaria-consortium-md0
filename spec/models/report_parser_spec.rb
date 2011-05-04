@@ -1,10 +1,13 @@
 require 'spec_helper'
-require 'test_helper'
 
 describe ReportParser do
+  include Helpers
+  
   describe "invalid message" do
     before(:each) do
-      @parser = ReportParser.new
+      @health_center = health_center("hc1")
+      @user = user :phone_number => "1", :place => @health_center
+      @parser = ReportParser.new @user
     end
     
     def assert_error_message error_message
@@ -32,12 +35,13 @@ describe ReportParser do
       assert_error_message ReportParser.invalid_malaria_type "d12m11111111"
     end
     
-    it "should support reports with heading and trailing spaces" do
+    it "should support reports with heading and trailing spaces" do      
       @parser.parse "    F21M     "
       @parser.errors?().should == false
-      @parser.parsed_data[:malaria_type] == "F"
-      @parser.parsed_data[:age] == "21"
-      @parser.parsed_data[:sex] == "M"
+      @parser.report.malaria_type.should == "F"
+      @parser.report.age.should == 21
+      @parser.report.sex.should == "Male"
+      @parser.report.sender_id.should == @user.id
     end  
   end
 end

@@ -1,10 +1,11 @@
 class ReportParser
   
-  attr_reader :parsed_data
+  attr_reader :report
   attr_reader :error
   
-  def initialize
-    @parsed_data = nil
+  def initialize reporter
+    @reporter = reporter
+    @report = Report.new
     @error = nil 
   end
   
@@ -32,7 +33,11 @@ class ReportParser
     
     return if errors?  
     
-    @parsed_data = { :malaria_type => malaria_type, :age => age, :sex => sex }
+    @report.malaria_type = malaria_type
+    @report.age = age
+    @report.sex = ReportParser.format_sex sex 
+    @report.sender_id = @reporter.id
+    @report.place_id = @reporter.place.id
     
     self
   end

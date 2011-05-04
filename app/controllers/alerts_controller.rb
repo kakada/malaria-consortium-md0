@@ -49,6 +49,13 @@ class AlertsController < ApplicationController
     @alert.recipient = @ods.first if @alert.recipient.nil?
 
     @hcs = @alert.recipient.health_centers    
-    @alerts = HealthCenterAlert.all
+    
+    @alerts = HealthCenterAlert.includes(:recipient, :source).all.sort! do |alert1, alert2|
+      if alert1.recipient.description != alert2.recipient.description
+        alert1.recipient.description <=> alert2.recipient.description
+      else
+        alert1.source_description <=> alert2.source_description
+      end
+    end
   end
 end

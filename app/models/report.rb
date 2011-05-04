@@ -1,12 +1,22 @@
-class Report
+class Report < ActiveRecord::Base
+  validates_presence_of :malaria_type, :sex, :age, :sender_id, :place_id
+  validates_inclusion_of :malaria_type, :in => %w(F M V)
+  validates_inclusion_of :sex, :in => %w(Male Female)
+  
+  belongs_to :sender, :class_name => "User"
+  belongs_to :place
+  belongs_to :village, :class_name => "Village" 
+  
+  before_validation :upcase_strings
+  
   def self.process(message = {})
     message = message.with_indifferent_access
-    error, reports = decode message
+    error, messages = decode message
 
-    if reports.nil?
+    if messages.nil?
       [{ :from => from_app, :to => message[:from], :body => error }]
     else
-      reports.map { |report| { :from => from_app, :to => report[:to], :body => report[:human_readable_report] } }
+      messages.map { |msg| msg.merge :from => from_app }
     end
   end
 
@@ -25,6 +35,20 @@ class Report
   def self.from_app
     "malariad0://system"
   end
+  
+  def generate_alerts
+    alerts = []
+    
+    od_alerts = Alert.generate_for sender.od, place
+    
+    od_alerts.each do |dict|
+      dict[:recipients].each do |recipient|
+        alerts.push :to => recipient.phone_number.with_sms_protocol, :body => dict[:message]
+      end
+    end
+    
+    alerts
+  end
 
   private
 
@@ -40,15 +64,16 @@ class Report
     
     return parser.error if parser.errors?
     
-    report_data = parser.parsed_data
-
-    recipients = [sender.phone_number.with_sms_protocol]
-    recipients.concat sender.alert_numbers.map {|number| number.with_sms_protocol}
-
-    [nil, compose_messages(recipients, report_data)]
+    report = parser.report
+    report.save!  
+    
+    alerts = report.generate_alerts
+    reply = {:to => sender.phone_number.with_sms_protocol, :body => report.human_readable}
+    
+    [nil, alerts.push(reply)]
   end
 
-  def self.compose_messages recipients, data
-    recipients.map { |address| {:to => address}.merge(data) }
+  def upcase_strings 
+    malaria_type.upcase!
   end
 end

@@ -34,6 +34,7 @@ class User < ActiveRecord::Base
 
   def self.authenticate email, pwd
     user = User.find_by_email email
+
     return nil if user.nil?
     return user if user.has_password? pwd
   end
@@ -152,8 +153,6 @@ class User < ActiveRecord::Base
     Digest::SHA2.hexdigest string
     string
   end
-
-  
 
   def self.phone_numbers users
     users.map { |u| u.phone_number }.reject { |n| n.nil? }

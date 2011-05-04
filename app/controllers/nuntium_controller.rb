@@ -3,7 +3,7 @@ class NuntiumController < ApplicationController
 
   def receive_at
     User.transaction do
-      result =   Report.process(params)
+      result = Report.process(params)
       render :json => result
     end
   end

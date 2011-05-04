@@ -54,6 +54,10 @@ end
 
 class OD
   alias_method :province, :parent
+   
+  def count_reports_since time
+    Report.joins(:place).where("reports.created_at >= ? AND places.parent_id = ?", time, id).count
+  end
 end
 
 class Village
@@ -62,7 +66,7 @@ class Village
   delegate :province, :to => :od
 
   def report_parser(user)
-    VMWReportParser.new
+    VMWReportParser.new user
   end
 end
 
@@ -72,6 +76,10 @@ class HealthCenter
 
   def report_parser(user)
     HCReportParser.new user
+  end
+  
+  def count_sent_reports_since time
+    Report.where("created_at >= ? AND place_id = ?", time, id).count
   end
 end
 

@@ -1,7 +1,8 @@
 class HCReportParser < ReportParser
+  
   def initialize reporter
-    super()
-    @reporter = reporter
+    super(reporter)
+    @report = HealthCenterReport.new
   end
 
   def parse message
@@ -13,15 +14,14 @@ class HCReportParser < ReportParser
     @error = HCReportParser.invalid_village_code(@original_message) if village_code.nil? || !@scanner.eos?
     return if errors?
 
-    @parsed_data[:village_code] = village_code
-
-    validate_exists
+    validate_exists village_code
     return if errors?
 
     validate_is_supervised
     return if errors?
 
-    parsed_data[:human_readable_report] = HCReportParser.human_readable_report @parsed_data
+    @report.village = @village
+    
     self
   end
 
@@ -37,14 +37,10 @@ class HCReportParser < ReportParser
     "The village you entered is not under supervision of your health center. Your report was #{original_message}. Please correct and send again."
   end
 
-  def self.human_readable_report report
-    "We received your report of Malaria Type: #{report[:malaria_type]}, Age: #{report[:age]}, Sex: #{format_sex report[:sex]}, Village: #{report[:village_code]}"
-  end
-
   private
 
-  def validate_exists
-    @village = Place.find_by_code @parsed_data[:village_code]
+  def validate_exists village_code
+    @village = Place.find_by_code village_code
     @error = HCReportParser.non_existent_village(@original_message) if @village.nil? || !@village.village?
   end
 

@@ -35,6 +35,7 @@ gem 'mysql2'
 # end
 gem 'will_paginate', :git => 'git://github.com/mislav/will_paginate.git', :branch => 'rails3'
 gem 'jquery-rails'
+gem 'nuntium_api', :require => 'nuntium'
 
 group :development, :test do
   gem "autotest"

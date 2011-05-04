@@ -22,7 +22,7 @@ module Helpers
   def national_user number
     User.create! :phone_number => number, :role => "national"
   end
-  
+
   def admin_user number
     User.create! :phone_number => number, :role => "admin"
   end

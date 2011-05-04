@@ -28,6 +28,7 @@ class User < ActiveRecord::Base
   validate :intended_place_code_must_exist
 
   before_save :encrypt_password
+  before_save :set_nuntium_custom_attributes
 
   # Delegate country, province, etc., to place
   Place::Types.each { |type| delegate type.tableize.singularize, :to => :place }
@@ -131,7 +132,7 @@ class User < ActiveRecord::Base
   def intended_place_code_must_exist
     errors.add(:intended_place_code, "Place doesn't exist") if !self.intended_place_code.blank? && (self.place_id.blank? || self.place.code != self.intended_place_code)
   end
-  
+
   private
 
   def encrypt_password
@@ -165,5 +166,12 @@ class User < ActiveRecord::Base
     end
   end
 
-  
+  def set_nuntium_custom_attributes
+    if phone_number_changed?
+      Nuntium.new_from_config.set_custom_attributes "sms://#{phone_number_was}", {:application => nil}
+    end
+    if phone_number.present?
+      Nuntium.new_from_config.set_custom_attributes "sms://#{phone_number}", {:application => Nuntium::Config['application']}
+    end
+  end
 end

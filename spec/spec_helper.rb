@@ -30,4 +30,11 @@ RSpec.configure do |config|
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = true
+
+  # Configure default Nuntium API mock
+  config.before(:each) do
+    @nuntium_api = mock('nuntium')
+    @nuntium_api.stub!(:set_custom_attributes)
+    Nuntium.stub!(:new_from_config).and_return(@nuntium_api)
+  end
 end

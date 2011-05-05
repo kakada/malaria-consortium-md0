@@ -7,7 +7,7 @@
 <input type='hidden' id='dyna_attributes' data-refresh='<%= health_center_alerts_path %>' data-blink='<%= !@alert.id.nil? %>'>
 
 <div id="alert_controls">
-<%= form_for :alert, @alert, :url => {:action => 'create'}, :html => {:class => 'alert_form'} do |f| %>	
+<%= form_for @alert, :url => {:action => @alert.id ? 'update' : 'create'}, :html => {:class => 'alert_form'} do |f| %>
 	<div class="alert_form_line">
 		Start alerting OD <%= collection_select(:alert, :recipient_id, @ods, :id, :description) %>
 	</div>

@@ -1,0 +1,41 @@
+
+<b>Sms:</b>
+<div class="item-value round" style="border:1px solid #ccc;padding:10px;" >
+  <%=  simple_format(@custom_message.sms) %>
+</div >
+<br /><br />
+<% 
+  sent = 0
+  @places.each do |place| %>
+  <div class="title">
+     <span class="item-value"> <%= place.name  %> (<%= place.code %>)</span>
+  </div>
+
+
+  <ul class="list">
+  <% 
+    place.users.each do |user|%>
+    <% sent = sent +1 %>
+    <li>
+      <span class="item-label"> Username :     </span> <span  class="item-value"> <%= user.user_name  %>  </span>
+      <span class="item-label"> Phone number:  </span> <span  class="item-value"> <%= user.phone_number  %>  </span>
+      <span class="item-label"> Role:          </span> <span  class="item-value"> <%= user.role  %>  </span>
+    </li>
+  <% end %>
+  </ul>
+ <% end  %>
+
+  <div>
+    <% if(sent>0) %>
+    <%= "#{sent} message(s) have been sent" %>
+    <% else %>
+    <%= "No user found" %>
+    <% end %>
+  </div>
+<br /><br />
+<div>
+  <span class="nav-link">  Go back to sms sender: </span> <%= link_to "Sms ", new_custom_message_path %>
+</div>
+
+
+

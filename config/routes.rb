@@ -4,6 +4,8 @@ Local::Application.routes.draw do
 
   root :to => "home#index"
 
+  resources :custom_messages
+  
   resources :users do
     collection do
       get "validate"

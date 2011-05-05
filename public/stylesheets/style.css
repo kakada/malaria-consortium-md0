@@ -149,10 +149,12 @@ div.icon a {
     text-decoration: none;
     vertical-align: middle;
     width: 108px;
+    padding-top:5px;
 }
 div.icon a:hover{
     font-weight: bold;
     border: 3px solid #CCC;
+    padding-top:5px;
 }
 a:link {
     color: #025A8D;
@@ -322,4 +324,47 @@ label.error
 
 #editDirFancy tr{
     height: 45px;
+}
+.formElement li{
+    list-style-type: none;
+    clear:both;
+}
+.formElement li label {
+    display: block;
+    width: 140px;
+    float:left;
+}
+.inputElement{
+    margin: 10px 3px;
+}
+.list li {
+    list-style-type: decimal;
+    line-height: 1.5;
+    border-bottom: 1px solid #eee;
+    clear: both;
+}
+.item-value{
+    color: gray;
+
+}
+.item-label{
+    font-weight: bold;
+    font-size: 12px;
+    margin: 10px;
+    padding: 10px;
+
+}
+.title{
+    font-weight: bold;
+    font-size: 15px;
+    
+}
+.nav-link{
+    background-image: url("../images/arrow-right.png");
+    background-position: right center;
+    padding-right: 15px;
+    margin-right: 10px;
+    background-repeat: no-repeat;
+    
+
 }

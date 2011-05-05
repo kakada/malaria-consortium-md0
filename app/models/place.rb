@@ -5,6 +5,8 @@ class Place < ActiveRecord::Base
 
   validates_uniqueness_of :code
 
+  
+
   Types = ["Country", "Province", "OD", "HealthCenter", "Village"]
 
   Types.each do |constant|
@@ -46,6 +48,15 @@ class Place < ActiveRecord::Base
   def self.levels
     Types[1..-1]
   end
+
+  def self.places_by_type(type = nil)
+    if(type.nil? || type =="")
+      Place.all
+    else
+      Place.where("type=?",type)
+    end
+  end
+
 end
 
 class Province

@@ -1,6 +1,4 @@
 require 'spec_helper'
-require 'test_helper'
-
 describe PlacesController do
   include Helpers
   

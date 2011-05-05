@@ -243,7 +243,7 @@ describe User do
     end
 
     it "should set custom attributes for new user in village" do
-      @nuntium_api.should_receive(:set_custom_attributes).with('sms://123', {:application => 'foo'})
+      @nuntium_api.should_receive(:set_custom_attributes).with('sms://123', {:application => 'md0'})
       User.create! :phone_number => '123', :place => village('foo')
     end
 

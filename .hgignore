@@ -8,3 +8,4 @@ log/*
 tmp/*
 tmp/pids/*
 public/placescsv/*
+config/numtium.yml

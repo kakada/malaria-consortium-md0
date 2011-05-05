@@ -1,0 +1,51 @@
+
+<div class="round" >
+  
+  <%= form_for :custom_message, :url => custom_messages_url,:html=>{"id"=>"sms_form"} do |form| %>
+      <div class="inputElement" >
+          <label for="type" >Type</label>
+          <div>
+            <%=  select_tag(:type ,options_for_select(Place::Types, @custom_message.type), {} ) %>
+          </div>
+          <% if(!@custom_message.errors[:type].nil?) %>
+            <div class="validation_error">Type <%= @custom_message.errors[:type].join(", ")   %></div>
+          <% end %>
+      </div>
+  
+      <div class="inputElement" >
+        <label for="sms" > Sms (140 characters) </label>
+          <div>
+            <%= text_area_tag(:sms, @custom_message.sms, {:rows =>10,:cols=>80}) %>
+          </div>
+          <% if(!@custom_message.errors[:sms].nil?) %>
+            <div class="validation_error">Sms <%= @custom_message.errors[:sms].join(", ")  %></div>
+          <% end %>
+      </div>
+  
+      <div>
+            <%= submit_tag "Send", :id=>"send" %>
+      </div>
+
+      
+  <% end %>
+  <script type="text/javascript" >
+    
+    $("#sms_form").submit(function(e){
+      $("#div_notice").html();
+      var sms = $("#sms").val().trim();
+      $("#sms").val(sms);
+
+      if( sms ==""){
+        $("#div_notice").html("<div class='msg-error' > Sms <%= CustomMessage::ErrorTypes[:sms_blank]  %></div>");
+        return false;
+      }
+      else if(sms.length >140){
+        $("#div_notice").html("<div class='msg-error' > Sms <%= CustomMessage::ErrorTypes[:sms_140]  %>  </div>");
+        return false;
+      }
+      return true;
+      
+    });
+    
+  </script>
+</div>

@@ -19,7 +19,6 @@
     <li>
       <span class="item-label"> Username :     </span> <span  class="item-value"> <%= user.user_name  %>  </span>
       <span class="item-label"> Phone number:  </span> <span  class="item-value"> <%= user.phone_number  %>  </span>
-      <span class="item-label"> Role:          </span> <span  class="item-value"> <%= user.role  %>  </span>
     </li>
   <% end %>
   </ul>
@@ -27,7 +26,7 @@
 
   <div>
     <% if(sent>0) %>
-    <%= "#{sent} message(s) have been sent" %>
+    <%= "#{sent} sms(s) have been sent" %>
     <% else %>
     <%= "No user found" %>
     <% end %>

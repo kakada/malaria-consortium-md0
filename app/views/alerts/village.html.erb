@@ -2,9 +2,9 @@
   <%= javascript_include_tag 'alerts/health_center.js' %>
 <% end %>
 
-<h2>Alert Settings for Health Centers</h2>
+<h2>Alert Settings for Villages</h2>
 
-<input type='hidden' id='dyna_attributes' data-refresh='<%= health_center_alerts_path %>' data-blink='<%= !@alert.id.nil? %>'>
+<input type='hidden' id='dyna_attributes' data-refresh='<%= village_alerts_path %>' data-blink='<%= !@alert.id.nil? %>'>
 
 <div id="alert_controls">
 <%= form_for @alert, :url => {:action => @alert.id ? 'update' : 'create'}, :html => {:class => 'alert_form'} do |f| %>
@@ -12,7 +12,8 @@
     Start alerting OD <%= collection_select(:alert, :recipient_id, @ods, :id, :description) %>
   </div>
   <div class="alert_form_line">
-    when the number of messages from <%= collection_select(:alert, :source_id, @hcs, :id, :description, :prompt => "All") %> health center/s in the last seven days
+    when the number of messages from <%= grouped_collection_select(:alert, :source_id, @hcs, :last, 'first.name', :id, :description, :prompt => "All") %>
+    village/s in the last seven days
   </div>
   <div class="alert_form_line">
     surpasses <%= number_field(:alert, :threshold, :min => 0, :default => 0) %>
@@ -37,5 +38,5 @@
     </tbody>
   </table>
 <% else %>
-  <h3>No health center alerts have been created yet</h3>
+  <h3>No village alerts have been created yet</h3>
 <% end %>

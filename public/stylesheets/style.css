@@ -365,6 +365,12 @@ label.error
     padding-right: 15px;
     margin-right: 10px;
     background-repeat: no-repeat;
-    
-
+}
+.separator{
+    border-bottom: 1px solid #eee;
+    line-height: 1.4;
+    width: 60%;
+}
+.no-style{
+    list-style-type: none;
 }

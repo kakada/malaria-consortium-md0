@@ -5,6 +5,8 @@ Local::Application.routes.draw do
   # first created -> highest priority.
 
   root :to => "home#index"
+  get "/alert_config", :to =>"settings#alert_config"
+  post "/update_alert_config", :to =>"settings#update_alert_config"
 
   resources :custom_messages
   

@@ -14,7 +14,7 @@ describe Report do
     @vmw_user = user :phone_number => "8558191", :place => @village
     @od_user1 = user :phone_number => "8558192", :place => @od
     @od_user2 = user :phone_number => "8558193", :place => @od
-    
+
     @valid_message = {:from => "sms://8558190", :body => "F123M12345678"}
     @valid_vmw_message = {:from => "sms://8558191", :body => "F123M."}
 
@@ -25,25 +25,25 @@ describe Report do
     before(:each) do
       @od2 = OD.create!
       @od2_user = user :phone_number => "8558194", :place => @od2
-      
+
       @alert1 = HealthCenterAlert.create! :recipient_id => @od.id, :source_id => @health_center.id
-      @alert2 = HealthCenterAlert.create! :recipient_id => @od.id     
-      @alert3 = HealthCenterAlert.create! :recipient_id => @od2.id     
+      @alert2 = HealthCenterAlert.create! :recipient_id => @od.id
+      @alert3 = HealthCenterAlert.create! :recipient_id => @od2.id
     end
-    
-    it "should generate alerts" do 
+
+    it "should generate alerts" do
       Alert.stub!(:generate_for).and_return [
-                                              {:message => 'alert1', :recipients => [@od_user1, @od_user2]}, 
+                                              {:message => 'alert1', :recipients => [@od_user1, @od_user2]},
                                               {:message => 'alert2', :recipients => [@od_user1, @od_user2]}
                                             ]
-            
+
       report = Report.create! :malaria_type => 'V', :sex => 'Female', :age => 23, :sender_id => @hc_user.id, :place_id => @health_center.id
       alerts = report.generate_alerts
-      
+
       alerts.should =~ [
-                        {:to => @od_user1.phone_number.with_sms_protocol, :body => 'alert1'}, 
-                        {:to => @od_user2.phone_number.with_sms_protocol, :body => 'alert1'}, 
-                        {:to => @od_user1.phone_number.with_sms_protocol, :body => 'alert2'}, 
+                        {:to => @od_user1.phone_number.with_sms_protocol, :body => 'alert1'},
+                        {:to => @od_user2.phone_number.with_sms_protocol, :body => 'alert1'},
+                        {:to => @od_user1.phone_number.with_sms_protocol, :body => 'alert2'},
                         {:to => @od_user2.phone_number.with_sms_protocol, :body => 'alert2'}
                         ]
     end
@@ -96,8 +96,8 @@ describe Report do
       User.should_receive(:find_by_phone_number).with("8558190").and_return(@hc_user)
 
       report = setup_successful_parser "successful report"
-      report.stub!(:generate_alerts).and_return([{:body => "alert1", :to => "sms://1"}, 
-                                                  {:body => "alert2", :to => "sms://2"}, 
+      report.stub!(:generate_alerts).and_return([{:body => "alert1", :to => "sms://1"},
+                                                  {:body => "alert2", :to => "sms://2"},
                                                   {:body => "alert3", :to => "sms://3"}])
 
       response = Report.process @valid_message
@@ -111,10 +111,10 @@ describe Report do
       report.sender.should == @hc_user
       report.place.should == @health_center
 
-      response.should =~ [  
+      response.should =~ [
                             {:to => @hc_user.phone_number.with_sms_protocol, :body => report.human_readable, :from => Report.from_app},
-                            {:body => "alert1", :to => "sms://1", :from => Report.from_app}, 
-                            {:body => "alert2", :to => "sms://2", :from => Report.from_app}, 
+                            {:body => "alert1", :to => "sms://1", :from => Report.from_app},
+                            {:body => "alert2", :to => "sms://2", :from => Report.from_app},
                             {:body => "alert3", :to => "sms://3", :from => Report.from_app}
                           ]
 
@@ -146,11 +146,19 @@ describe Report do
       response[0][:body].should == "successful report"
     end
 
-    it "should upcase malaria type" do 
-      report = Report.new :malaria_type => 'f', :age => 123, :sex => 'Male', 
-                          :village_id => @village.id, :sender_id => @hc_user.id, :place_id => @health_center.id      
+    it "should upcase malaria type" do
+      report = Report.new :malaria_type => 'f', :age => 123, :sex => 'Male',
+                          :village_id => @village.id, :sender_id => @hc_user.id, :place_id => @health_center.id
       report.save!
       report.malaria_type.should == 'F'
+    end
+
+    it "should notify hc when vmw reports" do
+      Setting.should_receive(:[]).with(:village_template).and_return('A {malaria_type} case ({sex}, {age}) has been detected in {village} by the VMW {contact_number}')
+      response = Report.process @valid_vmw_message
+      hc_msg = response.select {|x| x[:to] == @hc_user.phone_number.with_sms_protocol }
+      hc_msg.should have(1).items
+      hc_msg[0][:body].should == "A F case (Male, 123) has been detected in #{@village.name} by the VMW #{@vmw_user.phone_number}"
     end
 
     def assert_nuntium_fields data
@@ -162,12 +170,12 @@ describe Report do
       @hc_user.should_receive(:report_parser).and_return(parser)
       parser.should_receive(:parse).with(@valid_message[:body]).and_return(parser)
       parser.should_receive(:errors?).and_return(false)
-      
-      report = Report.new :malaria_type => 'F', :age => 123, :sex => 'Male', 
+
+      report = Report.new :malaria_type => 'F', :age => 123, :sex => 'Male',
                           :village_id => @village.id, :sender_id => @hc_user.id, :place_id => @health_center.id
-      
+
       report.stub!(:human_readable).and_return success_message
-      
+
       parser.should_receive(:report).and_return(report)
       report
     end

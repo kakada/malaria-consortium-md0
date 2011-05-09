@@ -1,15 +1,13 @@
 Local::Application.routes.draw do
-  resources :settings
-
-  # The priority is based upon order of creation:
-  # first created -> highest priority.
 
   root :to => "home#index"
   get "/alert_config", :to =>"settings#alert_config"
   post "/update_alert_config", :to =>"settings#update_alert_config"
+  get "/settings/templates", :to => "settings#template_config"
+  post "/settings/templates", :to => "settings#update_template_config"
 
   resources :custom_messages
-  
+
   resources :users do
     collection do
       get "validate"
@@ -26,24 +24,24 @@ Local::Application.routes.draw do
     resources :users
   end
 
-  resources :sessions, :only =>[:new,:create,:destroy] do 
+  resources :sessions, :only =>[:new,:create,:destroy] do
     collection do
       get "signin"
       get "signout"
     end
   end
-  
+
   resources :alerts do
     collection do
       get "health_center"
-      get "village"      
+      get "village"
     end
   end
 
-  
+
   match  '/contact' => "page#contact"
-	match  '/about' => "page#about"
-	match  "/signup" => "users#new"
+  match  '/about' => "page#about"
+  match  "/signup" => "users#new"
   match  "/user_edit/:id" => "users#user_edit"
   match  "/user_update" => "users#user_save"
   match  "/user_cancel/:id" => "users#user_cancel"

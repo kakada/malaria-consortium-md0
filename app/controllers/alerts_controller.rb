@@ -1,6 +1,6 @@
 class AlertsController < ApplicationController
   before_filter :authenticate_admin
-  AlertSubclasses = Alert.subclasses
+  AlertSubclasses = Alert.descendants
 
   def create
     type = AlertSubclasses.select{|x| x.name == params[:alert][:type]}.first

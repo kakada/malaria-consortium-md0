@@ -5,7 +5,7 @@ class Place < ActiveRecord::Base
 
   validates_uniqueness_of :code
 
-  
+
 
   Types = ["Country", "Province", "OD", "HealthCenter", "Village"]
 
@@ -40,11 +40,11 @@ class Place < ActiveRecord::Base
   def report_parser(user)
     nil
   end
-  
+
   def description
     "#{name} (#{self.class.name.titleize}, #{code})"
   end
-  
+
   def self.levels
     Types[1..-1]
   end
@@ -57,6 +57,10 @@ class Place < ActiveRecord::Base
     end
   end
 
+  def count_sent_reports_since time
+    Report.where("created_at >= ? AND place_id = ?", time, id).count
+  end
+
 end
 
 class Province
@@ -65,7 +69,7 @@ end
 
 class OD
   alias_method :province, :parent
-   
+
   def count_reports_since time
     Report.joins(:place).where("reports.created_at >= ? AND places.parent_id = ?", time, id).count
   end
@@ -87,10 +91,6 @@ class HealthCenter
 
   def report_parser(user)
     HCReportParser.new user
-  end
-  
-  def count_sent_reports_since time
-    Report.where("created_at >= ? AND place_id = ?", time, id).count
   end
 end
 

@@ -63,7 +63,7 @@ GEM
     mime-types (1.16)
     mysql2 (0.2.7)
     nokogiri (1.4.4)
-    nuntium_api (0.8)
+    nuntium_api (0.10)
       httparty
       json
     polyglot (0.3.1)
@@ -116,7 +116,7 @@ DEPENDENCIES
   factory_girl_rails
   jquery-rails
   mysql2
-  nuntium_api
+  nuntium_api (>= 0.10)
   rails (= 3.0.6)
   rspec-rails
   webrat

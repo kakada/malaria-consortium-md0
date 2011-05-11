@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Setting do
   before(:each) do
+    allow_message_expectations_on_nil
     @attrib = {
       :provincial_alert => 10,
       :national_alert => 20,
@@ -14,7 +15,7 @@ describe Setting do
     it "should return 0 when key doesn't exist" do
       key = "not_exist"
       Setting.stub!(:find_by_param).with(key).and_return(false)
-      Setting[key].should == 0
+      Setting[key].should == "0"
       
     end
 

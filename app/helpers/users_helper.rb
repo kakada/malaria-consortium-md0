@@ -24,9 +24,6 @@ module UsersHelper
 		element.html_safe
   end
 
-  
-
-
   def user_cell user, field, ui_field_name = nil , options = {}
     element = '<td>'
     element << "<input type='hidden' name='user[#{ui_field_name ? ui_field_name : field.to_s}][]' value='#{user.send(field)}'/>"

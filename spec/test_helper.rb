@@ -7,8 +7,8 @@ module Helpers
     Village.create! :name => name, :name_kh => name, :code => code, :parent_id => health_center_id
   end
 
-  def od name
-    OD.create! :name => name, :name_kh => name, :code => name
+  def od name , id = nil
+    OD.create! :name => name, :name_kh => name, :code => name, :parent_id => id
   end
 
   def province name

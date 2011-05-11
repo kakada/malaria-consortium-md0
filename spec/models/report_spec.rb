@@ -5,7 +5,9 @@ describe Report do
   include Helpers
 
   before(:each) do
-    @od = od "od"
+
+    @province = province "Kampongcham"
+    @od = od "od", @province.id
     @health_center = health_center "foohc", @od.id
     @village = village "fooville", "12345678", @health_center.id
     village "barville", "87654321", health_center("barhc").id
@@ -14,6 +16,10 @@ describe Report do
     @vmw_user = user :phone_number => "8558191", :place => @village
     @od_user1 = user :phone_number => "8558192", :place => @od
     @od_user2 = user :phone_number => "8558193", :place => @od
+
+    @provincial_user = user :phone_number => "855444444", :place => @province
+    @national_user =  User.create!(:user_name =>"national", :phone_number => "097777777", :role=> "national")
+    @admin_user =  User.create!(:user_name =>"admin", :phone_number => "09766666", :role=> "admin")
 
     @valid_message = {:from => "sms://8558190", :body => "F123M12345678"}
     @valid_vmw_message = {:from => "sms://8558191", :body => "F123M."}
@@ -46,6 +52,48 @@ describe Report do
                         {:to => @od_user1.phone_number.with_sms_protocol, :body => 'alert2'},
                         {:to => @od_user2.phone_number.with_sms_protocol, :body => 'alert2'}
                         ]
+    end
+  end
+
+  describe "alert_upper_level" do
+    before(:each) do
+      @phone_number = "8558191"
+      @message_body = "You have receiv..."
+
+      Report.stub(:sender_sms).with(@phone_number).and_return(@vmw_user)
+      @vmw_user.stub(:od).and_return(@od)
+      @od.stub(:province).and_return(@province)
+      @province.stub(:users).and_return([@provincial_user])
+      
+      Setting.stub(:"[]").with("admin_alert").and_return(1)
+      Setting.stub(:"[]").with("national_alert").and_return(1)
+      Setting.stub(:"[]").with("provincial_alert").and_return(1)
+
+      User.stub(:find_all_by_role).with("national").and_return([@national_user])
+      User.stub(:find_all_by_role).with("admin").and_return([@admin_user])
+      
+    end
+
+    it "should return an alerts array with users admin, national and provincial" do
+      Report.should_receive(:sender_sms).with(@phone_number).and_return(@vmw_user)
+      
+      Setting.should_receive(:"[]").with(:provincial_alert).and_return 1
+      Setting.should_receive(:"[]").with(:admin_alert).and_return 1
+      Setting.should_receive(:"[]").with(:national_alert).and_return 1
+
+      alerts = Report.alert_upper_level @phone_number, @message_body
+
+      alerts.size.should == 3
+      
+      alerts[0][:to].should == @provincial_user.phone_number.with_sms_protocol
+      alerts[0][:body].should == @message_body
+
+      alerts[1][:to].should == @admin_user.phone_number.with_sms_protocol
+      alerts[1][:body].should == @message_body
+
+      alerts[2][:to].should == @national_user.phone_number.with_sms_protocol
+      alerts[2][:body].should == @message_body
+      
     end
   end
 

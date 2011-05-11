@@ -24,7 +24,6 @@ class Alert < ActiveRecord::Base
     alerts_for(recipient, source).each do |alert|
       generated_alerts.push(:message => alert.message, :recipients => recipient.users) if alert.reached_condition?
     end
-
     generated_alerts
   end
 

@@ -7,6 +7,7 @@ class VMWReportParser < ReportParser
   
   def parse message
     super(message)
+    
     return if errors?
     
     if @scanner.eos?

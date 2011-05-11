@@ -274,7 +274,7 @@ label.error
         margin-left: 5px;
 }
 
-.msg-error, .alert {
+.msg-error, .alert, .error {
     background-image: url(../images/stop.png);
     background-repeat: no-repeat;
     background-position: left center;

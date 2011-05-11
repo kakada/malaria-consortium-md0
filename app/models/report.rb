@@ -38,27 +38,46 @@ class Report < ActiveRecord::Base
   
   def generate_alerts
     alerts = []
-    
     od_alerts = Alert.generate_for sender.od, place
-    
+
     od_alerts.each do |dict|
       dict[:recipients].each do |recipient|
         alerts.push :to => recipient.phone_number.with_sms_protocol, :body => dict[:message]
+        alerts = alerts.concat(Report.alert_upper_level(sender.phone_number,dict[:message]))
       end
     end
-    
     alerts
   end
 
+
+ def self.alert_upper_level sender_number, message
+   users = []
+   sender = Report.sender_sms(sender_number)
+   users = users.concat(sender.od.province.users) if Setting[:provincial_alert] != "0"
+
+   users = users.concat User.find_all_by_role("admin") if Setting[:admin_alert] != "0"
+   users = users.concat User.find_all_by_role "national" if Setting[:national_alert] != "0"
+
+   alerts = []
+   users.each do |user|
+     alerts.push :to => user.phone_number.with_sms_protocol, :body => message
+   end
+   alerts
+ end
+
+
+
   private
+  def self.sender_sms from
+    User.find_by_phone_number from
+  end
 
   def self.decode message
-    sender = User.find_by_phone_number message[:from].without_protocol.strip
-    
+    sender = Report.sender_sms message[:from].without_protocol.strip
     return unknown_user(message[:body]) if sender.nil? 
     
     return user_should_belong_to_hc_or_village if not sender.can_report?
-    
+
     parser = sender.report_parser
     parser.parse message[:body]
     

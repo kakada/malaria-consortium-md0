@@ -6,11 +6,6 @@ module ApplicationHelper
 		end
 		return pref
 	end
-
-  def ob_start &block
-    element = capture(&block)
-    return element
-  end
   
   def action_button icon, title, path
     element = "<div class='icon-wrapper'>"

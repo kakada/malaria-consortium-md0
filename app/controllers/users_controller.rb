@@ -22,7 +22,8 @@ class UsersController < ApplicationController
   #post /users/:id
   def destroy
     user = User.find(params[:id])
-    user.delete
+    user.status = 0
+    user.save
     flash["msg-error"] = "User has been removed"
     redirect_to :action => "index"
   end

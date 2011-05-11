@@ -121,7 +121,7 @@ class User < ActiveRecord::Base
 
   def self.paginate_user page
     page = page.nil? ? 1 : page.to_i
-    User.paginate :page => page, :per_page => 10
+    User.paginate :page => page, :per_page => 10 , :conditions =>["status",1]
   end
 
   def to_json(options ={})

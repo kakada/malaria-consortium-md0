@@ -16,6 +16,26 @@ describe UsersController do
   it "should use UsersController" do
     controller.should be_instance_of UsersController
   end
+
+  describe "Delete user" do
+    before(:each) do
+      User.stub(:find).with(@user.id).and_return(@user)
+    end
+    it "should set user with status to cero " do
+      delete :destroy , :id => @user.id 
+      @user.status.should == 0    
+    end
+
+    it "should set flash with msg-error " do
+      delete :destroy, :id =>@user.id
+      flash["msg-error"].should_not be_nil
+    end
+
+    it "should redirect to index page" do
+      delete :destroy, :id=>@user.id
+      response.should redirect_to users_path
+    end
+  end
   
   #Update attribute of user
   describe "#user_save" do

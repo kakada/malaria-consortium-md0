@@ -20,6 +20,7 @@
 </td>
 <script type="text/javascript" >
     var msg = "<%=flash_msg @msg %>" ;
+
     $("#saveUser_" + <%= @user.id %> ).click(function(e){
       tr = this.parentNode.parentNode;
       var params = {};
@@ -34,6 +35,7 @@
       var url = $(this).attr("data-url");
       $.ajax({
         url : url,
+        cache: false,
         data: params,
         method : "post",
         success: function(responseText, status , responseObj){
@@ -58,6 +60,7 @@
       $.ajax({
         url : url,
         method : "get",
+        cache : false,
         success: function(responseText, status , responseObj){
           updateRow(id, responseText) ;
           showNotice();

@@ -44,6 +44,7 @@ describe UsersController do
         @update_attrib_valid = @attribute.merge :id =>1
         User.stub!(:find).with(1).and_return(@user)
         @user.stub!(:update_attributes).and_return(true)
+        @user.stub!(:reload)
       end
       
       it "should find user and return an user object " do
@@ -54,6 +55,11 @@ describe UsersController do
 
       it "should update the user with update_attributes and return true" do
         @user.should_receive(:update_attributes).and_return(true)
+        put :user_save, @update_attrib_valid
+      end
+
+      it "should reload the user model to reflex place changes" do
+        @user.should_receive(:reload)
         put :user_save, @update_attrib_valid
       end
 

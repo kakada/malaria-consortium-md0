@@ -130,12 +130,13 @@ class User < ActiveRecord::Base
   end
 
   def intended_place_code_must_exist
-    errors.add(:intended_place_code, "Place doesn't exist") if !self.intended_place_code.blank? && (self.place_id.blank? || self.place.code != self.intended_place_code)
+    errors.add(:intended_place_code, "Place doesn't exist") if !self.intended_place_code.blank? && (self.place_id.blank? )
   end
 
   private
 
   def encrypt_password
+    
     unless password.nil?
       self.salt = make_salt
       self.encrypted_password = encrypt password

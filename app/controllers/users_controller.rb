@@ -87,11 +87,11 @@ class UsersController < ApplicationController
          :id => params[:id],
          :intended_place_code => params[:intended_place_code]
     }
-
     @user = User.find(params[:id].to_i)
-
     @msg = {}
+    
     if(@user.update_attributes(attributes))
+      @user.reload #reload the user with its related model(place model)
       @msg["msg-notice"] = "Update successfully."
       render :user_cancel, :layout => false
     else

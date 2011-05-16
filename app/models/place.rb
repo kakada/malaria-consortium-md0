@@ -61,6 +61,23 @@ class Place < ActiveRecord::Base
     Report.where("created_at >= ? AND place_id = ?", time, id).count
   end
 
+  def get_parent type
+    p = self
+    while p != nil && p.class != type
+      p = p.parent
+    end
+    p
+  end
+
+  def create_alerts message, options = {}
+    alerts = []
+    except = options[:except]
+    users.each do |user|
+      alerts << {:to => user.phone_number.with_sms_protocol, :body => message} unless user == except
+    end
+    alerts
+  end
+
 end
 
 class Province
@@ -83,6 +100,21 @@ class Village
   def report_parser(user)
     VMWReportParser.new user
   end
+
+  def count_reports_since time
+    Report.where("created_at >= ? AND village_id = ?", time, id).count
+  end
+
+  def aggregate_report time
+    counts = Report.where("created_at >= ? AND village_id = ?", time, id).group(:malaria_type).count
+    template_values = {
+      :cases => counts.map {|k,v| v}.sum,
+      :f_cases => counts['F'],
+      :v_cases => counts['V'],
+      :village => self.name
+    }
+    Setting[:aggregate_village_cases_template].apply(template_values)
+  end
 end
 
 class HealthCenter
@@ -91,6 +123,21 @@ class HealthCenter
 
   def report_parser(user)
     HCReportParser.new user
+  end
+
+  def count_reports_since time
+    Report.where(:village_id => Village.where(:parent_id => id)).where("created_at >= ?", time).count
+  end
+
+  def aggregate_report time
+    counts = Report.where("created_at >= ? AND village_id = ?", time, Village.where(:parent_id => id)).group(:malaria_type).count
+    template_values = {
+      :cases => counts.map {|k,v| v}.sum,
+      :f_cases => counts['F'],
+      :v_cases => counts['V'],
+      :health_center => self.name
+    }
+    Setting[:aggregate_hc_cases_template].apply(template_values)
   end
 end
 

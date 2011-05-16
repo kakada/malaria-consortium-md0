@@ -9,20 +9,15 @@ class VMWReport < Report
     mobile ? "a mobile patient with" : "a non mobile patient with"
   end
 
-  def generate_alerts
-    alerts = super
-    hc_users = User.find_all_by_place_id(sender.place.parent_id)
+  def single_case_message
     template_values = {
       :malaria_type => malaria_type,
       :sex => sex,
       :age => age,
-      :village => place.name,
+      :village => village.name,
       :contact_number => sender.phone_number
     }
-    hc_users.each do |user|
-      alerts << { :to => user.phone_number.with_sms_protocol, :body => Setting[:village_template].apply(template_values) }
-    end
-
-    alerts
+    Setting[:single_village_case_template].apply(template_values)
   end
+
 end

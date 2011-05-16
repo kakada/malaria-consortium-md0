@@ -12,18 +12,6 @@
 
 ActiveRecord::Schema.define(:version => 20110516074428) do
 
-  create_table "alerts", :force => true do |t|
-    t.integer  "threshold"
-    t.integer  "recipient_id"
-    t.integer  "source_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "type"
-  end
-
-  add_index "alerts", ["recipient_id"], :name => "fk_alerts_recipient"
-  add_index "alerts", ["source_id"], :name => "fk_alerts_source"
-
   create_table "places", :force => true do |t|
     t.string   "name"
     t.string   "name_kh"
@@ -54,6 +42,14 @@ ActiveRecord::Schema.define(:version => 20110516074428) do
   create_table "settings", :force => true do |t|
     t.string   "param"
     t.string   "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "thresholds", :force => true do |t|
+    t.string   "place_class"
+    t.integer  "place_id"
+    t.integer  "value"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

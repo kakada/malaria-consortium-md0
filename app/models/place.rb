@@ -101,12 +101,16 @@ class Village
     VMWReportParser.new user
   end
 
+  def reports_since time
+    Report.where("created_at >= ? AND village_id = ?", time, id)
+  end
+
   def count_reports_since time
-    Report.where("created_at >= ? AND village_id = ?", time, id).count
+    reports_since(time).count
   end
 
   def aggregate_report time
-    counts = Report.where("created_at >= ? AND village_id = ?", time, id).group(:malaria_type).count
+    counts = reports_since(time).group(:malaria_type).count
     template_values = {
       :cases => counts.map {|k,v| v}.sum,
       :f_cases => counts['F'],
@@ -125,12 +129,16 @@ class HealthCenter
     HCReportParser.new user
   end
 
+  def reports_since time
+    Report.where(:village_id => Village.where(:parent_id => id)).where("created_at >= ?", time)
+  end
+
   def count_reports_since time
-    Report.where(:village_id => Village.where(:parent_id => id)).where("created_at >= ?", time).count
+    reports_since(time).count
   end
 
   def aggregate_report time
-    counts = Report.where("created_at >= ? AND village_id = ?", time, Village.where(:parent_id => id)).group(:malaria_type).count
+    counts = reports_since(time).group(:malaria_type).count
     template_values = {
       :cases => counts.map {|k,v| v}.sum,
       :f_cases => counts['F'],

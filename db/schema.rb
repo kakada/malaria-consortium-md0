@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110511035526) do
+ActiveRecord::Schema.define(:version => 20110516074428) do
 
   create_table "alerts", :force => true do |t|
     t.integer  "threshold"
@@ -73,7 +73,6 @@ ActiveRecord::Schema.define(:version => 20110511035526) do
     t.integer  "status",             :default => 1
   end
 
-  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["phone_number"], :name => "index_users_on_phone_number", :unique => true
   add_index "users", ["user_name"], :name => "index_users_on_user_name", :unique => true
 

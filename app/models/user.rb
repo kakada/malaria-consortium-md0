@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
 
   validates_uniqueness_of :user_name, :allow_nil => true, :message => 'Belongs to another user'
 
-  validates_uniqueness_of :email, :allow_nil => true, :message => 'Belongs to another user'
+  validates_uniqueness_of :email,:allow_blank => true, :message => 'Belongs to another user'
   validates_format_of :email, :allow_blank => true , :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i,  :message => 'Format not valid'
 
   validates_confirmation_of :password

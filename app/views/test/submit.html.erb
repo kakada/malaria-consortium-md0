@@ -1,0 +1,17 @@
+<table border="1" cellspacing="0">
+  <tr>
+    <th>To</th>
+    <th>Text</th>
+  </tr>
+  <% @result.each do |response| -%>
+  <tr>
+    <td>
+      <%= response[:to] %>
+      <% user = User.find_by_phone_number(response[:to].without_protocol) -%>
+      (<%= user.user_name %>)<br/>
+      <%= user.place.description %>
+    </td>
+    <td><%= response[:body]%></td>
+  </tr>
+  <% end -%>
+</table>

@@ -1,28 +1,27 @@
 <div class="panel" >
 <div>
-	<h2 class="separator" >Users</h2>
-	<%= action_button 'add-user.png', 'Add Users', new_user_path %>
-	<%= action_button 'users.png', 'Users List', users_path %>
+  <h2 class="separator" >Users</h2>
+  <%= action_button 'add-user.png', 'Add Users', new_user_path %>
+  <%= action_button 'users.png', 'Users List', users_path %>
 </div>
 <div class="clear"/>
 
 <div>
-	<h2 class="separator" >Places</h2>
-	<%= action_button 'places.png', 'Import', import_places_path %>
+  <h2 class="separator" >Places</h2>
+  <%= action_button 'places.png', 'Import', import_places_path %>
 </div>
 <div class="clear"/>
 
 <div>
-	<h2 class="separator" >Customs</h2>
-	<%= action_button 'sms.png', 'Custom sms', new_custom_message_path %>
+  <h2 class="separator" >Customs</h2>
+  <%= action_button 'sms.png', 'Custom sms', new_custom_message_path %>
         <%= action_button 'settings.png', 'Settings', alert_config_path %>
 </div>
 <div class="clear"/>
 
 <div>
-	<h2 class="separator" >Alerts</h2>
-	<%= action_button 'health_center.png', 'Health Center', health_center_alerts_path %>
-	<%= action_button 'village.png', 'Village', village_alerts_path %>
+  <h2 class="separator" >Alerts</h2>
+  <%= action_button 'thresholds.png', 'Thresholds', :controller => :thresholds %>
 </div>
 
 <div class="clear"/>

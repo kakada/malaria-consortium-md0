@@ -18,7 +18,7 @@ class Place < ActiveRecord::Base
     )
 
     # Define has_many :provinces, etc., that will restrict the sub_places to the correct places types
-    has_many constant.tableize.to_sym, :class_name => constant, :foreign_key => "parent_id"
+    #has_many constant.tableize.to_sym, :class_name => constant, :foreign_key => "parent_id"
 
     # Define generic methods to get the village, country, etc., of a place.
     # This base class just returns self if the type is the name of the method, otherwise nil.
@@ -82,10 +82,12 @@ end
 
 class Province
   alias_method :country, :parent
+  has_many :ods, :class_name => "OD", :foreign_key => "parent_id"
 end
 
 class OD
   alias_method :province, :parent
+  has_many :health_centers, :class_name => "HealthCenter", :foreign_key => "parent_id"
 
   def count_reports_since time
     Report.joins(:place).where("reports.created_at >= ? AND places.parent_id = ?", time, id).count
@@ -124,6 +126,7 @@ end
 class HealthCenter
   alias_method :od, :parent
   delegate :province, :to => :od
+  has_many :villages, :class_name => "Village", :foreign_key => "parent_id"
 
   def report_parser(user)
     HCReportParser.new user

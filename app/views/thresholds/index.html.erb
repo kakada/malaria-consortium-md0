@@ -1,0 +1,32 @@
+<%= form_tag do%>
+OD: <%= select_tag :od_id, option_groups_from_collection_for_select(@provinces, :ods, :description, :id, :description, params[:od_id]), :onchange => 'form.submit();'%>
+<br/>
+Health Center: <%= select_tag :hc_id, options_from_collection_for_select(@od.health_centers, :id, :description, params[:hc_id]), :onchange => 'form.submit();' %>
+<br/><br/>
+<%= fields_for :threshold do |f|%>
+<table>
+  <tr>
+    <td>Threshold for this health center:</td>
+    <td><%= f.text_field 'hc', :value => @thresholds['hc'] %></td>
+  </tr>
+  <tr>
+    <td>Default threshold for villages:</td>
+    <td><%= f.text_field 'village_default', :value => @thresholds['village_default'] %></td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <h3>Villages</h3>
+    </td>
+  </tr>
+  <% @villages.each do |village| %>
+  <tr>
+    <td><%= village.description %></td>
+    <td><%= f.text_field village.id, :value => @thresholds[village.id] %></td>
+  </tr>
+  <% end -%>
+</table>
+<% end -%>
+
+<%= submit_tag %>
+
+<% end -%>

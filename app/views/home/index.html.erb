@@ -15,13 +15,14 @@
 <div>
   <h2 class="separator" >Customs</h2>
   <%= action_button 'sms.png', 'Custom sms', new_custom_message_path %>
-        <%= action_button 'settings.png', 'Settings', alert_config_path %>
+  <%= action_button 'settings.png', 'Settings', alert_config_path %>
 </div>
 <div class="clear"/>
 
 <div>
   <h2 class="separator" >Alerts</h2>
   <%= action_button 'thresholds.png', 'Thresholds', :controller => :thresholds %>
+  <%= action_button 'templates.png', 'Templates', settings_templates_path %>
 </div>
 
 <div class="clear"/>

@@ -1,6 +1,19 @@
 <%= form_for "templates" do |f| -%>
-<p>Template for individual case report from a village malaria worker:</p>
-<%= f.text_field :village_template %>
+<p>Template for individual case report from a village malaria worker:
+<%= f.text_field :single_village_case_template %>
+</p>
+
+<p>Template for individual case report from a health center:
+<%= f.text_field :single_hc_case_template %>
+</p>
+
+<p>Template for aggregated cases report at village level:
+<%= f.text_field :aggregate_village_cases_template %>
+</p>
+
+<p>Template for aggregated cases report at health center level:
+<%= f.text_field :aggregate_hc_cases_template %>
+</p>
 
 <%= f.submit %>
 <% end -%>

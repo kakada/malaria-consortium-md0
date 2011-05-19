@@ -114,9 +114,10 @@ class Village
   def aggregate_report time
     counts = reports_since(time).group(:malaria_type).count
     template_values = {
-      :cases => counts.map {|k,v| v}.sum,
-      :f_cases => counts['F'],
-      :v_cases => counts['V'],
+      :cases => counts.values.sum,
+      :f_cases => counts['F'] || 0,
+      :v_cases => counts['V'] || 0,
+      :m_cases => counts['M'] || 0,
       :village => self.name
     }
     Setting[:aggregate_village_cases_template].apply(template_values)
@@ -143,9 +144,10 @@ class HealthCenter
   def aggregate_report time
     counts = reports_since(time).group(:malaria_type).count
     template_values = {
-      :cases => counts.map {|k,v| v}.sum,
-      :f_cases => counts['F'],
-      :v_cases => counts['V'],
+      :cases => counts.values.sum,
+      :f_cases => counts['F'] || 0,
+      :v_cases => counts['V'] || 0,
+      :m_cases => counts['M'] || 0,
       :health_center => self.name
     }
     Setting[:aggregate_hc_cases_template].apply(template_values)

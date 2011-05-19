@@ -12,11 +12,11 @@ describe Setting do
   end
 
   describe "get key value" do
-    it "should return 0 when key doesn't exist" do
+    it "should return nil when key doesn't exist" do
       key = "not_exist"
       Setting.stub!(:find_by_param).with(key).and_return(false)
-      Setting[key].should == "0"
-      
+      Setting[key].should == nil
+
     end
 
     it "should return a value of key if the key exist " do
@@ -27,7 +27,7 @@ describe Setting do
 
   describe "set key a value " do
     before(:each) do
-      
+
     end
     describe "key exist" do
       before(:each) do
@@ -64,7 +64,7 @@ describe Setting do
 
         Setting[@key] = @value
       end
-      
+
     end
   end
 

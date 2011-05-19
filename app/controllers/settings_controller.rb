@@ -17,11 +17,16 @@ class SettingsController < ApplicationController
 
    def template_config
      @templates = {}.with_method_access
-     @templates[:village_template] = Setting[:village_template]
+     @templates[:single_village_case_template] = Setting[:single_village_case_template]
+     @templates[:single_hc_case_template] = Setting[:single_hc_case_template]
+     @templates[:aggregate_village_cases_template] = Setting[:aggregate_village_cases_template]
+     @templates[:aggregate_hc_cases_template] = Setting[:aggregate_hc_cases_template]
    end
 
    def update_template_config
-     Setting[:village_template] = params[:templates][:village_template]
+     params[:templates].each do |key, value|
+      Setting[key] = value
+     end
 
      flash["notice"] = "Templates have been saved successfully"
      redirect_to :action => :template_config

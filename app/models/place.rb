@@ -2,7 +2,7 @@ class Place < ActiveRecord::Base
   has_many :users
   has_many :sub_places, :class_name => "Place", :foreign_key => "parent_id"
   belongs_to :parent, :class_name => "Place"
-
+  
   validates_uniqueness_of :code
 
 
@@ -61,6 +61,9 @@ class Place < ActiveRecord::Base
     Report.where("created_at >= ? AND place_id = ?", time, id).count
   end
 
+end
+
+class Country
 end
 
 class Province

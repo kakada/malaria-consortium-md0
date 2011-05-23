@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110516074428) do
+ActiveRecord::Schema.define(:version => 20110518072117) do
 
   create_table "alerts", :force => true do |t|
     t.integer  "threshold"
@@ -32,6 +32,8 @@ ActiveRecord::Schema.define(:version => 20110516074428) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "type"
+    t.decimal  "lat",        :precision => 11, :scale => 8
+    t.decimal  "lng",        :precision => 11, :scale => 8
   end
 
   create_table "reports", :force => true do |t|
@@ -45,6 +47,9 @@ ActiveRecord::Schema.define(:version => 20110516074428) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "village_id"
+    t.integer  "health_center_id", :default => 0
+    t.integer  "od_id",            :default => 0
+    t.integer  "province_id",      :default => 0
   end
 
   add_index "reports", ["place_id"], :name => "fk_reports_places"

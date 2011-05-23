@@ -8,6 +8,7 @@ class Report < ActiveRecord::Base
   belongs_to :village, :class_name => "Village" 
   
   before_validation :upcase_strings
+  before_save :complete_fields
   
   def self.process(message = {})
     message = message.with_indifferent_access
@@ -63,6 +64,13 @@ class Report < ActiveRecord::Base
      alerts.push :to => user.phone_number.with_sms_protocol, :body => message
    end
    alerts
+ end
+
+ def complete_fields
+   village =  Place.find(self.village_id)
+   self.health_center_id = village.health_center.id
+   self.od_id = village.od.id
+   self.province_id = village.province.id
  end
 
 

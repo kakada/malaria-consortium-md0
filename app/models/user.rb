@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
 
   def places_csv_directory
     dir = Rails.root.join "tmp", "placescsv"
-    Dir.mkdir dir unless Dir.exists? dir
+    FileUtils.mkdir_p dir unless Dir.exists? dir
     dir
   end
 
@@ -136,7 +136,6 @@ class User < ActiveRecord::Base
   private
 
   def encrypt_password
-    
     unless password.nil?
       self.salt = make_salt
       self.encrypted_password = encrypt password

@@ -1,88 +1,88 @@
 .container {
-	margin: 0 auto;
+    margin: 0 auto;
         width: 1010px;
 }
 
 body {
-	background: #7FC9EE;
+    background: #7FC9EE;
         color: gray;
         font-family: Helvetica,Arial,sans-serif;
         font-size: 12px;
         /*#cff*/;
 }
 #header {
-	padding-top: 20px;
+    padding-top: 20px;
         background-color: #fff;
         height: 100px;
 }
 #header img {
-	padding: 1em;
-	background: #fff;
+    padding: 1em;
+    background: #fff;
         display: none;
 }
 #content {
-	margin-top: 1em;
-	font-size: 120%;
-	padding: 20px;
-	background: #fff;
+    margin-top: 1em;
+    font-size: 120%;
+    padding: 20px;
+    background: #fff;
 }
 
 a {
-	color: #09c;
-	text-decoration: none;
+    color: #09c;
+    text-decoration: none;
 }
 a:hover {
-	color: #069;
-	text-decoration: underline;
+    color: #069;
+    text-decoration: underline;
 }
 a:visited {
-	color: #069;
+    color: #069;
 }
 .navigation {
-	background-color: #ccc;
-	padding: 0 0.7em;
-	white-space: nowrap;
+    background-color: #ccc;
+    padding: 0 0.7em;
+    white-space: nowrap;
         opacity:0.5;
         margin-right: 10px;
         font-size: 14px;
 }
 ul.navigation {
-	margin: 0 10px 0 0;
+    margin: 0 10px 0 0;
 }
 .navigation li {
-	list-style-type: none;
-	display: inline-block;
-	padding: 0.2em 0;
+    list-style-type: none;
+    display: inline-block;
+    padding: 0.2em 0;
 }
 .navigation li a {
-	padding: 0 5px;
-	font-weight: bold;
+    padding: 0 5px;
+    font-weight: bold;
 }
 .navigation li a:visited {
-	color: #09c;
+    color: #09c;
 }
 .navigation li a:hover {
-	text-decoration: underline;
+    text-decoration: underline;
 }
 .navigation li span {
     font-size: 10px;
     color: gray;
 }
 a.signup_button {
-	margin-left: auto;
-	margin-right: auto;
-	display: block;
-	text-align: center;
-	width: 190px;
-	color: #fff;
-	background: #006400;
-	font-size: 150%;
-	font-weight: bold;
-	padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    text-align: center;
+    width: 190px;
+    color: #fff;
+    background: #006400;
+    font-size: 150%;
+    font-weight: bold;
+    padding: 20px;
 }
 .round {
-	-moz-border-radius:	4px;
-	-webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
         border-radius : 4px;
 }
 
@@ -185,7 +185,7 @@ div.icon span {
 }
 
 .input, input[type=text],  input[type=password]{
-	width:100%;
+    width:100%;
         border: 1px solid #999;
         -moz-border-radius : 3px;
         -webkit-border-radius: 3px;
@@ -198,7 +198,7 @@ input[type=text].error,  input[type=password].error{
 }
 .separator
 {
-	line-height:0.5;
+    line-height:0.5;
 }
 
 .clickable{
@@ -239,8 +239,8 @@ input[type=text].error,  input[type=password].error{
 
 .inputCell
 {
-	padding-right:5px;
-	padding-left:2px;
+    padding-right:5px;
+    padding-left:2px;
 }
 
 .validation_error
@@ -252,8 +252,8 @@ input[type=text].error,  input[type=password].error{
 
 .server
 {
-	
-	font-size:10px;
+
+    font-size:10px;
 }
 
 
@@ -262,15 +262,15 @@ input[type=text].error,  input[type=password].error{
     margin-top: 10px;
 }
 
-input.error 
-{ 
-	border: 1px solid red; 
+input.error
+{
+    border: 1px solid red;
 }
 
-label.error 
+label.error
 {
-	color: red;
-	font-size:10px;
+    color: red;
+    font-size:10px;
         margin-left: 5px;
 }
 
@@ -280,7 +280,7 @@ label.error
     background-position: left center;
     padding: 5px 5px 5px 30px;
     border: 2px solid #ccc;
-    -moz-border-radius:	4px;
+    -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     border-radius : 4px;
     background-color: #eee;
@@ -292,7 +292,7 @@ label.error
     background-position: left center;
     padding: 5px 5px 5px 30px;
     border: 2px solid #ccc;
-    -moz-border-radius:	4px;
+    -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     border-radius : 4px;
     background-color: #eee;
@@ -304,22 +304,22 @@ label.error
 }
 
 .big-button {
-	
-	width:150px;
-	height:30px;
+
+    width:150px;
+    height:30px;
 }
 
 .alert_form_line {
-	margin-top:10px;
+    margin-top:10px;
 }
 
 #alert-table {
-	margin-top:30px;
-	width:100%;
+    margin-top:30px;
+    width:100%;
 }
 
 #alert-controls {
-	padding:20px;
+    padding:20px;
 }
 
 #editDirFancy tr{
@@ -357,7 +357,7 @@ label.error
 .title{
     font-weight: bold;
     font-size: 15px;
-    
+
 }
 .nav-link{
     background-image: url("../images/arrow-right.png");
@@ -373,4 +373,8 @@ label.error
 }
 .no-style{
     list-style-type: none;
+}
+
+tr.edit {
+    background-color: #eef;
 }

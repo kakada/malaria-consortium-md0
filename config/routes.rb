@@ -24,6 +24,8 @@ Local::Application.routes.draw do
     resources :users
   end
 
+  resources :thresholds
+
   resources :sessions, :only =>[:new,:create,:destroy] do
     collection do
       get "signin"

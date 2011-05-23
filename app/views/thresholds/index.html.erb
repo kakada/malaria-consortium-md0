@@ -1,32 +1,40 @@
-<%= form_tag do%>
-OD: <%= select_tag :od_id, option_groups_from_collection_for_select(@provinces, :ods, :description, :id, :description, params[:od_id]), :onchange => 'form.submit();'%>
+<%= form_for @threshold do |f| %>
+OD:
+<select id="od_id" name="od_id" onchange="window.location.href='<%=thresholds_path%>?od_id='+$(this).val()">
+  <option value="">All provinces/districts</option>
+  <%= option_groups_from_collection_for_select(@provinces, :ods, :description, :id, :description, @od ? @od.id : '') %>
+</select>
+
 <br/>
-Health Center: <%= select_tag :hc_id, options_from_collection_for_select(@od.health_centers, :id, :description, params[:hc_id]), :onchange => 'form.submit();' %>
-<br/><br/>
-<%= fields_for :threshold do |f|%>
-<table>
+
+<% if @od -%>
+<%= f.select :place_code, enum_for(:hc_and_villages, @od, @health_centers), {}, {:onchange => %(window.location.href='#{thresholds_path}?od_id='+$('#od_id').val()+'&threshold[place_code]='+$(this).val())} %>
+
+<%= f.number_field :value %>
+<%= f.submit %>
+<% end -%>
+
+<table width="100%">
   <tr>
-    <td>Threshold for this health center:</td>
-    <td><%= f.text_field 'hc', :value => @thresholds['hc'] %></td>
+    <th>Province</th>
+    <th>OD</th>
+    <th>Health Center</th>
+    <th>Village</th>
+    <th>Threshold</th>
+    <th></th>
   </tr>
-  <tr>
-    <td>Default threshold for villages:</td>
-    <td><%= f.text_field 'village_default', :value => @thresholds['village_default'] %></td>
-  </tr>
-  <tr>
-    <td colspan="2">
-      <h3>Villages</h3>
+  <% @thresholds.each do |threshold| %>
+  <tr <%= %(class='edit') if threshold == @threshold %>>
+    <td><%= render_threshold_table_cell(threshold, Province) %></td>
+    <td><%= render_threshold_table_cell(threshold, OD) %></td>
+    <td><%= render_threshold_table_cell(threshold, HealthCenter) %></td>
+    <td><%= render_threshold_table_cell(threshold, Village) %></td>
+    <td><%= threshold.value %></td>
+    <td>
+      <%= link_to 'Edit', threshold %>
     </td>
-  </tr>
-  <% @villages.each do |village| %>
-  <tr>
-    <td><%= village.description %></td>
-    <td><%= f.text_field village.id, :value => @thresholds[village.id] %></td>
   </tr>
   <% end -%>
 </table>
-<% end -%>
-
-<%= submit_tag %>
 
 <% end -%>

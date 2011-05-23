@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110516074428) do
+ActiveRecord::Schema.define(:version => 20110520064233) do
 
   create_table "places", :force => true do |t|
     t.string   "name"
@@ -20,7 +20,10 @@ ActiveRecord::Schema.define(:version => 20110516074428) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "type"
+    t.string   "hierarchy"
   end
+
+  add_index "places", ["code"], :name => "places_on_code", :unique => true
 
   create_table "reports", :force => true do |t|
     t.string   "malaria_type"
@@ -52,6 +55,7 @@ ActiveRecord::Schema.define(:version => 20110516074428) do
     t.integer  "value"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "place_hierarchy"
   end
 
   create_table "users", :force => true do |t|

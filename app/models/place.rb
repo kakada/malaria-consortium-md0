@@ -2,10 +2,21 @@ class Place < ActiveRecord::Base
   has_many :users
   has_many :sub_places, :class_name => "Place", :foreign_key => "parent_id"
   belongs_to :parent, :class_name => "Place"
+  before_save :unset_hierarchy
+  after_save :set_hierarchy
 
   validates_uniqueness_of :code
 
+  def unset_hierarchy
+    self.hierarchy = nil unless changes.except(:hierarchy).empty?
+  end
 
+  def set_hierarchy
+    if self.hierarchy.nil?
+      self.hierarchy = (self.parent_id ? "#{self.parent.hierarchy}." : '') + self.id.to_s
+      update hierarchy: self.hierarchy
+    end
+  end
 
   Types = ["Country", "Province", "OD", "HealthCenter", "Village"]
 

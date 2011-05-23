@@ -24,7 +24,7 @@ class Place < ActiveRecord::Base
     # Define classes for each place
     class_eval %Q(
       class ::#{constant} < Place
-        default_scope where(:type => "#{constant}")
+        default_scope where(:type => "#{constant}") rescue nil
       end
     )
 

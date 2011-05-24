@@ -493,3 +493,14 @@ label.error
     color:#fff;
     font-weight: bold;
 }
+.infoTip{
+   width: 600px;
+   
+}
+.infoTip table {
+    width: 94%;
+    border: 1px solid gray;
+}
+.infoTip td {
+    text-align: left;
+}

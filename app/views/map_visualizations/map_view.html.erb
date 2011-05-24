@@ -63,9 +63,12 @@
        })
      }
 
-     function renderPushPin(places,clouds){
+     function renderPushPin(result){
        MD.removeMarkers();
-       var place_parent = "";
+       
+       var places = result["place"];
+       var clouds = result["cloud"];
+
        for(var i=0; i< places.length; i++){
            options = {
                           lat : places[i]["lat"] ,
@@ -85,14 +88,17 @@
               MD.activeMarker = this;
               getListReport(this.place_id);
            });
-
-           place_parent = places[i];
         }
-        $("#place_id").val(place_parent.id);
+
+        if(typeof result["parent"] != "undefined")
+          $("#place_id").val(result["parent"].paren_id);
+        
         if(places.length >1)
           MD.boundBox();
-        else
+        else{
+          console.dir(places);
           MD.centerTo(places[0]["lat"], places[0]["lng"]);
+        }
         /*
         var zoom = MD.map.getZoom();
         
@@ -130,7 +136,7 @@
        MD.date.toCalender(); 
        var from = $("#from").val();
        var to = $("#to").val();
-       var url = "<%= reports_url %>"
+       var url = "<%= map_visualizations_url %>"
        $.ajax({
          url:url,
          cache : false,
@@ -173,7 +179,7 @@
        var from = $("#from").val();
        var to = $("#to").val();
        
-       var url = "<%= map_report_places_url %>.json"
+       var url = "<%= map_report_map_visualizations_url %>.json"
        $.ajax({
          url:url,
          dataType: "json",
@@ -182,7 +188,7 @@
          success: function(result, status, responseObj){
   
            $("#ajax_loading").hide();
-           renderPushPin(result["place"],result["cloud"]);
+           renderPushPin(result);
            
            if(typeof result["parent"] !="undefined"){
             MD.bcUI.setAsObj(result["parent"]);
@@ -192,6 +198,7 @@
          }
          
        });
+       return false;
      }
 
 

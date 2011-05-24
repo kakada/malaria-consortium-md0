@@ -2,8 +2,11 @@ class Creteria
   attr_accessor :max, :min, :max_size, :min_size , :count
   attr_accessor :data
 
-  def add_record! key, value
+  def initialize
     @data = @data || {}
+  end
+  def add_record! key, value
+    
     @data[key] = value
   end
 
@@ -33,9 +36,10 @@ class Creteria
     cloud = {}
     @data.each do |key, value|
       size =0
-      puts "size:__________________" + @data.size.to_s
       if(@data.size == 1)
         size = @max_size
+      elsif (@max == @min)
+        size = 1
       else
         size = @min_size + ((@max-(@max-(value-@min)))*(@max_size-@min_size)/(@max-@min))
       end

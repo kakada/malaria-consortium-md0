@@ -7,7 +7,14 @@ Local::Application.routes.draw do
   post "/settings/templates", :to => "settings#update_template_config"
   match "map_report/:id" => "places#map_report" , :as => "map_report"
   resources :custom_messages
-
+  
+  resources :map_visualizations do
+    collection do
+      get "map_report" 
+      get "map_view"
+    end
+  end
+  resources :reports
   resources :users do
     collection do
       get "validate"

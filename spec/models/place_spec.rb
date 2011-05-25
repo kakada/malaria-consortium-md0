@@ -59,7 +59,10 @@ describe Place do
     
     describe "od_count_reports_since" do
       before(:each) do
-        @od = OD.create!
+
+        @country = Country.create!  :code => "Cty1"
+        @province = Province.create! :parent =>@country ,:code => "Pro1"
+        @od = OD.create! :parent => @province ,  :code => "OD1"
 
         @hc1 = HealthCenter.create! :parent => @od, :code => "1"
         @hc2 = HealthCenter.create! :parent => @od, :code => "2"
@@ -69,7 +72,8 @@ describe Place do
         @hc4 = HealthCenter.create! :parent => @od2, :code => "4"
 
         @user = User.create! :place => @hc1, :phone_number => '1' 
-
+        puts @hc1
+        
         @report_hc1 = Report.create! :place => @hc1, :malaria_type => 'M', :sex => 'Male', :age => 23, :sender => @user
         @report_hc2 = Report.create! :place => @hc2, :malaria_type => 'F', :sex => 'Male', :age => 23, :sender => @user
         @report_hc3 = Report.create! :place => @hc3, :malaria_type => 'F', :sex => 'Male', :age => 23, :sender => @user, :created_at => 8.days.ago            

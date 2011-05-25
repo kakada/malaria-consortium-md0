@@ -4,7 +4,7 @@ class Place < ActiveRecord::Base
   belongs_to :parent, :class_name => "Place"
   before_save :unset_hierarchy
   after_save :set_hierarchy
-
+  
   validates_uniqueness_of :code
 
   def unset_hierarchy
@@ -89,6 +89,10 @@ class Place < ActiveRecord::Base
     alerts
   end
 
+end
+
+class Country
+  
 end
 
 class Province

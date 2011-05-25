@@ -5,9 +5,16 @@ Local::Application.routes.draw do
   post "/update_alert_config", :to =>"settings#update_alert_config"
   get "/settings/templates", :to => "settings#template_config"
   post "/settings/templates", :to => "settings#update_template_config"
-
+  match "map_report/:id" => "places#map_report" , :as => "map_report"
   resources :custom_messages
-
+  
+  resources :map_visualizations do
+    collection do
+      get "map_report" 
+      get "map_view"
+    end
+  end
+  resources :reports
   resources :users do
     collection do
       get "validate"
@@ -19,6 +26,8 @@ Local::Application.routes.draw do
       get "import"
       post "upload_csv"
       post "confirm_import"
+      get "map_view"
+      get "map_report"
     end
 
     resources :users
@@ -39,6 +48,8 @@ Local::Application.routes.draw do
   match  "/user_edit/:id" => "users#user_edit"
   match  "/user_update" => "users#user_save"
   match  "/user_cancel/:id" => "users#user_cancel"
+
+
 
 
   match "/nuntium/receive_at" => "nuntium#receive_at"

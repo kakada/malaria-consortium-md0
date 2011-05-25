@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110520064233) do
+ActiveRecord::Schema.define(:version => 20110525024927) do
 
   create_table "places", :force => true do |t|
     t.string   "name"
@@ -20,10 +20,10 @@ ActiveRecord::Schema.define(:version => 20110520064233) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "type"
+    t.decimal  "lat",        :precision => 11, :scale => 8
+    t.decimal  "lng",        :precision => 11, :scale => 8
     t.string   "hierarchy"
   end
-
-  add_index "places", ["code"], :name => "places_on_code", :unique => true
 
   create_table "reports", :force => true do |t|
     t.string   "malaria_type"
@@ -36,6 +36,9 @@ ActiveRecord::Schema.define(:version => 20110520064233) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "village_id"
+    t.integer  "health_center_id", :default => 0
+    t.integer  "od_id",            :default => 0
+    t.integer  "province_id",      :default => 0
   end
 
   add_index "reports", ["place_id"], :name => "fk_reports_places"

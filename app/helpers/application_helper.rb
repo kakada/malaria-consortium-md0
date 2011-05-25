@@ -26,5 +26,12 @@ module ApplicationHelper
     element.html_safe
   end
 
+  def get_malaria_type type
+      if(type == "F" || type == "M")
+        return "Pf"
+      end
+      "Pv"
+  end
+
 
 end

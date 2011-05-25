@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe UsersController do
   before(:each) do
-      Place.create!(:name => "Phnom penh", :code => "pcode1", :parent_id => 0)
+      Place.create!(:name => "Phnom penh", :code => "pcode1" )
       @attribute = {
          :user_name => "admin",
          :email => "admin@yahoo.com",

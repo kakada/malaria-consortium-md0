@@ -1,4 +1,11 @@
 class User < ActiveRecord::Base
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
+
+  # Setup accessible (or protected) attributes for your model
+  #attr_accessible :email, :password, :password_confirmation, :remember_me
   attr_accessor :intended_place_code
 
   Roles = ["default", "national", "admin" ]
@@ -11,11 +18,6 @@ class User < ActiveRecord::Base
 
   validates_uniqueness_of :user_name, :allow_nil => true, :message => 'Belongs to another user'
 
-  validates_uniqueness_of :email,:allow_blank => true, :message => 'Belongs to another user'
-  validates_format_of :email, :allow_blank => true , :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i,  :message => 'Format not valid'
-
-  validates_confirmation_of :password
-
   validates_uniqueness_of :phone_number, :allow_nil => true, :message => 'Belongs to another user'
 
   validates_presence_of :phone_number,
@@ -27,7 +29,6 @@ class User < ActiveRecord::Base
 
   validate :intended_place_code_must_exist
 
-  before_save :encrypt_password
   before_save :set_nuntium_custom_attributes
 
   # Delegate country, province, etc., to place
@@ -54,15 +55,6 @@ class User < ActiveRecord::Base
 
   def places_csv_file_name
     Rails.root.join(places_csv_directory, "#{id}.csv")
-  end
-
-  def has_password? submitted_pwd
-    self.encrypted_password == encrypt(submitted_pwd)
-  end
-
-  def remember_me!
-    self.remember_token = encrypt "#{salt}--#{id}"
-    save false
   end
 
   def alert_numbers
@@ -129,31 +121,11 @@ class User < ActiveRecord::Base
      super(options)
   end
 
-  def intended_place_code_must_exist
-    errors.add(:intended_place_code, "Place doesn't exist") if !self.intended_place_code.blank? && (self.place_id.blank? )
+  def admin?
+    role == 'admin'
   end
 
   private
-
-  def encrypt_password
-    unless password.nil?
-      self.salt = make_salt
-      self.encrypted_password = encrypt password
-    end
-  end
-
-  def encrypt pwd
-    secure_hash "#{salt}#{pwd}"
-  end
-
-  def make_salt
-    secure_hash "#{Time.now.utc}#{password}"
-  end
-
-  def secure_hash string
-    Digest::SHA2.hexdigest string
-    string
-  end
 
   def self.phone_numbers users
     users.map { |u| u.phone_number }.reject { |n| n.nil? }
@@ -167,7 +139,6 @@ class User < ActiveRecord::Base
   end
 
   def set_nuntium_custom_attributes
-
     if phone_number_changed? && phone_number_was.present?
       old_place = place_id_changed? ? Place.find(place_id_was) : place rescue nil
       if is_reporting_place?(old_place)
@@ -187,4 +158,15 @@ class User < ActiveRecord::Base
     place.is_a?(HealthCenter) || place.is_a?(Village)
   end
 
+  def intended_place_code_must_exist
+    errors.add(:intended_place_code, "Place doesn't exist") if !self.intended_place_code.blank? && (self.place_id.blank? )
+  end
+
+  def email_required?
+    phone_number.nil?
+  end
+
+  def password_required?
+    phone_number.nil?
+  end
 end

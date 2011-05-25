@@ -1,9 +1,7 @@
 class UsersController < ApplicationController
-
-  before_filter :authenticate, :only => [:edit, :update]
+  before_filter :authenticate_user!, :only => [:edit, :update]
   before_filter :correct_user, :only => [:edit, :update]
 
-  
   #GET /users
   def index
     @title = "User management"
@@ -12,13 +10,13 @@ class UsersController < ApplicationController
     @user.intended_place_code = ""
     @users = User.paginate_user @page
   end
-  
+
   #GET /user/new
   def new
     @title = "Create Users"
     @places = Place.all
   end
-  
+
   #post /users/:id
   def destroy
     user = User.find(params[:id])
@@ -27,7 +25,7 @@ class UsersController < ApplicationController
     flash["msg-error"] = "User has been removed"
     redirect_to :action => "index"
   end
-  
+
   def create
     attributes = {
          :user_name => params[:user_name],
@@ -39,9 +37,9 @@ class UsersController < ApplicationController
          :id => params[:id],
          :intended_place_code => params[:intended_place_code]
     }
-    
+
     @user = User.new(attributes)
-    
+
     if(@user.save)
       @user = User.new
       flash["msg-notice"] = "Successfully created"
@@ -49,11 +47,11 @@ class UsersController < ApplicationController
       @user.intended_place_code = params[:intended_place_code]
       flash["msg-error"] = "Failed to create"
     end
-    
+
     @page = (params[:page].to_i < 2) ? 1 : params[:page].to_i;
     @users = User.paginate_user @page
-    
-    render :index 
+
+    render :index
   end
 
   #GET user/:id.:format
@@ -89,7 +87,7 @@ class UsersController < ApplicationController
     }
     @user = User.find(params[:id].to_i)
     @msg = {}
-    
+
     if(@user.update_attributes(attributes))
       @user.reload #reload the user with its related model(place model)
       @msg["msg-notice"] = "Update successfully."

@@ -2,11 +2,12 @@ require 'spec_helper'
 
 describe CustomMessagesController do
   include Helpers
-  
+  include Devise::TestHelpers
+
   before(:each) do
     @user = admin_user "12345678"
-    test_sign_in(@user) #sign the user in
-    controller.signed_in?.should be_true #make sure it was signed
+    sign_in @user
+    controller.current_user.should eq(@user)
   end
 
   it "should use CustomMessageController" do
@@ -101,9 +102,9 @@ describe CustomMessagesController do
 
     end
 
-    
+
 
   end
 
-  
+
 end

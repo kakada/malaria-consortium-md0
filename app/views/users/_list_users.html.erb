@@ -31,7 +31,7 @@
         <td><%= input_field_tag :intended_place_code, @user %></td>
 
         <td><%= select_tag(:role ,options_for_select(User::Roles,  (@user.nil?)? "" : @user.send(:role)), {} )  %>  </td>
-        
+
         <td >
           <%=  submit_tag "Add", :id => "saveUser", :name => "saveUser" %>
         </td>

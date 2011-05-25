@@ -1,5 +1,4 @@
 class TestController < ApplicationController
-
   def index
     Place
     place_classes = [Province, OD, HealthCenter, Village]
@@ -10,10 +9,10 @@ class TestController < ApplicationController
     village = users.map {|x| x.place.get_parent(Village)}.uniq.reject{|x| x.nil?}
 
     @list = provinces
-    ods.each {|x| @list.insert (@list.index x.parent) + 1, x}
-    hcs.each {|x| @list.insert (@list.index x.parent) + 1, x}
-    village.each {|x| @list.insert (@list.index x.parent) + 1, x}
-    users.each {|x| @list.insert (@list.index x.place) + 1, x}
+    ods.each {|x| @list.insert(@list.index x.parent + 1, x)}
+    hcs.each {|x| @list.insert(@list.index x.parent + 1, x)}
+    village.each {|x| @list.insert(@list.index x.parent + 1, x)}
+    users.each {|x| @list.insert(@list.index x.place + 1, x)}
 
     @list.map! do |x|
       if x.is_a? User
@@ -27,5 +26,4 @@ class TestController < ApplicationController
   def submit
     @result = Report.process(params[:report])
   end
-
 end

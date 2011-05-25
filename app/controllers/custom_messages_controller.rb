@@ -1,5 +1,4 @@
 class CustomMessagesController < ApplicationController
-
   def new
     @custom_message = CustomMessage.new :type =>"",:sms => ""
   end
@@ -11,11 +10,11 @@ class CustomMessagesController < ApplicationController
       @places.each do |place|
         place.users.each do |user|
           @custom_message.send_to user
-        end    
+        end
       end
       render :review
     else
       render :new
     end
-  end  
+  end
 end

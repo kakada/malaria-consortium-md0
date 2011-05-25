@@ -216,12 +216,12 @@ describe User do
     end
 
     it "should be valid if it has username, password and email" do
-      valid_user = User.new :user_name => "foo", :password => "foo", :email => "a@a.com"
+      valid_user = User.new :user_name => "foo", :password => "123456", :email => "a@a.com"
       valid_user.valid?.should be_true
     end
 
     it "should be invalid if it has no phone and no username" do
-      valid_user = User.new :user_name => "", :password => "foo", :email => "a@a.com"
+      valid_user = User.new :user_name => "", :password => "123456", :email => "a@a.com"
       valid_user.valid?.should be_false
     end
 
@@ -254,7 +254,7 @@ describe User do
 
     it "should not set custom attributes if it has no phone" do
       @nuntium_api.should_not_receive(:set_custom_attributes)
-      User.create! :user_name => 'user', :password => 'pass', :email => 'user@email.com'
+      User.create! :user_name => 'user', :password => '123456', :email => 'user@email.com'
     end
 
     it "should unset custom attributes if moved to province" do
@@ -265,7 +265,7 @@ describe User do
     end
 
     it "should clear the custom attribute when the phone is unset" do
-      u = User.create! :user_name => 'user', :password => 'pass', :email => 'user@email.com', :phone_number => '123', :place => village('foo')
+      u = User.create! :user_name => 'user', :password => '123456', :email => 'user@email.com', :phone_number => '123', :place => village('foo')
       @nuntium_api.should_receive(:set_custom_attributes).with('sms://123', {:application => nil})
       u.phone_number = nil
       u.save!

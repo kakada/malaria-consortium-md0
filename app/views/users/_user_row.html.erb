@@ -1,7 +1,7 @@
 <td><%= user.user_name %> </td>
 <td><%= user.email %>  </td>
 <td><%= user.phone_number %>  </td>
-<td><%= "*" * (user.password.nil? ? 0 : user.password.size) %>  </td>
+<td><%= user.encrypted_password.nil? ? '' : '**********' %>  </td>
 <td><%= user.place.nil? ? "" : user.place.description %>  </td>
 <td><%= user.role %></td>
 <td>

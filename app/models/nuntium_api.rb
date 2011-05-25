@@ -6,6 +6,4 @@ class NuntiumAPI
   def send_sms message
     @api.send_ao message
   end
-
-  
 end

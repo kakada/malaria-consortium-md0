@@ -4,5 +4,4 @@ class ApplicationController < ActionController::Base
   #from rails2
   helper :all
   include SessionsHelper
-  #
 end

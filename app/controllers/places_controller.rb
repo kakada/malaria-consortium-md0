@@ -1,12 +1,12 @@
 # coding: utf-8
 class PlacesController < ApplicationController
-  before_filter :authenticate_admin
-  
+  before_filter :authenticate_admin!
+
   #POST /places/confirm_import
   def confirm_import
-    PlaceImporter.new(current_user.places_csv_file_name).import    
+    PlaceImporter.new(current_user.places_csv_file_name).import
   end
-  
+
   #GET /places/import
   def import
     @title = "Upload"
@@ -16,7 +16,7 @@ class PlacesController < ApplicationController
   def upload_csv
     current_user.write_places_csv params[:admin][:csvfile]
     @places = PlaceImporter.new(current_user.places_csv_file_name).simulate
-  
+
     return render 'no_places_to_import.html' if @places.nil? || @places.length == 0
 
     render 'upload_csv.html.erb'
@@ -25,12 +25,12 @@ class PlacesController < ApplicationController
   #GET /map-view
   def map_view
     @country = Country.first
-    
+
   end
 
   def sample_place
     places =  Place.all
-    
+
     places.each do |place|
       place.lat = (rand(999999)/1000000.0) + 11 + rand(3)
       place.lng = (rand(999999)/1000000.0) + 102 + rand(5)
@@ -40,7 +40,7 @@ class PlacesController < ApplicationController
     render :text => "Done"
   end
 
-  
+
 
   def sample_report
     type = ['F','V', 'M']
@@ -87,7 +87,7 @@ class PlacesController < ApplicationController
                     "lng" => country.lng
                   }]
         creteria = Creteria.new
-        
+
         places.each do |place|
           place["total"] = total
           creteria.add_record!(place["name"], place["total"])
@@ -113,7 +113,7 @@ class PlacesController < ApplicationController
           sql = " SELECT village.*, count(report.id) as total FROM places village LEFT JOIN (SELECT * from reports WHERE created_at between '#{from}' AND '#{to}') AS report " +
                 " ON village.id = report.village_id WHERE village.id = #{place.id} GROUP BY village.id ORDER BY total DESC "
         end
-        
+
         places = Place.connection.select_all(sql)
         creteria = Creteria.new
         places.each do |place|
@@ -126,7 +126,7 @@ class PlacesController < ApplicationController
 
     end
     render :json =>@result
-    
+
   end
 
 end

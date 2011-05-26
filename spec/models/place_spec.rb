@@ -72,7 +72,6 @@ describe Place do
         @hc4 = HealthCenter.create! :parent => @od2, :code => "4"
 
         @user = User.create! :place => @hc1, :phone_number => '1'
-
         @report_hc1 = Report.create! :place => @hc1, :malaria_type => 'M', :sex => 'Male', :age => 23, :sender => @user
         @report_hc2 = Report.create! :place => @hc2, :malaria_type => 'F', :sex => 'Male', :age => 23, :sender => @user
         @report_hc3 = Report.create! :place => @hc3, :malaria_type => 'F', :sex => 'Male', :age => 23, :sender => @user, :created_at => 8.days.ago

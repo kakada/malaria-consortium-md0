@@ -31,6 +31,8 @@ Local::Application.routes.draw do
       post "confirm_import"
       get "map_view"
       get "map_report"
+      get "sample_report"
+      get "sample_place"
     end
 
     resources :users

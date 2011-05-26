@@ -1,31 +1,36 @@
 <%= will_paginate @reports %>
-<div class="infoTip"  >
+<div style="width:600px;"  >
   <% if(@reports.size > 0) %>
-  <div style="text-align: right;margin: 10px 50px 10px 10px;">
-    <span><a href="" rel="" onclick="getPushPins('<%= @id  %> ');return false;" > Go deeper </a> </span>
+  <div style="text-align: right;margin: 10px 60px 10px 10px;" >
+    <span><a class="bcElement explore" href="" rel="<%= @id  %>"  > Explore more ... </a> </span>
   </div>
-  <table class="round" >
+  <table style="border:1px solid #ccc;width: 94%;" class="round"  >
     <tr>
       <th> Date </th>
       <th> Species </th>
       <th> Sex </th>
       <th> Age </th>
       <th> Reporter </th>
+      <th> Phone number </th>
       <th> Mobile</th>
     </tr>
-      <% @reports.each_with_index do |report,index| %>
-        <tr class="<%= (index%2==0)?"pair":"impair" %> " >
-          <td> <%= report.created_at.to_datetime.strftime("%Y-%m-%d")  %>   </td>
-          <td> <%= get_malaria_type(report.malaria_type) %>  </td>
-          <td> <%= report.sex %>  </td>
-          <td> <%= report.age %>  </td>
-          <td> <%= report.sender.user_name %> </td>
-          <td> <%= (report.mobile)?"Yes": "No" %> </td>
-        </tr>
-      <% end %>
+
+    <% @reports.each_with_index do |report,index| %>
+      <tr class="<%= (index%2==0)?"pair":"impair" %> " >
+        <td> <%= report.created_at.to_datetime.strftime("%Y-%m-%d")  %>   </td>
+        <td> <%= get_malaria_type(report.malaria_type) %>  </td>
+        <td> <%= report.sex %>  </td>
+        <td> <%= report.age %>  </td>
+        <td> <%= report.sender.user_name %> </td>
+        <td> <%= report.sender.phone_number %> </td>
+        <td> <%= (report.mobile)?"Yes": "No" %> </td>
+      </tr>
+    <% end %>
+    <tr><td colspan="6" ></td></tr>
   </table>
+  <br />
   <% else %>
-    <div class="msg-notice round"> No report has been reported </div>
+      <div class="msg-notice round" style="width: 90%;"> No report has been reported </div>
   <% end %>
 </div>
 <% if(@reports.size > 7) %>

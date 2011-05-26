@@ -2,22 +2,20 @@ class MapVisualizationsController < ApplicationController
   
   def index
     @id = params[:id]
-    from = params[:from]
-    to = params[:to]
-    
-    page = params[:page]
-    @reports = MapVisualization.paginate_report(@id, to, from, page)
+    attr = { :id => params[:id], :from => params[:from],
+             :to => params[:to] ,:type => params[:type], :page => params[:page]
+    }
 
+    @reports = MapVisualization.paginate_report(attr)
     render :layout =>false
   end
 
   def map_report
-    from = params[:from]
-    to = params[:to]
-    id = params[:id]
+    attr = { :id => params[:id], :from => params[:from], :to => params[:to] ,
+            :type => params[:type] }
 
-    @result = MapVisualization.report_case_count(id, from, to)
-    render :json =>@result
+    result = MapVisualization.report_case_count(attr)
+    render :json => result
   end
   
   def map_view

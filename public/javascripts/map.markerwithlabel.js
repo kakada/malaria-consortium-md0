@@ -43,7 +43,7 @@ function MarkerLabel_(marker) {
   this.marker_ = marker;
 
   this.labelDiv_ = document.createElement("div");
-  this.labelDiv_.style.cssText = "position: absolute; overflow: hidden;";
+  this.labelDiv_.style.cssText = "position: absolute; overflow: hidden;width:200px;";
 
   // Set up the DIV for handling mouse events in the label. This DIV forms a transparent veil
   // in the "overlayMouseTarget" pane, a veil that covers just the label. This is done so that
@@ -270,6 +270,7 @@ MarkerLabel_.prototype.setStyles = function () {
  */
 MarkerLabel_.prototype.setMandatoryStyles = function () {
   this.labelDiv_.style.position = "absolute";
+  this.labelDiv_.style.width = "120px";
   this.labelDiv_.style.overflow = "hidden";
   // Make sure the opacity setting causes the desired effect on MSIE:
   if (typeof this.labelDiv_.style.opacity !== "undefined") {

@@ -428,7 +428,6 @@ label.error
 .no-style{
     list-style-type: none;
 }
-}
 
 tr.edit {
     background-color: #eef;
@@ -439,16 +438,14 @@ tr.edit {
     margin-top: 10px;
 }
 .slide_label span{
-    background-color: #fff;
-    border: 1px solid #fff;
     padding: 3px 5px;
     font-weight: bold;
 }
 #slide_min, #slide_max{
-    background-color: #fff;
+    background-color: #ddd;
 }
 #slide_selected{
-  border: 1px solid #fff;
+  border: 1px solid #ccc;
   position: absolute;
 }
 #slide_status{
@@ -485,6 +482,7 @@ tr.edit {
    margin-top: -5px;
    width: 210px;
    display: none;
+   border: 1px solid #ccc;
 }
 .btnLink {
   background-color: #8ef;
@@ -539,7 +537,7 @@ tr.edit {
     font-weight: bold;
 }
 .infoTip{
-   width: 600px;
+   width: 580px;
 
 }
 .infoTip table {
@@ -548,4 +546,12 @@ tr.edit {
 }
 .infoTip td {
     text-align: left;
+}
+.markerLabels{
+    border:1px solid #ccc;
+    background-color: white;
+    padding: 3px 0px;
+    color: #000;
+    text-align: center;
+    margin: 0 auto;
 }

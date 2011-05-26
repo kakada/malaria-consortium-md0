@@ -12,6 +12,7 @@
     $(function(){
         loading("#map_canvas");
         MD.createMap("#map_canvas");
+        
         //renderPushPin(places,clouds);
 
         $("#slide_min").html ( MD.date.getDateAfter(60) );
@@ -20,9 +21,12 @@
 
 
         MD.visualize.create();
-        
+        MD.visualize.updateType($("input[name=time][type=radio][checked]").val());
+      
         buildActionType();
         buildCalendar();
+        buildPaginatorItemClick();
+        buildBCElement();
         showClick();
 
         MD.bcUI.create("#breakcrump");
@@ -33,8 +37,7 @@
 
      function buildBCElement(){
        var bcElement = $(".bcElement");
-       bcElement.unbind();
-       bcElement.click(function(){
+       bcElement.live("click",function(){
          getPushPins(this.rel);
          return false;
        })
@@ -58,7 +61,6 @@
 
      function buildActionType(){
        $("input[name=time][type=radio]").click(function(){
-         
          MD.visualize.updateType(this.value);
        })
      }
@@ -70,14 +72,24 @@
        var clouds = result["cloud"];
 
        for(var i=0; i< places.length; i++){
-           options = {
-                          lat : places[i]["lat"] ,
-                          lng:  places[i]["lng"] ,
-                          title: places[i]["name"]+": " + places[i]["total"] ,
-                          icon : "<%= root_url  %>images/pushpins/" + clouds[places[i].name].size + ".png",
-                          place_id : places[i]["id"]
-                        }
-           var marker = MD.createMarker(options);
+         if(places[i]["total"] == 0 )
+           continue;
+           var options = {
+
+               lat : places[i]["lat"] ,
+               lng:  places[i]["lng"] ,
+               title: places[i]["name"]+": " + places[i]["total"]  ,
+               icon : "<%= root_url  %>images/pushpins/" + clouds[places[i].name].size + ".png",
+               place_id : places[i]["id"],
+
+               labelContent:  places[i]["name"]+": " + places[i]["total"],
+               labelAnchor: new google.maps.Point(50, 0),
+               labelClass: "markerLabels round", // the CSS class for the label
+               labelStyle: {opacity: 0.7}
+            }
+            var marker = MD.createMarkeWithLabel(options)
+
+           //var marker = MD.createMarker(options);
            //var marker = MD.createStyledMarker(options);
            
            MD.createEvent(marker, 'dblclick', function(){
@@ -90,23 +102,23 @@
            });
         }
 
-        if(typeof result["parent"] != "undefined")
-          $("#place_id").val(result["parent"].paren_id);
+        // if(typeof result["parent"] != "undefined")
+        //  $("#place_id").val(result["parent"].paren_id);
         
         if(places.length >1)
           MD.boundBox();
         else{
-          console.dir(places);
           MD.centerTo(places[0]["lat"], places[0]["lng"]);
         }
+
         /*
-        var zoom = MD.map.getZoom();
+        var zoom = MD.map.getZoom()+1;
         
         var center = MD.map.getCenter();
         setTimeout(function(){
           MD.map.setZoom(zoom);
           MD.map.setCenter(center);
-        }, 1000);
+        }, 100);
         */
         
 
@@ -136,11 +148,12 @@
        MD.date.toCalender(); 
        var from = $("#from").val();
        var to = $("#to").val();
+       var type = $("#malaria_type").val();
        var url = "<%= map_visualizations_url %>"
        $.ajax({
          url:url,
          cache : false,
-         data : {"from": from, "to" : to,"id":id},
+         data : {"from": from, "to" : to,"id":id, "type": type},
          success: handleListReport
        });
      }
@@ -159,14 +172,14 @@
          var info = MD.getInfoWindow();
          info.setContent(result);
          info.open(MD.map,MD.activeMarker);
-         buildPaginatorItemClick();
+         //buildPaginatorItemClick();
      }
 
      function buildPaginatorItemClick(){
-       var items =$("div.pagination>a");
-       items.unbind();
-       items.click(function(){
+       var items =$("div.pagination > a");
+       items.live("click",function(){
           var url = this.href ;
+          console.log(url);
           getListReportByItem(url);
           return false;
        });
@@ -174,17 +187,19 @@
 
 
      function getPushPins(id){
+       $("#place_id").val(id); //update state of the current click pushpin
        $("#ajax_loading").show();
        MD.date.toCalender(); 
        var from = $("#from").val();
        var to = $("#to").val();
+       var type = $("#malaria_type").val();
        
        var url = "<%= map_report_map_visualizations_url %>.json"
        $.ajax({
          url:url,
          dataType: "json",
          cache : false,
-         data : {"from": from, "to" : to,"id":id},
+         data : {"from": from, "to" : to,"id":id, "type": type},
          success: function(result, status, responseObj){
   
            $("#ajax_loading").hide();
@@ -194,19 +209,12 @@
             MD.bcUI.setAsObj(result["parent"]);
             MD.bcUI.show(result["parent"]["type"]);
            }
-           buildBCElement();
+           //buildBCElement();
          }
          
        });
        return false;
      }
-
-
-
-
-
-
-
    </script>
  <% end %>
  <div >
@@ -233,7 +241,7 @@
     <div class="slide_control">
       <div class="slideOption" >
           <span class="round">
-            <input type="radio" name="time" value="day" id="day" checked />
+            <input type="radio" name="time" value="day" id="day"  />
             <label for="day" > Day </label>
           </span>
       </div>
@@ -243,13 +251,13 @@
           </span>
       </div>
       <div class="slideOption" >
-         <span class="round"> <input type="radio" name="time"  value="month" id="month" />
+        <span class="round"> <input type="radio" name="time"  value="month" id="month" />
            <label for="month" > Month </label>
          </span>
       </div>
       <div class="slideOption" >
         <span class="round">
-          <input type="radio"  name="time" value="year" id="year" />
+          <input type="radio"  name="time" value="year" id="year" checked />
           <label for="year" > Year </label>
         </span>
       </div>
@@ -260,6 +268,7 @@
           <label for="custom" > Custom </label>
         </span>
       </div>
+
       
       <div id="customOption" class="round" >
         
@@ -281,7 +290,22 @@
       <div class="clear" >&nbsp;</div>
     </div>
     <div style="margin-top:10px;">
-        <%= button_to "Show",  {:method =>"get"},:id=>"show_report" %>
+      <div class="slideOption" style="width:150px;" >
+        <span class="round">
+           <label for="malaria_type" > Malaria type: </label>
+           <%= select_tag(:malaria_type ,options_for_select(["All","Pf", "Pv"],  (@user.nil?)? "" : @user.send(:role)), {} )  %>
+          
+        </span>
+      </div>
+
+      <div class="slideOption" style="width:150px;" >
+        <span class="round">
+          <%= button_to "Show",  {:method =>"get"},:id=>"show_report" %>
+        </span>
+      </div>
+      <div class="clear" >&nbsp;</div>
+
+        
     </div>
 
  </div>

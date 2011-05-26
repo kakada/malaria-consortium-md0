@@ -42,6 +42,7 @@ class PlacesController < ApplicationController
 
 
 
+  
   def sample_report
     type = ['F','V', 'M']
     sex = ['Male','Female']

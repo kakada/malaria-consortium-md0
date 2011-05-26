@@ -1,10 +1,12 @@
 class String
+  AddressRegexp = %r(^(.*?)://(.*?)$)
+
   def with_sms_protocol
-    "sms://#{self}"
+    "sms://#{without_protocol}"
   end
 
   def without_protocol
-    split('://', 2)[1]
+    self =~ AddressRegexp ? $2 : self
   end
 
   def apply(values)

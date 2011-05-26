@@ -4,7 +4,7 @@ class Place < ActiveRecord::Base
   belongs_to :parent, :class_name => "Place"
   before_save :unset_hierarchy
   after_save :set_hierarchy
-  
+
   validates_uniqueness_of :code
 
   def unset_hierarchy
@@ -14,7 +14,7 @@ class Place < ActiveRecord::Base
   def set_hierarchy
     if self.hierarchy.nil?
       self.hierarchy = (self.parent_id ? "#{self.parent.hierarchy}." : '') + self.id.to_s
-      update hierarchy: self.hierarchy
+      update :hierarchy => self.hierarchy
     end
   end
 
@@ -92,7 +92,7 @@ class Place < ActiveRecord::Base
 end
 
 class Country
-  
+
 end
 
 class Province

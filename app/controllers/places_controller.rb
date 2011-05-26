@@ -17,7 +17,7 @@ class PlacesController < ApplicationController
     current_user.write_places_csv params[:admin][:csvfile]
     @places = PlaceImporter.new(current_user.places_csv_file_name).simulate
 
-    return render 'no_places_to_import.html' if @places.nil? || @places.length == 0
+    return render 'no_places_to_import.html' if @places.blank?
 
     render 'upload_csv.html.erb'
   end

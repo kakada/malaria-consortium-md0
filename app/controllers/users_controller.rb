@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_user!, :only => [:edit, :update]
+  before_filter :authenticate_user!, :only => [:edit, :update, :create_new]
   before_filter :correct_user, :only => [:edit, :update]
 
   #GET /users
@@ -26,7 +26,7 @@ class UsersController < ApplicationController
     redirect_to :action => "index"
   end
 
-  def create
+  def create_new
     attributes = {
          :user_name => params[:user_name],
          :email => params[:email],

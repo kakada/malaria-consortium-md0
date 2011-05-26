@@ -20,6 +20,7 @@ Local::Application.routes.draw do
   resources :users do
     collection do
       get "validate"
+      get "create_new"
     end
   end
 

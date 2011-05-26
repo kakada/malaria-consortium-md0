@@ -32,7 +32,7 @@ describe Report do
       @phone_number = "8558191"
       @message_body = "You have receiv..."
 
-      Report.stub(:sender_sms).with(@phone_number).and_return(@vmw_user)
+      User.stub(:find_by_phone_number).with("sms://#{@phone_number}").and_return(@vmw_user)
       @vmw_user.stub(:od).and_return(@od)
       @od.stub(:province).and_return(@province)
       @province.stub(:users).and_return([@provincial_user])
@@ -47,7 +47,7 @@ describe Report do
     end
 
     it "should return an alerts array with users admin, national and provincial" do
-      Report.should_receive(:sender_sms).with(@phone_number).and_return(@vmw_user)
+      User.should_receive(:find_by_phone_number).with(@phone_number).and_return(@vmw_user)
 
       Setting.should_receive(:"[]").with(:provincial_alert).and_return 1
       Setting.should_receive(:"[]").with(:admin_alert).and_return 1
@@ -79,17 +79,23 @@ describe Report do
       response[0][:to].should == orig_msg[:from]
       response[0][:body].should == expected_response
       response[0][:from].should == Report.from_app
+
+      reports = Report.all
+      reports.count.should eq(1)
+      report = reports.first
+      report.error.should be_true
     end
 
     describe "invalid syntax" do
       it "should return error message provided by parser" do
         parser = {}
 
-        User.should_receive(:find_by_phone_number).with("8558190").and_return(@hc_user)
+        User.should_receive(:find_by_phone_number).with("sms://8558190").and_return(@hc_user)
         @hc_user.should_receive(:report_parser).and_return(parser)
         parser.should_receive(:parse).with("F123MAAAAAA").and_return(parser)
         parser.should_receive(:errors?).and_return(true)
         parser.should_receive(:error).and_return("parser error")
+        parser.should_receive(:short_error).and_return('parser error')
 
         assert_response_error "parser error", :from => "sms://8558190", :body => "F123MAAAAAA"
       end
@@ -101,7 +107,7 @@ describe Report do
 
     it "should return error when user can't report" do
       user = user(:phone_number => "1")
-      User.should_receive(:find_by_phone_number).with("1").and_return(user)
+      User.should_receive(:find_by_phone_number).with("sms://1").and_return(user)
       user.should_receive(:can_report?).and_return(false)
 
       message = @valid_message.clone
@@ -113,7 +119,7 @@ describe Report do
 
   describe "valid message" do
     it "should return human readable message with details" do
-      User.should_receive(:find_by_phone_number).with("8558190").and_return(@hc_user)
+      User.should_receive(:find_by_phone_number).with("sms://8558190").and_return(@hc_user)
 
       report = setup_successful_parser "successful report"
       report.stub!(:generate_alerts).and_return([{:body => "alert1", :to => "sms://1"},
@@ -144,26 +150,13 @@ describe Report do
     end
 
     it "should return an array of hashes even if there's only one hash" do
-      User.should_receive(:find_by_phone_number).with("8558190").and_return(@hc_user)
+      User.should_receive(:find_by_phone_number).with("sms://8558190").and_return(@hc_user)
       report = setup_successful_parser "successful report"
       report.stub!(:generate_alerts).and_return []
 
       response = Report.process @valid_message
       response.is_a?(Array).should == true
       response.size.should == 1
-    end
-
-    it "should support sender with heading and trailing spaces" do
-      User.should_receive(:find_by_phone_number).with("8558190").and_return(@hc_user)
-
-      report = setup_successful_parser "successful report"
-      report.stub!(:generate_alerts).and_return []
-
-      sender_with_spaces = @valid_message.clone
-      sender_with_spaces[:from] = "    sms://8558190    "
-
-      response = Report.process sender_with_spaces
-      response[0][:body].should == "successful report"
     end
 
     it "should upcase malaria type" do

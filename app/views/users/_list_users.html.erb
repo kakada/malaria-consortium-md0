@@ -1,6 +1,6 @@
 <%= hidden_field_tag "data-ref-validate",validate_users_path %>
 
-<%= form_for @user, :url => users_path, :html=>{:id => "createUserForm" } do |form| %>
+<%= form_for @user, :url => create_new_users_path, :html=>{:id => "createUserForm" } do |form| %>
   <%= hidden_field_tag :page, @page  %>
   <table width="100%" class="table-grid round" >
     <thead>

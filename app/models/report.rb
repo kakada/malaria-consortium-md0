@@ -1,7 +1,7 @@
 class Report < ActiveRecord::Base
-  validates_presence_of :malaria_type, :sex, :age, :sender_id, :place_id
-  validates_inclusion_of :malaria_type, :in => %w(F M V)
-  validates_inclusion_of :sex, :in => %w(Male Female)
+  validates_presence_of :malaria_type, :sex, :age, :sender_id, :place_id, :unless => :error?
+  validates_inclusion_of :malaria_type, :in => %w(F M V), :unless => :error?
+  validates_inclusion_of :sex, :in => %w(Male Female), :unless => :error?
 
   belongs_to :sender, :class_name => "User"
   belongs_to :place
@@ -24,12 +24,12 @@ class Report < ActiveRecord::Base
     end
   end
 
-  def self.unknown_user original_message
-    "User unknown."
+  def self.unknown_user(original_message = nil)
+    "You are not registered in Maladira Day 0."
   end
 
-  def self.user_should_belong_to_hc_or_village
-    "Access denied. User should either belong to a health center or be Village Malaria Worker."
+  def self.user_should_belong_to_hc_or_village(original_message = nil)
+    "Access denied. You should either belong to a health center or be Village Malaria Worker."
   end
 
   def self.too_long_vmw_report original_message
@@ -79,7 +79,7 @@ class Report < ActiveRecord::Base
 
   def self.alert_upper_level sender_number, message
     users = []
-    sender = Report.sender_sms(sender_number)
+    sender = User.find_by_phone_number sender_number
     users = users.concat(sender.od.province.users) if Setting[:provincial_alert] != "0"
 
     users = users.concat User.find_all_by_role("admin") if Setting[:admin_alert] != "0"
@@ -100,20 +100,25 @@ class Report < ActiveRecord::Base
     self.province = od.province if od_id?
   end
 
-  def self.sender_sms from
-    User.find_by_phone_number from
-  end
-
   def self.decode message
-    sender = Report.sender_sms message[:from].without_protocol.strip
-    return unknown_user(message[:body]) if sender.nil?
+    sender = User.find_by_phone_number message[:from]
+    if sender.nil?
+      create_error_report message, 'unknown user'
+      return unknown_user
+    end
 
-    return user_should_belong_to_hc_or_village if not sender.can_report?
+    if !sender.can_report?
+      create_error_report message, 'access denied', sender
+      return user_should_belong_to_hc_or_village
+    end
 
     parser = sender.report_parser
     parser.parse message[:body]
 
-    return parser.error if parser.errors?
+    if parser.errors?
+      create_error_report message, parser.short_error, sender
+      return parser.error
+    end
 
     report = parser.report
     report.save!
@@ -124,7 +129,11 @@ class Report < ActiveRecord::Base
     [nil, alerts.push(reply)]
   end
 
+  def self.create_error_report(message, error_message, sender = nil)
+    Report.create! :sender_address => message[:from], :text => message[:body], :error => true, :error_message => error_message, :sender => sender
+  end
+
   def upcase_strings
-    malaria_type.upcase!
+    malaria_type.upcase! if malaria_type
   end
 end

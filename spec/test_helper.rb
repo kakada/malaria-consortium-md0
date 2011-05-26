@@ -26,4 +26,11 @@ module Helpers
   def admin_user number
     User.create! :phone_number => number, :role => "admin"
   end
+
+  def assert_parse_error body, error_message
+    @parser.parse body
+    @parser.errors?().should == true
+    @parser.error.should == @parser.class.send(error_message, body)
+    @parser.short_error == error_message.to_s.gsub('_', ' ')
+  end
 end

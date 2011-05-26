@@ -116,6 +116,10 @@ class User < ActiveRecord::Base
     User.paginate :page => page, :per_page => 10 , :conditions =>["status",1]
   end
 
+  def self.find_by_phone_number(phone_number)
+    where(:phone_number => phone_number.without_protocol.strip).first
+  end
+
   def to_json(options ={})
      options[:except] ||= [:password,:encrypted_password,:salt,:updated_at,:created_at]
      super(options)

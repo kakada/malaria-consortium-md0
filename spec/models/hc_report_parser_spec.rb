@@ -10,11 +10,6 @@ describe HCReportParser do
     @parser = HCReportParser.new @user
   end
 
-  def assert_error_message error_msg
-    @parser.errors?().should == true
-    @parser.error.should == error_msg
-  end
-
   def expect_village code, hc_code=nil
     village = village("1", code, hc_code)
     Place.should_receive(:find_by_code).with(code).and_return village
@@ -23,18 +18,15 @@ describe HCReportParser do
 
   describe "syntactic" do
     it "should return general parser error when malaria type, age or gender are invalid" do
-      @parser.parse "d12m11111111"
-      assert_error_message ReportParser.invalid_malaria_type "d12m11111111"
+      assert_parse_error "d12m11111111", :invalid_malaria_type
     end
-    
+
     it "should return error message invalid village code" do
-      @parser.parse "F123MAAAAAA"
-      assert_error_message HCReportParser.invalid_village_code("F123MAAAAAA")
+      assert_parse_error "F123MAAAAAA", :invalid_village_code
     end
 
     it "should return error invalid village code when village code is longer than expected" do
-      @parser.parse "F123M123456789"
-      assert_error_message HCReportParser.invalid_village_code("F123M123456789")
+      assert_parse_error "F123M123456789", :invalid_village_code
     end
 
     it "should return valid fields when format is correct" do
@@ -52,15 +44,12 @@ describe HCReportParser do
 
   describe "semantic" do
     it "should return error message when village code doesnt exist" do
-      @parser.parse "F123M11111111"
-      assert_error_message HCReportParser.non_existent_village("F123M11111111")
+      assert_parse_error "F123M11111111", :non_existent_village
     end
 
     it "should return error message when village isnt supervised by user's health center" do
       expect_village "87654321"
-
-      @parser.parse "F123M87654321"
-      assert_error_message HCReportParser.non_supervised_village("F123M87654321")
+      assert_parse_error "F123M87654321", :non_supervised_village
     end
   end
 end

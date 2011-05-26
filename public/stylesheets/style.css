@@ -1,45 +1,51 @@
 html { height: 100% }
-.container {
-    margin: 0 auto;
-        width: 1010px;
-}
 
 body {
-    background: #7FC9EE;
-        color: gray;
-        font-family: Helvetica,Arial,sans-serif;
-        font-size: 12px;
-        margin: 0px; 
-        padding: 0px;
-        height: 100%;
-        /*#cff*/;
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 12px;
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
 }
 
 #map_canvas {
-    height: 500px;
-    width:  100%;
+  height: 500px;
+  width:  100%;
 }
 
-.container {
-	margin: 0 auto;
-        width: 1010px;
-        height: 100%;
+#container {
+  min-height: 100%;
+  position: relative;
 }
+
+#version_separator {
+  height: 20px;
+}
+
+#version {
+  position: absolute;
+  bottom: 0px;
+  right: 4px;
+  height: 20px;
+  width: 100%;
+  color: #666;
+  text-align: right;
+  font-size: 8pt;
+}
+
+#title {
+  color: #107;
+  font-weight:bold;
+  font-size: 20px;
+  text-decoration: none;
+}
+
+#main {
+  padding: 8px;
+}
+
 #header {
-    padding-top: 20px;
-        background-color: #fff;
-        height: 100px;
-}
-#header img {
-    padding: 1em;
-    background: #fff;
-        display: none;
-}
-#content {
-    margin-top: 1em;
-    font-size: 120%;
-    padding: 20px;
-    background: #fff;
+  padding: 8px;
 }
 
 a {
@@ -52,6 +58,11 @@ a:hover {
 }
 a:visited {
     color: #069;
+}
+#toolbar {
+  font-size: 14px;
+  float:right;
+  clear:both;
 }
 .navigation {
     background-color: #ccc;
@@ -428,7 +439,7 @@ tr.edit {
    -moz-border-radius:	4px;
    -webkit-border-radius: 4px;
    border-radius : 4px;
-   
+
 }
 .slideOption{
     float:left;
@@ -457,7 +468,7 @@ tr.edit {
 .btnLink:hover {
  background-color: #8ff;
 }
-#breakcrump{ 
+#breakcrump{
   padding:10px 10px 10px 0px;
 }
 .bcElement{
@@ -501,7 +512,7 @@ tr.edit {
 }
 .infoTip{
    width: 600px;
-   
+
 }
 .infoTip table {
     width: 94%;

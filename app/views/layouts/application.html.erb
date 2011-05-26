@@ -11,17 +11,22 @@
   </head>
   <body>
     <div class="container">
-      <%= render 'layouts/header' %>
+      <div id="header">
+        <%= link_to 'Malaria Day 0', root_path, :id => 'title' -%>
+        <% if user_signed_in? %>
+          <%= render 'layouts/toolbar' %>
+        <% end %>
+      </div>
 
-      <div id="content" class="round">
+      <div id="main">
         <% flash.each do |key, value| %>
           <div class="flash <%= key %>"><%= value %></div>
         <% end %>
 
         <%= yield %>
       </div>
-      <br />
-      <%= render 'layouts/footer' %>
+      <div id="version_separator"></div>
+      <div id="version">Version: development</div>
     </div>
   </body>
 </html>

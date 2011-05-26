@@ -1,7 +1,9 @@
+<h2>Alerts</h2>
+
 <%= form_for "setting", :url=> update_alert_config_path, :method =>"post", :html=>{:id=>"adminForm"}  do |form| %>
 <ul class="no-style" >
   <li>
-    <h2 class="separator" > Provincial alert </h2>
+    <h3 class="separator" > Provincial alert </h3>
     <ul  class="no-style"  >
       <li>
        <%= radio_button("setting", :provincial_alert , 0, :checked => @provincial_alert== "0" ) %>
@@ -15,7 +17,7 @@
   </li>
 
   <li>
-    <h2 class="separator" > National alert </h2>
+    <h3 class="separator" > National alert </h3>
     <ul  class="no-style"  >
       <li>
        <%= radio_button("setting", :national_alert , 0, :checked => @national_alert=="0" ) %>
@@ -29,7 +31,7 @@
   </li>
 
   <li>
-    <h2 class="separator" > Administrator alert </h2>
+    <h3 class="separator" > Administrator alert </h3>
     <ul  class="no-style"  >
       <li>
        <%= radio_button("setting", :admin_alert , 0, :checked => @admin_alert=="0" ) %>
@@ -41,11 +43,11 @@
       </li>
     </ul>
   </li>
-  <li><h2 class="separator"></h2> </li>
+  <li><h3 class="separator"></h3> </li>
   <li >
-    <h2 style="text-align: left; width: 60%;" >
+    <h3 style="text-align: left; width: 60%;" >
     <%= form.submit :Update %>
-    </h2>
+    </h3>
   </li>
 
 

@@ -6,6 +6,9 @@ class Report < ActiveRecord::Base
   belongs_to :sender, :class_name => "User"
   belongs_to :place
   belongs_to :village, :class_name => "Village"
+  belongs_to :health_center, :class_name => "HealthCenter"
+  belongs_to :od, :class_name => "OD"
+  belongs_to :province, :class_name => "Province"
 
   before_validation :upcase_strings
   before_save :complete_fields
@@ -87,18 +90,16 @@ class Report < ActiveRecord::Base
       alerts.push :to => user.phone_number.with_sms_protocol, :body => message
     end
     alerts
- end
-
- def complete_fields
-   village =  Place.find(self.village_id)
-   self.health_center_id = village.health_center.id
-   self.od_id = village.od.id
-   self.province_id = village.province.id
   end
 
-
-
   private
+
+  def complete_fields
+    self.health_center = village_id? ? village.health_center : place
+    self.od = health_center.od if health_center_id?
+    self.province = od.province if od_id?
+  end
+
   def self.sender_sms from
     User.find_by_phone_number from
   end

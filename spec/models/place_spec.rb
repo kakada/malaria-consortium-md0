@@ -48,7 +48,7 @@ describe Place do
 
         Village.count.should == 1
       end
-      
+
       describe "Description" do
         it "should be like {place.name} ({place type})" do
           village = Village.new @valid_attributes
@@ -56,7 +56,7 @@ describe Place do
         end
       end
     end
-    
+
     describe "od_count_reports_since" do
       before(:each) do
 
@@ -71,14 +71,13 @@ describe Place do
         @od2 = OD.create! :code => "od2"
         @hc4 = HealthCenter.create! :parent => @od2, :code => "4"
 
-        @user = User.create! :place => @hc1, :phone_number => '1' 
-        puts @hc1
-        
+        @user = User.create! :place => @hc1, :phone_number => '1'
+
         @report_hc1 = Report.create! :place => @hc1, :malaria_type => 'M', :sex => 'Male', :age => 23, :sender => @user
         @report_hc2 = Report.create! :place => @hc2, :malaria_type => 'F', :sex => 'Male', :age => 23, :sender => @user
-        @report_hc3 = Report.create! :place => @hc3, :malaria_type => 'F', :sex => 'Male', :age => 23, :sender => @user, :created_at => 8.days.ago            
+        @report_hc3 = Report.create! :place => @hc3, :malaria_type => 'F', :sex => 'Male', :age => 23, :sender => @user, :created_at => 8.days.ago
 
-        @report_hc4 = Report.create! :place => @hc4, :malaria_type => 'F', :sex => 'Male', :age => 23, :sender => @user, :created_at => 8.days.ago            
+        @report_hc4 = Report.create! :place => @hc4, :malaria_type => 'F', :sex => 'Male', :age => 23, :sender => @user, :created_at => 8.days.ago
       end
 
       it "should count all od1 reports" do
@@ -91,18 +90,18 @@ describe Place do
         reports_count.should == 2
       end
     end
-    
+
     describe "hc_count_reports_since" do
       before(:each) do
         @hc1 = HealthCenter.create! :code => "1"
         @hc2 = HealthCenter.create! :code => "2"
         @hc3 = HealthCenter.create! :code => "3"
 
-        @user = User.create! :place => @hc1, :phone_number => '1' 
+        @user = User.create! :place => @hc1, :phone_number => '1'
 
         @report_hc1 = Report.create! :place => @hc1, :malaria_type => 'M', :sex => 'Male', :age => 23, :sender => @user
         @report_hc2 = Report.create! :place => @hc1, :malaria_type => 'F', :sex => 'Male', :age => 23, :sender => @user, :created_at => 8.days.ago
-        @report_hc3 = Report.create! :place => @hc3, :malaria_type => 'F', :sex => 'Male', :age => 23, :sender => @user, :created_at => 8.days.ago            
+        @report_hc3 = Report.create! :place => @hc3, :malaria_type => 'F', :sex => 'Male', :age => 23, :sender => @user, :created_at => 8.days.ago
       end
 
       it "should count all od1 reports" do

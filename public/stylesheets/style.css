@@ -48,6 +48,34 @@ body {
   padding: 8px;
 }
 
+#first_row { border-bottom: 1px solid black; padding-bottom: 6px;}
+#breadcrumb { position: relative; top: 4px; }
+#tabs { float: right; list-style: none; display: block; border-bottom: 1px solid black; }
+#tabs ul { display: inline; margin: 0px; padding: 0px; }
+#tabs ul li {
+  float: left;
+  display: block;
+  padding: 2px 8px 2px 8px;
+  margin-left: 4px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  -moz-border-radius-topleft: 8px;
+  -moz-border-radius-topright: 8px;
+  border: 1px solid black;
+  position: relative;
+  top: 1px;
+  background: #efefef;
+}
+#tabs li.selected {
+  border-bottom: 1px solid white;
+  background: white;
+}
+#second_row { float: left; width: 100%; }
+#navbar { border-left: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black; float: left; }
+#places { padding: 4px; }
+#users_title { border-top: 1px solid black; border-bottom: 1px solid black;}
+#reports { float: left; }
+
 a {
     color: #09c;
     text-decoration: none;

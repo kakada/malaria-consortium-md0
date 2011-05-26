@@ -12,7 +12,7 @@
   <body>
     <div class="container">
       <div id="header">
-        <%= link_to 'Malaria Day 0', root_path, :id => 'title' -%>
+        <%= link_to 'Malaria Consortium', root_path, :id => 'title' -%>
         <% if user_signed_in? %>
           <%= render 'layouts/toolbar' %>
         <% end %>
@@ -23,11 +23,14 @@
           <div class="flash <%= key %>"><%= value %></div>
         <% end %>
 
-        <%= yield %>
+        <% if content_for? :reports %>
+          <%= render 'layouts/reports' %>
+        <% else %>
+          <%= yield %>
+        <% end %>
       </div>
       <div id="version_separator"></div>
       <div id="version">Version: development</div>
     </div>
   </body>
 </html>
-

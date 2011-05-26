@@ -29,6 +29,7 @@ class User < ActiveRecord::Base
 
   validate :intended_place_code_must_exist
 
+  before_save :set_place_class_and_hierarchy, :if => :place_id?
   before_save :set_nuntium_custom_attributes
 
   # Delegate country, province, etc., to place
@@ -172,5 +173,14 @@ class User < ActiveRecord::Base
 
   def password_required?
     phone_number.nil?
+  end
+
+  def set_place_class_and_hierarchy
+    self.place_class = self.place.class.to_s
+    parent = self.place
+    while parent
+      self.send "#{parent.class.to_s.tableize.singularize}_id=", parent.id
+      parent = parent.parent
+    end
   end
 end

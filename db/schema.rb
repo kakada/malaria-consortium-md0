@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110526061019) do
+ActiveRecord::Schema.define(:version => 20110526095751) do
 
   create_table "places", :force => true do |t|
     t.string   "name"
@@ -86,6 +86,10 @@ ActiveRecord::Schema.define(:version => 20110526061019) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.string   "place_class"
+    t.integer  "health_center_id"
+    t.integer  "od_id"
+    t.integer  "province_id"
   end
 
   add_index "users", ["phone_number"], :name => "index_users_on_phone_number", :unique => true

@@ -4,6 +4,7 @@ module ReportsConcern
   included do
     before_filter :get_places
     before_filter :build_breadcrumb
+    before_filter :get_users
   end
 
   module InstanceMethods
@@ -27,6 +28,24 @@ module ReportsConcern
         @breadcrumb.insert 0, :label => 'All provinces', :place => 0
       else
         @breadcrumb.insert 0, :label => 'All provinces'
+      end
+    end
+
+    def get_users
+      @users = []
+      if @place
+        @users.push :place => @place.class, :users => @place.users
+
+        options = {}
+        options.send(:[]=, "#{@place.class.to_s.tableize.singularize}_id", @place.id)
+        types = Place::Types.from(Place::Types.index(@place.class.to_s) + 1).each do |type|
+          options[:place_class] = type
+          @users.push :place => type.constantize, :count => User.where(options).count
+        end
+      else
+        Place::Types.from(1).each do |type|
+          @users.push :place => type.constantize, :count => User.where(:place_class => type).count
+        end
       end
     end
   end

@@ -72,7 +72,7 @@ body {
 }
 #second_row { float: left; width: 100%; }
 #navbar { border-left: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black; float: left; }
-#places { padding: 4px; }
+#places, #users { padding: 4px; }
 #users_title { border-top: 1px solid black; border-bottom: 1px solid black;}
 #reports { float: left; }
 

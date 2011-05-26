@@ -29,13 +29,17 @@
         <%= link_to place.name, "?place=#{place.id}" %><br/>
       <% end %>
     </div>
+    <div id="users_title">Users</div>
     <div id="users">
-      <div id="users_title">Users</div>
-      <ul>
-        <li>Foo</li>
-        <li>Bar</li>
-        <li>Baz</li>
-      </ul>
+      <% @users.each do |user| %>
+        <% if user[:count] %>
+          <%= user[:place] %> users (<%= user[:count] %>)<br/>
+        <% else %>
+          <% user[:users].each do |subuser| %>
+            <%= subuser.user_name %>
+          <% end %>
+        <% end %>
+      <% end %>
     </div>
   </div>
   <div id="reports">

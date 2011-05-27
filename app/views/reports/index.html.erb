@@ -8,9 +8,9 @@
         <th>Sender number</th>
         <th>Sender</th>
         <th>Text</th>
-        <th>Sex</th>
-        <th>Age</th>
         <th>Type</th>
+        <th>Age</th>
+        <th>Sex</th>
         <th>Mobile?</th>
         <th>Reported at</th>
         <th>Health Center</th>
@@ -23,11 +23,11 @@
           <td><%= report.sender.try(:user_name) %></td>
           <td><%= report.text %></td>
           <% if report.error? %>
-            <td style="color:red" colspan="3" align="center"><%= report.error_message %></td>
+            <td style="color:#600" colspan="3" align="center"><%= report.error_message %> <%= link_to 'click to edit', edit_report_path(report, params.slice(:error, :place, :page)) %></td>
           <% else %>
-            <td><%= report.sex %></td>
-            <td><%= report.age %></td>
             <td><%= report.malaria_type %></td>
+            <td><%= report.age %></td>
+            <td><%= report.sex %></td>
           <% end %>
           <td><%= report.mobile? ? 'Yes' : 'No' %></td>
           <td><%= report.type == 'HealthCenterReport' ? 'health center' : 'village' unless report.error? %></td>

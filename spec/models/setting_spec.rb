@@ -15,7 +15,7 @@ describe Setting do
     it "should return nil when key doesn't exist" do
       key = "not_exist"
       Setting.stub!(:find_by_param).with(key).and_return(false)
-      Setting[key].should == nil
+      Setting[key].should == ''
 
     end
 

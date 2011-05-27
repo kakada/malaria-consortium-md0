@@ -1,5 +1,6 @@
 class Report < ActiveRecord::Base
-  validates_presence_of :malaria_type, :sex, :age, :sender_id, :place_id, :unless => :error?
+  validates_presence_of :malaria_type, :sex, :age, :sender_id, :place_id, :village_id, :unless => :error?
+  validates_numericality_of :age, :greater_than_or_equal_to => 0, :unless => :error?
   validates_inclusion_of :malaria_type, :in => %w(F M V), :unless => :error?
   validates_inclusion_of :sex, :in => %w(Male Female), :unless => :error?
 

@@ -45,6 +45,8 @@ class ReportParser
   end
 
   def generate_error(symbol)
+    return if errors?
+
     @error  = self.class.send(symbol, @original_message)
 
     @report.error = true

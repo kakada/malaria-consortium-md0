@@ -7,20 +7,18 @@ class HCReportParser < ReportParser
 
   def parse message
     super(message)
-    return if errors?
 
     village_code = @scanner.scan /\d{8}/
 
-    generate_error :invalid_village_code if village_code.nil? || !@scanner.eos?
-    return if errors?
+    generate_error :invalid_village_code and return if village_code.nil? || !@scanner.eos?
 
-    validate_exists village_code
-    return if errors?
+    @village = Place.find_by_code village_code
+    generate_error :non_existent_village and return if @village.nil? || !@village.village?
 
-    validate_is_supervised
-    return if errors?
-
-    @report.village = @village
+    if @village && @village.village?
+      @report.village = @village
+      generate_error :non_supervised_village and return if @reporter.place_id != @village.parent_id
+    end
 
     self
   end
@@ -35,16 +33,5 @@ class HCReportParser < ReportParser
 
   def self.non_supervised_village original_message
     "The village you entered is not under supervision of your health center. Your report was #{original_message}. Please correct and send again."
-  end
-
-  private
-
-  def validate_exists village_code
-    @village = Place.find_by_code village_code
-    generate_error :non_existent_village if @village.nil? || !@village.village?
-  end
-
-  def validate_is_supervised
-    generate_error :non_supervised_village if @reporter.place_id != @village.parent_id
   end
 end

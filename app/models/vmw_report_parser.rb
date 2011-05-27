@@ -8,20 +8,15 @@ class VMWReportParser < ReportParser
   def parse message
     super(message)
 
-    return if errors?
-
     if @scanner.eos?
       @report.mobile = false
     else
       is_mobile_patient = @scanner.scan /./
 
-      generate_error :too_long_vmw_report if !@scanner.eos? || is_mobile_patient.nil?
-      return if errors?
+      generate_error :too_long_vmw_report and return if !@scanner.eos? || is_mobile_patient.nil?
 
       @report.mobile = true
     end
-
-    self
   end
 
   def self.too_long_vmw_report original_message

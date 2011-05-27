@@ -15,7 +15,7 @@ describe ReportParser do
     end
 
     it "should return error message invalid age" do
-      assert_parse_error 'FAM', :invalid_age
+      assert_parse_error 'FM', :invalid_age
     end
 
     it "should return error message invalid sex" do

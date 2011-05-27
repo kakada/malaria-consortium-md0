@@ -31,6 +31,6 @@ module Helpers
     @parser.parse body
     @parser.errors?().should == true
     @parser.error.should == @parser.class.send(error_message, body)
-    @parser.short_error == error_message.to_s.gsub('_', ' ')
+    @parser.report.error_message == error_message.to_s.gsub('_', ' ')
   end
 end

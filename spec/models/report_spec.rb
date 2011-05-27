@@ -95,7 +95,6 @@ describe Report do
         parser.should_receive(:parse).with("F123MAAAAAA").and_return(parser)
         parser.should_receive(:errors?).and_return(true)
         parser.should_receive(:error).and_return("parser error")
-        parser.should_receive(:short_error).and_return('parser error')
 
         assert_response_error "parser error", :from => "sms://8558190", :body => "F123MAAAAAA"
       end

@@ -115,13 +115,10 @@ class Report < ActiveRecord::Base
     parser = sender.report_parser
     parser.parse message[:body]
 
-    if parser.errors?
-      create_error_report message, parser.short_error, sender
-      return parser.error
-    end
-
     report = parser.report
     report.save!
+
+    return parser.error if parser.errors?
 
     alerts = report.generate_alerts
     reply = {:to => sender.phone_number.with_sms_protocol, :body => report.human_readable}
@@ -130,7 +127,7 @@ class Report < ActiveRecord::Base
   end
 
   def self.create_error_report(message, error_message, sender = nil)
-    Report.create! :sender_address => message[:from], :text => message[:body], :error => true, :error_message => error_message, :sender => sender
+    Report.create! :sender_address => message[:from], :text => message[:body], :error => true, :error_message => error_message, :sender => sender, :place => sender.try(:place)
   end
 
   def upcase_strings

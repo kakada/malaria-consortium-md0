@@ -2,7 +2,6 @@ class ReportParser
 
   attr_reader :report
   attr_reader :error
-  attr_reader :short_error
 
   def initialize reporter
     @reporter = reporter
@@ -15,7 +14,13 @@ class ReportParser
   end
 
   def parse message
+    @report.sender_id = @reporter.id
+    @report.sender_address = @reporter.phone_number
+    @report.place_id = @reporter.place.id
+    @report.text = message
+
     @original_message = message
+
     @message = message.strip.sub(" ", "").sub(",", "")
     @scanner = StringScanner.new @message
 
@@ -37,15 +42,15 @@ class ReportParser
     @report.malaria_type = malaria_type
     @report.age = age
     @report.sex = self.class.format_sex sex
-    @report.sender_id = @reporter.id
-    @report.place_id = @reporter.place.id
 
     self
   end
 
   def generate_error(symbol)
     @error  = self.class.send(symbol, @original_message)
-    @short_error = symbol.to_s.gsub('_', ' ')
+
+    @report.error = true
+    @report.error_message = symbol.to_s.gsub('_', ' ')
   end
 
   def self.invalid_malaria_type original_message

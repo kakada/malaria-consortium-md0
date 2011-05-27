@@ -1,5 +1,5 @@
 class HCReportParser < ReportParser
-  
+
   def initialize reporter
     super(reporter)
     @report = HealthCenterReport.new
@@ -8,10 +8,10 @@ class HCReportParser < ReportParser
   def parse message
     super(message)
     return if errors?
-    
+
     village_code = @scanner.scan /\d{8}/
 
-    @error = HCReportParser.invalid_village_code(@original_message) if village_code.nil? || !@scanner.eos?
+    generate_error :invalid_village_code if village_code.nil? || !@scanner.eos?
     return if errors?
 
     validate_exists village_code
@@ -21,7 +21,7 @@ class HCReportParser < ReportParser
     return if errors?
 
     @report.village = @village
-    
+
     self
   end
 
@@ -41,10 +41,10 @@ class HCReportParser < ReportParser
 
   def validate_exists village_code
     @village = Place.find_by_code village_code
-    @error = HCReportParser.non_existent_village(@original_message) if @village.nil? || !@village.village?
+    generate_error :non_existent_village if @village.nil? || !@village.village?
   end
 
   def validate_is_supervised
-    @error = HCReportParser.non_supervised_village(@original_message) if @reporter.place_id != @village.parent_id
+    generate_error :non_supervised_village if @reporter.place_id != @village.parent_id
   end
 end

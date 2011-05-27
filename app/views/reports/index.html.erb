@@ -1,3 +1,44 @@
-<% content_for(:reports) do %>
-  Hello
+<% content_for :reports do %>
+  <%= page_entries_info @reports, :entry_name => 'message' %><br/><br/>
+  <%= will_paginate @reports %>
+
+  <% if @reports.any? %>
+    <table class="table">
+      <tr>
+        <th>Sender number</th>
+        <th>Sender</th>
+        <th>Text</th>
+        <th>Sex</th>
+        <th>Age</th>
+        <th>Type</th>
+        <th>Mobile?</th>
+        <th>Reported at</th>
+        <th>Health Center</th>
+        <th>Village</th>
+        <th>Date</th>
+      </tr>
+      <% @reports.each do |report| %>
+        <tr>
+          <td><%= report.sender_address.try(:without_protocol) %></td>
+          <td><%= report.sender.try(:user_name) %></td>
+          <td><%= report.text %></td>
+          <% if report.error? %>
+            <td style="color:red" colspan="3" align="center"><%= report.error_message %></td>
+          <% else %>
+            <td><%= report.sex %></td>
+            <td><%= report.age %></td>
+            <td><%= report.malaria_type %></td>
+          <% end %>
+          <td><%= report.mobile? ? 'Yes' : 'No' %></td>
+          <td><%= report.type == 'HealthCenterReport' ? 'health center' : 'village' unless report.error? %></td>
+          <td><%= report.health_center.try(:short_description) %></td>
+          <td><%= report.village.try(:short_description) %></td>
+          <td><%= time_ago_in_words report.created_at %> ago</td>
+        </tr>
+      <% end %>
+    </table>
+    <br/>
+
+    <%= will_paginate @reports %>
+  <% end %>
 <% end %>

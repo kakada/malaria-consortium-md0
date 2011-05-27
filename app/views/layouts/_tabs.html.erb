@@ -1,7 +1,16 @@
 <div id="tabs">
   <ul>
-    <li>Map</li>
-    <li class="selected">All messages</li>
-    <li>Error messages</li>
+    <%
+      [
+        ['Map', :map, :map_view_map_visualizations, {}],
+        ['All messages', :all_messages, :reports, {}],
+        ['Error messages', :error_messages, :reports, {:error => true}]
+      ].each do |label, tab, path, options| %>
+      <% if @tab == tab %>
+        <li class="selected"><%= label %></li>
+      <% else %>
+        <li><%= link_to label, self.send("#{path}_path", options.merge(:place => params[:place])) %></li>
+      <% end %>
+    <% end %>
   </ul>
 </div>

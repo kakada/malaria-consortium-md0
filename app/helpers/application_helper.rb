@@ -1,12 +1,12 @@
 module ApplicationHelper
   def title
-		pref = "Malaria consortium"
-		if !@title.nil?
-			return @title + " | " + pref
-		end
-		return pref
-	end
-  
+    pref = "Malaria consortium"
+    if !@title.nil?
+      return @title + " | " + pref
+    end
+    return pref
+  end
+
   def action_button icon, title, path
     element = "<div class='icon-wrapper'>"
     element << "<div class='icon'>"
@@ -33,5 +33,7 @@ module ApplicationHelper
       "Pv"
   end
 
-
+  def current_url_for(options)
+    url_for(params.dup.merge(options))
+  end
 end

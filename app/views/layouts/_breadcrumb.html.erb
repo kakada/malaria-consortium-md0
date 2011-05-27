@@ -4,9 +4,9 @@
     <%= ' > ' if i > 0 %>
     <% if crumb[:place] %>
       <% if crumb[:place] == 0 %>
-        <%= link_to crumb[:label], :action => :index %>
+        <%= link_to crumb[:label], current_url_for(:place => nil) %>
       <% else %>
-        <%= link_to crumb[:label], "?place=#{crumb[:place].id}" %>
+        <%= link_to crumb[:label], current_url_for(:place => crumb[:place].id) %>
       <% end %>
     <% else %>
       <b><%= crumb[:label] %></b>

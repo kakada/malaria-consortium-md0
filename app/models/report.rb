@@ -121,6 +121,8 @@ class Report < ActiveRecord::Base
     end
 
     report = parser.report
+    report.text = message[:body]
+    report.sender_address = message[:from]
     report.save!
 
     alerts = report.generate_alerts

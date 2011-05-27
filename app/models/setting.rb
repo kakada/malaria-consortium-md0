@@ -2,8 +2,7 @@ class Setting < ActiveRecord::Base
 
   def self.[](key)
     setting = Setting.find_by_param(key)
-    return nil unless setting
-    setting.value.to_s
+    setting ? setting.value.to_s : ''
   end
 
   def self.[]=(key, value)

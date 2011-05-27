@@ -75,7 +75,41 @@ body {
 #places, #users { padding: 4px; }
 #users_title { border-top: 1px solid black; border-bottom: 1px solid black; font-weight: bold; padding: 4px; background-color: #e6e6e6; }
 #places_title { border-bottom: 1px solid black; font-weight: bold; padding: 4px; background-color: #e6e6e6; }
-#reports { float: left; }
+#reports { float: left; padding: 4px; }
+
+table.table {
+  padding: 0px;
+  border: 0px;
+}
+
+.table tr.ao {
+  color: #006;
+}
+
+.table tr.at {
+  color: black;
+}
+
+.table td {
+  border: 0px;
+  padding: 1px;
+  background-color: #EFEFEF;
+}
+
+.table tr.even td {
+  background-color: #EFEFEF;
+}
+
+.table tr.odd td {
+  background-color: #DADADA;
+}
+
+.table th  {
+  border: 0px;
+  padding: 1px;
+  background-color: #BCD1DA;
+  font-size: 12px;
+}
 
 a {
     color: #09c;

@@ -56,6 +56,10 @@ class Place < ActiveRecord::Base
     "#{name} (#{self.class.name.titleize}, #{code})"
   end
 
+  def short_description
+    "#{name} (#{code})"
+  end
+
   def self.levels
     Types[1..-1]
   end
@@ -93,7 +97,7 @@ class Place < ActiveRecord::Base
   def self.update_country
     country = Place.find_by_type "Country"
     if(country.nil?)
-      country = Country.create! :name =>"National", :code => "National" ,:lat => 12.71536762877211, :lng => 104.8974609375   
+      country = Country.create! :name =>"National", :code => "National" ,:lat => 12.71536762877211, :lng => 104.8974609375
     end
     provinces  = Place.find_all_by_type "Province"
     provinces.each_with_index do |province,index|

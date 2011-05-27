@@ -1,0 +1,28 @@
+<div id="users_title">Users</div>
+<div id="users">
+  <table>
+    <%= form_for :custom_sms do |f| %>
+      <% @users.each do |user| %>
+        <% if user[:count] %>
+          <tr>
+            <td><%= user[:place] %> users (<%= user[:count] %>)</td>
+            <td><%= check_box_tag 'users[]', user[:place] %></td>
+          </tr>
+        <% else %>
+          <% user[:users].each do |subuser| %>
+            <tr>
+              <td><%= subuser.user_name %></td>
+              <td><%= check_box_tag 'users[]', subuser.id %></td>
+            </tr>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+    <tr>
+      <td colspan="2"><%= text_area_tag 'text', '', :size => '20x5' %></td>
+    </tr>
+    <tr>
+      <td colspan="2" align="right"><%= submit_tag 'Send SMS' %></td>
+    </tr>
+  </table>
+</div>

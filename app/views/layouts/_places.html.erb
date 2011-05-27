@@ -1,0 +1,14 @@
+<div id="places_title">
+  <% if @places.any? %>
+    <%= @places.first.class.to_s.underscore.humanize.pluralize %>
+  <% elsif @place %>
+    <%= @place.name %>
+  <% else %>
+    Provinces
+  <% end %>
+</div>
+<div id="places">
+  <% @places.each do |place| %>
+    <%= link_to place.name, "?place=#{place.id}" %><br/>
+  <% end %>
+</div>

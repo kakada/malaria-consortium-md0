@@ -1,71 +1,11 @@
 <div id="first_row">
-  <span id="breadcrumb">
-    You are here:
-    <% @breadcrumb.each_with_index do |crumb, i| %>
-      <%= ' > ' if i > 0 %>
-      <% if crumb[:place] %>
-        <% if crumb[:place] == 0 %>
-          <%= link_to crumb[:label], :action => :index %>
-        <% else %>
-          <%= link_to crumb[:label], "?place=#{crumb[:place].id}" %>
-        <% end %>
-      <% else %>
-        <b><%= crumb[:label] %></b>
-      <% end %>
-    <% end %>
-  </span>
-  <div id="tabs">
-    <ul>
-      <li>Map</li>
-      <li class="selected">All messages</li>
-      <li>Error messages</li>
-    </ul>
-  </div>
+  <%= render 'layouts/breadcrumb' %>
+  <%= render 'layouts/tabs' %>
 </div>
 <div id="second_row">
   <div id="navbar">
-    <div id="places_title">
-      <% if @places.any? %>
-        <%= @places.first.class.to_s.underscore.humanize.pluralize %>
-      <% elsif @place %>
-        <%= @place.name %>
-      <% else %>
-        Provinces
-      <% end %>
-    </div>
-    <div id="places">
-      <% @places.each do |place| %>
-        <%= link_to place.name, "?place=#{place.id}" %><br/>
-      <% end %>
-    </div>
-    <div id="users_title">Users</div>
-    <div id="users">
-      <table>
-        <%= form_for :custom_sms do |f| %>
-          <% @users.each do |user| %>
-            <% if user[:count] %>
-              <tr>
-                <td><%= user[:place] %> users (<%= user[:count] %>)</td>
-                <td><%= check_box_tag 'users[]', user[:place] %></td>
-              </tr>
-            <% else %>
-              <% user[:users].each do |subuser| %>
-                <tr>
-                  <td><%= subuser.user_name %></td>
-                  <td><%= check_box_tag 'users[]', subuser.id %></td>
-                </tr>
-              <% end %>
-            <% end %>
-          <% end %>
-        <% end %>
-        <tr>
-          <td colspan="2"><%= text_area_tag 'text', '', :size => '20x5' %></td>
-        </tr>
-        <tr>
-          <td colspan="2" align="right"><%= submit_tag 'Send SMS' %></td>
-        </tr>
-      </table>
-    </div>
+    <%= render 'layouts/places' %>
+    <%= render 'layouts/users' %>
   </div>
   <div id="reports">
     <%= content_for :reports %>

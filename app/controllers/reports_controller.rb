@@ -11,6 +11,7 @@ class ReportsController < ApplicationController
     else
       @reports = Report
     end
-    @reports = @reports.order('id desc').includes(:sender, :village, :health_center).paginate @pagination
+    @reports = @reports.order('id desc').includes(:sender, :village, :health_center)
+    @reports = @reports.paginate @pagination
   end
 end

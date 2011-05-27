@@ -1,0 +1,15 @@
+<span id="breadcrumb">
+  You are here:
+  <% @breadcrumb.each_with_index do |crumb, i| %>
+    <%= ' > ' if i > 0 %>
+    <% if crumb[:place] %>
+      <% if crumb[:place] == 0 %>
+        <%= link_to crumb[:label], :action => :index %>
+      <% else %>
+        <%= link_to crumb[:label], "?place=#{crumb[:place].id}" %>
+      <% end %>
+    <% else %>
+      <b><%= crumb[:label] %></b>
+    <% end %>
+  <% end %>
+</span>

@@ -73,7 +73,8 @@ body {
 #second_row { float: left; width: 100%; }
 #navbar { border-left: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black; float: left; }
 #places, #users { padding: 4px; }
-#users_title { border-top: 1px solid black; border-bottom: 1px solid black;}
+#users_title { border-top: 1px solid black; border-bottom: 1px solid black; font-weight: bold; padding: 4px; background-color: #e6e6e6; }
+#places_title { border-bottom: 1px solid black; font-weight: bold; padding: 4px; background-color: #e6e6e6; }
 #reports { float: left; }
 
 a {

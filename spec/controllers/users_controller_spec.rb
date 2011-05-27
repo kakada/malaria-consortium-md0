@@ -2,17 +2,18 @@ require "spec_helper"
 
 describe UsersController do
   before(:each) do
-      Place.create!(:name => "Phnom penh", :code => "pcode1" )
-      @attribute = {
-         :user_name => "admin",
-         :email => "admin@yahoo.com",
-         :password => "123456",
-         :intended_place_code =>"pcode1",
-         :phone_number => "0975553553",
-         :role => User::Roles[0]
-      }
-      @user = User.create! @attribute
-    end
+    Place.create!(:name => "Phnom penh", :code => "pcode1" )
+    @attribute = {
+      :user_name => "admin",
+      :email => "admin@yahoo.com",
+      :password => "123456",
+      :intended_place_code =>"pcode1",
+      :phone_number => "0975553553",
+      :role => User::Roles[0]
+    }
+    @user = User.create! @attribute
+  end
+
   it "should use UsersController" do
     controller.should be_instance_of UsersController
   end
@@ -22,8 +23,8 @@ describe UsersController do
       User.stub(:find).with(@user.id).and_return(@user)
     end
     it "should set user with status to cero " do
-      delete :destroy , :id => @user.id 
-      @user.status.should == 0    
+      delete :destroy , :id => @user.id
+      @user.status.should == 0
     end
 
     it "should set flash with msg-error " do
@@ -36,7 +37,7 @@ describe UsersController do
       response.should redirect_to users_path
     end
   end
-  
+
   #Update attribute of user
   describe "#user_save" do
     describe "with valid attributes" do
@@ -46,7 +47,7 @@ describe UsersController do
         @user.stub!(:update_attributes).and_return(true)
         @user.stub!(:reload)
       end
-      
+
       it "should find user and return an user object " do
         User.should_receive(:find).with(1).and_return(@user)
         @attribute[:id] = 1

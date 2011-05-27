@@ -24,6 +24,15 @@
 </div>
 <div id="second_row">
   <div id="navbar">
+    <div id="places_title">
+      <% if @places.any? %>
+        <%= @places.first.class.to_s.underscore.humanize.pluralize %>
+      <% elsif @place %>
+        <%= @place.name %>
+      <% else %>
+        Provinces
+      <% end %>
+    </div>
     <div id="places">
       <% @places.each do |place| %>
         <%= link_to place.name, "?place=#{place.id}" %><br/>
@@ -31,15 +40,31 @@
     </div>
     <div id="users_title">Users</div>
     <div id="users">
-      <% @users.each do |user| %>
-        <% if user[:count] %>
-          <%= user[:place] %> users (<%= user[:count] %>)<br/>
-        <% else %>
-          <% user[:users].each do |subuser| %>
-            <%= subuser.user_name %>
+      <table>
+        <%= form_for :custom_sms do |f| %>
+          <% @users.each do |user| %>
+            <% if user[:count] %>
+              <tr>
+                <td><%= user[:place] %> users (<%= user[:count] %>)</td>
+                <td><%= check_box_tag 'users[]', user[:place] %></td>
+              </tr>
+            <% else %>
+              <% user[:users].each do |subuser| %>
+                <tr>
+                  <td><%= subuser.user_name %></td>
+                  <td><%= check_box_tag 'users[]', subuser.id %></td>
+                </tr>
+              <% end %>
+            <% end %>
           <% end %>
         <% end %>
-      <% end %>
+        <tr>
+          <td colspan="2"><%= text_area_tag 'text', '', :size => '20x5' %></td>
+        </tr>
+        <tr>
+          <td colspan="2" align="right"><%= submit_tag 'Send SMS' %></td>
+        </tr>
+      </table>
     </div>
   </div>
   <div id="reports">

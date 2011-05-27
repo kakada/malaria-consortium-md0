@@ -9,7 +9,7 @@ body {
 }
 
 #map_canvas {
-  height: 500px;
+  height: 450px;
   width:  100%;
 }
 
@@ -523,13 +523,13 @@ tr.edit {
   background-image: url(../images/breadcrumb-tab.png);
   background-position: right center;
   background-repeat: no-repeat;
-  padding: 4px 20px 3px 3px ;
+  padding: 4px 20px 4px 3px ;
   border:none;
 }
 #breakcrump{
     background-image: url(../images/breadcrumb.png);
     float: left;
-    padding: 3px 0px 3px 0px;
+    padding: 4px 0px;
     color: #fff;
     margin-bottom: 5px;
 }

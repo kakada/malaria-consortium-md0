@@ -20,6 +20,5 @@ class MapVisualizationsController < ApplicationController
   
   def map_view
     @country = Place.find_by_type "Country"
-  end
-  
+  end  
 end

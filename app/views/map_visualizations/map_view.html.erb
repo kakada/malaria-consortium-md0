@@ -217,97 +217,97 @@
      }
    </script>
  <% end %>
- <div >
-   <div id="breakcrump"> 
-     <span class="bcElement" ></span>
+ <div style="width:900px;margin: 0 auto;">
+   <div >
+     <div id="breakcrump">
+       <span class="bcElement" ></span>
+     </div>
    </div>
- </div>
+   <div class="clear"></div>
 
- <div id="ajax_loading" class="loading round" >Waiting for server response</div>
- <div id="map_canvas">Your browser doesn't support map</div>
- <input type="hidden" id="place_id" name="place_id" value="0" />
- <br />
- <div id="slide_status" ></div>
- <div class="slidePanel round">
-    <div id="slider" ></div>
-    <div class="slide_label" >
-      
-      <div style="float:left;width: 200px;">  <span class="round" id="slide_min" > </span></div>
-      <div style="float:right;width: 200px;text-align:right;">  <span class="round" id="slide_max" > </span></div>
-      <div style="float:left;width: 200px;margin-left: 245px;"> <span class="round" id="slide_selected" > </span></div>
-      <div class="clear" >&nbsp;</div>
-    </div>
+   <div id="ajax_loading" class="loading round" >Waiting for server response</div>
+   <div id="map_canvas">Your browser doesn't support map</div>
+   <input type="hidden" id="place_id" name="place_id" value="0" />
+   <br />
+   <div id="slide_status" ></div>
+   <div class="slidePanel round">
+      <div id="slider" ></div>
+      <div class="slide_label" >
 
-    <div class="slide_control">
-      <div class="slideOption" >
-          <span class="round">
-            <input type="radio" name="time" value="day" id="day"  />
-            <label for="day" > Day </label>
-          </span>
-      </div>
-      <div class="slideOption" >
-          <span class="round"><input type="radio" name="time"  value="week" id="week" /> 
-            <label for="week" > Week </label>
-          </span>
-      </div>
-      <div class="slideOption" >
-        <span class="round"> <input type="radio" name="time"  value="month" id="month" />
-           <label for="month" > Month </label>
-         </span>
-      </div>
-      <div class="slideOption" >
-        <span class="round">
-          <input type="radio"  name="time" value="year" id="year" checked />
-          <label for="year" > Year </label>
-        </span>
+        <div style="float:left;width: 200px;">  <span class="round" id="slide_min" > </span></div>
+        <div style="float:right;width: 200px;text-align:right;">  <span class="round" id="slide_max" > </span></div>
+        <div style="float:left;width: 200px;margin-left: 245px;"> <span class="round" id="slide_selected" > </span></div>
+        <div class="clear" >&nbsp;</div>
       </div>
 
-      <div class="slideOption" >
-        <span class="round">
-          <input type="radio"  name="time" value="custom" id="custom" />
-          <label for="custom" > Custom </label>
-        </span>
-      </div>
-
-      
-      <div id="customOption" class="round" >
-        
+      <div class="slide_control">
+        <div class="slideOption" >
+            <span class="round">
+              <input type="radio" name="time" value="day" id="day"  />
+              <label for="day" > Day </label>
+            </span>
+        </div>
+        <div class="slideOption" >
+            <span class="round"><input type="radio" name="time"  value="week" id="week" />
+              <label for="week" > Week </label>
+            </span>
+        </div>
+        <div class="slideOption" >
+          <span class="round"> <input type="radio" name="time"  value="month" id="month" />
+             <label for="month" > Month </label>
+           </span>
+        </div>
         <div class="slideOption" >
           <span class="round">
-            <label for="custom" > From </label> <br />
-            <input type="text" class="calendar round" name="time" value="" id="from" name="from" />     
+            <input type="radio"  name="time" value="year" id="year" checked />
+            <label for="year" > Year </label>
           </span>
         </div>
 
         <div class="slideOption" >
           <span class="round">
-            <label for="custom" > To </label> <br />
-            <input type="text"  class="calendar round" name="time" value="" id="to" name="to" />
+            <input type="radio"  name="time" value="custom" id="custom" />
+            <label for="custom" > Custom </label>
           </span>
         </div>
+
+
+        <div id="customOption" class="round" >
+
+          <div class="slideOption" >
+            <span class="round">
+              <label for="custom" > From </label> <br />
+              <input type="text" class="calendar round" name="time" value="" id="from" name="from" />
+            </span>
+          </div>
+
+          <div class="slideOption" >
+            <span class="round">
+              <label for="custom" > To </label> <br />
+              <input type="text"  class="calendar round" name="time" value="" id="to" name="to" />
+            </span>
+          </div>
+        </div>
+
+        <div class="clear" >&nbsp;</div>
       </div>
+      <div style="margin-top:10px;">
+        <div class="slideOption" style="width:150px;" >
+          <span class="round">
+             <label for="malaria_type" > Malaria type: </label>
+             <%= select_tag(:malaria_type ,options_for_select(["All","Pf", "Pv"],  (@user.nil?)? "" : @user.send(:role)), {} )  %>
 
-      <div class="clear" >&nbsp;</div>
-    </div>
-    <div style="margin-top:10px;">
-      <div class="slideOption" style="width:150px;" >
-        <span class="round">
-           <label for="malaria_type" > Malaria type: </label>
-           <%= select_tag(:malaria_type ,options_for_select(["All","Pf", "Pv"],  (@user.nil?)? "" : @user.send(:role)), {} )  %>
-          
-        </span>
+          </span>
+        </div>
+
+        <div class="slideOption" style="width:150px;" >
+          <span class="round">
+            <%= button_to "Show",  {:method =>"get"},:id=>"show_report" %>
+          </span>
+        </div>
+        <div class="clear" >&nbsp;</div>
       </div>
-
-      <div class="slideOption" style="width:150px;" >
-        <span class="round">
-          <%= button_to "Show",  {:method =>"get"},:id=>"show_report" %>
-        </span>
-      </div>
-      <div class="clear" >&nbsp;</div>
-
-        
-    </div>
-
+   </div>
  </div>
 
 

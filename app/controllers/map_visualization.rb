@@ -94,6 +94,8 @@ class MapVisualization
       conditions += " AND ( malaria_type = 'F' OR malaria_type = 'M' )"
     elsif type == "Pv"
       conditions += " AND ( malaria_type = 'V' )"
+    elsif (type == "All")
+      conditions += " AND ( malaria_type = 'F' OR malaria_type = 'M' OR malaria_type = 'V'  )"
     end
     conditions
   end

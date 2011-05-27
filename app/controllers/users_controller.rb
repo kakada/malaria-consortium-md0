@@ -51,10 +51,6 @@ class UsersController < ApplicationController
       @users = User.paginate_user @page
       render :index
     end
-
-    
-
-    
   end
 
   #GET user/:id.:format

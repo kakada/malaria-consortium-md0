@@ -9,17 +9,16 @@
         <th><%= t("Email") %>  </th>
         <th><%= t("Phone") %>  </th>
         <th><%= t("Password") %>  </th>
-        <th width="120"><%= t("Place") %>  </th>
+        <th><%= t("Place") %>  </th>
         <th><%= t("Role") %>  </th>
         <th width="130" > </th>
       </tr>
     </thead>
     <tbody>
       <tr id="inputRow" id="tr_0" >
-
         <td>
-            <%= hidden_field_tag :id, @user[:id]  %>
-            <%= input_field_tag :user_name, @user  %>
+          <%= hidden_field_tag :id, @user[:id]  %>
+          <%= input_field_tag :user_name, @user  %>
         </td>
         <td>
           <%= input_field_tag :email, @user   %>
@@ -28,21 +27,16 @@
             <%= input_field_tag :phone_number, @user  %>
         </td>
         <td><%= input_field_tag :password, @user , "password"   %>  </td>
-        <td><%= input_field_tag :intended_place_code, @user %></td>
-
+        <td><%= input_field_tag :intended_place_code, @user, {}, :autocomplete => :off %></td>
         <td><%= select_tag(:role ,options_for_select(User::Roles,  (@user.nil?)? "" : @user.send(:role)), {} )  %>  </td>
-
         <td >
           <%=  submit_tag "Add", :id => "saveUser", :name => "saveUser" %>
         </td>
-
-
-
       </tr>
-    <% users.each_with_index do |user,index|
+      <% users.each_with_index do |user,index|
         cls = "pair"
         cls = "impair" if index % 2 != 0
-    %>
+      %>
       <tr class="<%=cls%>" id="tr_<%= user.id %>">
         <%= render :partial => "user_row", :locals => {:user => user} %>
       </tr>
@@ -50,3 +44,13 @@
     </tbody>
   </table>
 <% end %>
+
+<script type="text/javascript">
+  $(function() {
+      $('#intended_place_code').autocomplete({
+        url: '<%= autocomplete_places_path %>',
+        minChars: 1,
+        matchInside: true,
+      });
+  });
+</script>

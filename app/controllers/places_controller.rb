@@ -40,9 +40,6 @@ class PlacesController < ApplicationController
     render :text => "Done"
   end
 
-
-
-  
   def sample_report
     type = ['F','V', 'M']
     sex = ['Male','Female']
@@ -127,7 +124,12 @@ class PlacesController < ApplicationController
 
     end
     render :json =>@result
+  end
 
+  def autocomplete
+    places = Place.where("code LIKE :q OR name LIKE :q", :q => "#{params[:q]}%").all
+    places.map! { |x| x.short_description }
+    render :text => places.join("\n")
   end
 
 end

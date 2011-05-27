@@ -137,8 +137,8 @@ class User < ActiveRecord::Base
   end
 
   def try_fetch_place
-    if !intended_place_code.blank? && (place_id.blank? || place.code != intended_place_code)
-      should_be_place = Place.find_by_code intended_place_code
+    if intended_place_code.present? && (place_id.blank? || place.code != intended_place_code)
+      should_be_place = Place.find_by_code intended_place_code.gsub(/\D/, '')
       self.place_id = should_be_place.id unless should_be_place.nil?
     end
   end
@@ -164,7 +164,7 @@ class User < ActiveRecord::Base
   end
 
   def intended_place_code_must_exist
-    errors.add(:intended_place_code, "Place doesn't exist") if !self.intended_place_code.blank? && (self.place_id.blank? )
+    errors.add(:intended_place_code, "Place doesn't exist") if self.intended_place_code.present? && (self.place_id.blank? )
   end
 
   def email_required?

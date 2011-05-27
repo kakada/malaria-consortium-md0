@@ -34,6 +34,7 @@ Local::Application.routes.draw do
       get "map_report"
       get "sample_report"
       get "sample_place"
+      get 'autocomplete'
     end
 
     resources :users

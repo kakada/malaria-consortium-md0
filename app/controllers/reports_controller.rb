@@ -6,6 +6,11 @@ class ReportsController < ApplicationController
       :page => params[:page] || 1,
       :per_page => 10
     }
-    @reports = Report.order('id desc').all.paginate @pagination
+    if @place
+      @reports = @place.reports
+    else
+      @reports = Report
+    end
+    @reports = @reports.order('id desc').includes(:sender, :village, :health_center).paginate @pagination
   end
 end

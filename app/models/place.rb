@@ -106,6 +106,10 @@ class Place < ActiveRecord::Base
     end
   end
 
+  def reports
+    Report.where("#{self.class.to_s.tableize.singularize}_id".to_sym => self.id)
+  end
+
 end
 
 class Country

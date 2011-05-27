@@ -25,23 +25,21 @@ class ReportParser
     @scanner = StringScanner.new @message
 
     malaria_type = @scanner.scan /[FVM]/i
-    generate_error :invalid_malaria_type if malaria_type.nil?
+    generate_error :invalid_malaria_type unless malaria_type
 
-    return if errors?
+    @scanner.scan /./ if errors?
 
     age = @scanner.scan /\d+/
-    generate_error :invalid_age if age.nil?
-
-    return if errors?
+    generate_error :invalid_age unless age
 
     sex = @scanner.scan /[FM]/i
-    generate_error :invalid_sex if sex.nil?
+    generate_error :invalid_sex unless sex
 
-    return if errors?
+    @scanner.scan /\D*/ if errors?
 
     @report.malaria_type = malaria_type
     @report.age = age
-    @report.sex = self.class.format_sex sex
+    @report.sex = self.class.format_sex sex if sex
 
     self
   end

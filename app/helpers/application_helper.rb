@@ -27,10 +27,10 @@ module ApplicationHelper
   end
 
   def get_malaria_type type
-      if(type == "F" || type == "M")
-        return "Pf"
-      end
-      "Pv"
+    if(type == "F" || type == "M")
+      return "Pf"
+    end
+    "Pv"
   end
 
   def current_url_for(options)

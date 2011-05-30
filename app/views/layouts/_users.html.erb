@@ -1,28 +1,47 @@
 <div id="users_title">Users</div>
 <div id="users">
-  <table>
-    <%= form_for :custom_sms do |f| %>
+  <%= form_for :custom_sms, :url => custom_messages_path , :remote =>true, :html => { :id =>:custom_sms_form}   do |f| %>
+    <%= hidden_field_tag "place_id", params[:place]   %>
+    <table>
       <% @users.each do |user| %>
+
         <% if user[:count] %>
           <tr>
-            <td><%= user[:place] %> users (<%= user[:count] %>)</td>
-            <td><%= check_box_tag 'users[]', user[:place] %></td>
+            <td>
+              <%= user[:place] %> users (<%= user[:count] %>)</td>
+            <td><%= check_box_tag 'places[]', user[:place] %></td>
           </tr>
+
         <% else %>
           <% user[:users].each do |subuser| %>
-            <tr>
-              <td><%= subuser.user_name %></td>
-              <td><%= check_box_tag 'users[]', subuser.id %></td>
-            </tr>
+              <tr>
+                <td><%= subuser.user_name %></td>
+                <td><%= check_box_tag 'users[]', subuser.id %></td>
+              </tr>
           <% end %>
         <% end %>
       <% end %>
-    <% end %>
+    
     <tr>
-      <td colspan="2"><%= text_area_tag 'text', '', :size => '20x5' %></td>
+      <td colspan="2">
+        <div id="custom_message_sent_status"></div>
+        <%= text_area_tag 'sms', '', :size => '20x5' %>
+      </td>
     </tr>
     <tr>
       <td colspan="2" align="right"><%= submit_tag 'Send SMS' %></td>
     </tr>
+    <tr><td colspan="2" >&nbsp;</td></tr>
   </table>
+  <% end %>
+  <script type="text/javascript" >
+    $(function(){
+      $("#custom_sms_form").bind('ajax:beforeSend', function() {
+        $("#custom_message_sent_status").addClass("loading-small");
+        $("#custom_message_sent_status").html("Processing ...");
+        $("#custom_message_sent_status").show();
+
+      });
+    });
+  </script>
 </div>

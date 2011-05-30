@@ -23,14 +23,14 @@ body {
 }
 
 #version {
-  position: absolute;
   bottom: 0px;
-  right: 4px;
+  margin-right: 20px;
   height: 20px;
   width: 100%;
   color: #666;
   text-align: right;
   font-size: 8pt;
+  float: right;
 }
 
 #title {
@@ -367,7 +367,7 @@ label.error
     background-image: url(../images/stop.png);
     background-repeat: no-repeat;
     background-position: left center;
-    padding: 5px 5px 5px 30px;
+    padding: 5px 5px 5px 24px;
     border: 2px solid #ccc;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
@@ -379,7 +379,7 @@ label.error
     background-image: url(../images/notify.png);
     background-repeat: no-repeat;
     background-position: left center;
-    padding: 5px 5px 5px 30px;
+    padding: 5px 5px 5px 24px;
     border: 2px solid #ccc;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
@@ -589,4 +589,19 @@ tr.edit {
     color: #000;
     text-align: center;
     margin: 0 auto;
+}
+#custom_message_sent_status{
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    font-weight: bold;
+    display: none;
+    background-color: #eef;
+    padding-top: 3px ;
+    padding-bottom: 3px;
+}
+.loading-small{
+  background-image: url(../images/loading-small.gif);  
+  background-repeat: no-repeat;
+  background-position: left center;
+  padding-left: 30px;
 }

@@ -104,14 +104,11 @@ class Place < ActiveRecord::Base
 
   #update province that doesnt belong to country
   def self.update_country
-    country = Place.find_by_type "Country"
-    if(country.nil?)
-      country = Country.create! :name =>"National", :code => "National" ,:lat => 12.71536762877211, :lng => 104.8974609375
-    end
-    provinces  = Place.find_all_by_type "Province"
-    provinces.each_with_index do |province,index|
-      province.parent_id = country.id
-      province.save
+    country = Country.national
+
+    Province.all.each do |province|
+      province.parent = country
+      province.save!
     end
   end
 
@@ -122,12 +119,25 @@ class Place < ActiveRecord::Base
 end
 
 class Country
+  def self.national
+    first || create_national!
+  end
 
+  def self.create_national!
+    Country.create! :name => 'National', :code => '', :lat => 12.71536762877211, :lng => 104.8974609375
+  end
 end
 
 class Province
   alias_method :country, :parent
   has_many :ods, :class_name => "OD", :foreign_key => "parent_id"
+  before_save :assign_national_country, :unless => :parent_id?
+
+  private
+
+  def assign_national_country
+    self.parent = Country.national
+  end
 end
 
 class OD

@@ -10,6 +10,7 @@ class Report < ActiveRecord::Base
   belongs_to :health_center, :class_name => "HealthCenter"
   belongs_to :od, :class_name => "OD"
   belongs_to :province, :class_name => "Province"
+  belongs_to :country, :class_name => "Country"
 
   before_validation :upcase_strings
   before_save :complete_fields
@@ -99,6 +100,7 @@ class Report < ActiveRecord::Base
     self.health_center = village_id? ? village.health_center : place
     self.od = health_center.od if health_center_id?
     self.province = od.province if od_id?
+    self.country = od.country if province_id?
   end
 
   def self.decode message

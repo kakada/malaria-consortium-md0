@@ -17,11 +17,8 @@ module ReportsConcern
           params[:place] = @place.id
         end
       end
-      if @place
-        @places = @place.sub_places.order(:name).all
-      else
-        @places = Province.order(:name).all
-      end
+      @place = Country.national unless @place
+      @places = @place.sub_places.order(:name).all
     end
 
     def build_breadcrumb
@@ -32,9 +29,6 @@ module ReportsConcern
         while parent = parent.parent
           @breadcrumb.insert 0, :label => parent.name, :place => parent
         end
-        @breadcrumb.insert 0, :label => 'Cambodia', :place => 0
-      else
-        @breadcrumb.insert 0, :label => 'Cambodia'
       end
     end
 

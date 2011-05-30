@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110527064544) do
+ActiveRecord::Schema.define(:version => 20110530070804) do
 
   create_table "places", :force => true do |t|
     t.string   "name"
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(:version => 20110527064544) do
     t.boolean  "error"
     t.string   "error_message"
     t.string   "sender_address"
+    t.integer  "country_id"
   end
 
   add_index "reports", ["place_id"], :name => "fk_reports_places"

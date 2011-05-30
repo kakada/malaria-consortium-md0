@@ -86,20 +86,6 @@ describe Report do
       report.error.should be_true
     end
 
-    describe "invalid syntax" do
-      it "should return error message provided by parser" do
-        parser = {}
-
-        User.should_receive(:find_by_phone_number).with("sms://8558190").and_return(@hc_user)
-        @hc_user.should_receive(:report_parser).and_return(parser)
-        parser.should_receive(:parse).with("F123MAAAAAA").and_return(parser)
-        parser.should_receive(:errors?).and_return(true)
-        parser.should_receive(:error).and_return("parser error")
-
-        assert_response_error "parser error", :from => "sms://8558190", :body => "F123MAAAAAA"
-      end
-    end
-
     it "should return unknown user before any other error" do
       assert_response_error Report.unknown_user(""), :from => "sms://31783123", :body => ""
     end

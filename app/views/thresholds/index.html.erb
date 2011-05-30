@@ -34,6 +34,7 @@ OD:
     <td><%= threshold.value %></td>
     <td>
       <%= link_to 'Edit', threshold %>
+      <%= link_to 'Delete', threshold, :method => :delete, :confirm => 'Are you sure?' %>
     </td>
   </tr>
   <% end -%>

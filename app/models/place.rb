@@ -8,7 +8,12 @@ class Place < ActiveRecord::Base
   validates_uniqueness_of :code
 
   def self.find_by_code(code)
-    Place.where(:code => code.gsub(/\D/, '')).first
+    pieces = code.strip.split(/\s/, 2)
+    if pieces.length == 2
+      Place.where(:code => pieces.first).first
+    else
+      Place.where(:code => code).first
+    end
   end
 
   def unset_hierarchy

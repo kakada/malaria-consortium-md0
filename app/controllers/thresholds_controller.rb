@@ -35,6 +35,12 @@ class ThresholdsController < ApplicationController
     redirect_to :action => :index, :od_id => threshold.place.get_parent(OD).id
   end
 
+  def destroy
+    threshold = Threshold.find params[:id]
+    threshold.destroy
+    redirect_to :back
+  end
+
   private
 
   def set_threshold_value place_class, place_id, value

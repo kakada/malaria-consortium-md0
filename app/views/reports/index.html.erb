@@ -5,8 +5,8 @@
   <% if @reports.any? %>
     <table class="table">
       <tr>
-        <th>Sender number</th>
         <th>Sender</th>
+        <th>Sender number</th>
         <th>Text</th>
         <th>Type</th>
         <th>Age</th>
@@ -17,10 +17,10 @@
         <th>Village</th>
         <th>Date</th>
       </tr>
-      <% @reports.each do |report| %>
-        <tr>
-          <td><%= report.sender_address.try(:without_protocol) %></td>
+      <% @reports.each_with_index do |report, i| %>
+        <tr class="<%= i.odd? ? 'odd' : 'even' %>">
           <td><%= report.sender.try(:user_name) %></td>
+          <td><%= report.sender_address.try(:without_protocol) %></td>
           <td><%= report.text %></td>
           <% if report.error? %>
             <td style="color:#600" colspan="3" align="center"><%= report.error_message %> <%= link_to 'click to edit', edit_report_path(report, params.slice(:error, :place, :page)) %></td>

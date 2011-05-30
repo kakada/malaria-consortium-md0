@@ -138,7 +138,7 @@ class User < ActiveRecord::Base
 
   def try_fetch_place
     if intended_place_code.present? && (place_id.blank? || place.code != intended_place_code)
-      should_be_place = Place.find_by_code intended_place_code.gsub(/\D/, '')
+      should_be_place = Place.find_by_code intended_place_code
       self.place_id = should_be_place.id unless should_be_place.nil?
     end
   end

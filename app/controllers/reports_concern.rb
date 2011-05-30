@@ -9,7 +9,14 @@ module ReportsConcern
 
   module InstanceMethods
     def get_places
-      @place = Place.find params[:place] if params[:place].present?
+      if params[:place].present?
+        @place = Place.find params[:place]
+      elsif params[:place_search].present?
+        @place = Place.find_by_code params[:place_search]
+        if @place
+          params[:place] = @place.id
+        end
+      end
       if @place
         @places = @place.sub_places.order(:name).all
       else

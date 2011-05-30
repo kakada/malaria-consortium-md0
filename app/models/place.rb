@@ -7,6 +7,10 @@ class Place < ActiveRecord::Base
 
   validates_uniqueness_of :code
 
+  def self.find_by_code(code)
+    Place.where(:code => code.gsub(/\D/, '')).first
+  end
+
   def unset_hierarchy
     self.hierarchy = nil unless changes.except(:hierarchy).empty?
   end

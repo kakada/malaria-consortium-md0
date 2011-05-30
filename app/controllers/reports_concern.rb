@@ -32,9 +32,9 @@ module ReportsConcern
         while parent = parent.parent
           @breadcrumb.insert 0, :label => parent.name, :place => parent
         end
-        @breadcrumb.insert 0, :label => 'All provinces', :place => 0
+        @breadcrumb.insert 0, :label => 'Cambodia', :place => 0
       else
-        @breadcrumb.insert 0, :label => 'All provinces'
+        @breadcrumb.insert 0, :label => 'Cambodia'
       end
     end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110530070804) do
+ActiveRecord::Schema.define(:version => 20110530084851) do
 
   create_table "places", :force => true do |t|
     t.string   "name"
@@ -93,6 +93,8 @@ ActiveRecord::Schema.define(:version => 20110530070804) do
     t.integer  "province_id"
     t.integer  "country_id"
     t.integer  "village_id"
+    t.integer  "last_report_id"
+    t.boolean  "last_report_error"
   end
 
   add_index "users", ["phone_number"], :name => "index_users_on_phone_number", :unique => true

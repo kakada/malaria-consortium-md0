@@ -18,12 +18,13 @@
         <th>Date</th>
       </tr>
       <% @reports.each_with_index do |report, i| %>
+        <% report = report.last_report if report.is_a? User %>
         <tr class="<%= i.odd? ? 'odd' : 'even' %>">
           <td><%= report.sender.try(:user_name) %></td>
           <td><%= report.sender_address.try(:without_protocol) %></td>
           <td><%= report.text %></td>
           <% if report.error? %>
-            <td style="color:#600" colspan="3" align="center"><%= report.error_message %> <%= link_to 'click to edit', edit_report_path(report, params.slice(:error, :place, :page)) %></td>
+            <td style="color:#600" colspan="3" align="center"><%= report.error_message %> <%= link_to 'click to edit', edit_report_path(report, params.slice(:error, :place, :page)) unless params[:error] == 'last' %></td>
           <% else %>
             <td><%= report.malaria_type %></td>
             <td><%= report.age %></td>

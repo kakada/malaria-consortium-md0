@@ -14,6 +14,7 @@ class Report < ActiveRecord::Base
 
   before_validation :upcase_strings
   before_save :complete_fields
+  after_create :copy_self_to_sender, :if => :sender_id?
 
   def self.process(message = {})
     message = message.with_indifferent_access
@@ -32,10 +33,6 @@ class Report < ActiveRecord::Base
 
   def self.user_should_belong_to_hc_or_village(original_message = nil)
     "Access denied. You should either belong to a health center or be Village Malaria Worker."
-  end
-
-  def self.too_long_vmw_report original_message
-    "The report you sent is too long. Your report was #{original_message}. Please correct and send again."
   end
 
   def self.from_app
@@ -97,10 +94,10 @@ class Report < ActiveRecord::Base
   private
 
   def complete_fields
-    self.health_center = village_id? ? village.health_center : place
-    self.od = health_center.od if health_center_id?
-    self.province = od.province if od_id?
-    self.country = od.country if province_id?
+    self.health_center = village_id? ? village.parent : place
+    self.od = health_center.parent if health_center_id?
+    self.province = od.parent if od_id?
+    self.country = province.parent if province_id?
   end
 
   def self.decode message
@@ -135,5 +132,11 @@ class Report < ActiveRecord::Base
 
   def upcase_strings
     malaria_type.upcase! if malaria_type
+  end
+
+  def copy_self_to_sender
+    sender.last_report = self
+    sender.last_report_error = self.error?
+    sender.save!
   end
 end

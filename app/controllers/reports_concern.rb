@@ -44,7 +44,7 @@ module ReportsConcern
         @users.push :place => @place.class, :users => @place.users
 
         options = {}
-        options.send(:[]=, "#{@place.class.to_s.tableize.singularize}_id", @place.id)
+        options["#{@place.class.to_s.tableize.singularize}_id"] = @place.id
         types = Place::Types.from(Place::Types.index(@place.class.to_s) + 1).each do |type|
           options[:place_class] = type
           @users.push :place => type.constantize, :count => User.where(options).count

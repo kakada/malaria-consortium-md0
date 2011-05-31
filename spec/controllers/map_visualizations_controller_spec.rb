@@ -58,25 +58,14 @@ describe MapVisualizationsController do
 
 
   describe "Get map view " do
-    before(:each) do
-      @country = Country.create! :name =>"natinal", :code =>"85523"
-      Place.stub!(:find_by_type).with("Country").and_return(@country)
-    end
-
-    it "should find a country" do
-      Place.should_receive(:find_by_type).and_return(@country)
-      get :map_view
-    end
-
-    it "should set the @country to the view " do
-      get :map_view
-      assigns[:country].should == @country
+    it "should set place_id" do
+      get :map_view , {:place =>0 }
+      assigns[:place_id].should_not be_nil
     end
 
     it "should render the map_view template" do
       get :map_view
       response.should render_template "map_view"
     end
-
   end
 end

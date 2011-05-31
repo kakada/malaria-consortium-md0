@@ -5,11 +5,13 @@
    <%= javascript_include_tag "styled_marker"  %>
    <%= javascript_include_tag "map.min"  %>
    <%= javascript_include_tag "jquery-ui-1.8.13.custom.min"  %>
+   <%= javascript_include_tag "jquery.cookies.2.2.0.min"  %>
    <%= javascript_include_tag "map.markerwithlabel"  %>
    <%= stylesheet_link_tag "jquery-ui-1.8.13.custom"  %>
    <script type="text/javascript">
     
     $(function(){
+        
         loading("#map_canvas");
         MD.createMap("#map_canvas");
         
@@ -17,20 +19,24 @@
 
         $("#slide_min").html ( MD.date.getDateAfter(60) );
         $("#slide_selected").html( MD.date.getDateAfter(0)  );
-        $("#slide_max").html ( MD.date.getDateAfter(0) );
+        $("#slide_max").html( MD.date.getDateAfter(0) );
 
 
+        var param = loadMapCookie();
         MD.visualize.create();
-        MD.visualize.updateType($("input[name=time][type=radio][checked]").val());
+        MD.visualize.updateType(param["time"]);
+        MD.visualize.setValue(param["slide_value"]);
+        
+        
       
         buildActionType();
         buildCalendar();
         buildPaginatorItemClick();
-        buildBCElement();
+        //buildBCElement();
         showClick();
 
-        MD.bcUI.create("#breakcrump");
-        getPushPins(<%= (@country.parent_id.nil?)?0:@country.parent_id %>)
+        //MD.bcUI.create("#breakcrump");
+        getPushPins(<%= @place_id %>)
         loading("#map_canvas");
         
      });
@@ -43,10 +49,59 @@
        })
      }
 
+     function loadMapCookie(){
+       var param = $.cookies.get("mapvisual") || {
+          time : "year",
+          slide_value: 12
+       };
+       
+       $("input[name=time]").each(function(){
+         if(this.value == param["time"])
+           this.checked = true;
+       });
+
+       $("#malaria_type > option").each(function(i){
+         if(this.value == param["malaria_type"]){
+            $("#malaria_type").get(0).selectedIndex = i;
+            
+         }
+       });
+
+       $("#from").val(param["date_from"]);
+       $("#to").val(param["date_to"]);
+       return param;
+     }
+     
+     function setMapCookie(){
+
+       var time = "year" ;
+       $("input[name=time]").each(function(){
+          if(this.checked){
+            time = this.value;
+          }
+       })
+       var param = {
+                    time : time,
+                    malaria_type : $("#malaria_type").val(),
+                    date_from : $("#from").val(),
+                    date_to : $("#to").val(),
+                    slide_value: MD.visualizor.slider("value")
+       }
+       console.dir(param);
+       $.cookies.set("mapvisual",param);       
+     }
+
+     function setMapCookieElm(key , value){
+       var param = $.cookies.get("mapvisual") || {}
+       param[key] = value
+       $.cookies.set("mapvisual", param);
+     }
+
      function showClick(){
        $("#show_report").click(function(){
           var id = $("#place_id").val();
           getPushPins(id);
+          setMapCookie();
           return false;
        });
      }
@@ -206,8 +261,8 @@
            renderPushPin(result);
            
            if(typeof result["parent"] !="undefined"){
-            MD.bcUI.setAsObj(result["parent"]);
-            MD.bcUI.show(result["parent"]["type"]);
+            //MD.bcUI.setAsObj(result["parent"]);
+            //MD.bcUI.show(result["parent"]["type"]);
            }
            //buildBCElement();
          }
@@ -217,6 +272,7 @@
      }
    </script>
  <% end %>
+<% content_for :reports do  %>
  <div style="width:900px;margin: 0 auto;">
    <div >
      <div id="breakcrump">
@@ -227,13 +283,12 @@
 
    <div id="ajax_loading" class="loading round" >Waiting for server response</div>
    <div id="map_canvas">Your browser doesn't support map</div>
-   <input type="hidden" id="place_id" name="place_id" value="0" />
+   <input type="hidden" id="place_id" name="place_id" value="<%=  @place_id %>" />
    <br />
    <div id="slide_status" ></div>
    <div class="slidePanel round">
       <div id="slider" ></div>
       <div class="slide_label" >
-
         <div style="float:left;width: 200px;">  <span class="round" id="slide_min" > </span></div>
         <div style="float:right;width: 200px;text-align:right;">  <span class="round" id="slide_max" > </span></div>
         <div style="float:left;width: 200px;margin-left: 245px;"> <span class="round" id="slide_selected" > </span></div>
@@ -277,14 +332,14 @@
           <div class="slideOption" >
             <span class="round">
               <label for="custom" > From </label> <br />
-              <input type="text" class="calendar round" name="time" value="" id="from" name="from" />
+              <input type="text" class="calendar round"  value="" id="from" name="from" />
             </span>
           </div>
 
           <div class="slideOption" >
             <span class="round">
               <label for="custom" > To </label> <br />
-              <input type="text"  class="calendar round" name="time" value="" id="to" name="to" />
+              <input type="text"  class="calendar round" value="" id="to" name="to" />
             </span>
           </div>
         </div>
@@ -309,5 +364,6 @@
       </div>
    </div>
  </div>
+<% end %>
 
 

@@ -605,3 +605,6 @@ tr.edit {
   background-position: left center;
   padding-left: 30px;
 }
+.full{
+    width: 100%;
+}

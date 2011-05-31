@@ -1,0 +1,25 @@
+$("#custom_message_sent_status").removeClass("loading-small");
+<% if @custom_message.valid? %>
+    //$("#custom_message_sent_status").addClass("notice");
+    $("#custom_message_sent_status").show();
+    <% if(@users_places.size > 0) %>
+      $("#custom_message_sent_status").html("Message have been sent");
+    <% else %>
+      $("#custom_message_sent_status").html("No user selected");
+    <% end  %>
+<% else %>
+    
+    //$("#custom_message_sent_status").addClass("error");
+    $("#custom_message_sent_status").show();
+    
+    <% 
+        @errors = []
+        @custom_message.errors.each do |key,errors|
+         
+          @errors.push("#{key} #{errors}")
+
+        end
+
+    %>
+    $("#custom_message_sent_status").html("<%= @errors.join("<br />").html_safe %>");
+<% end %>

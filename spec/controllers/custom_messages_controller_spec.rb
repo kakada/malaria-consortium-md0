@@ -24,86 +24,49 @@ describe CustomMessagesController do
   describe "send sms to selected type" do
     describe "message with valid attributes" do
       before(:each) do
-        p1 = Place.create!(:name => "Phnom penh", :code => "pcode1", :type=>Place::Types[0])
-        p2 = Place.create!(:name => "Kandal", :code => "pcode2", :type=>Place::Types[0])
-        @places = [p1,p2]
-        attrib_user1 = {
-           :user_name => "bar",
-           :email => "bar@yahoo.com",
-           :password => "123456",
-           :intended_place_code =>"pcode1",
-           :phone_number => "0975553552",
-           :role => User::Roles[0]
+        @valid_attribute = {
+          :sms => "this is a a valid sms",
+          :place_id => "1",
+          :places => ["OD","HealthCenter"],
+          :users => ["1","2","3"],
+          :format =>"js"
         }
-
-        attrib_user2 = {
-           :user_name => "foo",
-           :email => "foo@yahoo.com",
-           :password => "123456",
-           :intended_place_code =>"pcode2",
-           :phone_number => "0975553553",
-           :role => User::Roles[0]
-        }
-        @user1 = User.create! attrib_user1
-        @user2 = User.create! attrib_user2
-
-        @attrib_sms = {
-          :type => Place::Types[0],
-          :sms => "message to be send less than 140 chars"
-        }
-
-        @custom_message = CustomMessage.new @attrib_sms
-        CustomMessage.stub!(:new).with(@attrib_sms).and_return(@custom_message)
-
+        @format = "js"
+        @custom_message = Object.new
+        CustomMessage.stub!(:new).with(@valid_attribute[:sms]).and_return(@custom_message)
         @custom_message.stub!(:valid?).and_return(true)
-        @custom_message.stub!(:send_to).with(@user1)
-        @custom_message.stub!(:send_to).with(@user2)
-
-        Place.stub!(:places_by_type).with(@attrib_sms[:type]).and_return(@places)
+        
+        CustomMessage.stub!(:get_users).with(@valid_attribute[:place_id].to_i,@valid_attribute[:places]).and_return([])
+        @custom_message.stub!(:send_sms_users)
+        User.stub!(:find).with(@valid_attribute[:users]).and_return([])
+        
       end
 
-
-      it "should find places and return 2 places" do
-        Place.should_receive(:places_by_type).with(@attrib_sms[:type]).and_return(@places)
-        post :create , @attrib_sms
+      it "should create a valid custom_message object" do
+        CustomMessage.should_receive(:new).and_return(@custom_message)
+        post :create, @valid_attribute
       end
 
-      it "should send message to user1 " do
-        @custom_message.should_receive(:send_to).with(@user1)
-        post :create, @attrib_sms
+      it "should be validate the custome_message return true" do
+        @custom_message.should_receive(:valid?).and_return(true)
+        post :create, @valid_attribute
       end
 
-      it "should send message to user2" do
-        @custom_message.should_receive(:send_to).with(@user2)
-        post :create, @attrib_sms
+      it "should find the users from place_id top hierachy in the places type collection" do
+        CustomMessage.should_receive(:get_users).with(@valid_attribute[:place_id].to_i,@valid_attribute[:places])
+        post :create , @valid_attribute
       end
 
-      it "should render review template" do
-        post :create, @attrib_sms
-        response.should render_template :review
+      it "should find the user for the users collection" do
+        User.should_receive(:find).with(@valid_attribute[:users])
+        post :create, @valid_attribute
+      end
+
+      it "should render create.js.erb template" do
+        post :create,  @valid_attribute 
+        response.should render_template :create
       end
     end
-
-    describe "message with invalid attribute" do
-      before(:each) do
-        @attrib_sms = {
-          :type => "Jut a  place type here",
-          :sms => ""
-        }
-        @custom_message = CustomMessage.new @attrib_sms
-        CustomMessage.stub!(:new).with(@attrib_sms).and_return(@custom_message)
-        @custom_message.stub!(:valid?).and_return(false)
-      end
-
-      it "should render new template in custom message" do
-        post :create, @attrib_sms
-        response.should render_template :new
-      end
-
-    end
-
-
-
   end
 
 

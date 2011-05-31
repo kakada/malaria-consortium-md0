@@ -10,7 +10,7 @@ module ReportsConcern
   module InstanceMethods
     def get_places
       if params[:place].present?
-        @place = Place.find params[:place]
+        @place = Place.find_by_id params[:place]
       elsif params[:place_search].present?
         @place = Place.find_by_code params[:place_search]
         if @place

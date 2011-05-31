@@ -48,9 +48,10 @@
 <script type="text/javascript">
   $(function() {
       $('#intended_place_code').autocomplete({
-        url: '<%= autocomplete_places_path %>',
-        minChars: 1,
-        matchInside: true,
+        serviceUrl: '<%= autocomplete_places_path %>',
+        minChars: 3,
+        maxHeight: 300,
+        zIndex: 9999,
       });
   });
 </script>

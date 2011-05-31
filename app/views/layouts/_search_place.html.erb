@@ -13,10 +13,11 @@
 <script type="text/javascript">
   $(function() {
       $('#place_search').autocomplete({
-        url: '<%= autocomplete_places_path %>',
-        minChars: 1,
-        matchInside: true,
-        onItemSelect: function(item) {
+        serviceUrl: '<%= autocomplete_places_path %>',
+        minChars: 3,
+        maxHeight: 300,
+        zIndex: 9999,
+        onSelect: function(value, data) {
           $('#place_search_form').submit();
         }
       });

@@ -127,9 +127,9 @@ class PlacesController < ApplicationController
   end
 
   def autocomplete
-    places = Place.where("code LIKE :q OR name LIKE :q", :q => "#{params[:q]}%").all
-    places.map! { |x| "#{x.code} #{x.name} (#{x.class.to_s.underscore.humanize})" }
-    render :text => places.join("\n")
+    places = Place.where("code LIKE :q OR name LIKE :q", :q => "#{params[:query]}%").all
+    suggestions = places.map! { |x| "#{x.code} #{x.name} (#{x.class.to_s.underscore.humanize})" }
+    render :json => {:query => params[:query], :suggestions => suggestions}
   end
 
 end

@@ -5,7 +5,9 @@
 	padding: 0px;
 	border: 1px solid WindowFrame;
 	background-color: Window;
-	overflow: hidden;
+  overflow: auto;
+  overflow-x: hidden;
+  max-height: 200px;
 }
 
 .acResults ul {
@@ -28,7 +30,7 @@
 }
 
 .acLoading {
-	background : url('indicator.gif') right center no-repeat;
+	background : url('/images/indicator.gif') right center no-repeat;
 }
 
 .acSelect {

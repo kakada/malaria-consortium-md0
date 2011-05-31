@@ -14,22 +14,26 @@
 
   <p>
     <%= f.label :single_village_case_template, 'Template for individual case report from a village malaria worker' %><br/>
-    <%= f.text_field :single_village_case_template, :size => 120 %>
+    <%= f.text_field :single_village_case_template, :size => 120 %><br />
+    <span style="font-size:90%">Parameters: <%= Templates::ValidParameters[:single_village_case_template].map{|x| "{#{x}}"}.join ', ' %></span>
   </p>
 
-  <p>
+  <p style="margin-top:20px">
     <%= f.label :single_hc_case_template, 'Template for individual case report from a health center' %><br/>
-    <%= f.text_field :single_hc_case_template, :size => 120 %>
+    <%= f.text_field :single_hc_case_template, :size => 120 %><br />
+    <span style="font-size:90%">Parameters: <%= Templates::ValidParameters[:single_hc_case_template].map{|x| "{#{x}}"}.join ', ' %></span>
   </p>
 
-  <p>
+  <p style="margin-top:20px">
     <%= f.label :aggregate_village_cases_template, 'Template for aggregated cases report at village level' %><br/>
-    <%= f.text_field :aggregate_village_cases_template, :size => 120 %>
+    <%= f.text_field :aggregate_village_cases_template, :size => 120 %><br />
+    <span style="font-size:90%">Parameters: <%= Templates::ValidParameters[:aggregate_village_cases_template].map{|x| "{#{x}}"}.join ', ' %></span>
   </p>
 
-  <p>
+  <p style="margin-top:20px">
     <%= f.label :aggregate_hc_cases_template, 'Template for aggregated cases report at health center level' %><br/>
-    <%= f.text_field :aggregate_hc_cases_template, :size => 120 %>
+    <%= f.text_field :aggregate_hc_cases_template, :size => 120 %><br />
+    <span style="font-size:90%">Parameters: <%= Templates::ValidParameters[:aggregate_hc_cases_template].map{|x| "{#{x}}"}.join ', ' %></span>
   </p>
 
   <%= f.submit %>

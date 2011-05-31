@@ -19,6 +19,9 @@ Local::Application.routes.draw do
   end
   resources :reports
   resources :users do
+    member do
+      get 'mark_as_investigated'
+    end
     collection do
       get "validate"
       get "create_new"

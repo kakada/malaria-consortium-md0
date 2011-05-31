@@ -1,20 +1,35 @@
 <h2>Templates</h2>
 
-<%= form_for "templates" do |f| -%>
-  <p>Template for individual case report from a village malaria worker:<br/>
-  <%= f.text_field :single_village_case_template %>
+<%= form_for 'templates' do |f| -%>
+  <% if @templates.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@templates.errors.count, "error") %> prohibited you from updating the templates:</h2>
+        <ul>
+          <% @templates.errors.each do |attribute, error| %>
+            <li><%= error %></li>
+          <% end %>
+        </ul>
+    </div>
+  <% end %>
+
+  <p>
+    <%= f.label :single_village_case_template, 'Template for individual case report from a village malaria worker' %><br/>
+    <%= f.text_field :single_village_case_template, :size => 120 %>
   </p>
 
-  <p>Template for individual case report from a health center:<br/>
-  <%= f.text_field :single_hc_case_template %>
+  <p>
+    <%= f.label :single_hc_case_template, 'Template for individual case report from a health center' %><br/>
+    <%= f.text_field :single_hc_case_template, :size => 120 %>
   </p>
 
-  <p>Template for aggregated cases report at village level:<br/>
-  <%= f.text_field :aggregate_village_cases_template %>
+  <p>
+    <%= f.label :aggregate_village_cases_template, 'Template for aggregated cases report at village level' %><br/>
+    <%= f.text_field :aggregate_village_cases_template, :size => 120 %>
   </p>
 
-  <p>Template for aggregated cases report at health center level:<br/>
-  <%= f.text_field :aggregate_hc_cases_template %>
+  <p>
+    <%= f.label :aggregate_hc_cases_template, 'Template for aggregated cases report at health center level' %><br/>
+    <%= f.text_field :aggregate_hc_cases_template, :size => 120 %>
   </p>
 
   <%= f.submit %>

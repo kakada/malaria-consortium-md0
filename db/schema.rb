@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110530070804) do
+ActiveRecord::Schema.define(:version => 20110531030043) do
 
   create_table "places", :force => true do |t|
     t.string   "name"
@@ -19,11 +19,14 @@ ActiveRecord::Schema.define(:version => 20110530070804) do
     t.integer  "parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "type"
-    t.decimal  "lat",        :precision => 11, :scale => 8
-    t.decimal  "lng",        :precision => 11, :scale => 8
+    t.string   "type",       :limit => 15
+    t.decimal  "lat",                      :precision => 11, :scale => 8
+    t.decimal  "lng",                      :precision => 11, :scale => 8
     t.string   "hierarchy"
   end
+
+  add_index "places", ["parent_id", "name"], :name => "index_places_on_parent_id_and_name"
+  add_index "places", ["type"], :name => "index_places_on_type"
 
   create_table "reports", :force => true do |t|
     t.string   "malaria_type"
@@ -46,9 +49,15 @@ ActiveRecord::Schema.define(:version => 20110530070804) do
     t.integer  "country_id"
   end
 
-  add_index "reports", ["place_id"], :name => "fk_reports_places"
+  add_index "reports", ["country_id", "error"], :name => "index_reports_on_country_id_and_error"
+  add_index "reports", ["health_center_id", "error"], :name => "index_reports_on_health_center_id_and_error"
+  add_index "reports", ["od_id", "error"], :name => "index_reports_on_od_id_and_error"
+  add_index "reports", ["place_id", "error"], :name => "index_reports_on_place_id_and_error"
+  add_index "reports", ["place_id"], :name => "index_reports_on_place_id"
+  add_index "reports", ["province_id", "error"], :name => "index_reports_on_province_id_and_error"
   add_index "reports", ["sender_id"], :name => "fk_reports_users"
-  add_index "reports", ["village_id"], :name => "fk_reports_village"
+  add_index "reports", ["village_id", "error"], :name => "index_reports_on_village_id_and_error"
+  add_index "reports", ["village_id"], :name => "index_reports_on_village_id"
 
   create_table "settings", :force => true do |t|
     t.string   "param"
@@ -87,16 +96,25 @@ ActiveRecord::Schema.define(:version => 20110530070804) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.string   "place_class"
+    t.string   "place_class",            :limit => 15
     t.integer  "health_center_id"
     t.integer  "od_id"
     t.integer  "province_id"
     t.integer  "country_id"
     t.integer  "village_id"
+    t.integer  "last_report_id"
+    t.boolean  "last_report_error"
   end
 
+  add_index "users", ["country_id", "place_class"], :name => "index_users_on_country_id_and_place_class"
+  add_index "users", ["health_center_id", "place_class"], :name => "index_users_on_health_center_id_and_place_class"
+  add_index "users", ["last_report_error", "updated_at"], :name => "index_users_on_last_report_error_and_updated_at"
+  add_index "users", ["od_id", "place_class"], :name => "index_users_on_od_id_and_place_class"
   add_index "users", ["phone_number"], :name => "index_users_on_phone_number", :unique => true
+  add_index "users", ["place_id"], :name => "index_users_on_place_id"
+  add_index "users", ["province_id", "place_class"], :name => "index_users_on_province_id_and_place_class"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["user_name"], :name => "index_users_on_user_name", :unique => true
+  add_index "users", ["village_id", "place_class"], :name => "index_users_on_village_id_and_place_class"
 
 end

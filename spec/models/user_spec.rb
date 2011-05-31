@@ -288,4 +288,22 @@ describe User do
     end
   end
 
+  describe "last report" do
+    it "assigns valid" do
+      village = village('foo')
+      user = User.create! :phone_number => '123', :place => village
+      report = VMWReport.create! :malaria_type => 'F', :sex => 'Male', :age => 23, :place => village, :village => village, :sender => user
+      user.last_report_id.should eq(report.id)
+      user.last_report_error.should be_false
+    end
+
+    it "assigns error" do
+      village = village('foo')
+      user = User.create! :phone_number => '123', :place => village
+      report = VMWReport.create! :error => true, :place => village, :village => village, :sender => user
+      user.last_report_id.should eq(report.id)
+      user.last_report_error.should be_true
+    end
+  end
+
 end

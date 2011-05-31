@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_user!, :only => [:edit, :update, :create_new]
+  before_filter :authenticate_user!, :only => [:edit, :update, :create_new, :mark_as_investigated]
   before_filter :correct_user, :only => [:edit, :update]
 
   #GET /users
@@ -96,5 +96,14 @@ class UsersController < ApplicationController
       @user[:intended_place_code] =  params[:intended_place_code]
       render :user_edit, :layout => false
     end
+  end
+
+  def mark_as_investigated
+    user = User.find params[:id]
+    user.last_report = nil
+    user.last_report_error = false
+    user.save!
+
+    redirect_to reports_path(params.slice(:error, :place, :page)), :notice => 'Report marked as investigated'
   end
 end

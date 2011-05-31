@@ -9,14 +9,15 @@ class ReportsController < ApplicationController
       :page => params[:page].presence || 1,
       :per_page => 10
     }
-    if @place
-      @reports = @place.reports
+
+    if params[:error] == 'last'
+      @reports = User.order('updated_at desc').where(:last_report_error => true).includes(:last_report).paginate @pagination
     else
-      @reports = Report
+      @reports = @place.reports
+      @reports = @reports.order('id desc').includes(:sender, :village, :health_center)
+      @reports = @reports.where(:error => true) if params[:error] == 'true'
+      @reports = @reports.paginate @pagination
     end
-    @reports = @reports.order('id desc').includes(:sender, :village, :health_center)
-    @reports = @reports.where(:error => true) if params[:error] == 'true'
-    @reports = @reports.paginate @pagination
   end
 
   def edit
@@ -42,7 +43,14 @@ class ReportsController < ApplicationController
   private
 
   def set_tab
-    @tab = params[:error] == 'true' ? :error_messages : :all_messages
+    @tab = case params[:error]
+    when 'true'
+      :error_messages
+    when 'last'
+      :last_error_messages
+    else
+      :all_messages
+    end
   end
 
   def get_report

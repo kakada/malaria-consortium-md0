@@ -5,6 +5,12 @@ GIT
   specs:
     will_paginate (3.0.pre3)
 
+GIT
+  remote: git://github.com/nesquena/query_reviewer.git
+  revision: 9de60e75d18068d40cd3f8439a3de28eb4df5f3b
+  specs:
+    query_reviewer (0.1.2)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -131,6 +137,7 @@ DEPENDENCIES
   machinist
   mysql2
   nuntium_api (>= 0.10)
+  query_reviewer!
   rails (= 3.0.6)
   rspec-rails
   webrat

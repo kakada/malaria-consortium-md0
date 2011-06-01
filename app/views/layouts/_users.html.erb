@@ -15,13 +15,13 @@
         <% else %>
           <% user[:users].each do |subuser| %>
               <tr>
-                <td><%= subuser.user_name %></td>
+                <td title="Phone number: <%= subuser.phone_number %>"><%= subuser.user_name %></td>
                 <td><%= check_box_tag 'users[]', subuser.id %></td>
               </tr>
           <% end %>
         <% end %>
       <% end %>
-    
+
     <tr>
       <td colspan="2">
         <div id="custom_message_sent_status"></div>

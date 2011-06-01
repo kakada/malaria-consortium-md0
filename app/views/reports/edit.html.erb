@@ -1,5 +1,5 @@
 <% content_for :reports do %>
-  <h3>Edit incorrect report from <%= @report.sender.try(:user_name) %> <%= @report.sender_address %> with text <%= @report.text %></h3>
+  <h3>Edit incorrect message from <%= @report.sender.try(:user_name) %> <%= @report.sender_address %> with text <%= @report.text %></h3>
   <%= form_for @report.becomes(Report) do |f| %>
     <% [:error, :place, :page].each do |key| %>
       <input type="hidden" name="<%= key %>" value="<%= params[key] %>" />

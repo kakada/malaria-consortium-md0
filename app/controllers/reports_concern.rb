@@ -18,7 +18,7 @@ module ReportsConcern
         end
       end
       @place = Country.national unless @place
-      @places = @place.sub_places.order(:name).all
+      @navbar_places = @place.sub_places.order(:name).all
     end
 
     def build_breadcrumb

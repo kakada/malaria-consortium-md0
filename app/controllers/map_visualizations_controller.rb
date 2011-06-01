@@ -25,8 +25,13 @@ class MapVisualizationsController < ApplicationController
     @place_id = params[:place].to_i
   end
 
+  def pushpin
+    pushpin = Pushpin.new 100, 20
+    send_data pushpin.image(params).to_blob, :disposition => 'inline', :type => Pushpin.type
+  end
+
   def set_tab
-    @tab = params[:error] == 'true' ? :error_messages : :map
+    @tab = :map
   end
 
 end

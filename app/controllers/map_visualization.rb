@@ -1,6 +1,6 @@
 class MapVisualization
   def self.paginate_report attribute
-    
+
     id    = attribute[:id]
     from  = attribute[:from]
     to    = attribute[:to]
@@ -65,7 +65,7 @@ class MapVisualization
 
  private
   def self.get_paginate_conditions id, from, to, malaria_type, place_type
-      conditions = nil  
+      conditions = nil
       type_condition = self.get_marlaria_type_condition(malaria_type)
 
       if place_type == "Country"
@@ -122,6 +122,6 @@ class MapVisualization
     sql
   end
 
-  
+
 
 end

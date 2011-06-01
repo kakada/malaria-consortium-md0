@@ -18,8 +18,7 @@ class CustomMessage
 
   def self.get_users place_id, place_types
     place = place_id == 0 ? Country.first : Place.find(place_id)
-    place_id_column = "#{place.class.to_s.tableize.singularize}_id"
-    User.where place_id_column => place.id, :place_class => place_types
+    User.where place.foreign_key => place.id, :place_class => place_types
   end
 
   def send_sms_users users

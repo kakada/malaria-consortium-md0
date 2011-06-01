@@ -174,11 +174,9 @@ class User < ActiveRecord::Base
     self.place_class = self.place.class.to_s
     parent = self.place
     while parent
-      self.send "#{parent.class.to_s.tableize.singularize}_id=", parent.id
+      self.send "#{parent.foreign_key}=", parent.id
       parent = parent.parent
     end
   end
-
-
 
 end

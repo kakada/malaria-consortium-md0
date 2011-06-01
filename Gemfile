@@ -37,6 +37,7 @@ gem 'will_paginate', :git => 'git://github.com/mislav/will_paginate.git', :branc
 gem 'jquery-rails'
 gem 'nuntium_api', '>=0.10', :require => 'nuntium'
 gem 'devise'
+gem 'rmagick'
 
 group :development, :test do
   gem "autotest"

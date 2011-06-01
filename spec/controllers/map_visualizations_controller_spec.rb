@@ -3,16 +3,16 @@ require 'spec_helper'
 describe MapVisualizationsController do
   before(:each) do
     @attributes = {
-       :id => 1,
-       :from => "2008-01-10",
-       :to =>   "2009-01-01",
-       :type => "All" ,
-       :page => 0
+       'id' => 1,
+       'from' => "2008-01-10",
+       'to' =>   "2009-01-01",
+       'type' => "All" ,
+       'page' => 0
     }
-    
+
     MapVisualization.stub!(:paginate_report).with(@attributes).and_return(:reports)
 
-    
+
   end
   describe "GET index with pagination " do
     it "should get paginated reports " do
@@ -37,10 +37,10 @@ describe MapVisualizationsController do
   describe "Get map_report" do
     before(:each) do
      @attributes = {
-       :id => 1,
-       :from => "2008-01-10",
-       :to =>   "2009-01-01",
-       :type => "All" ,
+       'id' => 1,
+       'from' => "2008-01-10",
+       'to' =>   "2009-01-01",
+       'type' => "All" ,
      }
      MapVisualization.stub!(:report_case_count).with(@attributes).and_return(:report)
     end
@@ -49,7 +49,7 @@ describe MapVisualizationsController do
       MapVisualization.should_receive(:report_case_count).with(@attributes).and_return(:report)
       get "map_report", @attributes
     end
-    
+
     it "should render as json format" do
       get :map_report , @attributes
       response.content_type.should  == "application/json"

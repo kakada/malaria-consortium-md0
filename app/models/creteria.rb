@@ -5,13 +5,13 @@ class Creteria
   def initialize
     @data = @data || {}
   end
+
   def add_record! key, value
-    
     @data[key] = value
   end
 
   def add_records! records
-    @data = @data || {}
+    @data ||= {}
     @data.merge(records)
   end
 
@@ -22,13 +22,9 @@ class Creteria
     @max = -1000
     @min = 1000
 
-    @data.each do |key,value|
-      if(value > @max)
-          @max = value
-      end
-      if(value < @min)
-        @min = value
-      end
+    @data.each do |key, value|
+      @max = value if value > @max
+      @min = value if value < @min
     end
   end
 
@@ -43,7 +39,7 @@ class Creteria
       else
         size = @min_size + ((@max-(@max-(value-@min)))*(@max_size-@min_size)/(@max-@min))
       end
-      cloud[key] = {:value =>value, :size => size}
+      cloud[key] = {:value => value, :size => size}
     end
     cloud
   end

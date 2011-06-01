@@ -15,6 +15,7 @@ Local::Application.routes.draw do
     collection do
       get "map_report"
       get "map_view"
+      get "pushpin"
     end
   end
   resources :reports do

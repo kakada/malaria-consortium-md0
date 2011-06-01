@@ -27,6 +27,22 @@ class Report < ActiveRecord::Base
     end
   end
 
+  def self.at_place(place)
+    where place.foreign_key => place.id
+  end
+
+  def self.between_dates(from, to)
+    where 'created_at between ? and ?', from, to
+  end
+
+  def self.with_malaria_type(type)
+    case type
+    when 'Pf' then where :malaria_type => %w(F M)
+    when 'Pv' then where :malaria_type => 'V'
+    else where('1 = 1')
+    end
+  end
+
   def self.unknown_user(original_message = nil)
     "You are not registered in Maladira Day 0."
   end

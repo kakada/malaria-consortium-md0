@@ -12,20 +12,18 @@ describe MapVisualization do
       }
       @place = Country.create! :name => "National", :code => "National"
       @conditions = :conditions
-      
-      MapVisualization.stub!(:get_paginate_conditions).with(1,"2008-10-10","2010-10-10","Pf","Country").and_return(@conditions)
+
+      MapVisualization.stub!(:get_paginate_conditions).with(@attribute).and_return(@conditions)
 
       @paginate_options = {
         :page => 1,
         :per_page => 10 ,
-        :conditions => @conditions,
-        :order => "created_at desc"
       }
-      
+
       Place.stub!(:find).with(@attribute[:id]).and_return(@place)
       Report.stub!(:paginate).with(@paginate_options).and_return(:report)
     end
-    
+
     it "should find a place with id " do
       Place.should_receive(:find).with(@attribute[:id]).and_return(@place)
       MapVisualization.paginate_report @attribute
@@ -47,7 +45,7 @@ describe MapVisualization do
      end
      describe "report case count for whole country" do
         before(:each) do
-          
+
            @attribute = {
              :id     => 0 ,
              :from   => "2008-10-10" ,
@@ -84,7 +82,7 @@ describe MapVisualization do
 
         @country = Country.create! :name=>"National" , :code =>"National"
         @province = Province.create! :name=>"KompongCham", :code=>"KC1234", :parent_id => @country.id
-        
+
         @attribute = {
              :id     => 2 ,
              :from   => "2008-10-10" ,
@@ -102,7 +100,7 @@ describe MapVisualization do
         MapVisualization.stub!(:get_report_case_count_query).and_return(:sql)
         Place.stub!(:connection).and_return(@connection)
         @connection.stub!(:select_all).and_return(@place_results)
-           
+
       end
 
       it "should find and return a place" do
@@ -120,7 +118,7 @@ describe MapVisualization do
          @connection.should_receive(:select_all).and_return(@place_results)
 
         MapVisualization.report_case_count(@attribute)
-        
+
       end
 
 
@@ -134,5 +132,5 @@ describe MapVisualization do
     end
   end
 
-  
+
 end

@@ -17,6 +17,22 @@ class Place < ActiveRecord::Base
     end
   end
 
+  def self.foreign_key
+    self.to_s.foreign_key
+  end
+
+  def foreign_key
+    self.class.foreign_key
+  end
+
+  def self.sub_place_class
+    Types[1 + Types.index(to_s)] || Types.last
+  end
+
+  def sub_place_class
+    self.class.sub_place_class
+  end
+
   def unset_hierarchy
     self.hierarchy = nil unless changes.except(:hierarchy).empty?
   end
@@ -28,6 +44,7 @@ class Place < ActiveRecord::Base
     end
   end
 
+  # The hierarchy of place types, ordered by top to bottom
   Types = ["Country", "Province", "OD", "HealthCenter", "Village"]
 
   Types.each do |constant|
@@ -114,7 +131,7 @@ class Place < ActiveRecord::Base
   end
 
   def reports
-    Report.where("#{self.class.to_s.tableize.singularize}_id".to_sym => self.id)
+    Report.where self.foreign_key => self.id
   end
 
 end

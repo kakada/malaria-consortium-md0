@@ -26,7 +26,6 @@ describe Place do
         :code => "v10010",
         :parent_id => health_center.id,
       }
-
     end
 
     describe "Create new instance" do
@@ -116,5 +115,13 @@ describe Place do
         reports_count = @hc1.count_sent_reports_since 7.days.ago
         reports_count.should == 1
       end
+    end
+
+    it "returns the sub_place_class" do
+      Country.national.sub_place_class.should == "Province"
+    end
+
+    it "returns Village for Village.sub_place_class" do
+      Place::Types.last.constantize.sub_place_class.should == Place::Types.last
     end
 end

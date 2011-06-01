@@ -1,5 +1,6 @@
 class Place < ActiveRecord::Base
   has_many :users
+  has_many :reports
   has_many :sub_places, :class_name => "Place", :foreign_key => "parent_id"
   belongs_to :parent, :class_name => "Place"
   before_save :unset_hierarchy

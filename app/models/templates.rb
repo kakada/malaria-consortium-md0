@@ -39,8 +39,8 @@ class Templates
       end
 
       def validate_#{key}
-        #{key}.scan /\{([^\}]*)\}/ do |param|
-          self.errors.add(:#{key}, "Incorrect parameter: " + param[0]) unless ValidParameters[:#{key}].include? param[0]
+        (#{key} || '').scan /\{([^\}]*)\}/ do |param|
+          self.errors.add(:#{key}, "Incorrect parameter: {" + param[0] + "}") unless ValidParameters[:#{key}].include? param[0]
         end
       end
     )
@@ -49,7 +49,7 @@ class Templates
   def save
     return false unless valid?
 
-    @settings.select{|x| x.changes.present?}.each &:save!
+    @settings.select{|x| x.changes.present? && !x.value.nil?}.each &:save!
     true
   end
 

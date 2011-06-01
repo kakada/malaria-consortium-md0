@@ -18,7 +18,7 @@ class Templates
   end
 
   def setting_for_key(param)
-    setting = @settings.select{|x| x.param == param}.first ||
+    setting = @settings.select{|x| x.param == param}.first
     if !setting
       setting = Setting.new(:param => param)
       @settings << setting

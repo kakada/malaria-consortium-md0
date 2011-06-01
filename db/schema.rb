@@ -53,11 +53,11 @@ ActiveRecord::Schema.define(:version => 20110531030043) do
   add_index "reports", ["health_center_id", "error"], :name => "index_reports_on_health_center_id_and_error"
   add_index "reports", ["od_id", "error"], :name => "index_reports_on_od_id_and_error"
   add_index "reports", ["place_id", "error"], :name => "index_reports_on_place_id_and_error"
-  add_index "reports", ["place_id"], :name => "index_reports_on_place_id"
+  add_index "reports", ["place_id"], :name => "fk_reports_places"
   add_index "reports", ["province_id", "error"], :name => "index_reports_on_province_id_and_error"
   add_index "reports", ["sender_id"], :name => "fk_reports_users"
   add_index "reports", ["village_id", "error"], :name => "index_reports_on_village_id_and_error"
-  add_index "reports", ["village_id"], :name => "index_reports_on_village_id"
+  add_index "reports", ["village_id"], :name => "fk_reports_village"
 
   create_table "settings", :force => true do |t|
     t.string   "param"

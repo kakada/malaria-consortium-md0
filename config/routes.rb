@@ -17,7 +17,12 @@ Local::Application.routes.draw do
       get "map_view"
     end
   end
-  resources :reports
+  resources :reports do
+    collection do
+      get "report_form"
+      get "reporting_places"
+    end
+  end
   resources :users do
     member do
       get 'mark_as_investigated'

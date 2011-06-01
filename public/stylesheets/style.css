@@ -615,3 +615,6 @@ tr.edit {
 .autocomplete .selected { background:#F0F0F0; }
 .autocomplete div { padding:2px 5px; white-space:nowrap; }
 .autocomplete strong { font-weight:normal; color:#3399FF; }
+div.input{
+    padding-bottom: 10px;
+}

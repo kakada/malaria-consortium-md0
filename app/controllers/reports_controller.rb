@@ -1,3 +1,4 @@
+# encoding: utf-8
 class ReportsController < ApplicationController
   include ReportsConcern
 
@@ -37,6 +38,62 @@ class ReportsController < ApplicationController
       redirect_to reports_path(params.slice(:error, :place, :page)), :notice => 'Report edited successfully'
     else
       edit and render :edit
+    end
+  end
+
+
+  def report_form
+    @tab = :reported_case
+    @places = []
+    @per_page = 25
+    @place = params[:place].present? ?  Place.find(params[:place]) : Country.first
+
+    place_no_report = false
+    
+    if(params[:from].present?)
+
+      
+      page = params[:page]
+      from = params[:from]
+      to = params[:to]
+      @type = params[:place_type]
+      
+      place_type_id = "#{@place.class.to_s.tableize.singularize}_id"
+
+
+  
+      if(@type == "Village")
+        query = Place.joins(" LEFT JOIN reports ON places.id = reports.village_id").
+                     select('places.name, places.id, places.code, places.type, places.name_kh, count(*) as total').
+                     where(["reports.#{place_type_id} = :place_type_id AND reports.created_at BETWEEN :from AND :to AND places.type = :type ",{
+                        :from => from, :to => to, :place_type_id => @place.id , :type =>"Village" }]).group("places.id")
+                  
+        if(@place.type == "Village")
+           query = query.where(["places.id = :id", {:id => @place.id}])
+        end
+
+        if(params[:ncase] == "0")
+          query.where("reports.place_id IS NULL ")
+        end
+
+        
+
+
+       elsif(@type == "HealthCenter")
+         query = Place.joins(" LEFT JOIN reports ON places.id = reports.health_center_id").
+                     select('places.name, places.id, places.code, places.type, places.name_kh, count(*) as total').
+                     where(["reports.#{place_type_id} = :place_type_id AND reports.created_at BETWEEN :from AND :to AND places.type = :type ",{
+                        :from => from, :to => to, :place_type_id => @place.id , :type =>"HealthCenter" }]).group("places.id")
+                  
+         if(params[:ncase] == "0")
+            query.where("reports.place_id IS NULL ")
+         end
+
+
+       end
+
+       @places = query.paginate :page => page,:per_page => @per_page , :order => " total desc, places.name "
+      
     end
   end
 

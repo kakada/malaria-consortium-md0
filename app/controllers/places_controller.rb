@@ -35,7 +35,7 @@ class PlacesController < ApplicationController
       place.lat = (rand(999999)/1000000.0) + 11 + rand(3)
       place.lng = (rand(999999)/1000000.0) + 102 + rand(5)
       place.save
-      puts  "place: #{place.name}- lat: #{place.lat} - lng: #{place.lng} "
+      puts  "place: #{place.name}- lat: #{place.lat} - lng: #{place.lng} - type: #{place.type}"
     end
     render :text => "Done"
   end
@@ -45,8 +45,8 @@ class PlacesController < ApplicationController
     sex = ['Male','Female']
 
     3000.times do |i|
-      offset = rand(Place.count(:conditions=>["type = ? " ,"Village" ]))
-      place = Place.first(:offset => offset,:conditions=>["type = ? " ,"Village" ] )
+      offset = rand(Place.count(:conditions=>"type in ( 'Village' OR 'HealthCenter' ) " ))
+      place = Place.first(:offset => offset,:conditions=> "type in ( 'Village' OR 'HealthCenter' ) " )
 
       offset = rand(User.count)
       user = User.first(:offset => offset)
@@ -57,12 +57,12 @@ class PlacesController < ApplicationController
         :age => 10 + rand(60),
         :place_id => place.id,
         :mobile => "09712"+ rand(9000).to_s,
-        :village_id => place.id,
+        :village_id => (place.type == "HealthCenter")? place.villages.first.id: place.id,
         :sender_id => user.id,
         :created_at => rand(100).days.ago
       }
       Report.create!(attribute)
-      puts "Created: report for #{user.user_name}"
+      puts "Created: report for #{user.user_name} with #{place.type}"
 
     end
     render :text=>"Done"

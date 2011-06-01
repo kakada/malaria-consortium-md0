@@ -1,0 +1,9 @@
+
+<%= render "report_form"   %>
+<% if(@places.size > 0) %>
+    <% content_for :reports do %>
+     <%= render "reporting_places" %>
+    <% end %>
+<% end %>
+
+

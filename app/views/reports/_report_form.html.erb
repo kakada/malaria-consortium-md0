@@ -1,0 +1,52 @@
+<% content_for :head do %>
+   <%= javascript_include_tag "jquery-ui-1.8.13.custom.min"  %>
+   <%= stylesheet_link_tag "jquery-ui-1.8.13.custom"  %>
+
+   <script type="text/javascript" >
+    $(function(){
+        $(".calendar").datepicker({
+           dateFormat : "yy-mm-dd",
+           changeYear : true,
+           changeMonth: true
+        });
+    });
+
+  </script>
+<% end %>
+
+<% content_for :reports do %>
+ <div>
+  <%= form_tag report_form_reports_path, {:method=>"get"} do  %>
+      <%= hidden_field_tag :place, params[:place] %>
+      <div class="input">
+        <%= label_tag :from %>
+        <%= text_field_tag :from ,params[:from],:class =>"calendar round"  %>
+
+        <%= label_tag :to   %>
+        <%= text_field_tag :to ,params[:to], :class=>"calendar round " %>
+      </div>
+
+      <div class="input" >
+        <%= label_tag "place_type_Village", "Village" %>
+        <%= radio_button_tag :place_type , "Village", true %>
+        
+        <%= label_tag "place_type_HealthCenter", "Health center" %>
+        <%= radio_button_tag :place_type, "HealthCenter",  params[:place_type] == "HealthCenter" %>
+
+        
+      </div>
+
+      <div class="input" >
+        <%= label_tag "ncase_1", "Reported" %>
+        <%= radio_button_tag :ncase, "1", true %>
+        
+        <%= label_tag "ncase_0", "Not reported" %>
+        <%= radio_button_tag :ncase, "0", params['ncase'] == "0" %>
+
+        
+
+        <%= submit_tag("Show report")  %>
+      </div>
+  <% end %>
+ </div>
+<% end %>

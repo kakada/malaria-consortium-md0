@@ -1,0 +1,25 @@
+  <div style="width: 600px;" >
+    <%= will_paginate @places %>
+    <table class="round full table-grid" style ="border: 1px solid #ccc;" >
+      <caption><%= "#{@type} reports in #{@place.name}- #{@place.code}"   %></caption>
+      <thead>
+        <th> No </th>
+        <th> Name </th>
+        <th> Name-KH </th>
+        <th> Code </th>
+        <th> Total </th>
+        <th> Id </th>
+      </thead>
+    <% page = params[:page].to_i == 0 ? 1 : params[:page].to_i  %>
+    <% @places.each_with_index do |place,index|  %>
+      <tr class="<%= (index % 2) == 0 ? "pair":"impair" %>" >
+        <td style="color:gray;" > <%= (page-1) * @per_page + index + 1  %> </td>
+        <td> <%= place.name  %>   </td>
+        <td> <%= place.name_kh  %>   </td>
+        <td> <%= place.code  %>   </td>
+        <td> <%= place.total  %>  </td>
+        <td> <%= place.id  %> </td>
+      </tr>
+    <% end %>
+    </table>
+  </div>

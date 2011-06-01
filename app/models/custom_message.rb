@@ -26,7 +26,6 @@ class CustomMessage
     messages = users.map do |user|
       { :from => "sms://md0", :body => @sms, :to => user.phone_number.with_sms_protocol }
     end
-    p messages
     @nuntium.send_ao messages
   end
 

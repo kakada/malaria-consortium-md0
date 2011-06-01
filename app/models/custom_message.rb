@@ -23,20 +23,11 @@ class CustomMessage
   end
 
   def send_sms_users users
-    
-    users.each do |user|
-      send_to user.phone_number
+    messages = users.map do |user|
+      { :from => "sms://md0", :body => @sms, :to => user.phone_number.with_sms_protocol }
     end
-  end
-
-  def send_to phone
-    message = {
-                :from => "sms://md0",
-                :subject => "",
-                :body => @sms,
-                :to => phone.with_sms_protocol
-     }
-     @nuntium.send_ao message
+    p messages
+    @nuntium.send_ao messages
   end
 
 end

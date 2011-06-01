@@ -23,12 +23,10 @@ module ReportsConcern
 
     def build_breadcrumb
       @breadcrumb = []
-      if @place
-        @breadcrumb.insert 0, :label => @place.name
-        parent = @place
-        while parent = parent.parent
-          @breadcrumb.insert 0, :label => parent.name, :place => parent
-        end
+      @breadcrumb.insert 0, :label => @place.name
+      parent = @place
+      while parent = parent.parent
+        @breadcrumb.insert 0, :label => parent.name, :place => parent
       end
     end
 

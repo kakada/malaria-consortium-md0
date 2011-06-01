@@ -3,7 +3,7 @@
   <% @breadcrumb.each_with_index do |crumb, i| %>
     <%= ' > ' if i > 0 %>
     <% if crumb[:place] %>
-      <% if crumb[:place] == 0 %>
+      <% if crumb[:place] == 0 || crumb[:place].try(:country?) %>
         <%= link_to crumb[:label], current_url_for(:place => nil) %>
       <% else %>
         <%= link_to crumb[:label], current_url_for(:place => crumb[:place].id) %>

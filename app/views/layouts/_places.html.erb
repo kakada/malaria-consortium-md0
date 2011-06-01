@@ -9,6 +9,6 @@
 </div>
 <div id="places">
   <% @places.each do |place| %>
-    <%= link_to place.name, current_url_for(:place => place.id) %><br/>
+    <%= link_to "#{place.code} #{place.name}", current_url_for(:place => place.id) %><br/>
   <% end %>
 </div>

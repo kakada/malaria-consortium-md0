@@ -1,0 +1,27 @@
+<div id="fancy-div-detail" >
+ <%= will_paginate @reports %>
+  <table class="table-grid round" width="600" >
+    <thead>
+      <tr>
+        <th width="50" >Type</th>
+        <th width="10" >Sex</th>
+        <th width="10" >Age</th>
+        <th width="10" >Mobile</th>
+        <th width="350" >Place name </th>
+        <th width="200" >Sent</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @reports.each_with_index do |report, index| %>
+          <tr class="<%= index % 2 == 0 ? "pair" : "impair"  %> ">
+            <td><%= "#{report.malaria_type} -  #{get_malaria_type(report.malaria_type)}" %></td>
+            <td><%=  report.sex %></td>
+            <td><%=  report.age %></td>
+            <td><%=  report.mobile %></td>
+            <td><%=  report.place.name %></td>
+            <td><%=  report.created_at %></td>
+          </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

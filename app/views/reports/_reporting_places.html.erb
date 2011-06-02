@@ -1,4 +1,39 @@
-  <div style="width: 600px;" >
+<% content_for :head do %>
+  <%= javascript_include_tag 'jquery.fancybox-1.3.4' %>
+  <%= stylesheet_link_tag "jquery.fancybox-1.3.4" %>
+  <script type="text/javascript" >
+    $(function(){
+      createFancyBox();
+    });
+
+    function createFancyBox(){
+      $("a.report_detail").fancybox({
+		'transitionIn'	:	'elastic',
+		'transitionOut'	:	'elastic',
+		'speedIn'	:	600,
+		'speedOut'	:	200,
+		'overlayShow'	:	false,
+                onComplete: function(){
+                  createFancyBoxPag();
+                }
+	});
+    }
+
+    function createFancyBoxPag(){
+        $("#fancy-div-detail > div.pagination > a ").fancybox({
+                            'transitionIn'	:	'elastic',
+                            'transitionOut'	:	'elastic',
+                            'speedIn'		:	600,
+                            'speedOut'		:	200,
+                            'overlayShow'	:	false
+        });
+    }
+    
+    
+  </script>
+<%  end %>
+<% content_for :reports do %>
+ <div style="width: 600px;" >
     <%= will_paginate @reports %>
     <div >
       <div style="float:left;" class="title" ><%= "#{@type} reports in #{@place.name}- #{@place.code}"   %> </div>
@@ -13,8 +48,12 @@
         <th width="350" > Name </th>
         <th width="50" > Code </th>
         <th width="50" > Total </th>
+        <th width="50" > Type </th>
       </thead>
-    <% page = params[:page].to_i == 0 ? 1 : params[:page].to_i  %>
+    <% 
+      page = params[:page].to_i == 0 ? 1 : params[:page].to_i
+
+    %>
     <% @reports.each_with_index do |report, index|  %>
       <%
         if params[:ncase] == '0'
@@ -22,13 +61,23 @@
         else
           place = params[:place_type] == 'Village' ? report.village : report.health_center
         end
+        attr ={ :place_id => place.id, :from =>params[:from], :to => params[:to] }
+
       %>
       <tr class="<%= (index % 2) == 0 ? "pair":"impair" %>" >
         <td style="color:gray;" > <%=   (page-1) * 25 + index + 1  %> </td>
-        <td> <%= place.name  %>   </td>
+        <td> 
+          <% if params[:ncase] == "0" %>
+            <%= place.name %>
+          <% else %>
+            <%= link_to  place.name, report_detail_reports_url(attr), :class => "report_detail"  %>
+          <% end %>
+        </td>
         <td> <%= place.code  %>   </td>
         <td> <%= params[:ncase] == '0' ? 0 : report.total %>  </td>
+        <td> <%= place.type%> </td>
       </tr>
     <% end %>
     </table>
   </div>
+<% end %>

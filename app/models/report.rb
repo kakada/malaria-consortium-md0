@@ -109,7 +109,7 @@ class Report < ActiveRecord::Base
 
   def self.report_cases place, options = {}
     if options[:ncase] == '0'
-      reports = Report.at_place(place).between_dates(options[:from], options[:to])
+      reports = Report.at_place(place).between_dates(options[:from], options[:to]).where("#{options[:place_type].foreign_key} IS NOT NULL")
       reports = reports.select "DISTINCT(#{options[:place_type].foreign_key})"
       ids = reports.map &:"#{options[:place_type].foreign_key}"
 

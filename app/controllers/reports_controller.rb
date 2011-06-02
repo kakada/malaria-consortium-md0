@@ -45,7 +45,20 @@ class ReportsController < ApplicationController
     @tab = :reported_case
     @places = []
     @place = params[:place].present? ?  Place.find(params[:place]) : Country.first
+    @reports = []
     @reports = Report.report_cases @place, params if params[:from].present?
+  end
+
+  def report_detail
+    
+    place = Place.find(params[:place_id])
+
+    @reports = Report.where(" #{place.foreign_key} = ? AND created_at BETWEEN ? AND ? AND error IS NULL ", params[:place_id], params[:from], params[:to] )
+    @reports = @reports.paginate :page => params[:page], :per_page => 20
+    
+
+
+    render :layout =>false
   end
 
   private

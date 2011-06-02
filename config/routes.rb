@@ -21,7 +21,7 @@ Local::Application.routes.draw do
   resources :reports do
     collection do
       get "report_form"
-      get "reporting_places"
+      get "report_detail"
     end
   end
   resources :users do

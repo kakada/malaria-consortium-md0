@@ -618,3 +618,7 @@ tr.edit {
 div.input{
     padding-bottom: 10px;
 }
+.title{
+    font-size: 14px;
+    color: gray;
+}

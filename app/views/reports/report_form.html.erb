@@ -1,9 +1,10 @@
-
-<%= render "report_form"   %>
-<% if(@places.size > 0) %>
-    <% content_for :reports do %>
-     <%= render "reporting_places" %>
-    <% end %>
-<% end %>
+<div id="div_content">
+  <%= render "report_form"   %>
+      <% content_for :reports do %>
+        <% if(@places.size > 0) %>
+          <%= render "reporting_places" %>
+        <% end %>
+  <% end %>
+</div>
 
 

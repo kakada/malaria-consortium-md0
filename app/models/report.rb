@@ -107,6 +107,44 @@ class Report < ActiveRecord::Base
     alerts
   end
 
+  ### report
+  def self.report_cases from, to, type,ncase, place, page
+    place_type_id = "#{place.class.to_s.tableize.singularize}_id"
+    if(type == "Village")
+      report_for = " report.village_id " # if village
+    elsif(type == "HealthCenter")
+      report_for = " report.health_center_id "
+    end
+
+    if( ncase == "0" )
+        having_ncase = " = 0 "
+    else
+        having_ncase = " > 0 "
+    end
+
+    reports_query = Report.where(["reports.#{place_type_id} = :place_type_id AND reports.created_at BETWEEN :from AND :to ",{
+                      :place_type_id => place.id,
+                      :from => from,
+                      :to => to} ]).to_sql
+
+    query = Place.select("report.place_id,places.name, places.id, places.code, places.type, places.name_kh, count(report.id) as total ")
+                 .joins("LEFT JOIN (#{reports_query}) AS report ON places.id = #{report_for} ")
+                 .where(["places.type = :type ", {:type => type}])
+                 .group("places.id  ").having(" count(report.id) #{having_ncase} ")
+
+    if(place.type == "Village")
+       query = query.where(["places.id = :id", {:id => place.id}])
+    end
+    @places = query.paginate :page => page,:per_page => 25 , :order => " total desc, places.name "
+  end
+
+
+
+
+
+
+
+
   private
 
   def complete_fields

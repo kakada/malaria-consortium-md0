@@ -1,7 +1,6 @@
 <% content_for :head do %>
    <%= javascript_include_tag "jquery-ui-1.8.13.custom.min"  %>
    <%= stylesheet_link_tag "jquery-ui-1.8.13.custom"  %>
-
    <script type="text/javascript" >
     $(function(){
         $(".calendar").datepicker({
@@ -9,14 +8,41 @@
            changeYear : true,
            changeMonth: true
         });
+
+        $("#report_form").submit(function(){
+               loading($(document.body));
+        });
+        $("div.pagination > a").click(function(){
+           loading($(document.body));
+        })
     });
 
+    function loading(container){
+       var map = $(container);
+       var loading = $("#ajax_loading")
+       var pos =  map.offset();
+
+       var loading_width = loading.width();
+       var loading_height= loading.height();
+
+       var width = map.width();
+       var height = map.height();
+
+       var top = pos.top + (height/2) -(loading_height/2) + "px" ;
+       var left = pos.left + (width/2) -(loading_width/2) + "px" ;
+
+       $("#ajax_loading").css("left",left);
+       $("#ajax_loading").css("top",top);
+       $("#ajax_loading").show();
+       return $("#ajax_loading");
+     }
   </script>
 <% end %>
 
 <% content_for :reports do %>
- <div>
-  <%= form_tag report_form_reports_path, {:method=>"get"} do  %>
+
+<div class="round" style="border: 1px solid #ccc;padding:10px;margin-bottom: 10px;" >
+  <%= form_tag report_form_reports_path, {:method=>"get", :id =>"report_form"} do  %>
       <%= hidden_field_tag :place, params[:place] %>
       <div class="input">
         <%= label_tag :from %>
@@ -32,8 +58,6 @@
         
         <%= label_tag "place_type_HealthCenter", "Health center" %>
         <%= radio_button_tag :place_type, "HealthCenter",  params[:place_type] == "HealthCenter" %>
-
-        
       </div>
 
       <div class="input" >
@@ -42,11 +66,9 @@
         
         <%= label_tag "ncase_0", "Not reported" %>
         <%= radio_button_tag :ncase, "0", params['ncase'] == "0" %>
-
-        
-
-        <%= submit_tag("Show report")  %>
+        <%= submit_tag "Show report" , :name => nil  %>
       </div>
   <% end %>
  </div>
+  <div id="ajax_loading" class="loading round" >Waiting for server response</div>
 <% end %>

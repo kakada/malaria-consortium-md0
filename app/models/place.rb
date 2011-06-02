@@ -49,14 +49,7 @@ class Place < ActiveRecord::Base
 
   Types.each do |constant|
     # Define classes for each place
-    class_eval %Q(
-      class ::#{constant} < Place
-        default_scope where(:type => "#{constant}") rescue nil
-      end
-    )
-
-    # Define has_many :provinces, etc., that will restrict the sub_places to the correct places types
-    #has_many constant.tableize.to_sym, :class_name => constant, :foreign_key => "parent_id"
+    class_eval "class ::#{constant} < Place; end"
 
     # Define generic methods to get the village, country, etc., of a place.
     # This base class just returns self if the type is the name of the method, otherwise nil.

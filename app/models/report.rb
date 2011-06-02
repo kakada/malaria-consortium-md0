@@ -32,7 +32,7 @@ class Report < ActiveRecord::Base
   end
 
   def self.between_dates(from, to)
-    where 'created_at between ? and ?', from, to
+    where 'reports.created_at between ? and ?', from, to
   end
 
   def self.with_malaria_type(type)
@@ -107,43 +107,22 @@ class Report < ActiveRecord::Base
     alerts
   end
 
-  ### report
-  def self.report_cases from, to, type,ncase, place, page
-    place_type_id = "#{place.class.to_s.tableize.singularize}_id"
-    if(type == "Village")
-      report_for = " report.village_id " # if village
-    elsif(type == "HealthCenter")
-      report_for = " report.health_center_id "
-    end
+  def self.report_cases place, options = {}
+    if options[:ncase] == '0'
+      reports = Report.at_place(place).between_dates(options[:from], options[:to])
+      reports = reports.select "DISTINCT(#{options[:place_type].foreign_key})"
+      ids = reports.map &:"#{options[:place_type].foreign_key}"
 
-    if( ncase == "0" )
-        having_ncase = " = 0 "
+      places = Place.where("id NOT IN (?)", ids).where(:type => options[:place_type])
+      places = places.paginate :page => options[:page], :per_page => 25, :order => "name"
     else
-        having_ncase = " > 0 "
+      reports = Report.at_place(place).between_dates(options[:from], options[:to])
+      reports = reports.includes options[:place_type].tableize.singularize.to_sym
+      reports = reports.select 'reports.*, count(*) as total'
+      reports = reports.group "reports.#{options[:place_type].foreign_key}"
+      reports = reports.paginate :page => options[:page], :per_page => 25, :order => "total desc"
     end
-
-    reports_query = Report.where(["reports.#{place_type_id} = :place_type_id AND reports.created_at BETWEEN :from AND :to ",{
-                      :place_type_id => place.id,
-                      :from => from,
-                      :to => to} ]).to_sql
-
-    query = Place.select("report.place_id,places.name, places.id, places.code, places.type, places.name_kh, count(report.id) as total ")
-                 .joins("LEFT JOIN (#{reports_query}) AS report ON places.id = #{report_for} ")
-                 .where(["places.type = :type ", {:type => type}])
-                 .group("places.id  ").having(" count(report.id) #{having_ncase} ")
-
-    if(place.type == "Village")
-       query = query.where(["places.id = :id", {:id => place.id}])
-    end
-    @places = query.paginate :page => page,:per_page => 25 , :order => " total desc, places.name "
   end
-
-
-
-
-
-
-
 
   private
 

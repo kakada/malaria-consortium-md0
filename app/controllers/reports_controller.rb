@@ -45,10 +45,7 @@ class ReportsController < ApplicationController
     @tab = :reported_case
     @places = []
     @place = params[:place].present? ?  Place.find(params[:place]) : Country.first
-
-    if(params[:from].present?)
-      @places = Report.report_cases params[:from], params[:to], params[:place_type], params["ncase"], @place, params[:page]
-    end
+    @reports = Report.report_cases @place, params if params[:from].present?
   end
 
   private

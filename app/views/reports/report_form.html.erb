@@ -1,7 +1,7 @@
 <div id="div_content">
   <%= render "report_form"   %>
       <% content_for :reports do %>
-        <% if(@places.size > 0) %>
+        <% if(@reports.size > 0) %>
           <%= render "reporting_places" %>
         <% end %>
   <% end %>

@@ -3,12 +3,13 @@
   <%= render 'layouts/breadcrumb' %>
   <%= render 'layouts/tabs' %>
 </div>
-<div id="second_row">
-  <div id="navbar">
-    <%= render 'layouts/places' %>
-    <%= render 'layouts/users' %>
-  </div>
-  <div id="reports">
-    <%= content_for :reports %>
-  </div>
-</div>
+<table id="second_row">
+  <tr valign="top">
+    <td id="navbar">
+      <%= render 'layouts/places' %>
+      <%= render 'layouts/users' %>
+    </td>
+    <td id="reports">
+      <%= content_for :reports %>
+    </td>
+</table>

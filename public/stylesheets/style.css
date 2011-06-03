@@ -72,13 +72,12 @@ h1, h2, h3 { padding-top: 0px; margin-top: 0px; }
   border-bottom: 1px solid white;
   background: white;
 }
-#second_row { width: 100%; margin: 0px; padding: 0px; border-spacing: 0px;}
-#second_row td { border-spacing: 0px; }
-#navbar { border-left: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black; min-width:200px;}
+#second_row { float: left; width: 100%; }
+#navbar { border-left: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black; float: left; }
 #places, #users { padding: 4px; }
 #users_title { border-top: 1px solid black; border-bottom: 1px solid black; font-weight: bold; padding: 4px; background-color: #e6e6e6; }
 #places_title { border-bottom: 1px solid black; font-weight: bold; padding: 4px; background-color: #e6e6e6; }
-#reports { width: 100%; padding: 10px; }
+#reports { float: left; padding: 10px; }
 
 table.table {
   padding: 0px;

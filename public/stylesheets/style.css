@@ -74,11 +74,11 @@ h1, h2, h3 { padding-top: 0px; margin-top: 0px; }
 }
 #second_row { width: 100%; margin: 0px; padding: 0px; border-spacing: 0px;}
 #second_row td { border-spacing: 0px; }
-#navbar { border-left: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black; }
+#navbar { border-left: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black; min-width:200px;}
 #places, #users { padding: 4px; }
 #users_title { border-top: 1px solid black; border-bottom: 1px solid black; font-weight: bold; padding: 4px; background-color: #e6e6e6; }
 #places_title { border-bottom: 1px solid black; font-weight: bold; padding: 4px; background-color: #e6e6e6; }
-#reports { padding: 10px; }
+#reports { width: 100%; padding: 10px; }
 
 table.table {
   padding: 0px;

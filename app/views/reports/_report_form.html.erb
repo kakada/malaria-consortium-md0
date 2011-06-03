@@ -55,7 +55,7 @@
       <div class="input" >
         <%= label_tag "place_type_Village", "Village" %>
         <%= radio_button_tag :place_type , "Village", true %>
-        
+
         <%= label_tag "place_type_HealthCenter", "Health center" %>
         <%= radio_button_tag :place_type, "HealthCenter",  params[:place_type] == "HealthCenter" %>
       </div>
@@ -63,7 +63,7 @@
       <div class="input" >
         <%= label_tag "ncase_1", "Reported" %>
         <%= radio_button_tag :ncase, "1", true %>
-        
+
         <%= label_tag "ncase_0", "Not reported" %>
         <%= radio_button_tag :ncase, "0", params['ncase'] == "0" %>
         <%= submit_tag "Show report" , :name => nil  %>

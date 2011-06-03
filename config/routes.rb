@@ -22,6 +22,7 @@ Local::Application.routes.draw do
     collection do
       get "report_form"
       get "report_detail"
+      get "report_csv"
     end
   end
   resources :users do

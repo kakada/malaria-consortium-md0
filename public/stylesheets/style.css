@@ -200,7 +200,7 @@ a.signup_button {
     padding: 7px;
     padding-bottom: 12px;
     margin-bottom: 20px;
-    background-color: #f0f0f0;
+    background-color: #f0f0f0;]
 }
 #errorExplanation h2 {
     text-align: left;
@@ -314,6 +314,7 @@ input[type=text].error,  input[type=password].error{
 .pagination{
     margin: 0 auto;
     margin-bottom: 10px;
+    padding: 7px 0px;
 }
 .pagination a,.pagination span {
     padding:2px 6px;
@@ -621,4 +622,7 @@ div.input{
 .title{
     font-size: 14px;
     color: gray;
+}
+#fancy-div-detail div.pagination a{
+    padding: 5px 10px;
 }

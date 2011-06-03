@@ -50,15 +50,15 @@ class ReportsController < ApplicationController
   end
 
   def report_detail
-    
     place = Place.find(params[:place_id])
-
-    @reports = Report.where(" #{place.foreign_key} = ? AND created_at BETWEEN ? AND ? AND error IS NULL ", params[:place_id], params[:from], params[:to] )
-    @reports = @reports.paginate :page => params[:page], :per_page => 20
-    
-
-
+    @reports = Report.where(" #{place.foreign_key} = ? AND created_at BETWEEN ? AND ? AND error= 0 ", params[:place_id], params[:from], params[:to] )
+    @reports = @reports.paginate :page => params[:page], :per_page => 10
     render :layout =>false
+  end
+
+  def report_csv
+     filename =   "#{Rails.root.to_s}/public/stylesheets/custom.css"
+     send_file filename 
   end
 
   private

@@ -7,28 +7,8 @@
     });
 
     function createFancyBox(){
-      $("a.report_detail").fancybox({
-		'transitionIn'	:	'elastic',
-		'transitionOut'	:	'elastic',
-		'speedIn'	:	600,
-		'speedOut'	:	200,
-		'overlayShow'	:	false,
-                onComplete: function(){
-                  createFancyBoxPag();
-                }
-	});
+      $("a.report_detail").fancybox();
     }
-
-    function createFancyBoxPag(){
-        $("#fancy-div-detail > div.pagination > a ").fancybox({
-                            'transitionIn'	:	'elastic',
-                            'transitionOut'	:	'elastic',
-                            'speedIn'		:	600,
-                            'speedOut'		:	200,
-                            'overlayShow'	:	false
-        });
-    }
-
 
   </script>
 <%  end %>
@@ -38,7 +18,7 @@
     <div >
       <div style="float:left;" class="title" ><%= "#{@type} reports in #{@place.name}- #{@place.code}"   %> </div>
       <div style="float:right;">
-       <%= link_to "<span>Export this result...</span>".html_safe , reports_url() , :class =>" round slide_label" %>
+       <%= link_to "<span>Export this result...</span>".html_safe , report_csv_reports_url() , :class =>" round slide_label" %>
       </div>
     </div>
     <div class="clear"> </div>

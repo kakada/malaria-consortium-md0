@@ -28,8 +28,8 @@
                             'overlayShow'	:	false
         });
     }
-    
-    
+
+
   </script>
 <%  end %>
 <% content_for :reports do %>
@@ -50,7 +50,7 @@
         <th width="50" > Total </th>
         <th width="50" > Type </th>
       </thead>
-    <% 
+    <%
       page = params[:page].to_i == 0 ? 1 : params[:page].to_i
 
     %>
@@ -61,12 +61,11 @@
         else
           place = params[:place_type] == 'Village' ? report.village : report.health_center
         end
-        attr ={ :place_id => place.id, :from =>params[:from], :to => params[:to] }
-
+        attr = {:place_id => place.id, :from => params[:from], :to => params[:to]}
       %>
       <tr class="<%= (index % 2) == 0 ? "pair":"impair" %>" >
         <td style="color:gray;" > <%=   (page-1) * 25 + index + 1  %> </td>
-        <td> 
+        <td>
           <% if params[:ncase] == "0" %>
             <%= place.name %>
           <% else %>

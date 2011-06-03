@@ -108,15 +108,15 @@ class Report < ActiveRecord::Base
   end
 
   def self.report_cases place, options = {}
+    reports = Report.at_place(place).between_dates(options[:from], options[:to]).where("reports.#{options[:place_type].foreign_key} IS NOT NULL")
+    reports = reports.where(:error => false)
     if options[:ncase] == '0'
-      reports = Report.at_place(place).between_dates(options[:from], options[:to]).where("#{options[:place_type].foreign_key} IS NOT NULL")
       reports = reports.select "DISTINCT(#{options[:place_type].foreign_key})"
       ids = reports.map &:"#{options[:place_type].foreign_key}"
 
       places = Place.where("id NOT IN (?)", ids).where(:type => options[:place_type])
       places = places.paginate :page => options[:page], :per_page => 25, :order => "name"
     else
-      reports = Report.at_place(place).between_dates(options[:from], options[:to])
       reports = reports.includes options[:place_type].tableize.singularize.to_sym
       reports = reports.select 'reports.*, count(*) as total'
       reports = reports.group "reports.#{options[:place_type].foreign_key}"

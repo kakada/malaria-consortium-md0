@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110531030043) do
+ActiveRecord::Schema.define(:version => 20110603035329) do
 
   create_table "places", :force => true do |t|
     t.string   "name"
@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(:version => 20110531030043) do
     t.integer  "od_id",            :default => 0
     t.integer  "province_id",      :default => 0
     t.string   "text"
-    t.boolean  "error"
+    t.boolean  "error",            :default => false
     t.string   "error_message"
     t.string   "sender_address"
     t.integer  "country_id"
@@ -53,11 +53,11 @@ ActiveRecord::Schema.define(:version => 20110531030043) do
   add_index "reports", ["health_center_id", "error"], :name => "index_reports_on_health_center_id_and_error"
   add_index "reports", ["od_id", "error"], :name => "index_reports_on_od_id_and_error"
   add_index "reports", ["place_id", "error"], :name => "index_reports_on_place_id_and_error"
-  add_index "reports", ["place_id"], :name => "fk_reports_places"
+  add_index "reports", ["place_id"], :name => "index_reports_on_place_id"
   add_index "reports", ["province_id", "error"], :name => "index_reports_on_province_id_and_error"
   add_index "reports", ["sender_id"], :name => "fk_reports_users"
   add_index "reports", ["village_id", "error"], :name => "index_reports_on_village_id_and_error"
-  add_index "reports", ["village_id"], :name => "fk_reports_village"
+  add_index "reports", ["village_id"], :name => "index_reports_on_village_id"
 
   create_table "settings", :force => true do |t|
     t.string   "param"

@@ -41,7 +41,7 @@
 
 <% content_for :reports do %>
 
-<div class="round" style="border: 1px solid #ccc;padding:10px;margin-bottom: 10px;" >
+<div class="round report"  >
   <%= form_tag report_form_reports_path, {:method=>"get", :id =>"report_form"} do  %>
       <%= hidden_field_tag :place, params[:place] %>
       <div class="input">
@@ -77,7 +77,7 @@
         <%= radio_button_tag :ncase, "0", params['ncase'] == "0" %>
         <%= label_tag "ncase_0", "Not reported" %>
       </div>
-      <div style="text-align: right;"> <%= submit_tag "Show report" , :name => nil  %>  </div>
+      <span> <%= submit_tag "Show report" , :name => nil  %>  </span>
   <% end %>
  </div>
   <div id="ajax_loading" class="loading round" >Waiting for server response</div>

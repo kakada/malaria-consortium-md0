@@ -47,7 +47,7 @@ h1, h2, h3 { padding-top: 0px; margin-top: 0px; }
 }
 
 #header {
-  padding: 8px;
+  padding: 3px 10px 0px 3px;
 }
 
 #first_row { border-bottom: 1px solid black; padding-bottom: 6px;}
@@ -626,4 +626,7 @@ div.input{
 }
 #fancy-div-detail div.pagination a{
     padding: 5px 10px;
+}
+.report{
+    width: 630px;
 }

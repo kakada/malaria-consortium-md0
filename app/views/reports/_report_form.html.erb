@@ -45,29 +45,39 @@
   <%= form_tag report_form_reports_path, {:method=>"get", :id =>"report_form"} do  %>
       <%= hidden_field_tag :place, params[:place] %>
       <div class="input">
+        <%
+          to = Time.now
+          from = to.to_i - 7 * 24 * 3600
+          from  = Time.at(from)
+
+        %>
         <%= label_tag :from %>
-        <%= text_field_tag :from ,params[:from],:class =>"calendar round"  %>
+        <%= text_field_tag :from ,params[:from].present? ?params[:from]: from.strftime("%Y-%m-%d")  ,:class =>"calendar round"  %>
 
         <%= label_tag :to   %>
-        <%= text_field_tag :to ,params[:to], :class=>"calendar round " %>
+        <%= text_field_tag :to ,params[:to].present? ? params[:to] : to.strftime("%Y-%m-%d") , :class=>"calendar round " %>
       </div>
 
       <div class="input" >
-        <%= label_tag "place_type_Village", "Village" %>
+        
         <%= radio_button_tag :place_type , "Village", true %>
+        <%= label_tag "place_type_Village", "Village " %>
         
-        <%= label_tag "place_type_HealthCenter", "Health center" %>
+        
         <%= radio_button_tag :place_type, "HealthCenter",  params[:place_type] == "HealthCenter" %>
+        <%= label_tag "place_type_HealthCenter", "Health center" %>
       </div>
 
       <div class="input" >
-        <%= label_tag "ncase_1", "Reported" %>
-        <%= radio_button_tag :ncase, "1", true %>
         
-        <%= label_tag "ncase_0", "Not reported" %>
+        <%= radio_button_tag :ncase, "1", true %>
+        <%= label_tag "ncase_1", "Reported" %>
+        
+        
         <%= radio_button_tag :ncase, "0", params['ncase'] == "0" %>
-        <%= submit_tag "Show report" , :name => nil  %>
+        <%= label_tag "ncase_0", "Not reported" %>
       </div>
+      <div style="text-align: right;"> <%= submit_tag "Show report" , :name => nil  %>  </div>
   <% end %>
  </div>
   <div id="ajax_loading" class="loading round" >Waiting for server response</div>

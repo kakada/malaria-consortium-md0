@@ -1,13 +1,14 @@
 <%= will_paginate @reports %>
 <div style="width:600px;"  >
   <% if(@reports.size > 0) %>
-  <div style="text-align: right;margin: 10px 60px 10px 10px;" >
-    <span>
-      <%= link_to "Explore more ...", map_view_map_visualizations_path(:place =>params[:id]) %>
+  <div style="float:left;width:300px;"><%= @place.type  %></div>
+  <% if(@place.type != "Village") %>
+    <div style="float:right;text-align: right;margin-right: 40px; width:200px;" >
+        <%= link_to "Explore more ...", map_view_map_visualizations_path(:place =>params[:id]) %>
+    </div>
+  <% end %>
+  <div class="clear"></div>
 
-
-    </span>
-  </div>
   <table style="border:1px solid #ccc;width: 94%;" class="round"  >
     <tr>
       <th> Date </th>
@@ -15,6 +16,7 @@
       <th> Sex </th>
       <th> Age </th>
       <th> Reporter </th>
+      <th> Village</th>
       <th> Phone number </th>
       <th> Mobile</th>
     </tr>
@@ -26,6 +28,7 @@
         <td> <%= report.sex %>  </td>
         <td> <%= report.age %>  </td>
         <td> <%= report.sender.user_name %> </td>
+        <td> <%= " #{report.village.name} - #{report.village.code}"  %> </td>
         <td> <%= report.sender.phone_number %> </td>
         <td> <%= (report.mobile)?"Yes": "No" %> </td>
       </tr>

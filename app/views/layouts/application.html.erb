@@ -34,5 +34,8 @@
       <div id="version_separator"></div>
       <div id="version" class="clear">Version: development</div>
     </div>
+    <% if(Rails.env.development?) %>
+      <div class="clear"><%= debug params  %> </div>
+    <% end %>
   </body>
 </html>

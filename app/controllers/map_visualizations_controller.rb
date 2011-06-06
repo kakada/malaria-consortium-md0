@@ -4,6 +4,7 @@ class MapVisualizationsController < ApplicationController
   before_filter :set_tab
 
   def index
+    @place = Place.find params[:id]
     @reports = MapVisualization.paginate_report params.except(:action, :controller)
     render :layout => false
   end

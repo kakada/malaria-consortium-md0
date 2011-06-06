@@ -1,3 +1,5 @@
+# encoding: UTF-8
+require 'csv'
 class Report < ActiveRecord::Base
   validates_presence_of :malaria_type, :sex, :age, :sender_id, :place_id, :village_id, :unless => :error?
   validates_numericality_of :age, :greater_than_or_equal_to => 0, :unless => :error?
@@ -33,6 +35,10 @@ class Report < ActiveRecord::Base
 
   def self.between_dates(from, to)
     where 'reports.created_at between ? and ?', from, to
+  end
+
+  def self.no_error
+    where 'reports.error = 0 '
   end
 
   def self.with_malaria_type(type)
@@ -107,7 +113,8 @@ class Report < ActiveRecord::Base
     alerts
   end
 
-  def self.report_cases place, options = {}
+  def self.report_cases options 
+    place = options[:place].present? ?  Place.find(options[:place]) : Country.first
     reports = Report.at_place(place).between_dates(options[:from], options[:to]).where("reports.#{options[:place_type].foreign_key} IS NOT NULL")
     reports = reports.where(:error => false)
     if options[:ncase] == '0'
@@ -115,14 +122,56 @@ class Report < ActiveRecord::Base
       ids = reports.map &:"#{options[:place_type].foreign_key}"
 
       places = Place.where("id NOT IN (?)", ids).where(:type => options[:place_type])
-      places = places.paginate :page => options[:page], :per_page => 25, :order => "name"
+      #places = places.paginate :page => options[:page], :per_page => 25, :order => "name"
     else
       reports = reports.includes options[:place_type].tableize.singularize.to_sym
       reports = reports.select 'reports.*, count(*) as total'
       reports = reports.group "reports.#{options[:place_type].foreign_key}"
-      reports = reports.paginate :page => options[:page], :per_page => 25, :order => "total desc"
+      #reports = reports.paginate :page => options[:page], :per_page => 25, :order => "total desc"
     end
   end
+
+  def self.report_cases_all options
+    reports = Report.report_cases options
+    if(options[:ncase] == "0")
+      reports = reports.order " name desc "
+    else
+      reports = reports.order " total desc "
+    end
+
+  end
+
+  def self.write_csv options
+    reports = Report.report_cases_all options
+    file = "#{Rails.root}/tmp/report_csv.csv"
+
+    CSV.open(file,"wb") do |csv|
+      csv << ["name","code","total"]
+      reports.each do |report|
+        if options[:ncase] == '0'
+          place = report
+          csv << [place.name, place.code, 0]
+        else
+          place = options[:place_type] == 'Village' ? report.village : report.health_center
+          csv << [place.name, place.code, report.total]
+        end
+      end
+    end
+    file
+  end
+
+  def self.report_cases_paginate options
+    reports =  self.report_cases options
+    
+    if options[:ncase] == '0'
+      reports.paginate :page => options[:page], :per_page => 25, :order =>"name asc"
+    else
+      reports.paginate :page => options[:page], :per_page => 25, :order =>"total desc"
+    end
+  end
+
+
+
 
   private
 

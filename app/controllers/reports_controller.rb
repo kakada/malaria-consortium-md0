@@ -1,4 +1,3 @@
-# encoding: utf-8
 class ReportsController < ApplicationController
   include ReportsConcern
 
@@ -41,24 +40,27 @@ class ReportsController < ApplicationController
     end
   end
 
+  #GET report_form
   def report_form
     @tab = :reported_case
-    @places = []
-    @place = params[:place].present? ?  Place.find(params[:place]) : Country.first
     @reports = []
-    @reports = Report.report_cases @place, params if params[:from].present?
+    @reports = Report.report_cases_paginate params if params[:from].present?
   end
 
+  #GET report_detail
   def report_detail
     place = Place.find(params[:place_id])
     @reports = Report.where(" #{place.foreign_key} = ? AND created_at BETWEEN ? AND ? AND error= 0 ", params[:place_id], params[:from], params[:to] )
     @reports = @reports.paginate :page => params[:page], :per_page => 10
     render :layout =>false
   end
-
+  
+  # GET reports/report_csv
   def report_csv
-     filename =   "#{Rails.root.to_s}/public/stylesheets/custom.css"
-     send_file filename 
+    file = Report.write_csv(params)
+    file = File.open(file, "rb")
+    contents = file.read
+    send_data contents, :type => "text/csv" , :filename => "reported_places.csv"
   end
 
   private

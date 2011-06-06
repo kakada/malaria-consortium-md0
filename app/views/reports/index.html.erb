@@ -24,13 +24,13 @@
           <td><%= report.sender_address.try(:without_protocol) %></td>
           <td><%= report.text %></td>
           <% if report.error? %>
-            <td style="color:#600" colspan="3" align="center"><%= report.error_message %>
+            <td style="color:#600" colspan="3" align="center"><nobr><%= report.error_message %>
               <% if params[:error] == 'last' %>
                 <%= link_to 'mark as investigated', mark_as_investigated_user_path(report.sender, params.slice(:error, :place, :page)), :confirm => 'Are you sure?' %>
               <% else %>
                 <%= link_to 'click to edit', edit_report_path(report, params.slice(:error, :place, :page)) %>
               <% end %>
-            </td>
+            </nobr></td>
           <% else %>
             <td><%= report.malaria_type %></td>
             <td><%= report.age %></td>

@@ -6,7 +6,7 @@
     <h3 class="separator" > Provincial alert </h3>
     <ul  class="no-style"  >
       <li>
-       <%= radio_button("setting", :provincial_alert , 0, :checked => @provincial_alert== "0" ) %>
+       <%= radio_button("setting", :provincial_alert , 0, :checked => ['0', '', nil].include?(@provincial_alert) ) %>
         <label for="setting_provincial_alert_0" > Disable </label>
       </li>
       <li>
@@ -20,7 +20,7 @@
     <h3 class="separator" > National alert </h3>
     <ul  class="no-style"  >
       <li>
-       <%= radio_button("setting", :national_alert , 0, :checked => @national_alert=="0" ) %>
+       <%= radio_button("setting", :national_alert , 0, :checked => ['0', '', nil].include?(@national_alert) ) %>
        <label for="setting_national_alert_0" > Disable </label>
       </li>
       <li>
@@ -34,7 +34,7 @@
     <h3 class="separator" > Administrator alert </h3>
     <ul  class="no-style"  >
       <li>
-       <%= radio_button("setting", :admin_alert , 0, :checked => @admin_alert=="0" ) %>
+       <%= radio_button("setting", :admin_alert , 0, :checked => ['0', '', nil].include?(@admin_alert) ) %>
        <label for="setting_admin_alert_0" > Disable </label>
       </li>
       <li>

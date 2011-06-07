@@ -77,7 +77,7 @@ class Place < ActiveRecord::Base
   end
 
   def short_description
-    "#{name} (#{code})"
+    "#{code} #{name}"
   end
 
   def self.levels

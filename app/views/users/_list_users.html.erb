@@ -33,14 +33,11 @@
           <%=  submit_tag "Add", :id => "saveUser", :name => "saveUser" %>
         </td>
       </tr>
-      <% users.each_with_index do |user,index|
-        cls = "pair"
-        cls = "impair" if index % 2 != 0
-      %>
-      <tr class="<%=cls%>" id="tr_<%= user.id %>">
-        <%= render :partial => "user_row", :locals => {:user => user} %>
-      </tr>
-    <% end %>
+      <% users.each_with_index do |user,index| %>
+        <tr class="<%= index.parity %>" id="tr_<%= user.id %>">
+          <%= render :partial => "user_row", :locals => {:user => user} %>
+        </tr>
+      <% end %>
     </tbody>
   </table>
 <% end %>

@@ -42,7 +42,7 @@
         end
         attr = {:place_id => place.id, :from => params[:from], :to => params[:to]}
       %>
-      <tr class="<%= (index % 2) == 0 ? "pair":"impair" %>" >
+      <tr class="<%= index.parity %>" >
         <td style="color:gray;" > <%=   (page-1) * 25 + index + 1  %> </td>
         <td>
           <% if params[:ncase] == "0" %>

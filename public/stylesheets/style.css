@@ -306,10 +306,10 @@ input[type=text].error,  input[type=password].error{
     text-align: left;
 }
 
-.pair{
+.odd {
     background-color: #ffe;
 }
-.impair{
+.even {
     background-color: #eff;
 }
 .pagination{
@@ -472,6 +472,7 @@ tr.edit {
     background-color: #eef;
     min-height: 40px;
     padding: 10px;
+    font-weight: bold;
 }
 .slide_label{
     margin-top: 10px;

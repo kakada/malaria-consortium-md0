@@ -3,28 +3,30 @@
   <%= will_paginate @reports %>
 
   <% if @reports.any? %>
-    <table class="table">
-      <tr>
-        <th>Sender</th>
-        <th>Sender number</th>
-        <th>Text</th>
-        <th>Type</th>
-        <th>Age</th>
-        <th>Sex</th>
-        <th>Mobile?</th>
-        <th>Reported at</th>
-        <th>Health Center</th>
-        <th>Village</th>
-        <th>Date</th>
-      </tr>
+    <table class="round full table-grid">
+      <thead>
+        <tr>
+          <th>Sender</th>
+          <th>Sender number</th>
+          <th>Text</th>
+          <th>Type</th>
+          <th>Age</th>
+          <th>Sex</th>
+          <th>Mobile?</th>
+          <th>Reported at</th>
+          <th>Health Center</th>
+          <th>Village</th>
+          <th>Date</th>
+        </tr>
+      </thead>
       <% @reports.each_with_index do |report, i| %>
         <% report = report.last_report if report.is_a? User %>
-        <tr class="<%= i.odd? ? 'odd' : 'even' %>">
+        <tr class="<%= i.parity %>">
           <td><%= report.sender.try(:user_name) %></td>
           <td><%= report.sender_address.try(:without_protocol) %></td>
           <td><%= report.text %></td>
           <% if report.error? %>
-            <td style="color:#600" colspan="3" align="center"><nobr><%= report.error_message %>
+            <td style="color:#900" colspan="3" align="center"><nobr><%= report.error_message %>
               <% if params[:error] == 'last' %>
                 <%= link_to 'mark as investigated', mark_as_investigated_user_path(report.sender, params.slice(:error, :place, :page)), :confirm => 'Are you sure?' %>
               <% else %>
@@ -40,7 +42,7 @@
           <td><%= report.type == 'HealthCenterReport' ? 'health center' : 'village' unless report.error? %></td>
           <td><%= report.health_center.try(:short_description) %></td>
           <td><%= report.village.try(:short_description) %></td>
-          <td><%= time_ago_in_words report.created_at %> ago</td>
+          <td title="<%= report.created_at %>"><%= time_ago_in_words report.created_at %> ago</td>
         </tr>
       <% end %>
     </table>

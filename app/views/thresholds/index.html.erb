@@ -16,27 +16,29 @@ OD:
 <%= f.submit %>
 <% end -%>
 
-<table width="100%">
-  <tr>
-    <th>Province</th>
-    <th>OD</th>
-    <th>Health Center</th>
-    <th>Village</th>
-    <th>Threshold</th>
-    <th></th>
-  </tr>
-  <% @thresholds.each do |threshold| %>
-  <tr <%= %(class='edit') if threshold == @threshold %>>
-    <td><%= render_threshold_table_cell(threshold, Province) %></td>
-    <td><%= render_threshold_table_cell(threshold, OD) %></td>
-    <td><%= render_threshold_table_cell(threshold, HealthCenter) %></td>
-    <td><%= render_threshold_table_cell(threshold, Village) %></td>
-    <td><%= threshold.value %></td>
-    <td>
-      <%= link_to 'Edit', threshold %>
-      <%= link_to 'Delete', threshold, :method => :delete, :confirm => 'Are you sure?' %>
-    </td>
-  </tr>
+<table width="100%" class="round full table-grid">
+  <thead>
+    <tr>
+      <th>Province</th>
+      <th>OD</th>
+      <th>Health Center</th>
+      <th>Village</th>
+      <th>Threshold</th>
+      <th></th>
+    </tr>
+  </thead>
+  <% @thresholds.each_with_index do |threshold, i| %>
+    <tr class="<%= i.parity %> <%= 'edit' if threshold == @threshold %>">
+      <td><%= render_threshold_table_cell(threshold, Province) %></td>
+      <td><%= render_threshold_table_cell(threshold, OD) %></td>
+      <td><%= render_threshold_table_cell(threshold, HealthCenter) %></td>
+      <td><%= render_threshold_table_cell(threshold, Village) %></td>
+      <td><%= threshold.value %></td>
+      <td>
+        <%= link_to 'edit', threshold %> &nbsp; &nbsp;
+        <%= link_to 'delete', threshold, :method => :delete, :confirm => 'Are you sure?' %>
+      </td>
+    </tr>
   <% end -%>
 </table>
 

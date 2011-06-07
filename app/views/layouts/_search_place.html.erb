@@ -1,4 +1,4 @@
-<div>
+
   <form id="place_search_form">
     <input type="hidden" name="error" value="<%= params[:error] %>" />
     <%= text_field_tag 'place_search', params['place_search'], :style => 'width:280px', :autocomplete => :off %>
@@ -8,7 +8,7 @@
     <% end %>
     <% params.delete :place_search %>
   </form>
-</div>
+
 
 <script type="text/javascript">
   $(function() {

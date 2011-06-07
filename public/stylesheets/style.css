@@ -626,6 +626,7 @@ div.input{
 }
 #fancy-div-detail div.pagination a{
 }
-.report{
-    
+#search_box{
+    margin-top: 10px;
+    text-align: right;
 }

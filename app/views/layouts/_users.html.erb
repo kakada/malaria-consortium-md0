@@ -2,7 +2,7 @@
 <div id="users">
   <%= form_for :custom_sms, :url => custom_messages_path , :remote =>true, :html => { :id =>:custom_sms_form}   do |f| %>
     <%= hidden_field_tag "place_id", params[:place]   %>
-    <table>
+    <table width="98%">
       <% @users.each do |user| %>
 
         <% if user[:count] %>

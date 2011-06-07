@@ -33,6 +33,10 @@ module ApplicationHelper
     "Pv"
   end
 
+  def mobile(type)
+    type == false ? "No" : "Mobile"
+  end
+
   def current_url_for(options)
     url_for(params.dup.merge(options))
   end

@@ -175,7 +175,7 @@ a.signup_button {
 .round {
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
-        border-radius : 4px;
+     border-radius : 4px;
 }
 
 .field{
@@ -201,7 +201,7 @@ a.signup_button {
     padding: 7px;
     padding-bottom: 12px;
     margin-bottom: 20px;
-    background-color: #f0f0f0;]
+    background-color: #f0f0f0;
 }
 #errorExplanation h2 {
     text-align: left;
@@ -626,8 +626,8 @@ div.input{
     color: gray;
 }
 #fancy-div-detail div.pagination a{
-    padding: 5px 10px;
 }
-.report{
-    width: 630px;
+#search_box{
+    margin-top: 10px;
+    text-align: right;
 }

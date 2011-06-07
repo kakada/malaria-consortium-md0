@@ -1,0 +1,27 @@
+<table class="round full table-grid" style ="border: 1px solid #ccc;" >
+    <thead>
+      <th width="20" > No </th>
+      <th width="200" ><%= params[:place_type]%></th>
+      <th width="50" > Code </th>
+      <th width="50" > Total </th>
+      <th> HealthCenter</th>
+      <th> OD </th>
+      <th> Province </th>
+    </thead>
+    <%
+    page = params[:page].to_i == 0 ? 1 : params[:page].to_i
+    @reports.each_with_index do |report, index|
+      place = report
+      attr = {:place_id => place.id, :from => params[:from], :to => params[:to]}
+    %>
+    <tr class="<%= index.parity  %>" >
+      <td style="color:gray;" > <%=   (page-1) * 25 + index + 1  %> </td>
+      <td> <%= place.name %></td>
+      <td> <%= place.code  %>   </td>
+      <td> 0 </td>
+      <td> <%= place.health_center.name_with_code %> </td>
+      <td> <%= place.od.name_with_code %> </td>
+      <td> <%= place.province.name_with_code %> </td>
+    </tr>
+  <% end %>
+</table>

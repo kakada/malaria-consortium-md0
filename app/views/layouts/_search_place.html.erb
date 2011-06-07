@@ -14,7 +14,7 @@
   $(function() {
       $('#place_search').autocomplete({
         serviceUrl: '<%= autocomplete_places_path %>',
-        minChars: 3,
+        minChars: 2,
         maxHeight: 300,
         zIndex: 9999,
         onSelect: function(value, data) {

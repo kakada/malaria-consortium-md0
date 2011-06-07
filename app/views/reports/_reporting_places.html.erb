@@ -13,49 +13,17 @@
   </script>
 <%  end %>
 <% content_for :reports do %>
+
  <div class="round report" >
     <%= will_paginate @reports %>
     <div >
       <div style="float:right;">
-        <%= link_to "<span>Export this result...</span>".html_safe , report_csv_reports_url(params.except(:controller, :action)) , :class =>" round slide_label" %>
+        <%= link_to "<span>Export this result...</span>".html_safe , report_csv_reports_url(params.except(:controller, :action)) , :class =>" round slide_label", :id =>"csv_export_case" %>
       </div>
     </div>
-    <div class="clear"> </div>
-    <table class="round full table-grid" style ="border: 1px solid #ccc;" >
-      <thead>
-        <th width="20" > No </th>
-        <th width="350" > Name </th>
-        <th width="50" > Code </th>
-        <th width="50" > Total </th>
-        <th width="50" > Type </th>
-      </thead>
-    <%
-      page = params[:page].to_i == 0 ? 1 : params[:page].to_i
 
-    %>
-    <% @reports.each_with_index do |report, index|  %>
-      <%
-        if params[:ncase] == '0'
-          place = report
-        else
-          place = params[:place_type] == 'Village' ? report.village : report.health_center
-        end
-        attr = {:place_id => place.id, :from => params[:from], :to => params[:to]}
-      %>
-      <tr class="<%= (index % 2) == 0 ? "pair":"impair" %>" >
-        <td style="color:gray;" > <%=   (page-1) * 25 + index + 1  %> </td>
-        <td>
-          <% if params[:ncase] == "0" %>
-            <%= place.name %>
-          <% else %>
-            <%= link_to  place.name, report_detail_reports_url(attr), :class => "report_detail"  %>
-          <% end %>
-        </td>
-        <td> <%= place.code  %>   </td>
-        <td> <%= params[:ncase] == '0' ? 0 : report.total %>  </td>
-        <td> <%= place.type%> </td>
-      </tr>
-    <% end %>
-    </table>
+    <div class="clear"> </div>
+    <%= render "table_with_cases" if(params[:ncase] == "1")  %>
+    <%= render "table_with_no_cases" if(params[:ncase] == "0")  %>
   </div>
 <% end %>

@@ -146,14 +146,14 @@ class Report < ActiveRecord::Base
     file = "#{Rails.root}/tmp/report_csv.csv"
 
     CSV.open(file,"wb") do |csv|
-      csv << ["name","code","total"]
+      csv << [options[:place_type],"Code","Total", "Health Center", "OD", "Province"]
       reports.each do |report|
         if options[:ncase] == '0'
           place = report
-          csv << [place.name, place.code, 0]
+          csv << [place.name, place.code, 0, place.health_center.name_with_code, place.od.name_with_code, place.province.name_with_code]
         else
           place = options[:place_type] == 'Village' ? report.village : report.health_center
-          csv << [place.name, place.code, report.total]
+          csv << [place.name, place.code, report.total, place.health_center.name_with_code, place.od.name_with_code, place.province.name_with_code]
         end
       end
     end
@@ -164,9 +164,9 @@ class Report < ActiveRecord::Base
     reports =  self.report_cases options
     
     if options[:ncase] == '0'
-      reports.paginate :page => options[:page], :per_page => 25, :order =>"name asc"
+      reports.paginate :page => options[:page], :per_page => 20, :order =>"code asc"
     else
-      reports.paginate :page => options[:page], :per_page => 25, :order =>"total desc"
+      reports.paginate :page => options[:page], :per_page => 20, :order =>"total desc"
     end
   end
 

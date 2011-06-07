@@ -28,7 +28,7 @@
         <td> <%= report.sex %>  </td>
         <td> <%= report.age %>  </td>
         <td> <%= report.sender.user_name %> </td>
-        <td> <%= " #{report.village.name} - #{report.village.code}"  %> </td>
+        <td> <%= report.village.name_with_code  %> </td>
         <td> <%= report.sender.phone_number %> </td>
         <td> <%= (report.mobile)?"Yes": "No" %> </td>
       </tr>

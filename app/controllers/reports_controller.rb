@@ -7,7 +7,7 @@ class ReportsController < ApplicationController
   def index
     @pagination = {
       :page => params[:page].presence || 1,
-      :per_page => 10
+      :per_page => 20
     }
 
     if params[:error] == 'last'

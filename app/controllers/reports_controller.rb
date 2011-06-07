@@ -60,7 +60,7 @@ class ReportsController < ApplicationController
     file = Report.write_csv(params)
     file = File.open(file, "rb")
     contents = file.read
-    send_data contents, :type => "text/csv" , :filename => "reported_places.csv"
+    send_data contents, :type => "text/csv" , :filename => Report.report_file(params[:place_type],params[:from],params[:to])
   end
 
   private

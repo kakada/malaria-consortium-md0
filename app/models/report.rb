@@ -141,9 +141,12 @@ class Report < ActiveRecord::Base
 
   end
 
+  def self.report_file(place_type,from, to)
+    "Report #{place_type} #{from}, #{to}.csv"
+  end
   def self.write_csv options
     reports = Report.report_cases_all options
-    file = "#{Rails.root}/tmp/report_csv.csv"
+    file = "#{Rails.root}/tmp/Report #{self.report_file(options[:place_type], options[:from], options[:to])}.csv"
 
     CSV.open(file,"wb") do |csv|
       csv << [options[:place_type],"Code","Total", "Health Center", "OD", "Province"]

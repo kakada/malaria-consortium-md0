@@ -18,7 +18,7 @@
     <%= will_paginate @reports %>
     <div >
       <div style="float:right;">
-        <%= link_to "<span>Export this result...</span>".html_safe , report_csv_reports_url(params.except(:controller, :action)) , :class =>" round slide_label", :id =>"csv_export_case" %>
+        <%= link_to "<span>Export #{params[:place_type]}</span>".html_safe , report_csv_reports_url(params.except(:controller, :action)) , :class =>" round slide_label", :id =>"csv_export_case" %>
       </div>
     </div>
 

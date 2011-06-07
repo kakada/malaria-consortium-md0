@@ -77,7 +77,7 @@ class Place < ActiveRecord::Base
   end
 
   def description
-    "#{name} (#{self.class.name.titleize}, #{code})"
+    "#{code} #{name} (#{self.class.name.titleize})"
   end
 
   def short_description

@@ -1,16 +1,23 @@
-<h3>The places listed below will be created once you confirm: </h3>
-
 <%= form_tag(confirm_import_places_path, :method => "post") do %>
-	<%= submit_tag("Confirm Places") %>
 
-	<table width="100%" class="table-grid round"> 
-	<tr>
-		<th>Name</th>
-		<th>Khmer Name</th>
-		<th>Code</th>
-	</tr>
-	<%= render :partial => "place", :collection => @places %>
+	<table width="100%" class="round full table-grid">
+    <caption style="font-size: 130%; font-weight: bold">
+      <div>The places listed below will be created once you confirm</div>
+      <div><%= submit_tag("Confirm Places") %></div>
+      <br />
+    </caption>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Khmer Name</th>
+        <th>Code</th>
+        <th>Lat</th>
+        <th>Lng</th>
+      </tr>
+    </thead>
+    <%= render :partial => "place", :collection => @places %>
 	</table>
-	
-	<%= submit_tag("Confirm Places") %>
-<% end %>	
+
+  <br />
+  <div style="text-align:center"><%= submit_tag("Confirm Places") %></div>
+<% end %>

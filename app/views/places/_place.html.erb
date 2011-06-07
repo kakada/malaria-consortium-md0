@@ -1,5 +1,7 @@
-<tr>
+<tr class="<%= place_counter.parity %>">
 	<td><%= place.description %></td>
-	<td><font size="5" face="Limon S1"><%= place.name_kh unless place.name_kh.nil? %></font></td>
+	<td><%= place.name_kh unless place.name_kh.nil? %></td>
 	<td><%= place.code %></td>
+	<td><%= place.lat %></td>
+	<td><%= place.lng %></td>
 </tr>

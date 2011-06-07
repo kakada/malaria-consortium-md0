@@ -52,7 +52,7 @@ class PlaceImporter
     "Province" => { :code => 2, :name => 0, :name_kh => 1 },
     "OD" => { :code => 8, :name => 6, :name_kh => 7 },
     "HealthCenter" => { :code => 9, :name => 10, :name_kh => 11 },
-    "Village" => { :code => 17, :name => 15, :name_kh => 16 }
+    "Village" => { :code => 17, :name => 15, :name_kh => 16, :lat => 21, :lng => 22 }
   }
 
   def fill_fields place_type, extensions

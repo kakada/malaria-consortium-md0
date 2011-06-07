@@ -7,8 +7,9 @@
   <%= link_to "Templates", settings_templates_path %> |
   <%= link_to "Import places", import_places_path %> |
   <%= link_to "Sign out", destroy_user_session_path %>
-  <div id="search_box">
-    <%= render 'layouts/search_place' %>
-  </div>
-  
+  <% if content_for? :reports %>
+    <div id="search_box">
+      <%= render 'layouts/search_place' %>
+    </div>
+  <% end %>
 </div>

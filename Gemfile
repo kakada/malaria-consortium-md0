@@ -46,5 +46,6 @@ group :development, :test do
   gem "factory_girl_rails"
   gem "machinist"
   gem "faker"
-  gem "query_reviewer", :git => "git://github.com/nesquena/query_reviewer.git"
+  gem 'debugbar'
+  #gem "query_reviewer", :git => "git://github.com/nesquena/query_reviewer.git"
 end

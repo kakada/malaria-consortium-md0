@@ -37,6 +37,10 @@ class Place < ActiveRecord::Base
     self.hierarchy = nil unless changes.except(:hierarchy).empty?
   end
 
+  def name_with_code
+    "#{self.code} #{self.name}"
+  end
+
   def set_hierarchy
     if self.hierarchy.nil?
       self.hierarchy = (self.parent_id ? "#{self.parent.hierarchy}." : '') + self.id.to_s

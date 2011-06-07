@@ -3,12 +3,16 @@
   <table class="table-grid round" width="600" >
     <thead>
       <tr>
-        <th width="50" >Type</th>
-        <th width="10" >Sex</th>
-        <th width="10" >Age</th>
-        <th width="10" >Mobile</th>
-        <th width="350" >Place name </th>
-        <th width="200" >Sent</th>
+        <th width="60">Malaria</th>
+        <th width="40" >Sex</th>
+        <th width="40" >Age</th>
+        <th width="40" >Mobile</th>
+        <th width="180" >Date sent</th>
+        <th width="200" >Name </th>
+        <th width="50" >Place</th>
+        <th width="150" >Health center</th>
+        <th width="150" >OD </th>
+        <th width="150" >Province </th>
       </tr>
     </thead>
     <tbody>
@@ -17,9 +21,13 @@
             <td><%= "#{report.malaria_type} -  #{get_malaria_type(report.malaria_type)}" %></td>
             <td><%=  report.sex %></td>
             <td><%=  report.age %></td>
-            <td><%=  report.mobile %></td>
-            <td><%=  report.place.name %></td>
+            <td><%=  mobile(report.mobile) %></td>
             <td><%=  report.created_at %></td>
+            <td><%=  report.place.name_with_code %></td>
+            <td><%=  report.place.type %></td>
+            <td><%=  report.place.health_center.name_with_code %></td>
+            <td><%=  report.place.od.name_with_code %></td>
+            <td><%=  report.place.province.name_with_code %></td>
           </tr>
       <% end %>
     </tbody>

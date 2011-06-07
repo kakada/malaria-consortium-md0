@@ -9,8 +9,10 @@ describe MapVisualizationsController do
        'type' => "All" ,
        'page' => 0
     }
-
+    @place = "place"
+    Place.stub!(:find).with(1).and_return(@place)
     MapVisualization.stub!(:paginate_report).with(@attributes).and_return(:reports)
+
 
 
   end
@@ -23,7 +25,7 @@ describe MapVisualizationsController do
 
     it "should set the id and reports " do
       get :index , @attributes
-      assigns[:id].should == @attributes[:id]
+      assigns[:place].should == @place
       assigns[:reports].should == :reports
     end
 

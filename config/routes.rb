@@ -39,6 +39,7 @@ Local::Application.routes.draw do
     collection do
       get "import"
       post "upload_csv"
+      get "csv_template"
       post "confirm_import"
       get "map_view"
       get "map_report"

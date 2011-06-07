@@ -1,8 +1,8 @@
 <% content_for :head do %>
   	<%= stylesheet_link_tag('jquery.fileupload-ui') %>
 	<%= javascript_include_tag 'jquery.fileupload', 'jquery.fileupload-ui' %>
-	
-	<script type="text/javascript" charset="utf-8"> 
+
+	<script type="text/javascript" charset="utf-8">
 	   $(function () {
 	  $('.upload').fileUploadUI({
 	        uploadTable: $('.upload_files'),
@@ -22,7 +22,7 @@
 			    } else {
 			        // Instead of an XHR object, an iframe is used for legacy browsers:
 			        return xhr.contents().text();
-			    }			
+			    }
 			},
 			onComplete: function (event, files, index, xhr, handler) {
 				$('.download_files').html('');
@@ -34,20 +34,25 @@
 <% end %>
 
 <h2>Import Places</h2>
+
+
 <div class="files">
 	<%= form_for(:admin, :url => upload_csv_places_path, :html => { :multipart => true, :class => "upload"}) do |form| %>
 		<%= form.file_field :csvfile %>
 		<div>Upload CSV File</div>
 	<% end %>
-	
+
 	<table class="upload_files">
 	</table>
-	
+
 	<table width="100%" id="download_files" class="download_files">
 	</table>
-	
+
 	<div id="file_upload_progress" class="js file_upload_progress">
 		<div style="display:none;"></div>
-	</div> 
+	</div>
 </div>
-        
+
+<br />
+
+<div>Don't know what the CSV should look like? <%= link_to 'Download a template', csv_template_places_path %>, fill it and then upload it clicking on the button above.</div>

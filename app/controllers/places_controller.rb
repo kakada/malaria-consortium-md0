@@ -22,6 +22,12 @@ class PlacesController < ApplicationController
     render 'upload_csv.html.erb'
   end
 
+  #GET /places/csv_template
+  def csv_template
+    column_headers = PlaceImporter.column_headers.join(", ")
+    send_data column_headers, :type => 'text/csv', :filename => 'places_template.csv'
+  end
+
   #GET /map-view
   def map_view
     @country = Country.first

@@ -3,15 +3,11 @@
 require 'spec_helper'
 
 describe PlaceImporter do
-  
-  before(:each) do
-    
-  end
-  
+
   it "should import" do
     file = File.join(File.dirname(__FILE__),"test.csv")
     importer = PlaceImporter.new file
-    
+
     importer.import
 
     Province.all.map(&:name).should =~ ["Battambang", "Banteay Meanchey"]
@@ -35,13 +31,13 @@ describe PlaceImporter do
     kralapeas.province.name_kh.should == ")at;dMbg"
     kralapeas.province.code.should == "2"
   end
-  
+
   it "should simulate" do
     file = File.join(File.dirname(__FILE__),"test.csv")
     importer = PlaceImporter.new file
-  
+
     places = importer.simulate
-  
+
     provinces = places.select {|place| place.is_a? Province}
     ods = places.select {|place| place.is_a? OD}
     health_centers = places.select {|place| place.is_a? HealthCenter}
@@ -67,17 +63,25 @@ describe PlaceImporter do
 
     kralapeas.province.name.should == "Battambang"
     kralapeas.province.name_kh.should == ")at;dMbg"
-    kralapeas.province.code.should == "2"    
-    
+    kralapeas.province.code.should == "2"
+
     Place.all.count.should == 0
   end
-  
+
   it "should not show already existent places" do
     file = File.join(File.dirname(__FILE__),"test.csv")
     importer = PlaceImporter.new file
     importer.import
-    
+
     new_simulation_result = importer.simulate
     new_simulation_result.should be_nil
+  end
+
+  it "returns csv column headers" do
+    headers = PlaceImporter.column_headers
+    headers.should eq(['Province name', 'Province name (khmer)', 'Province code',
+                       'OD name', 'OD name (khmer)', 'OD code',
+                       'Health Center name', 'Health Center name (khmer)', 'Health Center code',
+                       'Village name', 'Village name (khmer)', 'Village code', 'Village latitude', 'Village longitude'])
   end
 end

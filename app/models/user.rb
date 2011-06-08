@@ -37,6 +37,22 @@ class User < ActiveRecord::Base
     return user if user.has_password? pwd
   end
 
+  def write_places_csv source_file
+    File.open(places_csv_file_name,"w+b") do |file|
+      file.write(source_file.read)
+    end
+  end
+
+  def places_csv_directory
+    dir = Rails.root.join "tmp", "placescsv"
+    FileUtils.mkdir_p dir unless Dir.exists? dir
+    dir
+  end
+
+  def places_csv_file_name
+    Rails.root.join(places_csv_directory, "#{id}.csv")
+  end
+
   def alert_numbers
     national_users = User.find_all_by_role "national"
 

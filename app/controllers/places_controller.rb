@@ -14,8 +14,12 @@ class PlacesController < ApplicationController
 
   #POST /places/upload_csv
   def upload_csv
-    @places = PlaceImporter.new(params[:admin][:csvfile].path).simulate
-    render(@places.blank? ? 'no_places_to_import.html' : 'upload_csv.html.erb')
+    current_user.write_places_csv params[:admin][:csvfile]
+    @places = PlaceImporter.new(current_user.places_csv_file_name).simulate
+
+    return render 'no_places_to_import.html' if @places.blank?
+
+    render 'upload_csv.html.erb'
   end
 
   #GET /places/csv_template

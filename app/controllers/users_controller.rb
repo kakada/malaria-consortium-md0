@@ -49,7 +49,7 @@ class UsersController < ApplicationController
       @user.intended_place_code = params[:intended_place_code]
       flash["msg-error"] = "Failed to create"
       @page = (params[:page] || '1').to_i
-      @users = User.paginate @page, :per_page => PerPage, :order => 'id desc'
+      @users = User.paginate :page => @page, :per_page => PerPage, :order => 'id desc'
       render :index
     end
   end

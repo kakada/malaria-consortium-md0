@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
 
   validates_inclusion_of :role, :in => Roles, :allow_nil => true
   validates_uniqueness_of :user_name, :allow_nil => true, :message => 'Belongs to another user'
-  validates_uniqueness_of :phone_number, :allow_nil => true, :message => 'Belongs to another user'
+  validates_uniqueness_of :phone_number, :allow_nil => true, :message => 'Belongs to another user', :if => :phone_number?
   validates_presence_of :phone_number,
                         :if => Proc.new {|user| user.email.blank? || user.user_name.blank? || user.encrypted_password.blank?},
                         :message => "Phone can't be blank, unless you provide a username, a password and an email"

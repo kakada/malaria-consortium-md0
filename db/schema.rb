@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110608104405) do
+ActiveRecord::Schema.define(:version => 20110608105149) do
 
   create_table "places", :force => true do |t|
     t.string   "name"
@@ -109,7 +109,6 @@ ActiveRecord::Schema.define(:version => 20110608104405) do
   add_index "users", ["health_center_id", "place_class"], :name => "index_users_on_health_center_id_and_place_class"
   add_index "users", ["last_report_error", "updated_at"], :name => "index_users_on_last_report_error_and_updated_at"
   add_index "users", ["od_id", "place_class"], :name => "index_users_on_od_id_and_place_class"
-  add_index "users", ["phone_number"], :name => "index_users_on_phone_number", :unique => true
   add_index "users", ["place_id"], :name => "index_users_on_place_id"
   add_index "users", ["province_id", "place_class"], :name => "index_users_on_province_id_and_place_class"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true

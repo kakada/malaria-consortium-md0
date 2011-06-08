@@ -6,22 +6,16 @@ class PlaceImporter
 
   def initialize file
     @file = file
-    @current_row = nil
   end
 
   def import
-    process_csv do |level, parent|
-      fields = fill_fields level, :parent_id => parent.try(:id)
+    process_csv do |level, fields|
       level.constantize.find_or_create_by_code fields
     end
   end
 
   def simulate
-    process_csv do |level, parent|
-      fields = fill_fields level, :parent => parent
-      place = level.constantize.find_by_code fields[:code]
-      return unless place.nil?
-
+    process_csv do |level, fields|
       level.constantize.new fields
     end
   end
@@ -29,23 +23,26 @@ class PlaceImporter
   private
 
   def process_csv
-    @places = {}
+    existing_places = Hash[Place.all.map{|x| [x.code, x]}]
+    new_places = []
 
     CSV.foreach @file, :headers => :first_row, :skip_blanks => true do |row|
-      @current_row = row
-      @parent = nil
+      parent = nil
 
       Place.levels.each do |level|
-        place = yield level, @parent
-
-        return unless place && place.valid?
-        @parent = place
-
-        @places[place.code] = place
+        fields = fill_fields row, level, :parent => parent
+        existing_place = existing_places[fields[:code]]
+        if existing_place
+          parent = existing_place
+        else
+          parent = yield level, fields
+          existing_places[parent.code] = parent
+          new_places << parent
+        end
       end
     end
 
-    @places.values
+    new_places
   end
 
   CSVIndexes = {
@@ -63,10 +60,11 @@ class PlaceImporter
     :lng => 'longitude'
   }
 
-  def fill_fields place_type, extensions
-    fields_indexes = CSVIndexes[place_type]
-    fields = fields_indexes.merge(fields_indexes) { |k, v| @current_row[v] }
-    fields[:name_kh] unless fields[:name_kh].nil?
+  def fill_fields row, place_type, extensions
+    fields = {}
+    CSVIndexes[place_type].each do |name, column_index|
+      fields[name] = row[column_index]
+    end
     fields.merge!(extensions)
     fields
   end

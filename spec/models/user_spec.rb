@@ -106,20 +106,6 @@ describe User do
     User.count.should == 2
   end
 
-  it "should write temp place csv to disk" do
-    user = user(:phone_number => "1")
-
-    file_name = File.join(File.dirname(__FILE__),"test.csv")
-    File.open(file_name,"r+b") do |file|
-      user.write_places_csv file
-    end
-
-    file_name = Rails.root.join("tmp","placescsv", "#{user.id}.csv")
-    File.exists?(file_name).should == true
-
-    user.places_csv_file_name.should == file_name
-  end
-
   describe "intended place code" do
     it "should try to find place by code before saving if intended place code is not nil" do
       province1 = Province.create! :name => "Pro1", :code => "Pro1"

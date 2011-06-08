@@ -65,7 +65,7 @@ describe PlaceImporter do
     kralapeas.province.name_kh.should == ")at;dMbg"
     kralapeas.province.code.should == "2"
 
-    Place.all.count.should == 0
+    Place.count.should == 0
   end
 
   it "should not show already existent places" do
@@ -74,7 +74,7 @@ describe PlaceImporter do
     importer.import
 
     new_simulation_result = importer.simulate
-    new_simulation_result.should be_nil
+    new_simulation_result.should eq([])
   end
 
   it "returns csv column headers" do

@@ -50,8 +50,7 @@ h1, h2, h3 { padding-top: 0px; margin-top: 0px; }
   padding: 3px 10px 0px 3px;
 }
 
-#first_row { border-bottom: 1px solid black; padding-bottom: 6px;}
-#breadcrumb { position: relative; top: 4px; }
+#first_row { border-bottom: 1px solid black; padding-bottom: 6px; margin-top: 4px; }
 #tabs { float: right; list-style: none; display: block; border-bottom: 1px solid black; }
 #tabs ul { display: inline; margin: 0px; padding: 0px; }
 #tabs ul li {

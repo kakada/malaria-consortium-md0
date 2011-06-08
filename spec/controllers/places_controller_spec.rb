@@ -14,9 +14,8 @@ describe PlacesController do
       importer_stub = {}
       PlaceImporter.stub!(:new).and_return(importer_stub)
       importer_stub.stub!(:simulate).and_return([])
-      controller.current_user.stub!(:write_places_csv)
 
-      post :upload_csv, :admin => {}
+      post :upload_csv, :admin => {:csvfile => stub(:path => '')}
 
       response.should render_template "no_places_to_import"
     end

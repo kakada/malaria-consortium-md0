@@ -1,13 +1,15 @@
 class UsersController < ApplicationController
   before_filter :correct_user, :only => [:edit, :update]
 
+  PerPage = 20
+
   #GET /users
   def index
     @title = "User management"
-    @page = params[:page]
+    @page = (params[:page] || '1').to_i
     @user = User.new
     @user.intended_place_code = ""
-    @users = User.paginate_user @page
+    @users = User.paginate :page => (@page || '1').to_i, :per_page => PerPage, :order => 'id desc'
   end
 
   #GET /user/new
@@ -19,8 +21,8 @@ class UsersController < ApplicationController
   #post /users/:id
   def destroy
     user = User.find(params[:id])
-    user.status = 0
-    user.save
+    user.delete
+
     flash["msg-error"] = "User has been removed"
     redirect_to :action => "index"
   end
@@ -46,8 +48,8 @@ class UsersController < ApplicationController
     else
       @user.intended_place_code = params[:intended_place_code]
       flash["msg-error"] = "Failed to create"
-      @page = (params[:page].to_i < 2) ? 1 : params[:page].to_i;
-      @users = User.paginate_user @page
+      @page = (params[:page] || '1').to_i
+      @users = User.paginate @page, :per_page => PerPage, :order => 'id desc'
       render :index
     end
   end

@@ -107,11 +107,6 @@ class User < ActiveRecord::Base
     true
   end
 
-  def self.paginate_user page
-    page = page.nil? ? 1 : page.to_i
-    User.where(:status => true).paginate :page => page, :per_page => 20, :order => 'id desc'
-  end
-
   def self.find_by_phone_number(phone_number)
     where(:phone_number => phone_number.without_protocol.strip).first
   end

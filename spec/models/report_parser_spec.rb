@@ -26,8 +26,8 @@ describe ReportParser do
       assert_parse_error "d12m11111111", :invalid_malaria_type
     end
 
-    it "should support reports with heading and trailing spaces" do
-      @parser.parse "    F21M     "
+    it "should support reports with heading and trailing spaces and new lines" do
+      @parser.parse "    F2\n1M     "
       @parser.errors?().should == false
       @parser.report.malaria_type.should == "F"
       @parser.report.age.should == 21

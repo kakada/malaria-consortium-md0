@@ -21,7 +21,7 @@ class ReportParser
 
     @original_message = message
 
-    @message = message.strip.sub(" ", "").sub(",", "")
+    @message = message.strip.sub(/\s/, "").sub(",", "")
     @scanner = StringScanner.new @message
 
     malaria_type = @scanner.scan /[FVM]/i

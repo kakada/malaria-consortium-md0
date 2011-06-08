@@ -1,4 +1,6 @@
 class NuntiumController < ApplicationController
+  skip_filter :authenticate_admin!
+
   before_filter :authenticate
   around_filter :transact
 

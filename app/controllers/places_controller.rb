@@ -1,7 +1,5 @@
 # coding: utf-8
 class PlacesController < ApplicationController
-  before_filter :authenticate_admin!
-
   #POST /places/confirm_import
   def confirm_import
     PlaceImporter.new(current_user.places_csv_file_name).import

@@ -4,4 +4,6 @@ class ApplicationController < ActionController::Base
   #from rails2
   helper :all
   include SessionsHelper
+
+  before_filter :authenticate_admin!
 end

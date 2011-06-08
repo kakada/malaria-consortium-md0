@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_user!, :only => [:edit, :update, :create_new, :mark_as_investigated]
   before_filter :correct_user, :only => [:edit, :update]
 
   #GET /users

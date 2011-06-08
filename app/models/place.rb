@@ -84,10 +84,6 @@ class Place < ActiveRecord::Base
     "#{code} #{name}"
   end
 
-  def self.levels
-    Types[1..-1]
-  end
-
   def self.places_by_type(type = nil)
     if(type.nil? || type =="")
       Place.all

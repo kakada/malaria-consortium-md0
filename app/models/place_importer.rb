@@ -9,33 +9,32 @@ class PlaceImporter
   end
 
   def import
-    process_csv do |level, fields|
-      level.constantize.find_or_create_by_code fields
-    end
+    process_csv
   end
 
   def simulate
-    process_csv do |level, fields|
-      level.constantize.new fields
-    end
+    process_csv :simulate => true
   end
 
   private
 
-  def process_csv
+  def process_csv(options = {})
+    simulate = options[:simulate]
+
     existing_places = Hash[Place.all.map{|x| [x.code, x]}]
     new_places = []
+    levels = Place::Types[1..-1].map(&:constantize)
 
     CSV.foreach @file, :headers => :first_row, :skip_blanks => true do |row|
       parent = nil
 
-      Place.levels.each do |level|
+      levels.each do |level|
         fields = fill_fields row, level, :parent => parent
         existing_place = existing_places[fields[:code]]
         if existing_place
           parent = existing_place
         else
-          parent = yield level, fields
+          parent = simulate ? level.new(fields) : level.create(fields)
           existing_places[parent.code] = parent
           new_places << parent
         end
@@ -46,10 +45,10 @@ class PlaceImporter
   end
 
   CSVIndexes = {
-    "Province" => { :name => 0, :name_kh => 1, :code => 2 },
-    "OD" => { :name => 3, :name_kh => 4, :code => 5 },
-    "HealthCenter" => { :name => 6, :name_kh => 7, :code => 8 },
-    "Village" => { :name => 9, :name_kh => 10, :code => 11, :lat => 12, :lng => 13 }
+    Province => { :name => 0, :name_kh => 1, :code => 2 },
+    OD => { :name => 3, :name_kh => 4, :code => 5 },
+    HealthCenter => { :name => 6, :name_kh => 7, :code => 8 },
+    Village => { :name => 9, :name_kh => 10, :code => 11, :lat => 12, :lng => 13 }
   }
 
   ColumnNames = {
@@ -90,6 +89,6 @@ class PlaceImporter
   end
 
   def self.titleize(place)
-    place == "OD" ? "OD" : place.titleize
+    place == OD ? "OD" : place.name.titleize
   end
 end

@@ -1,16 +1,15 @@
 <td>
-    <%= hidden_field_tag :id, @user[:id]  %>
-    <%= input_field_tag :user_name, @user  %>
- 
+  <%= hidden_field_tag :id, @user[:id]  %>
+  <%= input_field_tag :user_name, @user  %>
 </td>
 <td>
   <%= input_field_tag :email, @user   %>
 </td>
 <td>
-    <%= input_field_tag :phone_number, @user  %>
+  <%= input_field_tag :phone_number, @user  %>
 </td>
 <td><%= input_field_tag :password, @user , "password"   %>  </td>
-<td><%= input_field_tag :intended_place_code, @user %></td>
+<td><%= input_field_tag :intended_place_code, @user, 'text', :class => :intended_place_code %></td>
 
 <td><%= select_tag(:role ,options_for_select(User::Roles,  (@user.nil?)? "" : @user.send(:role)), {} )  %>  </td>
 
@@ -46,9 +45,9 @@
         }
       });
       return false;
-      
+
     });
-    
+
     $("#cancelUser_" + <%= @user.id %> ).click(function(){
        var url = $(this).attr("data-url");
        var id  = <%= @user.id %> ;
@@ -68,4 +67,11 @@
         }
       });
    }
+
+    $('.intended_place_code').autocomplete({
+      serviceUrl: '<%= autocomplete_places_path %>',
+      minChars: 2,
+      maxHeight: 300,
+      zIndex: 9999,
+    });
   </script>

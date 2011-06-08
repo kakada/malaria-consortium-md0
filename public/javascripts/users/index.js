@@ -4,13 +4,13 @@ $(function(){
     $("a.editRow").click(function(e){
       var url = $(this).attr("data-url");
       var id  = $(this).attr("data-rel");
-      
+
       if(activeRow){
           alert("Please complete the current editing row , then start new editing");
           return false;
       }
       getEditForm(url, id);
-      
+
       return false;
     });
  });

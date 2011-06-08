@@ -21,9 +21,16 @@ class UsersController < ApplicationController
   #post /users/:id
   def destroy
     user = User.find(params[:id])
-    user.delete
-
-    flash["msg-error"] = "User has been removed"
+    if user == current_user
+      flash["msg-error"] = "You can't delete yourself. First log in as another user and delete youself."
+    else
+      if Report.where(:sender_id => user.id).exists?
+        flash["msg-error"] = "User #{user.user_name} can't be deleted because it already sent some reports."
+      else
+        user.delete
+        flash["msg-error"] = "User #{user.user_name} has been removed"
+      end
+    end
     redirect_to :action => "index"
   end
 

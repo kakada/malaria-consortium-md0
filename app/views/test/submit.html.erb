@@ -9,7 +9,7 @@
       <%= response[:to] %>
       <% user = User.find_by_phone_number(response[:to].without_protocol) -%>
       (<%= user.user_name %>)<br/>
-      <%= user.place.description %>
+      <%= user.place.try(:description) %>
     </td>
     <td><%= response[:body]%></td>
   </tr>

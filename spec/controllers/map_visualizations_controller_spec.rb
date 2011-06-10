@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe MapVisualizationsController do
+  include Helpers
+  include Devise::TestHelpers
+
   before(:each) do
     @attributes = {
        'id' => 1,
@@ -13,9 +16,10 @@ describe MapVisualizationsController do
     Place.stub!(:find).with(1).and_return(@place)
     MapVisualization.stub!(:paginate_report).with(@attributes).and_return(:reports)
 
-
-
+    @user = admin_user "12345678"
+    sign_in @user
   end
+
   describe "GET index with pagination " do
     it "should get paginated reports " do
       MapVisualization.should_receive(:paginate_report).with(@attributes).and_return(:reports)

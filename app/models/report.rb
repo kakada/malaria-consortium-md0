@@ -113,7 +113,7 @@ class Report < ActiveRecord::Base
     alerts
   end
 
-  def self.report_cases options 
+  def self.report_cases options
     place = options[:place].present? ?  Place.find(options[:place]) : Country.first
     reports = Report.at_place(place).between_dates(options[:from], options[:to]).where("reports.#{options[:place_type].foreign_key} IS NOT NULL")
     reports = reports.where(:error => false)
@@ -165,16 +165,13 @@ class Report < ActiveRecord::Base
 
   def self.report_cases_paginate options
     reports =  self.report_cases options
-    
+
     if options[:ncase] == '0'
       reports.paginate :page => options[:page], :per_page => 20, :order =>"code asc"
     else
       reports.paginate :page => options[:page], :per_page => 20, :order =>"total desc"
     end
   end
-
-
-
 
   private
 
@@ -201,6 +198,7 @@ class Report < ActiveRecord::Base
     parser.parse message[:body]
 
     report = parser.report
+    report.nuntium_token = message[:guid]
     report.save!
 
     return parser.error if parser.errors?
@@ -212,7 +210,7 @@ class Report < ActiveRecord::Base
   end
 
   def self.create_error_report(message, error_message, sender = nil)
-    Report.create! :sender_address => message[:from], :text => message[:body], :error => true, :error_message => error_message, :sender => sender, :place => sender.try(:place)
+    Report.create! :sender_address => message[:from], :text => message[:body], :nuntium_token => message[:guid], :error => true, :error_message => error_message, :sender => sender, :place => sender.try(:place)
   end
 
   def upcase_strings

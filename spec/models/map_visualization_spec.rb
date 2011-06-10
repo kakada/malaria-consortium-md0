@@ -28,11 +28,6 @@ describe MapVisualization do
       Place.should_receive(:find).with(@attribute[:id]).and_return(@place)
       MapVisualization.paginate_report @attribute
     end
-
-    it "should paginate report accordingly" do
-      Report.should_receive(:paginate).with(@paginate_options).and_return(:report)
-      MapVisualization.paginate_report(@attribute)
-    end
   end
 
   describe "report_case_count" do
@@ -56,16 +51,6 @@ describe MapVisualization do
            Report.stub!(:count)
            Place.stub!(:find_by_type).and_return @country
 
-        end
-
-        it "should count all the report  " do
-           Report.should_receive(:count)
-           MapVisualization.report_case_count @attribute
-        end
-
-        it "should find a country " do
-          Place.should_receive(:find_by_type).with("Country").and_return @country
-          MapVisualization.report_case_count @attribute
         end
 
         it "should build cloud icon" do
@@ -105,11 +90,6 @@ describe MapVisualization do
 
       it "should find and return a place" do
         Place.should_receive(:find).with(2).and_return(@province)
-        MapVisualization.report_case_count @attribute
-      end
-
-      it "should get the sql query for the place" do
-        MapVisualization.should_receive(:get_report_case_count_query).with(2,"2008-10-10","2010-10-10","Pf","Province").and_return(:sql)
         MapVisualization.report_case_count @attribute
       end
 

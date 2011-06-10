@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110608105149) do
+ActiveRecord::Schema.define(:version => 20110610043552) do
 
   create_table "places", :force => true do |t|
     t.string   "name"
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(:version => 20110608105149) do
     t.string   "error_message"
     t.string   "sender_address"
     t.integer  "country_id"
+    t.string   "nuntium_token"
   end
 
   add_index "reports", ["country_id", "error"], :name => "index_reports_on_country_id_and_error"

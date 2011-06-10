@@ -1,6 +1,9 @@
 require "spec_helper"
 
 describe UsersController do
+  include Helpers
+  include Devise::TestHelpers
+
   before(:each) do
     Place.create!(:name => "Phnom penh", :code => "pcode1" )
     @attribute = {
@@ -12,6 +15,7 @@ describe UsersController do
       :role => User::Roles[0]
     }
     @user = User.create! @attribute
+    sign_in @user
   end
 
   it "should use UsersController" do
@@ -20,20 +24,21 @@ describe UsersController do
 
   describe "Delete user" do
     before(:each) do
-      User.stub(:find).with(@user.id).and_return(@user)
+      @other_user = User.create! :user_name => 'pepe', :email => 'foo@bar.com', :password => '1234'
     end
-    it "should set user with status to cero " do
-      delete :destroy , :id => @user.id
-      @user.status.should == 0
+
+    it "should destroy user" do
+      delete :destroy , :id => @other_user.id
+      assert_nil User.find_by_id(@other_user.id)
     end
 
     it "should set flash with msg-error " do
-      delete :destroy, :id =>@user.id
+      delete :destroy, :id => @other_user.id
       flash["msg-error"].should_not be_nil
     end
 
     it "should redirect to index page" do
-      delete :destroy, :id=>@user.id
+      delete :destroy, :id => @other_user.id
       response.should redirect_to users_path
     end
   end

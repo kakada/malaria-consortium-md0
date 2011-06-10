@@ -35,11 +35,11 @@ describe CustomMessagesController do
         @custom_message = Object.new
         CustomMessage.stub!(:new).with(@valid_attribute[:sms]).and_return(@custom_message)
         @custom_message.stub!(:valid?).and_return(true)
-        
+
         CustomMessage.stub!(:get_users).with(@valid_attribute[:place_id].to_i,@valid_attribute[:places]).and_return([])
         @custom_message.stub!(:send_sms_users)
         User.stub!(:find).with(@valid_attribute[:users]).and_return([])
-        
+
       end
 
       it "should create a valid custom_message object" do
@@ -63,7 +63,7 @@ describe CustomMessagesController do
       end
 
       it "should render create.js.erb template" do
-        post :create,  @valid_attribute 
+        post :create,  @valid_attribute
         response.should render_template :create
       end
     end

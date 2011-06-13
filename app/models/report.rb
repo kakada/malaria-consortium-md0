@@ -17,6 +17,7 @@ class Report < ActiveRecord::Base
   before_validation :upcase_strings
   before_save :complete_fields
   after_create :copy_self_to_sender, :if => :sender_id?
+  after_update :remove_self_from_sender, :if => :sender_id?
 
   def self.process(message = {})
     message = message.with_indifferent_access
@@ -233,5 +234,12 @@ class Report < ActiveRecord::Base
     sender.last_report = self
     sender.last_report_error = self.error?
     sender.save!
+  end
+
+  def remove_self_from_sender
+    if sender.last_report_id == self.id
+      sender.last_report_error = self.error?
+      sender.save!
+    end
   end
 end

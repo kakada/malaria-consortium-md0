@@ -34,18 +34,17 @@
   </table>
 </div>
 <script type="text/javascript">
-    
-    $("#fancy-div-detail > div.pagination > a ").live("click",function(){
-      url = this.href;
-      $.fancybox.showActivity();
-      $.ajax({
-              type	: "get",
-              cache	: false,
-              url	: url ,
-              success: function(content) {
-                      $.fancybox(content);
-              }
-      });
-      return false;
-    })
+$("#fancy-div-detail > div.pagination > a ").live("click",function(){
+  url = this.href;
+  $.fancybox.showActivity();
+  $.ajax({
+          type	: "get",
+          cache	: false,
+          url	: url ,
+          success: function(content) {
+                  $.fancybox(content);
+          }
+  });
+  return false;
+})
 </script>

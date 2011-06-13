@@ -4,6 +4,7 @@
   <script type="text/javascript" >
     $(function(){
         $(".generated_messages a").fancybox();
+        $(".user_messages a").fancybox();
     });
   </script>
   <style>
@@ -39,7 +40,11 @@
         <% report = report.last_report if report.is_a? User %>
         <tr class="<%= i.parity %>">
           <td title="<%= report.created_at %>"><%= time_ago_in_words report.created_at %> ago</td>
-          <td><%= report.sender.try(:user_name) %></td>
+          <% if @tab == :last_error_messages %>
+            <td class="user_messages"><%= link_to report.sender.try(:user_name), reports_user_path(report.sender.try(:id), :report_id => report.id) %></td>
+          <% else %>
+            <td><%= report.sender.try(:user_name) %></td>
+          <% end %>
           <td><%= report.sender_address.try(:without_protocol) %></td>
           <td><%= report.text %></td>
           <% if report.error? %>

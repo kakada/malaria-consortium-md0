@@ -113,4 +113,11 @@ class UsersController < ApplicationController
 
     redirect_to reports_path(params.slice(:error, :place, :page)), :notice => 'Report marked as investigated'
   end
+
+  def reports
+    @user = User.find params[:id]
+    @reports = Report.where(:sender_id => @user.id).paginate :page => params[:page], :per_page => 10, :order => 'id desc'
+    @report_id = params[:report_id].to_i
+    render :layout => false
+  end
 end

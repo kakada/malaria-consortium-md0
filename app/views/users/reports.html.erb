@@ -1,0 +1,64 @@
+<div id="fancy-div-detail">
+<%= page_entries_info @reports, :entry_name => 'message' %><br/><br/>
+<%= will_paginate @reports %>
+
+<% if @reports.any? %>
+  <table class="round full table-grid">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Text</th>
+        <th>Type</th>
+        <th>Age</th>
+        <th>Sex</th>
+        <th>Mobile?</th>
+        <th>Reported at</th>
+        <th>Health Center</th>
+        <th>Village</th>
+        <th></th>
+      </tr>
+    </thead>
+    <% @reports.each_with_index do |report, i| %>
+      <%= @report_id == report.id %>
+      <tr class="<%= i.parity %>" <%= %(style="font-weight:bold").html_safe if @report_id == report.id %>>
+        <td title="<%= report.created_at %>"><%= time_ago_in_words report.created_at %> ago</td>
+        <td><%= report.text %></td>
+        <% if report.error? %>
+          <td style="color:#900" colspan="3" align="center"><nobr><%= report.error_message %></nobr></td>
+        <% else %>
+          <td><%= report.malaria_type %></td>
+          <td><%= report.age %></td>
+          <td><%= report.sex %></td>
+        <% end %>
+        <td><%= report.mobile? ? 'Yes' : 'No' %></td>
+        <td><%= report.type == 'HealthCenterReport' ? 'health center' : 'village' unless report.error? %></td>
+        <td><%= report.health_center.try(:short_description) %></td>
+        <td><%= report.village.try(:short_description) %></td>
+      </tr>
+    <% end %>
+  </table>
+  <br/>
+
+  <%= will_paginate @reports %>
+
+  <script type="text/javascript">
+    $(function() {
+      $("#fancy-div-detail > div.pagination > a ").click(function() {
+        url = this.href;
+        $.fancybox.showActivity();
+        $.ajax({
+                type	: "get",
+                cache	: false,
+                url	: url ,
+                success: function(content) {
+                        $.fancybox(content);
+                }
+        });
+        return false;
+      });
+    });
+  </script>
+<% else %>
+  No reports.
+<% end %>
+</div>

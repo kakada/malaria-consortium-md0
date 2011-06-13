@@ -12,13 +12,10 @@ class HCReportParser < ReportParser
 
     generate_error :invalid_village_code and return if village_code.nil? || !@scanner.eos?
 
-    @village = Place.find_by_code village_code
+    @village = Village.find_by_code village_code
     generate_error :non_existent_village and return if @village.nil? || !@village.village?
 
-    if @village && @village.village?
-      @report.village = @village
-      generate_error :non_supervised_village and return if @reporter.place_id != @village.parent_id
-    end
+    @report.village = @village
 
     self
   end

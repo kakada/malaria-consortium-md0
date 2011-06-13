@@ -12,7 +12,7 @@ describe HCReportParser do
 
   def expect_village code, hc_code=nil
     village = village("1", code, hc_code)
-    Place.should_receive(:find_by_code).with(code).and_return village
+    Village.should_receive(:find_by_code).with(code).and_return village
     village
   end
 
@@ -47,9 +47,11 @@ describe HCReportParser do
       assert_parse_error "F123M11111111", :non_existent_village
     end
 
-    it "should return error message when village isnt supervised by user's health center" do
+    it "should not return error message when village isnt supervised by user's health center" do
       expect_village "87654321"
-      assert_parse_error "F123M87654321", :non_supervised_village
+
+      @parser.parse "F123M87654321"
+      @parser.errors?().should == false
     end
   end
 end

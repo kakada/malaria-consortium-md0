@@ -22,12 +22,16 @@ class ReportsController < ApplicationController
 
   def edit
     if @report.place.class == HealthCenter
-      @villages = Village.where(:parent_id => @report.place_id)
+      @od = @report.place.parent
     else
-      @villages = Village.where(:parent_id => @report.place.parent_id)
+      @od = @report.place.parent.parent
     end
-    @villages = @villages.map { |v| [v.short_description, v.id] }
-    @villages.insert 0, ['Select one...', '']
+    @villages = @od.health_centers.includes(:villages).to_a.map do |health_center|
+      [health_center.short_description, health_center.villages.to_a.map do |village|
+        [village.short_description, village.id]
+      end]
+    end
+    @villages.insert 0, ['', ['Select one...', '']]
   end
 
   def update

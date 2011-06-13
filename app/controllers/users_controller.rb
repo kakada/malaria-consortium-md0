@@ -89,7 +89,6 @@ class UsersController < ApplicationController
          :password_confirmation => params[:password],
          :phone_number => params[:phone_number],
          :role => params[:role],
-         :id => params[:id],
          :intended_place_code => params[:intended_place_code]
     }
     @user = User.find(params[:id].to_i)

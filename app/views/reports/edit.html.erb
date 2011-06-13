@@ -28,7 +28,7 @@
     </p>
     <p>
       <%= f.label :village_id %><br/>
-      <%= f.select :village_id, options_for_select(@villages, @report.village_id) %>
+      <%= f.select :village_id, grouped_options_for_select(@villages, @report.village_id) %>
     </p>
     <%= f.submit %>
   <% end %>

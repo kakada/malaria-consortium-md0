@@ -24,6 +24,9 @@ Local::Application.routes.draw do
       get "report_detail"
       get "report_csv"
     end
+    member do
+      get 'generated_messages'
+    end
   end
   resources :users do
     member do

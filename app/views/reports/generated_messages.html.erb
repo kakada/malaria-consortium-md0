@@ -1,0 +1,21 @@
+<%= stylesheet_link_tag "style" %>
+<% if @messages.blank? %>
+  No generated messages.
+<% else %>
+  <table class="round full table-grid">
+    <thead>
+      <th>Phone</th>
+      <th>User</th>
+      <th>Place</th>
+      <th>Text</th>
+    </thead>
+    <% @messages.each_with_index do |message, i| %>
+      <tr class="<%= i.parity %>">
+        <td><%= message['to'].without_protocol %></td>
+        <td><%= message['user'].try(:user_name) %></td>
+        <td><%= message['user'].try(:place).try(:description) %></td>
+        <td><%= message['body'] %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>

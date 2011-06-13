@@ -54,13 +54,19 @@ class ReportsController < ApplicationController
     @reports = @reports.paginate :page => params[:page], :per_page => 20
     render :layout =>false
   end
-  
+
   # GET reports/report_csv
   def report_csv
     file = Report.write_csv(params)
     file = File.open(file, "rb")
     contents = file.read
     send_data contents, :type => "text/csv" , :filename => Report.report_file(params[:place_type],params[:from],params[:to])
+  end
+
+  def generated_messages
+    @report = Report.find(params[:id])
+    @messages = @report.generated_messages
+    render :layout => false
   end
 
   private

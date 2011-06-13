@@ -173,6 +173,17 @@ class Report < ActiveRecord::Base
     end
   end
 
+  def generated_messages
+    messages = Nuntium.new_from_config.get_ao nuntium_token
+    phone_numbers = messages.map{|x| x['to'].without_protocol}
+    users = User.where(:phone_number => phone_numbers).includes(:place).all
+    users = Hash[users.map{|x| [x.phone_number, x]}]
+    messages.each do |message|
+      message['user'] = users[message['to'].without_protocol]
+    end
+    messages
+  end
+
   private
 
   def complete_fields

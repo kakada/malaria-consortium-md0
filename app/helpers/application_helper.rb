@@ -1,6 +1,6 @@
 module ApplicationHelper
   def title
-    pref = "Malaria consortium"
+    pref = "Malaria Alert System"
     if !@title.nil?
       return @title + " | " + pref
     end

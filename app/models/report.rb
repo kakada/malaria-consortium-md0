@@ -180,6 +180,7 @@ class Report < ActiveRecord::Base
     users = Hash[users.map{|x| [x.phone_number, x]}]
     messages.each do |message|
       message['user'] = users[message['to'].without_protocol]
+      message['state'] = 'pending' if message['state'] == 'queued'
     end
     messages
   end

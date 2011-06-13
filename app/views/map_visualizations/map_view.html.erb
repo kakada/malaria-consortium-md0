@@ -179,25 +179,6 @@
 
      }
 
-     function loading(container){
-       var map = $(container);
-       var loading = $("#ajax_loading")
-       var pos =  map.offset();
-
-       var loading_width = loading.width();
-       var loading_height= loading.height();
-
-       var width = map.width();
-       var height = map.height();
-
-       var top = pos.top + (height/2) -(loading_height/2) + "px" ;
-       var left = pos.left + (width/2) -(loading_width/2) + "px" ;
-
-       $("#ajax_loading").css("left",left);
-       $("#ajax_loading").css("top",top);
-
-     }
-
      function getListReport(id){
        $("#ajax_loading").show();
        MD.date.toCalender();
@@ -281,7 +262,6 @@
    </div>
    <div class="clear"></div>
 
-   <div id="ajax_loading" class="loading round" >Waiting for server response</div>
    <div id="map_canvas">Your browser doesn't support map</div>
    <input type="hidden" id="place_id" name="place_id" value="<%=  @place_id %>" />
    <br />

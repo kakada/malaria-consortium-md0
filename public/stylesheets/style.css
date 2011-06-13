@@ -315,6 +315,7 @@ input[type=text].error,  input[type=password].error{
     margin: 0 auto;
     margin-bottom: 10px;
     padding: 7px 0px;
+    float:left;
 }
 .pagination a,.pagination span {
     padding:2px 6px;
@@ -366,7 +367,7 @@ label.error
         margin-left: 5px;
 }
 
-.msg-error, .alert, .error {
+div.msg-error, div.alert, div.error {
     background-image: url(../images/stop.png);
     background-repeat: no-repeat;
     background-position: left center;
@@ -382,7 +383,7 @@ label.error
     background-image: url(../images/notify.png);
     background-repeat: no-repeat;
     background-position: left center;
-    padding: 5px 5px 5px 24px;
+    padding: 10px 30px;
     border: 2px solid #ccc;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
@@ -629,4 +630,7 @@ div.input{
 #search_box{
     margin-top: 10px;
     text-align: right;
+}
+tr.error{
+    color: #f00;
 }

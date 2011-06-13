@@ -1,0 +1,39 @@
+<% if(@users.size) %>
+<br />
+
+<div style="float:left;"> # <%=  @users.size %> records  </div>
+<div style="float:right;" ><%= link_to "Confirm import now", confirm_import_users_path(:file=>@file_name),:class=>"confirm_import", :id=>"confirm_import"  %>  </div>
+<div style="clear:both;" ></div>
+<div >
+  <table class="full table-grid round" >
+    <thead>
+      <tr>
+        <th> # </th>
+        <th> Name </th>
+        <th> Email </th>
+        <th> Phone </th>
+        <th> Password </th>
+        <th> Place </th>
+        <th> Role </th>
+        <th> Status </th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @users.each_with_index do |user,i| %>
+      <tr class="<%= (i%2 == 0)?"odd ":"even " %> <%= user.errors.size > 0 ? "error ":" " %>" >
+        <td> <%= i+1 %> </td>
+        <%= cell user, :user_name %>
+        <%= cell user, :email   %>
+        <%= cell user, :phone_number %>
+        <%= cell user, :password   %>
+        <%= cell user, :intended_place_code %>
+        <%= cell user, :role  %>
+        <td><%= user.errors.size > 0 ? "Failure": "Success" %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+<% else %>
+  <h2> An empty csv file </h2>
+<% end %>

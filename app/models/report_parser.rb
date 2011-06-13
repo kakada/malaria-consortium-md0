@@ -20,8 +20,8 @@ class ReportParser
     @report.text = message
 
     @original_message = message
-
-    @message = message.strip.sub(/\s/, "").sub(",", "")
+    #F12
+    @message = message.strip.gsub(/\s/, "").gsub(",", "")
     @scanner = StringScanner.new @message
 
     malaria_type = @scanner.scan /[FVM]/i

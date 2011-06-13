@@ -64,4 +64,14 @@ module UsersHelper
     end
   	element.html_safe
   end
+
+  def cell user, field, ui_field_name = nil , options = {}
+    element = '<td>'
+    element << "<span>" <<  user.send(field) << "</span>"
+    element << '<div class="validation_error server">'
+    element << (user.errors[field] ? user.errors[field].join(". ") : " ")
+  	element << '</div>'
+  	element << '</td>'
+  	element.html_safe
+  end
 end

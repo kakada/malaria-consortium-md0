@@ -36,6 +36,10 @@ Local::Application.routes.draw do
     collection do
       get "validate"
       get "create_new"
+      get "import_form"
+      get "csv_template"
+      get "upload_csv"
+      get "confirm_import"
     end
   end
 

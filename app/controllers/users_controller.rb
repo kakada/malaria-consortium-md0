@@ -114,10 +114,43 @@ class UsersController < ApplicationController
     redirect_to reports_path(params.slice(:error, :place, :page)), :notice => 'Report marked as investigated'
   end
 
+  #GET /users/csv_template
+  def csv_template
+    column_headers = "Name,Email,Phone,Password,Place code,Role"
+    send_data column_headers, :type => 'text/csv', :filename => 'users_template.csv'
+  end
+
   def reports
     @user = User.find params[:id]
     @reports = Report.where(:sender_id => @user.id).paginate :page => params[:page], :per_page => 10, :order => 'id desc'
     @report_id = params[:report_id].to_i
     render :layout => false
   end
+
+  def upload_csv
+    @file_name = params[:user][:csvfile].original_filename
+    if @file_name.scan(/\.csv$/i).size == 0
+       render :text => "Not valid csv file extension"
+    else
+       file = get_user_csv_path @file_name
+       FileUtils.mv params[:user][:csvfile].path, file
+       @users = UserImporter.parse(file)
+       render "upload_csv.html.erb"
+    end
+  end
+
+  def confirm_import()
+    file_name = params[:file]
+    file = get_user_csv_path(file_name)
+    count = UserImporter.import(file)
+    flash[:notice] = "#{count} users have been added "
+    redirect_to :controller => :users
+  end
+
+  private
+
+  def get_user_csv_path file_name
+     File.join Rails.root, "tmp", file_name
+  end
+
 end

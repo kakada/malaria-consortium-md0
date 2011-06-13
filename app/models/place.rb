@@ -127,6 +127,10 @@ class Place < ActiveRecord::Base
     Report.where self.foreign_key => self.id
   end
 
+  def name
+    attributes['name'] || ''
+  end
+
 end
 
 class Country

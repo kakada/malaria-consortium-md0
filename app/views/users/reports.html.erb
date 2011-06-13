@@ -19,7 +19,6 @@
       </tr>
     </thead>
     <% @reports.each_with_index do |report, i| %>
-      <%= @report_id == report.id %>
       <tr class="<%= i.parity %>" <%= %(style="font-weight:bold").html_safe if @report_id == report.id %>>
         <td title="<%= report.created_at %>"><%= time_ago_in_words report.created_at %> ago</td>
         <td><%= report.text %></td>

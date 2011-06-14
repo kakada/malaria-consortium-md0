@@ -47,7 +47,7 @@ describe Report do
   it "generate alert from village for od" do
     report = VMWReport.make
     od_user = User.make :place => report.village.get_parent(OD)
-    Setting.stub(:[]).with(:single_village_case_template).and_return('{malaria_type} {sex} {age} {village} {contact_number}')
+    Setting[:single_village_case_template] = '{malaria_type} {sex} {age} {village} {contact_number}'
 
     alerts = report.generate_alerts
     alerts.should =~ [
@@ -58,7 +58,7 @@ describe Report do
   it "generate alert from hc for od" do
     report = HealthCenterReport.make
     od_user = User.make :place => report.village.get_parent(OD)
-    Setting.stub(:[]).with(:single_hc_case_template).and_return('{malaria_type} {sex} {age} {village} {health_center} {contact_number}')
+    Setting[:single_hc_case_template] ='{malaria_type} {sex} {age} {village} {health_center} {contact_number}'
 
     alerts = report.generate_alerts
     alerts.should =~ [
@@ -70,8 +70,7 @@ describe Report do
     village = Village.make
     od_user = User.make :place => village.get_parent(OD)
     Threshold.create! :place => village, :place_class => Village.name, :value => 2
-    Setting.stub(:[]).with(:single_village_case_template).and_return('')
-    Setting.stub(:[]).with(:aggregate_village_cases_template).and_return('{cases} ({f_cases}, {v_cases}) {village}')
+    Setting[:aggregate_village_cases_template] = '{cases} ({f_cases}, {v_cases}) {village}'
 
     VMWReport.make(:village => village, :malaria_type => 'V').generate_alerts.should =~ []
 
@@ -88,8 +87,7 @@ describe Report do
     village = Village.make
     od_user = User.make :place => village.get_parent(OD)
     Threshold.create! :place => village.parent, :place_class => HealthCenter.name, :value => 2
-    Setting.stub(:[]).with(:single_village_case_template).and_return('')
-    Setting.stub(:[]).with(:aggregate_hc_cases_template).and_return('{cases} ({f_cases}, {v_cases}) {health_center}')
+    Setting[:aggregate_hc_cases_template] = '{cases} ({f_cases}, {v_cases}) {health_center}'
 
     VMWReport.make(:village => village, :malaria_type => 'V').generate_alerts.should =~ []
 
@@ -100,6 +98,32 @@ describe Report do
     VMWReport.make(:village => village, :malaria_type => 'F').generate_alerts.should =~ [
       {:to => od_user.phone_number.with_sms_protocol, :body => "3 (2, 1) #{village.parent.name}"}
     ]
+  end
+
+  describe "provintial alerts" do
+    let!(:village) { Village.make }
+    let!(:village_user) { User.make :place => village }
+    let!(:province_user) { User.make :place => village.province }
+
+    before(:each) do
+      Threshold.create! :place => village.parent, :place_class => HealthCenter.name, :value => 1
+    end
+
+    it "should be not be triggered when disabled" do
+      Setting[:provincial_alert] = '0'
+
+      messages = Report.process :from => village_user.address, :body => 'F23F'
+      province_messages = messages.select{|msg| msg[:to] == province_user.address}
+      province_messages.should be_empty
+    end
+
+    it "should be triggered when enabled" do
+      Setting[:provincial_alert] = '1'
+
+      messages = Report.process :from => village_user.address, :body => 'F23F'
+      province_messages = messages.select{|msg| msg[:to] == province_user.address}
+      province_messages.length.should eq(1)
+    end
   end
 
 end

@@ -152,7 +152,7 @@ describe Report do
     end
 
     it "should notify hc when vmw reports" do
-      Setting.stub(:[]).with(:single_village_case_template).and_return('A {malaria_type} case ({sex}, {age}) has been detected in {village} by the VMW {contact_number}')
+      Setting[:single_village_case_template] = 'A {malaria_type} case ({sex}, {age}) has been detected in {village} by the VMW {contact_number}'
       response = Report.process @valid_vmw_message
       hc_msg = response.select {|x| x[:to] == @hc_user.phone_number.with_sms_protocol }
       hc_msg.should have(1).items

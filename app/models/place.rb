@@ -108,7 +108,7 @@ class Place < ActiveRecord::Base
     alerts = []
     except = options[:except]
     users.each do |user|
-      alerts << {:to => user.phone_number.with_sms_protocol, :body => message} unless user == except
+      alerts << {:to => user.address, :body => message} unless user == except
     end
     alerts
   end
@@ -161,6 +161,12 @@ class OD
 
   def count_reports_since time
     Report.joins(:place).where("reports.created_at >= ? AND places.parent_id = ?", time, id).count
+  end
+
+  def create_alerts(message)
+    alerts = super
+    alerts += parent.create_alerts message if Setting[:provincial_alert] != "0"
+    alerts
   end
 end
 

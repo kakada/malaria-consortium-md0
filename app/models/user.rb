@@ -63,6 +63,10 @@ class User < ActiveRecord::Base
     place.report_parser self
   end
 
+  def address
+    phone_number.with_sms_protocol
+  end
+
   #data ={:user_name=>[],:password => [] ,...}
   def self.save_bulk data
     users = []

@@ -1,35 +1,26 @@
 class UsersController < ApplicationController
-  PerPage = 20
+  PerPage = 1
 
   #GET /users
   def index
     @title = "User management"
-    @page = (params[:page] || '1').to_i
-    @user = User.new
-    @user.intended_place_code = ""
+    @page = get_page
+    @user = User.new {|u| u.intended_place_code = ""}
     @users = User.paginate :page => (@page || '1').to_i, :per_page => PerPage, :order => 'id desc'
   end
 
-  #GET /user/new
-  def new
-    @title = "Create Users"
-    @places = Place.all
-  end
-
-  #post /users/:id
+  #POST /users/:id
   def destroy
     user = User.find(params[:id])
     if user == current_user
       flash["msg-error"] = "You can't delete yourself. First log in as another user and delete youself."
+    elsif user.reports.exists?
+      flash["msg-error"] = "User #{user.user_name} can't be deleted because it already sent some reports."
     else
-      if Report.where(:sender_id => user.id).exists?
-        flash["msg-error"] = "User #{user.user_name} can't be deleted because it already sent some reports."
-      else
-        user.delete
-        flash["msg-error"] = "User #{user.user_name} has been removed"
-      end
+      user.destroy
+      flash["msg-error"] = "User #{user.user_name} has been removed"
     end
-    redirect_to :action => "index"
+    redirect_to users_path(:page => params[:page])
   end
 
   def create_new

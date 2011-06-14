@@ -61,14 +61,11 @@ Local::Application.routes.draw do
 
   resources :thresholds
 
-  match  '/contact' => "page#contact"
-  match  '/about' => "page#about"
-  match  "/signup" => "users#new"
   match  "/user_edit/:id" => "users#user_edit"
   match  "/user_update" => "users#user_save"
   match  "/user_cancel/:id" => "users#user_cancel"
 
   match "/nuntium/receive_at" => "nuntium#receive_at"
 
-  match ':controller(/:action(/:id(.:format)))'
+  #match ':controller(/:action(/:id(.:format)))'
 end

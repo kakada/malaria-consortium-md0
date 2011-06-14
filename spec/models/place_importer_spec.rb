@@ -4,10 +4,10 @@ require 'spec_helper'
 
 describe PlaceImporter do
 
-  it "should import" do
-    file = File.join(File.dirname(__FILE__),"test.csv")
-    importer = PlaceImporter.new file
+  let(:file) { File.join(File.dirname(File.dirname(__FILE__)),"import_data","places.csv") }
+  let(:importer) { PlaceImporter.new file }
 
+  it "should import" do
     importer.import
 
     Province.all.map(&:name).should =~ ["Battambang", "Banteay Meanchey"]
@@ -33,9 +33,6 @@ describe PlaceImporter do
   end
 
   it "should simulate" do
-    file = File.join(File.dirname(__FILE__),"test.csv")
-    importer = PlaceImporter.new file
-
     places = importer.simulate
 
     provinces = places.select {|place| place.is_a? Province}
@@ -69,8 +66,6 @@ describe PlaceImporter do
   end
 
   it "should not show already existent places" do
-    file = File.join(File.dirname(__FILE__),"test.csv")
-    importer = PlaceImporter.new file
     importer.import
 
     new_simulation_result = importer.simulate

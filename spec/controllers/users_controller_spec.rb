@@ -44,7 +44,7 @@ describe UsersController do
   end
 
   #Update attribute of user
-  describe "#user_save" do
+  describe "update" do
     describe "with valid attributes" do
       before(:each) do
         @update_attrib_valid = @attribute.merge :id =>1
@@ -56,26 +56,26 @@ describe UsersController do
       it "should find user and return an user object " do
         User.should_receive(:find).with(1).and_return(@user)
         @attribute[:id] = 1
-        put :user_save , @update_attrib_valid
+        put :update , @update_attrib_valid
       end
 
       it "should update the user with update_attributes and return true" do
         @user.should_receive(:update_attributes).and_return(true)
-        put :user_save, @update_attrib_valid
+        put :update, @update_attrib_valid
       end
 
       it "should reload the user model to reflex place changes" do
         @user.should_receive(:reload)
-        put :user_save, @update_attrib_valid
+        put :update, @update_attrib_valid
       end
 
       it "should set @msg as notice msg" do
-        put :user_save, @update_attrib_valid
+        put :update, @update_attrib_valid
         assigns[:msg].should == {"msg-notice" => "Update successfully."}
       end
 
       it "should render show template" do
-        put :user_save, @update_attrib_valid
+        put :update, @update_attrib_valid
         response.should render_template :show
       end
 
@@ -90,21 +90,21 @@ describe UsersController do
 
       it "should find a user and return an user obj" do
         User.should_receive(:find).with(1).and_return(@user)
-        put :user_save, @update_attrib_invalid
+        put :update, @update_attrib_invalid
       end
 
       it "should not update attribute of the user object " do
         @user.should_receive(:update_attributes).and_return(false)
-        put :user_save, @update_attrib_invalid
+        put :update, @update_attrib_invalid
       end
 
       it "should set @msg as error msg" do
-        put :user_save, @update_attrib_invalid
+        put :update, @update_attrib_invalid
         assigns[:msg].should  == {"msg-error" => "Failed to update."}
       end
 
       it "should render edit template" do
-        put  :user_save, @update_attrib_invalid
+        put  :update, @update_attrib_invalid
         response.should render_template :edit
       end
     end

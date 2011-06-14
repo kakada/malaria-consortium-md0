@@ -5,17 +5,13 @@ describe CustomMessagesController do
   include Devise::TestHelpers
 
   before(:each) do
-    @user = admin_user "12345678"
-    sign_in @user
-    controller.current_user.should eq(@user)
+    sign_in User.make
   end
 
-  it "should use CustomMessageController" do
-    controller.should be_instance_of CustomMessagesController
-  end
+  it { should be_instance_of CustomMessagesController }
 
-  describe "new custom_message" do
-    it "should render new at new_custom_message_path" do
+  describe "new custom message" do
+    it "should render new template" do
       get :new
       response.should render_template :new
     end
@@ -68,6 +64,4 @@ describe CustomMessagesController do
       end
     end
   end
-
-
 end

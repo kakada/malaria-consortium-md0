@@ -4,8 +4,6 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :password_length => 1..128
 
-  # Setup accessible (or protected) attributes for your model
-  #attr_accessible :email, :password, :password_confirmation, :remember_me
   attr_accessor :intended_place_code
 
   Roles = ["default", "national", "admin" ]
@@ -29,13 +27,6 @@ class User < ActiveRecord::Base
 
   # Delegate country, province, etc., to place
   Place::Types.each { |type| delegate type.tableize.singularize, :to => :place }
-
-  def self.authenticate email, pwd
-    user = User.find_by_email email
-
-    return nil if user.nil?
-    return user if user.has_password? pwd
-  end
 
   def write_places_csv source_file
     File.open(places_csv_file_name,"w+b") do |file|

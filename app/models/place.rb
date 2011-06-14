@@ -167,8 +167,22 @@ class OD
     alerts = super
 
     alerts += parent.create_alerts message if Setting[:provincial_alert] != "0"
-    if Setting[:national_alert] != "0"
-      User.find_all_by_role('national').each do |user|
+    alerts += national_and_admin_alerts(message)
+
+
+    alerts
+  end
+
+  private
+
+  def national_and_admin_alerts(message)
+    roles = []
+    roles << 'national' if Setting[:national_alert] != "0"
+    roles << 'admin' if Setting[:admin_alert] != "0"
+
+    alerts = []
+    if roles.present?
+      User.where(:role => roles).each do |user|
         alerts.push :to => user.address, :body => message
       end
     end

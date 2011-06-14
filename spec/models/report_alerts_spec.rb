@@ -173,6 +173,26 @@ describe Report do
         national_messages.length.should eq(1)
       end
     end
+
+    describe "admin" do
+      let!(:admin_user) { User.make :role => 'admin' }
+
+      it "should be not be triggered when disabled" do
+        Setting[:admin_alert] = '0'
+
+        messages = Report.process :from => village_user.address, :body => 'F23F'
+        admin_messages = messages.select{|msg| msg[:to] == admin_user.address}
+        admin_messages.should be_empty
+      end
+
+      it "should be triggered when enabled" do
+        Setting[:admin_alert] = '1'
+
+        messages = Report.process :from => village_user.address, :body => 'F23F'
+        admin_messages = messages.select{|msg| msg[:to] == admin_user.address}
+        admin_messages.length.should eq(1)
+      end
+    end
   end
 
 end

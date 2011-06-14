@@ -33,23 +33,14 @@ class UsersController < ApplicationController
   end
 
   def create_new
-    attributes = {
-         :user_name => params[:user_name],
-         :email => params[:email],
-         :password => params[:password],
-         :password_confirmation => params[:password],
-         :phone_number => params[:phone_number],
-         :role => params[:role],
-         :id => params[:id],
-         :intended_place_code => params[:intended_place_code]
-    }
+    attributes = params.slice :user_name, :email, :password, :phone_number, :role, :id, :intended_place_code
+    attributes[:password_confirmation] = attributes[:password]
 
-    @user = User.new(attributes)
+    @user = User.new attributes
 
-    if(@user.save)
-      @user = User.new
+    if @user.save
       flash["msg-notice"] = "Successfully created"
-      redirect_to :action => "index" , :page => @page
+      redirect_to :action => "index"
     else
       @user.intended_place_code = params[:intended_place_code]
       flash["msg-error"] = "Failed to create"
@@ -71,24 +62,17 @@ class UsersController < ApplicationController
   end
 
   def user_save
-    attributes = {
-         :user_name => params[:user_name],
-         :email => params[:email],
-         :password => params[:password],
-         :password_confirmation => params[:password],
-         :phone_number => params[:phone_number],
-         :role => params[:role],
-         :intended_place_code => params[:intended_place_code]
-    }
-    @user = User.find(params[:id].to_i)
-    @msg = {}
+    attributes = params.slice :user_name, :email, :password, :phone_number, :role, :intended_place_code
+    attributes[:password_confirmation] = attributes[:password]
+
+    @user = User.find params[:id]
 
     if(@user.update_attributes(attributes))
       @user.reload #reload the user with its related model(place model)
-      @msg["msg-notice"] = "Update successfully."
+      @msg = {"msg-notice" => "Update successfully."}
       render :user_cancel, :layout => false
     else
-      @msg["msg-error"] = "Failed to update."
+      @msg = {"msg-error" => "Failed to update."}
       @user[:intended_place_code] =  params[:intended_place_code]
       render :user_edit, :layout => false
     end

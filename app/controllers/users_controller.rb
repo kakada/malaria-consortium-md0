@@ -80,7 +80,7 @@ class UsersController < ApplicationController
   #GET /users/csv_template
   def csv_template
     column_headers = "Name,Email,Phone,Password,Place code,Role"
-    send_data column_headers, :type => 'text/csv', :filename => 'users_template.csv'
+    send_data column_headers, :type => 'text/csv', :filename => 'users-template.csv'
   end
 
   def reports
@@ -93,16 +93,16 @@ class UsersController < ApplicationController
   def upload_csv
     @file_name = params[:user][:csvfile].original_filename
     if @file_name.scan(/\.csv$/i).size == 0
-       render :text => "Not valid csv file extension"
+       render  "invalid_csv_format.html.erb"
     else
        file = get_user_csv_path @file_name
        FileUtils.mv params[:user][:csvfile].path, file
-       @users = UserImporter.parse(file)
+       @users = UserImporter.simulate file
        render "upload_csv.html.erb"
     end
   end
 
-  def confirm_import()
+  def confirm_import
     file_name = params[:file]
     file = get_user_csv_path(file_name)
     count = UserImporter.import(file)

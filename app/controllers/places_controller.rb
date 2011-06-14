@@ -1,5 +1,27 @@
 # coding: utf-8
 class PlacesController < ApplicationController
+
+  #GET /places
+  def index
+    @places =  Place.paginate :page => params[:page], :per_page => PerPage, :order => "id asc"
+  end
+
+  #
+  def edit
+    @place = Place.find(params[:id])
+  end
+
+  #
+  def update
+    @place = Place.find(params[:id])
+    if @place.update_attributes(params[:place])
+      flash["notice"] = "#{@place.description} has been updated successfully"
+      redirect_to places_path(:page => params[:page])
+    else
+      render 'edit'
+    end
+  end
+
   #POST /places/confirm_import
   def confirm_import
     PlaceImporter.new(current_user.places_csv_file_name).import
@@ -131,7 +153,9 @@ class PlacesController < ApplicationController
   end
 
   def autocomplete
-    places = Place.where("code LIKE :q OR name LIKE :q", :q => "#{params[:query]}%").order(:code).all
+    places = Place.where("code LIKE :q OR name LIKE :q", :q => "#{params[:query]}%")
+    places = places.where(:type => params[:type]) if params[:type].present?
+    places = places.order(:code).all
     suggestions = places.map! { |x| "#{x.code} #{x.name} (#{x.class.to_s.underscore.humanize})" }
     render :json => {:query => params[:query], :suggestions => suggestions}
   end

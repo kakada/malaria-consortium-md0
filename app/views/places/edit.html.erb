@@ -1,0 +1,96 @@
+<%= content_for :head do  %>
+   <%= javascript_include_tag "http://maps.google.com/maps/api/js?sensor=false"  %>
+   <%= javascript_include_tag "styled_marker"  %>
+   <%= javascript_include_tag "map.min"  %>
+   <%= javascript_include_tag "map.markerwithlabel"  %>
+   <%= javascript_include_tag "places/place_edit" %>
+  <script type="text/javascript" >
+  $(function(){
+    MD.createMap("#map_canvas");
+    var lat = "<%= @place.lat  %> ";
+    var lng = "<%= @place.lng %> ";
+    var marker = MD.createMarker({
+      "lat" : lat ,
+      "lng" : lng,
+      "title": "<%= @place.name  %> ",
+      "draggable" : true
+    })
+    MD.centerTo(lat, lng);
+
+    google.maps.event.addListener(marker, 'dragend', function(mouseEvent){
+      var lat = mouseEvent.latLng.lat().toFixed(6);
+      var lng = mouseEvent.latLng.lng().toFixed(6);
+      $("#place_lat").val(lat);
+      $("#place_lng").val(lng);
+      MD.centerTo(lat, lng);
+    });
+
+    $("#place_lat,#place_lng").keyup(function(){
+      moveMarker();
+    })
+   
+    function moveMarker(){
+      lat =  $("#place_lat").val();
+      lng = $("#place_lng").val();
+
+      markers= MD.getMarkers();
+      marker = markers[0];
+      marker.setPosition(MD.createLatLng(lat, lng));
+      MD.centerTo(lat, lng);
+    }
+
+    $('#place_intended_parent_code').autocomplete({
+      serviceUrl: '<%= autocomplete_places_path(:type => @place.parent_class) %>',
+      minChars: 2,
+      maxHeight: 300,
+      zIndex: 9999
+    });
+
+  });
+</script>
+<% end %>
+<h2> Edit place </h2>
+<% if @place.errors.size > 0  %>
+  <div class="error"><%= @place.errors.full_messages.join("<br />").html_safe  %> </div>
+<% end %>
+<%= form_for @place.becomes(Place) do |form| %>
+  <input type="hidden" value="<%= params[:page] %>" name="page" />
+  <div class="input">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="input  ">
+    <%= form.label :name_kh %>
+    <%= form.text_field :name_kh %>
+  </div>
+  
+  <div class="input  ">
+    <%= form.label :code %>
+    <%= form.text_field :code %>
+  </div>
+
+  <% unless @place.country? || @place.province? %>
+    <div class="input  ">
+      <%= form.label :intended_parent_code, @place.parent_class.titleize %>
+      <%= form.text_field :intended_parent_code, :value => @place.parent.try(:description) %>
+    </div>
+  <% end %>
+
+  <div class="input  ">
+    <%= form.label :lat, "Latitude" %>
+    <%= form.text_field :lat %>
+  </div>
+
+  <div class="input  ">
+    <%= form.label :lng, "Logitude" %>
+    <%= form.text_field :lng %>
+  </div>
+
+  <div id="map_canvas" style="width:500px;height: 300px;border: 1px solid #ccc;"> Your browser doesn't support map </div> <br />
+
+  <div class="input  ">
+    <%= form.submit "Save" %>
+  </div>
+<% end %>
+

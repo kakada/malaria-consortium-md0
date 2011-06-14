@@ -6,7 +6,12 @@ class Place < ActiveRecord::Base
   before_save :unset_hierarchy
   after_save :set_hierarchy
 
+  validates_presence_of :name
+  validates_presence_of :code
   validates_uniqueness_of :code
+
+  before_validation :set_parent_from_intended_parent_code, :if => lambda { @intended_parent_code }
+  validate :intended_parent_code_must_exist, :if => lambda { @intended_parent_code && !parent }
 
   def self.find_by_code(code)
     pieces = code.strip.split(/\s/, 2)
@@ -33,12 +38,28 @@ class Place < ActiveRecord::Base
     self.class.sub_place_class
   end
 
+  def self.parent_class
+    Types[Types.index(to_s) - 1] || Types.first
+  end
+
+  def parent_class
+    self.class.parent_class
+  end
+
   def unset_hierarchy
     self.hierarchy = nil unless changes.except(:hierarchy).empty?
   end
 
   def name_with_code
     "#{self.code} #{self.name}"
+  end
+
+  def intended_parent_code
+    parent.try(:description)
+  end
+
+  def intended_parent_code=(code)
+    @intended_parent_code = code
   end
 
   def set_hierarchy
@@ -124,6 +145,16 @@ class Place < ActiveRecord::Base
 
   def name
     attributes['name'] || ''
+  end
+
+  private
+
+  def set_parent_from_intended_parent_code
+    self.parent = Place.find_by_code @intended_parent_code
+  end
+
+  def intended_parent_code_must_exist
+    errors.add(:intended_parent_code, "doesn't exist")
   end
 
 end

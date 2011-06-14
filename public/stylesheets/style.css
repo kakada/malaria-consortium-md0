@@ -634,3 +634,6 @@ div.input{
 tr.error{
     color: #f00;
 }
+.input label {
+    display: block;
+}

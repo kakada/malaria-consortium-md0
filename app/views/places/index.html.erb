@@ -1,0 +1,43 @@
+
+
+<% if @places.size > 0 %>
+<div class="clear"></div>
+<h2> List of places </h2>
+<%= will_paginate @places %>
+<div class="search_box" style="float:right;" >
+  <%= render "layouts/search_box" %>
+</div>
+
+<table class="round full table-grid">
+  <thead>
+    <tr>
+      <th> Type</th>
+      <th> Code </th>
+      <th> Name </th>
+      <th> Name KH </th>
+      <th> Latitude </th>
+      <th> Longitude </th>
+      <th> Parent </th>
+      <th> </th>
+    </tr> 
+    </thead>
+    <tbody>
+    <% @places.each_with_index do |place,index| %>
+      <tr class="<%= index.parity %>" >
+        <td><%= place.type  %>  </td>
+        <td><%= place.code  %>  </td>
+        <td><%= place.name  %>  </td>
+        <td><%= place.name_kh  %>  </td>
+        <td><%= place.lat  %>  </td>
+        <td><%= place.lng  %>  </td>
+        <td><%= place.parent.try(:short_description)  %>  </td>
+        <td>
+          <%= link_to "Edit", edit_place_path(place, :page => params[:page]) %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+</table>
+<% else %>
+<div> No places</div>
+<% end %>

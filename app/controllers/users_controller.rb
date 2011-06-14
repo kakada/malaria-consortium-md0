@@ -1,6 +1,4 @@
 class UsersController < ApplicationController
-  PerPage = 20
-
   #GET /users
   def index
     @title = "User management"

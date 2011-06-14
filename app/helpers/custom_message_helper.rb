@@ -1,2 +1,0 @@
-module CustomMessageHelper
-end

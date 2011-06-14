@@ -126,4 +126,53 @@ describe Report do
     end
   end
 
+  describe "alerts" do
+    let!(:village) { Village.make }
+    let!(:village_user) { User.make :place => village }
+
+    before(:each) do
+      Threshold.create! :place => village.parent, :place_class => HealthCenter.name, :value => 1
+    end
+
+    describe "provintial" do
+      let!(:province_user) { User.make :place => village.province }
+
+      it "should be not be triggered when disabled" do
+        Setting[:provincial_alert] = '0'
+
+        messages = Report.process :from => village_user.address, :body => 'F23F'
+        province_messages = messages.select{|msg| msg[:to] == province_user.address}
+        province_messages.should be_empty
+      end
+
+      it "should be triggered when enabled" do
+        Setting[:provincial_alert] = '1'
+
+        messages = Report.process :from => village_user.address, :body => 'F23F'
+        province_messages = messages.select{|msg| msg[:to] == province_user.address}
+        province_messages.length.should eq(1)
+      end
+    end
+
+    describe "national" do
+      let!(:national_user) { User.make :role => 'national' }
+
+      it "should be not be triggered when disabled" do
+        Setting[:national_alert] = '0'
+
+        messages = Report.process :from => village_user.address, :body => 'F23F'
+        national_messages = messages.select{|msg| msg[:to] == national_user.address}
+        national_messages.should be_empty
+      end
+
+      it "should be triggered when enabled" do
+        Setting[:national_alert] = '1'
+
+        messages = Report.process :from => village_user.address, :body => 'F23F'
+        national_messages = messages.select{|msg| msg[:to] == national_user.address}
+        national_messages.length.should eq(1)
+      end
+    end
+  end
+
 end

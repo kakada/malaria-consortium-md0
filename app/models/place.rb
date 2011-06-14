@@ -163,9 +163,15 @@ class OD
     Report.joins(:place).where("reports.created_at >= ? AND places.parent_id = ?", time, id).count
   end
 
-  def create_alerts(message)
+  def create_alerts(message, options = {})
     alerts = super
+
     alerts += parent.create_alerts message if Setting[:provincial_alert] != "0"
+    if Setting[:national_alert] != "0"
+      User.find_all_by_role('national').each do |user|
+        alerts.push :to => user.address, :body => message
+      end
+    end
     alerts
   end
 end

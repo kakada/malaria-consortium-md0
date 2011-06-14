@@ -98,22 +98,6 @@ class Report < ActiveRecord::Base
     return nil
   end
 
-
-  def self.alert_upper_level sender_number, message
-    users = []
-    sender = User.find_by_phone_number sender_number
-    users = users.concat(sender.od.province.users) if Setting[:provincial_alert] != "0"
-
-    users = users.concat User.find_all_by_role("admin") if Setting[:admin_alert] != "0"
-    users = users.concat User.find_all_by_role "national" if Setting[:national_alert] != "0"
-
-    alerts = []
-    users.each do |user|
-      alerts.push :to => user.phone_number.with_sms_protocol, :body => message
-    end
-    alerts
-  end
-
   def self.report_cases options
     place = options[:place].present? ?  Place.find(options[:place]) : Country.first
     reports = Report.at_place(place).between_dates(options[:from], options[:to]).where("reports.#{options[:place_type].foreign_key} IS NOT NULL")
@@ -217,7 +201,7 @@ class Report < ActiveRecord::Base
     return parser.error if parser.errors?
 
     alerts = report.generate_alerts
-    reply = {:to => sender.phone_number.with_sms_protocol, :body => report.human_readable}
+    reply = sender.message report.human_readable
 
     [nil, alerts.push(reply)]
   end

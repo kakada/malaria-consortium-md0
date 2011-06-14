@@ -67,6 +67,10 @@ class User < ActiveRecord::Base
     phone_number.with_sms_protocol
   end
 
+  def message(body)
+    {:to => address, :body => body}
+  end
+
   #data ={:user_name=>[],:password => [] ,...}
   def self.save_bulk data
     users = []

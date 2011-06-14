@@ -104,13 +104,8 @@ class Place < ActiveRecord::Base
     p
   end
 
-  def create_alerts message, options = {}
-    alerts = []
-    except = options[:except]
-    users.each do |user|
-      alerts << {:to => user.address, :body => message} unless user == except
-    end
-    alerts
+  def create_alerts body, options = {}
+    users.reject{|user| user == options[:except]}.map{|user| user.message(body) }
   end
 
   #update province that doesnt belong to country
@@ -175,18 +170,13 @@ class OD
 
   private
 
-  def national_and_admin_alerts(message)
+  def national_and_admin_alerts(body)
     roles = []
     roles << 'national' if Setting[:national_alert] != "0"
     roles << 'admin' if Setting[:admin_alert] != "0"
+    return [] if roles.empty?
 
-    alerts = []
-    if roles.present?
-      User.where(:role => roles).each do |user|
-        alerts.push :to => user.address, :body => message
-      end
-    end
-    alerts
+    User.where(:role => roles).map {|user| user.message(body) }
   end
 end
 

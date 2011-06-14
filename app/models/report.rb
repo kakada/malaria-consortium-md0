@@ -160,6 +160,8 @@ class Report < ActiveRecord::Base
 
   def generated_messages
     messages = Nuntium.new_from_config.get_ao nuntium_token
+    return [] if messages.blank?
+
     phone_numbers = messages.map{|x| x['to'].without_protocol}
     users = User.where(:phone_number => phone_numbers).includes(:place).all
     users = Hash[users.map{|x| [x.phone_number, x]}]

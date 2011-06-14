@@ -1,6 +1,4 @@
 class UsersController < ApplicationController
-  before_filter :correct_user, :only => [:edit, :update]
-
   PerPage = 20
 
   #GET /users
@@ -58,15 +56,6 @@ class UsersController < ApplicationController
       @page = (params[:page] || '1').to_i
       @users = User.paginate :page => @page, :per_page => PerPage, :order => 'id desc'
       render :index
-    end
-  end
-
-  #GET user/:id.:format
-  def show
-    @user = User.find(params[:id])
-    respond_to do |format|
-	    format.json { render :json => @user  }
-      format.html { render :show => @user }
     end
   end
 

@@ -3,9 +3,8 @@ class ApplicationController < ActionController::Base
 
   #from rails2
   helper :all
-  include SessionsHelper
 
-  before_filter :authenticate_admin!
+  before_filter :authenticate_user!
   before_filter :set_cambodia_time_zone
 
   private

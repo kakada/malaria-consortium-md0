@@ -74,9 +74,9 @@ describe UsersController do
         assigns[:msg].should == {"msg-notice" => "Update successfully."}
       end
 
-      it "should render user_cancel template" do
+      it "should render show template" do
         put :user_save, @update_attrib_valid
-        response.should render_template :user_cancel
+        response.should render_template :show
       end
 
     end
@@ -103,45 +103,44 @@ describe UsersController do
         assigns[:msg].should  == {"msg-error" => "Failed to update."}
       end
 
-      it "should render user_edit template" do
+      it "should render edit template" do
         put  :user_save, @update_attrib_invalid
-        response.should render_template :user_edit
+        response.should render_template :edit
       end
     end
   end
 
-
-  describe "user_edit form" do
+  describe "edit form" do
     before(:each) do
       User.stub!(:find).with(1).and_return(@user)
     end
 
     it "should find user and return an user object" do
       User.should_receive(:find).with(1).and_return(@user)
-      get :user_edit, :id=>1
+      get :edit, :id=>1
     end
 
-    it "should render user_edit template with no layout" do
-      get :user_edit, :id =>1
-      response.should render_template :user_edit
+    it "should render edit template with no layout" do
+      get :edit, :id =>1
+      response.should render_template :edit
       response.should_not render_template  "layouts/application"
     end
 
   end
 
-  describe "user_cancel form" do
+  describe "show form" do
     before(:each) do
       User.stub!(:find).with(1).and_return(@user)
     end
 
     it "should find user and return an user object" do
       User.should_receive(:find).with(1).and_return(@user)
-      get :user_cancel, :id=>1
+      get :show, :id=>1
     end
 
-    it "should render user_cancel template with no layout" do
-      get :user_cancel, :id =>1
-      response.should render_template :user_cancel
+    it "should render show template with no layout" do
+      get :show, :id =>1
+      response.should render_template :show
       response.should_not render_template  "layouts/application"
     end
 

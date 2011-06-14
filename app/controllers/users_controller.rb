@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  PerPage = 1
+  PerPage = 20
 
   #GET /users
   def index
@@ -41,18 +41,17 @@ class UsersController < ApplicationController
     end
   end
 
-  def user_cancel
+  def show
     @user = User.find(params[:id].to_i)
     render :layout => false
   end
 
-  #edit/:id
-  def user_edit
+  def edit
     @user = User.find params[:id]
     render :layout => false
   end
 
-  def user_save
+  def update
     attributes = params.slice :user_name, :email, :password, :phone_number, :role, :intended_place_code
     attributes[:password_confirmation] = attributes[:password]
 
@@ -61,11 +60,11 @@ class UsersController < ApplicationController
     if(@user.update_attributes(attributes))
       @user.reload #reload the user with its related model(place model)
       @msg = {"msg-notice" => "Update successfully."}
-      render :user_cancel, :layout => false
+      render :show, :layout => false
     else
       @msg = {"msg-error" => "Failed to update."}
       @user[:intended_place_code] =  params[:intended_place_code]
-      render :user_edit, :layout => false
+      render :edit, :layout => false
     end
   end
 

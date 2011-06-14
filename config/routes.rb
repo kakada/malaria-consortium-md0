@@ -35,7 +35,7 @@ Local::Application.routes.draw do
     end
     collection do
       get "validate"
-      get "create_new"
+      post "create_new"
       get "import_form"
       get "csv_template"
       get "upload_csv"
@@ -60,10 +60,6 @@ Local::Application.routes.draw do
   end
 
   resources :thresholds
-
-  match  "/user_edit/:id" => "users#user_edit"
-  match  "/user_update" => "users#user_save"
-  match  "/user_cancel/:id" => "users#user_cancel"
 
   match "/nuntium/receive_at" => "nuntium#receive_at"
 

@@ -3,7 +3,7 @@ class PlacesController < ApplicationController
 
   #GET /places
   def index
-    @places =  Place.paginate :page => params[:page], :per_page => PerPage, :order => "id asc"
+    @places =  Place.includes(:parent).paginate :page => params[:page], :per_page => PerPage, :order => "id asc"
   end
 
   #

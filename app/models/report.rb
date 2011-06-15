@@ -167,7 +167,11 @@ class Report < ActiveRecord::Base
     users = Hash[users.map{|x| [x.phone_number, x]}]
     messages.each do |message|
       message['user'] = users[message['to'].without_protocol]
-      message['state'] = 'pending' if message['state'] == 'queued'
+      message['state'] = case message['state']
+                         when 'delivered' then 'sent to phone'
+                         when 'confirmed' then 'received by phone'
+                         else message['state']
+                         end
     end
     messages
   end

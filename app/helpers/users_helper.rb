@@ -1,14 +1,9 @@
 module UsersHelper
-  def render_places
-    render :partial => 'admin/places'
-  end
-
   def input_cell name, options= {}
     #cssClass = !options.nil? && options[:class] ? "input #{options[:class]}" : "input"
 
     element = "<td class=\"inputCell\">"
-		element << (!options.nil? && options[:password] ? password_field_tag(name, "", options)
-		                                                : text_field_tag(name, "",  options ))
+		element << (options && options[:password] ? password_field_tag(name, "", options) : text_field_tag(name, "",  options))
 		element << "<div class=\"validation_error\"></div>"
 		element << "</td>"
 		element.html_safe

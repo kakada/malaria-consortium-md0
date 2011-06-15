@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110610043552) do
+ActiveRecord::Schema.define(:version => 20110614104636) do
 
   create_table "places", :force => true do |t|
     t.string   "name"
@@ -54,11 +54,11 @@ ActiveRecord::Schema.define(:version => 20110610043552) do
   add_index "reports", ["health_center_id", "error"], :name => "index_reports_on_health_center_id_and_error"
   add_index "reports", ["od_id", "error"], :name => "index_reports_on_od_id_and_error"
   add_index "reports", ["place_id", "error"], :name => "index_reports_on_place_id_and_error"
-  add_index "reports", ["place_id"], :name => "fk_reports_places"
+  add_index "reports", ["place_id"], :name => "index_reports_on_place_id"
   add_index "reports", ["province_id", "error"], :name => "index_reports_on_province_id_and_error"
   add_index "reports", ["sender_id"], :name => "fk_reports_users"
   add_index "reports", ["village_id", "error"], :name => "index_reports_on_village_id_and_error"
-  add_index "reports", ["village_id"], :name => "fk_reports_village"
+  add_index "reports", ["village_id"], :name => "index_reports_on_village_id"
 
   create_table "settings", :force => true do |t|
     t.string   "param"
@@ -110,6 +110,7 @@ ActiveRecord::Schema.define(:version => 20110610043552) do
   add_index "users", ["health_center_id", "place_class"], :name => "index_users_on_health_center_id_and_place_class"
   add_index "users", ["last_report_error", "updated_at"], :name => "index_users_on_last_report_error_and_updated_at"
   add_index "users", ["od_id", "place_class"], :name => "index_users_on_od_id_and_place_class"
+  add_index "users", ["phone_number"], :name => "index_users_on_phone_number"
   add_index "users", ["place_id"], :name => "index_users_on_place_id"
   add_index "users", ["province_id", "place_class"], :name => "index_users_on_province_id_and_place_class"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true

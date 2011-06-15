@@ -3,7 +3,7 @@ class PlacesController < ApplicationController
 
   #GET /places
   def index
-    @places = Place
+     @places = Place
     if(params[:query].present?)
       @places = @places.where "code LIKE :q OR name LIKE :q OR name_kh LIKE :q ", :q => "#{params[:query].strip}%"
       @places = @places.paginate :page => params[:page], :per_page => PerPage, :order => "id asc"

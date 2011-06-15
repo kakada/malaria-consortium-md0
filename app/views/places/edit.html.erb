@@ -7,8 +7,8 @@
   <script type="text/javascript" >
   $(function(){
     MD.createMap("#map_canvas");
-    var lat = "<%= @place.lat  %> ";
-    var lng = "<%= @place.lng %> ";
+    var lat = "<%= @place.lat.presence || 12.715367 %> ";
+    var lng = "<%= @place.lng.presence || 104.897460 %> ";
     var marker = MD.createMarker({
       "lat" : lat ,
       "lng" : lng,
@@ -28,7 +28,7 @@
     $("#place_lat,#place_lng").keyup(function(){
       moveMarker();
     })
-   
+
     function moveMarker(){
       lat =  $("#place_lat").val();
       lng = $("#place_lng").val();
@@ -64,7 +64,7 @@
     <%= form.label :name_kh %>
     <%= form.text_field :name_kh %>
   </div>
-  
+
   <div class="input  ">
     <%= form.label :code %>
     <%= form.text_field :code %>

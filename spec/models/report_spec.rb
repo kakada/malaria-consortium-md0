@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe Report do
   before(:each) do
-
     @province = Province.make
     @od = @province.ods.make
     @health_center = @od.health_centers.make
@@ -14,14 +13,8 @@ describe Report do
     @od_user1 = @od.users.make :phone_number => "8558192"
     @od_user2 = @od.users.make :phone_number => "8558193"
 
-    @provincial_user = @province.users.make :phone_number => "855444444"
-    @national_user =  User.create!(:user_name =>"national", :phone_number => "097777777", :role=> "national")
-    @admin_user =  User.create!(:user_name =>"admin", :phone_number => "09766666", :role=> "admin")
-
     @valid_message = {:from => "sms://8558190", :body => "F123M12345678"}
     @valid_vmw_message = {:from => "sms://8558191", :body => "F123M."}
-
-    @valid_recipients = ["1", "2", "3", "4", "5"]
   end
 
   describe "invalid message" do

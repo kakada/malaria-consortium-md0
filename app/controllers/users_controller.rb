@@ -18,7 +18,7 @@ class UsersController < ApplicationController
       user.destroy
       flash["msg-error"] = "User #{user.user_name} has been removed"
     end
-    redirect_to users_path(:page => get_page)
+    redirect_to users_path(:page => params[:page])
   end
 
   def create_new

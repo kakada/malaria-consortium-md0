@@ -4,7 +4,10 @@ module Helpers
   end
 
   def village name, code = nil, health_center_id = nil
-    Village.create! :name => name, :name_kh => name, :code => code, :parent_id => health_center_id
+    options = {:name => name, :name_kh => name}
+    options[:code] = code if code
+    options[:parent_id] = health_center_id if health_center_id
+    Village.make options
   end
 
   def od name , id = nil
@@ -38,7 +41,7 @@ module Helpers
     place_import = PlaceImporter.new(File.join("models","test.csv"))
     place_import.import
 
-    #report_format 
+    #report_format
     villages = [ [2010410, 3 ] ,
                  [2010405, 3 ] ,
                  [2010203, 3 ] ,

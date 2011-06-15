@@ -10,6 +10,9 @@ Place.blueprint do
   code { Sham.number8.to_s }
 end
 
+Country.blueprint do
+end
+
 Province.blueprint do
 end
 

@@ -7,7 +7,7 @@ class Place < ActiveRecord::Base
   after_save :set_hierarchy
 
   validates_presence_of :name
-  validates_presence_of :code
+  validates_presence_of :code, :unless => :country?
   validates_uniqueness_of :code
 
   before_validation :set_parent_from_intended_parent_code, :if => lambda { @intended_parent_code }

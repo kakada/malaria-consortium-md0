@@ -59,20 +59,20 @@ describe Place do
     describe "od_count_reports_since" do
       before(:each) do
 
-        @country = Country.create!  :code => "Cty1"
-        @province = Province.create! :parent =>@country ,:code => "Pro1"
-        @od = OD.create! :parent => @province ,  :code => "OD1"
+        @country = Country.make  :code => "Cty1"
+        @province = Province.make :parent =>@country ,:code => "Pro1"
+        @od = OD.make :parent => @province ,  :code => "OD1"
 
-        @hc1 = HealthCenter.create! :parent => @od, :code => "1"
-        @hc2 = HealthCenter.create! :parent => @od, :code => "2"
-        @hc3 = HealthCenter.create! :parent => @od, :code => "3"
+        @hc1 = HealthCenter.make :parent => @od, :code => "1"
+        @hc2 = HealthCenter.make :parent => @od, :code => "2"
+        @hc3 = HealthCenter.make :parent => @od, :code => "3"
 
-        @od2 = OD.create! :code => "od2"
-        @hc4 = HealthCenter.create! :parent => @od2, :code => "4"
+        @od2 = OD.make :code => "od2"
+        @hc4 = HealthCenter.make :parent => @od2, :code => "4"
 
-        @village = Village.create! :code => '11'
+        @village = Village.make :code => '11'
 
-        @user = User.create! :place => @hc1, :phone_number => '1'
+        @user = User.make :place => @hc1, :phone_number => '1'
         @report_hc1 = Report.create! :place => @hc1, :village => @village, :malaria_type => 'M', :sex => 'Male', :age => 23, :sender => @user
         @report_hc2 = Report.create! :place => @hc2, :village => @village, :malaria_type => 'F', :sex => 'Male', :age => 23, :sender => @user
         @report_hc3 = Report.create! :place => @hc3, :village => @village, :malaria_type => 'F', :sex => 'Male', :age => 23, :sender => @user, :created_at => 8.days.ago
@@ -93,17 +93,17 @@ describe Place do
 
     describe "hc_count_reports_since" do
       before(:each) do
-        @hc1 = HealthCenter.create! :code => "1"
-        @hc2 = HealthCenter.create! :code => "2"
-        @hc3 = HealthCenter.create! :code => "3"
+        @hc1 = HealthCenter.make :code => "1"
+        @hc2 = HealthCenter.make :code => "2"
+        @hc3 = HealthCenter.make :code => "3"
 
-        @village = Village.create! :code => '11'
+        @village = Village.make :code => '11'
 
         @user = User.create! :place => @hc1, :phone_number => '1'
 
-        @report_hc1 = Report.create! :place => @hc1, :village => @village, :malaria_type => 'M', :sex => 'Male', :age => 23, :sender => @user
-        @report_hc2 = Report.create! :place => @hc1, :village => @village, :malaria_type => 'F', :sex => 'Male', :age => 23, :sender => @user, :created_at => 8.days.ago
-        @report_hc3 = Report.create! :place => @hc3, :village => @village, :malaria_type => 'F', :sex => 'Male', :age => 23, :sender => @user, :created_at => 8.days.ago
+        @report_hc1 = Report.make :place => @hc1, :village => @village, :malaria_type => 'M', :sex => 'Male', :age => 23, :sender => @user
+        @report_hc2 = Report.make :place => @hc1, :village => @village, :malaria_type => 'F', :sex => 'Male', :age => 23, :sender => @user, :created_at => 8.days.ago
+        @report_hc3 = Report.make :place => @hc3, :village => @village, :malaria_type => 'F', :sex => 'Male', :age => 23, :sender => @user, :created_at => 8.days.ago
       end
 
       it "should count all od1 reports" do

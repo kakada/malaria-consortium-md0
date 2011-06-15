@@ -113,6 +113,11 @@ class Place < ActiveRecord::Base
     end
   end
 
+  def self.search_for_autocomplete(query)
+    query = query.strip.gsub /\s/, '%'
+    where "CONCAT(code, ' ', name, ' (', type, ')') LIKE ?", "%#{query}%"
+  end
+
   def count_sent_reports_since time
     Report.where("created_at >= ? AND place_id = ?", time, id).count
   end

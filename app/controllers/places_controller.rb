@@ -5,7 +5,7 @@ class PlacesController < ApplicationController
   def index
     @places = Place
     if(params[:query].present?)
-      @places = @places.where "code LIKE :q OR name LIKE :q OR name_kh LIKE :q ", :q => "#{params[:query].strip}%"
+      @places = @places.search_for_autocomplete params[:query]
     end
     @places = @places.paginate :page => params[:page], :per_page => PerPage, :order => "id asc"
     render :file => "/places/_places.html.erb", :layout => false if request.xhr?
@@ -158,7 +158,7 @@ class PlacesController < ApplicationController
   end
 
   def autocomplete
-    places = Place.where("code LIKE :q OR name LIKE :q", :q => "#{params[:query]}%")
+    places = Place.search_for_autocomplete params[:query]
     places = places.where(:type => params[:type]) if params[:type].present?
     places = places.order(:code).all
     suggestions = places.map! { |x| "#{x.code} #{x.name} (#{x.class.to_s.underscore.humanize})" }

@@ -62,6 +62,7 @@ Local::Application.routes.draw do
   resources :thresholds
 
   match "/nuntium/receive_at" => "nuntium#receive_at"
+  match "/test" => "text#index"
 
   #match ':controller(/:action(/:id(.:format)))'
 end

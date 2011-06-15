@@ -12,29 +12,13 @@
     </div>
   <% end %>
 
-  <p class="template_container">
-    <%= f.label :single_village_case_template, 'Template for individual case report from a village malaria worker' %><br/>
-    <%= f.text_area :single_village_case_template, :size => '60x3' %><br />
-    <%= parameters_links :single_village_case_template %>
-  </p>
-
-  <p class="template_container">
-    <%= f.label :single_hc_case_template, 'Template for individual case report from a health center' %><br/>
-    <%= f.text_area :single_hc_case_template, :size => '60x3' %><br />
-    <%= parameters_links :single_hc_case_template %>
-  </p>
-
-  <p class="template_container">
-    <%= f.label :aggregate_village_cases_template, 'Template for aggregated cases report at village level' %><br/>
-    <%= f.text_area :aggregate_village_cases_template, :size => '60x3' %><br />
-    <%= parameters_links :aggregate_village_cases_template %>
-  </p>
-
-  <p class="template_container">
-    <%= f.label :aggregate_hc_cases_template, 'Template for aggregated cases report at health center level' %><br/>
-    <%= f.text_area :aggregate_hc_cases_template, :size => '60x3' %><br />
-    <%= parameters_links :aggregate_hc_cases_template %>
-  </p>
+  <% Templates::Keys.each do |key, value| %>
+    <p class="template_container">
+      <%= f.label key, "Template for #{value[:label]}" %><br/>
+      <%= f.text_area key, :size => '60x3' %><br />
+      <%= parameters_links key %>
+    </p>
+  <% end %>
 
   <%= f.submit %>
 <% end -%>
@@ -49,7 +33,7 @@
   $(function() {
       $('.parameter_link').click(function() {
         var $this = $(this);
-        var $input = $this.parents('.template_container').children('textarea');
+        var $input = $('#templates_' + $this.attr('data-id'));
         $input.replaceSelection($this.text());
         return false;
       });

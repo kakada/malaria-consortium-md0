@@ -3,13 +3,20 @@ class Templates
   include ActiveModel::Conversion
   extend ActiveModel::Naming
 
-  Keys = %w(single_village_case_template single_hc_case_template aggregate_village_cases_template aggregate_hc_cases_template)
-
-  ValidParameters = {
-    :single_village_case_template => %w(malaria_type sex age village contact_number),
-    :single_hc_case_template => %w(malaria_type sex age village contact_number health_center),
-    :aggregate_village_cases_template => %w(cases f_cases v_cases m_cases village),
-    :aggregate_hc_cases_template => %w(cases f_cases v_cases m_cases health_center),
+  Keys = {
+    :single_village_case_template => {:params => %w(malaria_type sex age village contact_number), :label => 'individual case report from a village malaria worker'},
+    :single_hc_case_template => {:params => %w(malaria_type sex age village contact_number health_center), :label => 'individual case report from a health center'},
+    :aggregate_village_cases_template => {:params => %w(cases f_cases v_cases m_cases village), :label => 'aggregated cases report at village level'},
+    :aggregate_hc_cases_template => {:params => %w(cases f_cases v_cases m_cases health_center), :label => 'aggregated cases report at health center level'},
+    :successful_health_center_report => {:params => %w(malaria_type age sex village_code), :label => 'successful health center report message'},
+    :successful_mobile_village_report => {:params => %w(malaria_type age sex mobile), :label => 'successful mobile village report message'},
+    :successful_non_mobile_village_report => {:params => %w(malaria_type age sex mobile), :label => 'successful non mobile village report message'},
+    :invalid_malaria_type => {:params => %w(original_message), :label => 'invalid malaria type message'},
+    :invalid_age => {:params => %w(original_message), :label => 'invalid age message'},
+    :invalid_sex => {:params => %w(original_message), :label => 'invalid sex message'},
+    :invalid_village_code => {:params => %w(original_message), :label => 'invalid village code'},
+    :non_existent_village => {:params => %w(original_message), :label => 'non existent village'},
+    :too_long_village_report => {:params => %w(original_message), :label => 'too long village report'},
   }
 
   def initialize(values = {})
@@ -26,7 +33,7 @@ class Templates
     setting
   end
 
-  Keys.each do |key|
+  Keys.each do |key, value|
     class_eval %Q(
       validate :validate_#{key}
 
@@ -40,7 +47,7 @@ class Templates
 
       def validate_#{key}
         (#{key} || '').scan /\{([^\}]*)\}/ do |param|
-          self.errors.add(:#{key}, "Incorrect parameter: {" + param[0] + "}") unless ValidParameters[:#{key}].include? param[0]
+          self.errors.add(:#{key}, "Incorrect parameter: {" + param[0] + "}") unless Keys[:#{key}][:params].include? param[0]
         end
       end
     )

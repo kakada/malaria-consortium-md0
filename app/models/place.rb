@@ -114,8 +114,7 @@ class Place < ActiveRecord::Base
   end
 
   def self.search_for_autocomplete(query)
-    query = query.strip.gsub /\s/, '%'
-    where "CONCAT(code, ' ', name, ' (', type, ')') LIKE ?", "%#{query}%"
+    where "code LIKE :q OR name LIKE :q", :q => "#{query.strip}%"
   end
 
   def count_sent_reports_since time

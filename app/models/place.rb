@@ -195,11 +195,8 @@ class OD
 
   def create_alerts(message, options = {})
     alerts = super
-
     alerts += parent.create_alerts message if Setting[:provincial_alert] != "0"
     alerts += national_and_admin_alerts(message)
-
-
     alerts
   end
 
@@ -211,7 +208,7 @@ class OD
     roles << 'admin' if Setting[:admin_alert] != "0"
     return [] if roles.empty?
 
-    User.where(:role => roles).map {|user| user.message(body) }
+    User.where(:role => roles).reject{|user| user.phone_number.blank?}.map {|user| user.message(body) }
   end
 end
 

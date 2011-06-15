@@ -2,7 +2,13 @@
 
 <% if @places.size > 0 %>
 <div class="clear"></div>
-<h2> List of places </h2>
+<div>
+  <h2 style="float:left;"> List of places </h2>
+  <div style="float:right;"><%= link_to "Import places", import_places_path, :class => "import_button" %></div>
+  <div class="clear"></div>
+</div>
+
+
 
 <div class="search_box" style="float:right;" >
   <input type="text" id="place_search" name="place_search" value="<%= params[:query] %>" />

@@ -18,14 +18,14 @@ form.file_upload {
   text-align: center;
   color: #333;
   font-weight: bold;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
   border-radius: 10px;
-  width: 15em;
+  width: 12em;
   height: 2.5em;
   line-height: 2.5em;
-  background: palegreen;
-  border: 1px solid limegreen;
+  background: #eee;
+  border: 1px solid #ccc;
 }
 
 form.file_upload_small {
@@ -48,7 +48,7 @@ form.file_upload_large {
 
 form.file_upload_highlight,
 form.file_upload:hover {
-  background: lawngreen;
+  background: #eef;
 }
 
 form.file_upload input {

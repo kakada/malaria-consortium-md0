@@ -2,12 +2,14 @@
     <%= javascript_include_tag 'jquery.validate.min' %>
     <%= javascript_include_tag 'users/index' %>
 <% end %>
-<h2 style="float:left;" >List of users</h2>
+<div>
+  <h2 style="float:left;" >List of users</h2>
+  <div style="float:right;" > <%= link_to "Import users", import_form_users_path, :class=>"import_button" %> </div>
+  <div class="clear"></div>
+</div>
 
 <div class="clear"></div>
 <h4 class="round msg-error" id="actionNotifier" style="display: none;" > </h4>
-<%= will_paginate @users %>
-
-<div style="float:right;" > <%= link_to "Import", import_form_users_path %> </div>
+<div class="pagination_container" ><div class="pagination">&nbsp;</div> <%= will_paginate @users %> </div>
 <div class="clear"> </div>
 <%= render :partial => "list_users", :locals => { :users => @users, :user => @user} %>

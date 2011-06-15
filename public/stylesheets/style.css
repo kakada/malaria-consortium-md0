@@ -650,3 +650,14 @@ tr.error{
 .input label {
     display: block;
 }
+.import_button{
+    width: 300px;
+    background-image: url(../images/csv.png);
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding-left: 20px;
+    height: 18px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 10px;
+}

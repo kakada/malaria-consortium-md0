@@ -162,5 +162,4 @@ class User < ActiveRecord::Base
       parent = parent.parent
     end
   end
-
 end

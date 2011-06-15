@@ -74,6 +74,9 @@ class Place < ActiveRecord::Base
     Report.where("created_at >= ? AND place_id = ?", time, id).count
   end
 
+  def matches_threshold(threshold)
+  end
+
   def get_parent type
     p = self
     while p != nil && p.class != type

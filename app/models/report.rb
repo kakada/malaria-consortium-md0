@@ -1,5 +1,6 @@
 # encoding: UTF-8
 require 'csv'
+
 class Report < ActiveRecord::Base
   validates_presence_of :malaria_type, :sex, :age, :sender_id, :place_id, :village_id, :unless => :error?
   validates_numericality_of :age, :greater_than_or_equal_to => 0, :unless => :error?
@@ -72,11 +73,11 @@ class Report < ActiveRecord::Base
 
     case alert_triggered
     when :single
-      alerts += village.get_parent(OD).create_alerts(msg)
+      alerts += village.od.create_alerts msg
     when :village
-      alerts += village.get_parent(OD).create_alerts(village.aggregate_report 7.days.ago)
+      alerts += village.od.create_alerts village.aggregate_report(7.days.ago)
     when :health_center
-      alerts += village.get_parent(OD).create_alerts(village.parent.aggregate_report 7.days.ago)
+      alerts += village.od.create_alerts village.parent.aggregate_report(7.days.ago)
     end
 
     alerts
@@ -85,12 +86,12 @@ class Report < ActiveRecord::Base
   def alert_triggered
     hc_threshold = Threshold.find_for village.parent
     if hc_threshold
-      return :health_center if village.parent.count_reports_since(7.days.ago) >= hc_threshold.value
+      return :health_center if village.parent.reports_reached_threshold hc_threshold
     end
 
     village_threshold = Threshold.find_for village
     if village_threshold
-      return :village if village.count_reports_since(7.days.ago) >= village_threshold.value
+      return :village if village.reports_reached_threshold village_threshold
     elsif hc_threshold.nil?
       return :single
     end
@@ -107,12 +108,10 @@ class Report < ActiveRecord::Base
       ids = reports.map &:"#{options[:place_type].foreign_key}"
 
       places = Place.where("id NOT IN (?)", ids).where(:type => options[:place_type])
-      #places = places.paginate :page => options[:page], :per_page => 25, :order => "name"
     else
       reports = reports.includes options[:place_type].tableize.singularize.to_sym
       reports = reports.select 'reports.*, count(*) as total'
       reports = reports.group "reports.#{options[:place_type].foreign_key}"
-      #reports = reports.paginate :page => options[:page], :per_page => 25, :order => "total desc"
     end
   end
 
@@ -129,6 +128,7 @@ class Report < ActiveRecord::Base
   def self.report_file(place_type,from, to)
     "Report #{place_type} #{from}, #{to}.csv"
   end
+
   def self.write_csv options
     reports = Report.report_cases_all options
     file = "#{Rails.root}/tmp/Report #{self.report_file(options[:place_type], options[:from], options[:to])}.csv"
@@ -167,10 +167,7 @@ class Report < ActiveRecord::Base
     users = Hash[users.map{|x| [x.phone_number, x]}]
     messages.each do |message|
       message['user'] = users[message['to'].without_protocol]
-      message['state'] = case message['state']
-                         when 'delivered', 'confirmed' then 'sent'
-                         else message['state']
-                         end
+      message['state'] = 'sent' if ['delivered', 'confirmed'].include? message['state']
     end
     messages
   end

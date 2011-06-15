@@ -15,6 +15,10 @@ class HealthCenter < Place
     reports_since(time).count
   end
 
+  def reports_reached_threshold(threshold)
+    count_reports_since(7.days.ago) >= threshold.value
+  end
+
   def aggregate_report time
     counts = reports_since(time).group(:malaria_type).count
     template_values = {

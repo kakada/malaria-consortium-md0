@@ -31,7 +31,6 @@ describe HCReportParser do
       @parser.report.age.should == 123
       @parser.report.sex.should == "Male"
       @parser.report.village_id.should == village.id
-      @parser.report.human_readable
     end
   end
 

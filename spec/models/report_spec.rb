@@ -55,6 +55,7 @@ describe Report do
       User.should_receive(:find_by_phone_number).with("sms://8558190").and_return(@hc_user)
 
       report = setup_successful_parser "successful report"
+      report.stub(:human_readable => 'xxx')
       report.stub!(:generate_alerts).and_return([{:body => "alert1", :to => "sms://1"},
                                                   {:body => "alert2", :to => "sms://2"},
                                                   {:body => "alert3", :to => "sms://3"}])

@@ -53,16 +53,20 @@ class ReportParser
     @report.error_message = symbol.to_s.gsub('_', ' ')
   end
 
+  def self.error_message_for key, original_message
+    Setting[key].apply :original_message => original_message
+  end
+
   def self.invalid_malaria_type original_message
-    "Incorrect type of malaria. The first character of your report indicates the type of malaria. Valid malaria types are F, V and M. Your report was #{original_message}. Please correct and send it again."
+    error_message_for :invalid_malaria_type, original_message
   end
 
   def self.invalid_age original_message
-    "Invalid age. We couldn't understand the age for the case you're reporting. An age has to be a number greater or equal than 0. Your report was #{original_message}. Please correct and send it again."
+    error_message_for :invalid_age, original_message
   end
 
   def self.invalid_sex original_message
-    "Invalid sex. We couldn't understand the sex for the case you're reporting. Sex can be either F or M. Your report was #{original_message}. Please correct and send it again."
+    error_message_for :invalid_sex, original_message
   end
 
   def self.format_sex sex

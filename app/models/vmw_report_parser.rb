@@ -20,6 +20,6 @@ class VMWReportParser < ReportParser
   end
 
   def self.too_long_vmw_report original_message
-    "Your report is too long. Your report was #{original_message}. Please correct and send it again."
+    error_message_for :too_long_village_report, original_message
   end
 end

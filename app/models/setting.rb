@@ -1,5 +1,4 @@
 class Setting < ActiveRecord::Base
-
   def self.[](key)
     setting = Setting.find_by_param(key)
     setting ? setting.value.to_s : ''
@@ -11,5 +10,4 @@ class Setting < ActiveRecord::Base
     setting.save!
     setting[key]
   end
-
 end

@@ -21,10 +21,10 @@ class HCReportParser < ReportParser
   end
 
   def self.invalid_village_code original_message
-    "Invalid village code. A village code has to be an 8 digit number. Your report was #{original_message}. Please correct and send it again."
+    error_message_for :invalid_village_code, original_message
   end
 
   def self.non_existent_village original_message
-    "The village you entered doesn't exist. Your report was #{original_message}. Please correct and send again."
+    error_message_for :non_existent_village, original_message
   end
 end

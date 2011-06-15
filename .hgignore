@@ -10,3 +10,4 @@ tmp/pids/*
 public/placescsv/*
 config/nuntium.yml
 .DS_Store
+coverage/

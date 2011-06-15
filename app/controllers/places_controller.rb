@@ -1,22 +1,17 @@
 # coding: utf-8
 class PlacesController < ApplicationController
 
-  #GET /places
   def index
     @places = Place
-    if(params[:query].present?)
-      @places = @places.search_for_autocomplete params[:query]
-    end
+    @places = @places.search_for_autocomplete params[:query] if params[:query].present?
     @places = @places.paginate :page => get_page, :per_page => PerPage, :order => "id asc"
     render :file => "/places/_places.html.erb", :layout => false if request.xhr?
   end
 
-  #
   def edit
     @place = Place.find(params[:id])
   end
 
-  #
   def update
     @place = Place.find(params[:id])
     if @place.update_attributes(params[:place])
@@ -27,85 +22,35 @@ class PlacesController < ApplicationController
     end
   end
 
-  #POST /places/confirm_import
   def confirm_import
     PlaceImporter.new(current_user.places_csv_file_name).import
   end
 
-  #GET /places/import
   def import
     @title = "Upload"
   end
 
-  #POST /places/upload_csv
   def upload_csv
     current_user.write_places_csv params[:admin][:csvfile]
     @places = PlaceImporter.new(current_user.places_csv_file_name).simulate
-
-    return render 'no_places_to_import.html' if @places.blank?
-
-    render 'upload_csv.html.erb'
+    render(@places.blank? ? 'no_places_to_import.html' : 'upload_csv.html.erb')
   end
 
-  #GET /places/csv_template
   def csv_template
     column_headers = PlaceImporter.column_headers.join(", ")
     send_data column_headers, :type => 'text/csv', :filename => 'places_template.csv'
   end
 
-  #GET /map-view
   def map_view
     @country = Country.first
-
-  end
-
-  def sample_place
-    places =  Place.all
-
-    places.each do |place|
-      place.lat = (rand(999999)/1000000.0) + 11 + rand(3)
-      place.lng = (rand(999999)/1000000.0) + 102 + rand(5)
-      place.save
-      puts  "place: #{place.name}- lat: #{place.lat} - lng: #{place.lng} - type: #{place.type}"
-    end
-    render :text => "Done"
-  end
-
-  def sample_report
-    type = ['F','V', 'M']
-    sex = ['Male','Female']
-
-    3000.times do |i|
-      offset = rand(Place.count(:conditions=>"type in ( 'Village' OR 'HealthCenter' ) " ))
-      place = Place.first(:offset => offset,:conditions=> "type in ( 'Village' OR 'HealthCenter' ) " )
-
-      offset = rand(User.count)
-      user = User.first(:offset => offset)
-
-      attribute = {
-        :malaria_type => type[rand(2)],
-        :sex => sex[rand(1)],
-        :age => 10 + rand(60),
-        :place_id => place.id,
-        :mobile => "09712"+ rand(9000).to_s,
-        :village_id => (place.type == "HealthCenter")? place.villages.first.id: place.id,
-        :sender_id => user.id,
-        :created_at => rand(100).days.ago
-      }
-      Report.create!(attribute)
-      puts "Created: report for #{user.user_name} with #{place.type}"
-
-    end
-    render :text=>"Done"
   end
 
   #GET places/map_report
   def map_report
-
     from = params[:from]
     to = params[:to]
-    if(params[:id].blank?  || params[:id].to_i == 0)
-        total = Report.count :conditions =>["created_at between :from and :to", {:from => from, :to => to}]
+    if params[:id].blank? || params[:id].to_i == 0
+        total = Report.between_dates(from, to).count
         country = Country.first
         places = [{
                     "name" => country.name,

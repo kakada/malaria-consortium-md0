@@ -7,7 +7,7 @@ class PlacesController < ApplicationController
     if(params[:query].present?)
       @places = @places.search_for_autocomplete params[:query]
     end
-    @places = @places.paginate :page => params[:page], :per_page => PerPage, :order => "id asc"
+    @places = @places.paginate :page => get_page, :per_page => PerPage, :order => "id asc"
     render :file => "/places/_places.html.erb", :layout => false if request.xhr?
   end
 
@@ -21,7 +21,7 @@ class PlacesController < ApplicationController
     @place = Place.find(params[:id])
     if @place.update_attributes(params[:place])
       flash["notice"] = "#{@place.description} has been updated successfully"
-      redirect_to places_path(:page => params[:page])
+      redirect_to places_path(:page => get_page)
     else
       render 'edit'
     end

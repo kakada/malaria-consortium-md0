@@ -15,6 +15,7 @@ class MapVisualizationsController < ApplicationController
 
   def map_view
     @place_id = params[:place].to_i
+    @place_id = Country.national.id if @place_id == 0
   end
 
   def pushpin

@@ -18,7 +18,7 @@ class UsersController < ApplicationController
       user.destroy
       flash["msg-error"] = "User #{user.user_name} has been removed"
     end
-    redirect_to users_path(:page => params[:page])
+    redirect_to users_path(:page => get_page)
   end
 
   def create_new
@@ -33,7 +33,7 @@ class UsersController < ApplicationController
     else
       @user.intended_place_code = params[:intended_place_code]
       flash["msg-error"] = "Failed to create"
-      @page = (params[:page] || '1').to_i
+      @page = get_page
       @users = User.paginate :page => @page, :per_page => PerPage, :order => 'id desc'
       render :index
     end
@@ -83,7 +83,7 @@ class UsersController < ApplicationController
 
   def reports
     @user = User.find params[:id]
-    @reports = Report.where(:sender_id => @user.id).paginate :page => params[:page], :per_page => 10, :order => 'id desc'
+    @reports = Report.where(:sender_id => @user.id).paginate :page => get_page, :per_page => 10, :order => 'id desc'
     @report_id = params[:report_id].to_i
     render :layout => false
   end

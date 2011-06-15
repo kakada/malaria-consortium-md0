@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_cambodia_time_zone
 
   def get_page(param_key = :page)
-    (params[param_key] || '1').to_i
+    (params[param_key].presence || '1').to_i
   end
 
   private

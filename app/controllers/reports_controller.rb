@@ -6,7 +6,7 @@ class ReportsController < ApplicationController
 
   def index
     @pagination = {
-      :page => params[:page].presence || 1,
+      :page => get_page,
       :per_page => 20
     }
 
@@ -55,7 +55,7 @@ class ReportsController < ApplicationController
   def report_detail
     place = Place.find(params[:place_id])
     @reports = Report.where(" #{place.foreign_key} = ? AND created_at BETWEEN ? AND ? AND error= 0 ", params[:place_id], params[:from], params[:to] )
-    @reports = @reports.paginate :page => params[:page], :per_page => 20
+    @reports = @reports.paginate :page => get_page, :per_page => 20
     render :layout =>false
   end
 

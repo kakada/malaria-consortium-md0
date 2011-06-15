@@ -2,11 +2,8 @@ class VMWReport < Report
   default_scope where(:type => "VMWReport")
 
   def human_readable
-    if mobile
-      Setting[:successful_mobile_village_report].apply :malaria_type => malaria_type, :age => age, :sex => sex
-    else
-      Setting[:successful_non_mobile_village_report].apply :malaria_type => malaria_type, :age => age, :sex => sex
-    end
+    key = mobile ? :successful_mobile_village_report : successful_non_mobile_village_report
+    Setting[key].apply :malaria_type => malaria_type, :age => age, :sex => sex
   end
 
   def single_case_message

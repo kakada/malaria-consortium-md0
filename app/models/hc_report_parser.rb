@@ -27,8 +27,4 @@ class HCReportParser < ReportParser
   def self.non_existent_village original_message
     "The village you entered doesn't exist. Your report was #{original_message}. Please correct and send again."
   end
-
-  def self.non_supervised_village original_message
-    "The village you entered is not under supervision of your health center. Your report was #{original_message}. Please correct and send again."
-  end
 end

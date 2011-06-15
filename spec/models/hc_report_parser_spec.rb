@@ -1,8 +1,7 @@
 require 'spec_helper'
-require 'test_helper'
 
 describe HCReportParser do
-  include Helpers
+  include ParserHelpers
 
   before(:each) do
     @health_center = HealthCenter.make

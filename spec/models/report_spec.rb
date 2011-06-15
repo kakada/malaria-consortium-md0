@@ -1,9 +1,6 @@
 require 'spec_helper'
-require 'test_helper'
 
 describe Report do
-  include Helpers
-
   before(:each) do
 
     @province = Province.make

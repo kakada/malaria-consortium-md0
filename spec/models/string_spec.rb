@@ -1,8 +1,6 @@
 require 'spec_helper'
-require 'test_helper'
 
 describe String do
-
   it "apply template with hash" do
     template = 'Age: {age}, Name: {name}'
     values = {:age => 23, :name => 'Foo Bar'}
@@ -19,5 +17,4 @@ describe String do
     values = {"age" => 23, "name" => 'Foo Bar'}
     template.apply(values).should == 'Age: 23, Name: Foo Bar'
   end
-
 end

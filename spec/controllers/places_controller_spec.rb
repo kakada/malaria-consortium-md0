@@ -1,6 +1,5 @@
 require 'spec_helper'
 describe PlacesController do
-  include Helpers
   include Devise::TestHelpers
 
   before(:each) do

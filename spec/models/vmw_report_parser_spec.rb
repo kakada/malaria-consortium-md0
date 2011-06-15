@@ -1,8 +1,7 @@
 require 'spec_helper'
-require 'test_helper'
 
 describe VMWReportParser do
-  include Helpers
+  include ParserHelpers
 
   before(:each) do
     @village = Village.make

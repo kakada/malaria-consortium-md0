@@ -1,9 +1,6 @@
 require 'spec_helper'
-require 'test_helper'
 
 describe Report do
-  include Helpers
-
   it "should alert single case if no threshold was specified" do
     report = Report.make
     report.alert_triggered.should == :single

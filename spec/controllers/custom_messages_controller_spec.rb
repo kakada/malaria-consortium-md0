@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe CustomMessagesController do
-  include Helpers
   include Devise::TestHelpers
 
   before(:each) do

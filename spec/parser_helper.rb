@@ -1,4 +1,4 @@
-module Helpers
+module ParserHelpers
   def assert_parse_error body, error_message
     @parser.parse body
     @parser.errors?().should == true

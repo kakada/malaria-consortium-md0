@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe ReportParser do
-  include Helpers
+  include ParserHelpers
 
   describe "invalid message" do
     before(:each) do

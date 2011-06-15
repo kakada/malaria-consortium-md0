@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe MapVisualizationsController do
-  include Helpers
   include Devise::TestHelpers
 
   before(:each) do

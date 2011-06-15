@@ -10,7 +10,7 @@ SimpleCov.start 'rails'
 require File.expand_path("../../config/environment", __FILE__)
 require 'blueprints'
 require 'rspec/rails'
-require 'test_helper'
+require 'parser_helpers'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.

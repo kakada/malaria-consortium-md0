@@ -1,8 +1,4 @@
 module Helpers
-  def od name , id = nil
-    OD.create! :name => name, :name_kh => name, :code => name, :parent_id => id
-  end
-
   def province name
     Province.create! :name => name, :name_kh => name, :code => name
   end

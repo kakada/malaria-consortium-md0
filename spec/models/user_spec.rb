@@ -71,7 +71,7 @@ describe User do
   end
 
   it "should not be able to report unless she's in a health center or village" do
-    [user(:phone_number => "1"), user(:phone_number => "2", :place => od("2")), user(:phone_number => "3", :place => province("3"))].each do |u|
+    [user(:phone_number => "1"), user(:phone_number => "2", :place => OD.make(:code => '2')), user(:phone_number => "3", :place => Province.make(:code => '3'))].each do |u|
       u.can_report?().should be_false
     end
   end

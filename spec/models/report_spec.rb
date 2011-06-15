@@ -7,7 +7,7 @@ describe Report do
   before(:each) do
 
     @province = province "Kampongcham"
-    @od = od "od", @province.id
+    @od = @province.ods.make
     @health_center = @od.health_centers.make
     @village = @health_center.villages.make :code => '12345678'
     @health_center.villages.make :code => '87654321'

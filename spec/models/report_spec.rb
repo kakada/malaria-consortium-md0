@@ -8,9 +8,9 @@ describe Report do
 
     @province = province "Kampongcham"
     @od = od "od", @province.id
-    @health_center = health_center "foohc", @od.id
-    @village = village "fooville", "12345678", @health_center.id
-    village "barville", "87654321", health_center("barhc").id
+    @health_center = @od.health_centers.make
+    @village = @health_center.villages.make :code => '12345678'
+    @health_center.villages.make :code => '87654321'
 
     @hc_user = user :phone_number => "8558190", :place => @health_center
     @vmw_user = user :phone_number => "8558191", :place => @village

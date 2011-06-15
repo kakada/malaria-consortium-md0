@@ -5,7 +5,7 @@ describe ReportParser do
 
   describe "invalid message" do
     before(:each) do
-      @health_center = health_center("hc1")
+      @health_center = HealthCenter.make
       @user = user :phone_number => "1", :place => @health_center
       @parser = ReportParser.new @user
     end

@@ -5,15 +5,9 @@ describe HCReportParser do
   include Helpers
 
   before(:each) do
-    @health_center = health_center("hc1")
+    @health_center = HealthCenter.make
     @user = user :phone_number => "1", :place => @health_center
     @parser = HCReportParser.new @user
-  end
-
-  def expect_village code, hc_code=nil
-    village = village("1", code, hc_code)
-    Village.should_receive(:find_by_code).with(code).and_return village
-    village
   end
 
   describe "syntactic" do
@@ -30,7 +24,7 @@ describe HCReportParser do
     end
 
     it "should return valid fields when format is correct" do
-      village = expect_village "12345678", @health_center.id
+      village = @health_center.villages.make :code => '12345678'
 
       @parser.parse "F123M12345678"
       @parser.errors?().should == false
@@ -48,7 +42,7 @@ describe HCReportParser do
     end
 
     it "should not return error message when village isnt supervised by user's health center" do
-      expect_village "87654321"
+      @health_center.villages.make :code => '87654321'
 
       @parser.parse "F123M87654321"
       @parser.errors?().should == false

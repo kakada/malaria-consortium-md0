@@ -26,7 +26,7 @@ describe User do
     province1 = Province.create! :name => "Pro1", :code => "Pro1"
     district1 = province1.ods.create! :name => "Dist1", :code => "Dist1"
 
-    hc1 = health_center "hc1", district1.id
+    hc1 = district1.health_centers.make
 
     user_hc1 = user :phone_number => "123456", :place => hc1
 
@@ -48,8 +48,8 @@ describe User do
   it "should return phone numbers of user from health center, district, province, national when user is a village malaria worker" do
     province1 = Province.create! :name => "Pro1", :code => "Pro1"
     district1 = province1.ods.create! :name => "Dist1", :code => "Dist1"
-    hc1 = health_center "hc1", district1.id
-    vill1 = village "vill1", "vill1", hc1.id
+    hc1 = district1.health_centers.make
+    vill1 = hc1.villages.make
 
     user_vill1 = user :phone_number => "1", :place => vill1
 
@@ -77,16 +77,16 @@ describe User do
   end
 
   it "should be able to report if she's in a health center or village" do
-    [user(:phone_number => "1", :place => village("1")), user(:phone_number => "2", :place => health_center("2"))].each do |u|
+    [user(:phone_number => "1", :place => Village.make(:code => '1')), user(:phone_number => "2", :place => HealthCenter.make(:code => 2))].each do |u|
       u.can_report?().should be_true
     end
   end
 
   it "should provide the correct parser" do
-    parser = user(:phone_number => "1", :place => health_center("1")).report_parser
+    parser = user(:phone_number => "1", :place => HealthCenter.make(:code => '1')).report_parser
     parser.class.should == HCReportParser
 
-    parser = user(:phone_number => "2", :place => village("2")).report_parser
+    parser = user(:phone_number => "2", :place => Village.make(:code => '2')).report_parser
     parser.class.should == VMWReportParser
   end
 
@@ -230,7 +230,7 @@ describe User do
 
     it "should set custom attributes for new user in village" do
       @nuntium_api.should_receive(:set_custom_attributes).with('sms://123', {:application => 'md0'})
-      User.create! :phone_number => '123', :place => village('foo')
+      User.create! :phone_number => '123', :place => Village.make
     end
 
     it "should not set custom attributes for user in province" do
@@ -244,21 +244,21 @@ describe User do
     end
 
     it "should unset custom attributes if moved to province" do
-      u = User.create! :phone_number => '123', :place => village('foo')
+      u = User.create! :phone_number => '123', :place => Village.make
       @nuntium_api.should_receive(:set_custom_attributes).with('sms://123', {:application => nil})
       u.place = province('bar')
       u.save!
     end
 
     it "should clear the custom attribute when the phone is unset" do
-      u = User.create! :user_name => 'user', :password => '123456', :email => 'user@email.com', :phone_number => '123', :place => village('foo')
+      u = User.create! :user_name => 'user', :password => '123456', :email => 'user@email.com', :phone_number => '123', :place => Village.make
       @nuntium_api.should_receive(:set_custom_attributes).with('sms://123', {:application => nil})
       u.phone_number = nil
       u.save!
     end
 
     it "should clear custom attributes but not set new ones when moving to province with new number" do
-      u = User.create! :phone_number => '123', :place => village('foo')
+      u = User.create! :phone_number => '123', :place => Village.make
       @nuntium_api.should_receive(:set_custom_attributes).with('sms://123', {:application => nil})
       @nuntium_api.should_not_receive(:set_custom_attributes).with('sms://456', anything)
       u.phone_number = '456'
@@ -276,7 +276,7 @@ describe User do
 
   describe "last report" do
     it "assigns valid" do
-      village = village('foo')
+      village = Village.make
       user = User.create! :phone_number => '123', :place => village
       report = VMWReport.create! :malaria_type => 'F', :sex => 'Male', :age => 23, :place => village, :village => village, :sender => user
       user.last_report_id.should eq(report.id)
@@ -284,7 +284,7 @@ describe User do
     end
 
     it "assigns error" do
-      village = village('foo')
+      village = Village.make
       user = User.create! :phone_number => '123', :place => village
       report = VMWReport.create! :error => true, :place => village, :village => village, :sender => user
       user.last_report_id.should eq(report.id)

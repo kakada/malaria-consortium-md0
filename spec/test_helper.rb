@@ -1,15 +1,4 @@
 module Helpers
-  def health_center code, od_id=nil
-    HealthCenter.create! :name => code, :name_kh => code, :code => code, :parent_id => od_id
-  end
-
-  def village name, code = nil, health_center_id = nil
-    options = {:name => name, :name_kh => name}
-    options[:code] = code if code
-    options[:parent_id] = health_center_id if health_center_id
-    Village.make options
-  end
-
   def od name , id = nil
     OD.create! :name => name, :name_kh => name, :code => name, :parent_id => id
   end

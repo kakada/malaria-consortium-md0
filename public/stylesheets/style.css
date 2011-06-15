@@ -48,6 +48,8 @@ h1, h2, h3 { padding-top: 0px; margin-top: 0px; }
 
 #header {
   padding: 3px 10px 0px 3px;
+  background-color: #e0e0e0;
+  border-bottom: 2px solid #CCC;
 }
 
 #first_row { border-bottom: 1px solid black; padding-bottom: 6px; margin-top: 4px; }
@@ -71,47 +73,16 @@ h1, h2, h3 { padding-top: 0px; margin-top: 0px; }
   border-bottom: 1px solid white;
   background: white;
 }
+#tabs a {
+  color: black;
+}
 #second_row { width: 100%; margin: 0px; padding: 0px; border-spacing: 0px;}
 #second_row td { border-spacing: 0px; }
 #navbar { border-left: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black; width: 20%; float: left;}
 #places, #users { padding: 4px; }
-#users_title { border-top: 1px solid black; border-bottom: 1px solid black; font-weight: bold; padding: 4px; background-color: #e6e6e6; }
-#places_title { border-bottom: 1px solid black; font-weight: bold; padding: 4px; background-color: #e6e6e6; }
+#users_title { border-top: 1px solid black; border-bottom: 1px solid black; font-weight: bold; padding: 4px; background-color: #bcd1da; color: #333;}
+#places_title { border-bottom: 1px solid black; font-weight: bold; padding: 4px; background-color: #bcd1da; color: #333;}
 #reports { width: 75%; padding: 10px; float: left; }
-
-table.table {
-  padding: 0px;
-  border: 0px;
-}
-
-.table tr.ao {
-  color: #006;
-}
-
-.table tr.at {
-  color: black;
-}
-
-.table td {
-  border: 0px;
-  padding: 1px;
-  background-color: #EFEFEF;
-}
-
-.table tr.even td {
-  background-color: #EFEFEF;
-}
-
-.table tr.odd td {
-  background-color: #DADADA;
-}
-
-.table th  {
-  border: 0px;
-  padding: 1px;
-  background-color: #BCD1DA;
-  font-size: 12px;
-}
 
 a {
     color: #09c;
@@ -271,8 +242,8 @@ div.icon span {
 }
 
 .table-grid tr.head,.table-grid thead {
-    background-color: #eee;
-    color: #999;
+    background-color: #bcd1da;
+    color: #333;
 }
 
 table .input, table input[type=text],  table input[type=password]{
@@ -306,10 +277,10 @@ input[type=text].error,  input[type=password].error{
 }
 
 .odd {
-    background-color: #ffe;
+    background-color: #efefef;
 }
 .even {
-    background-color: #eff;
+    background-color: #dadada;
 }
 .pagination{
     margin: 0 auto;
@@ -325,9 +296,12 @@ input[type=text].error,  input[type=password].error{
     height: 18px;
 }
 .pagination a,.pagination span {
-    background-color: #ffe;
+    background-color: #f6f6f6;
     border:1px solid #fef;
     padding: 3px 6px;
+}
+.pagination em {
+  font-weight: bold;
 }
 
 .pagination_container{
@@ -660,4 +634,7 @@ tr.error{
     font-size: 14px;
     font-weight: bold;
     margin-right: 10px;
+}
+.logo {
+  vertical-align: top;
 }

@@ -4,9 +4,7 @@ describe PlacesController do
   include Devise::TestHelpers
 
   before(:each) do
-    @user = admin_user "12345678"
-    sign_in @user
-    controller.current_user.should eq(@user)
+    sign_in User.make(:admin)
   end
 
   describe "Import places" do

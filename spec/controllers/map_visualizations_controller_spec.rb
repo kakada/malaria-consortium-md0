@@ -16,7 +16,7 @@ describe MapVisualizationsController do
     Place.stub!(:find).with(1).and_return(@place)
     MapVisualization.stub!(:paginate_report).with(@attributes).and_return(:reports)
 
-    @user = admin_user "12345678"
+    @user = User.make :admin
     sign_in @user
   end
 

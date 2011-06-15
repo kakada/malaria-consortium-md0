@@ -6,18 +6,18 @@ describe Report do
 
   before(:each) do
 
-    @province = province "Kampongcham"
+    @province = Province.make
     @od = @province.ods.make
     @health_center = @od.health_centers.make
     @village = @health_center.villages.make :code => '12345678'
     @health_center.villages.make :code => '87654321'
 
-    @hc_user = user :phone_number => "8558190", :place => @health_center
-    @vmw_user = user :phone_number => "8558191", :place => @village
-    @od_user1 = user :phone_number => "8558192", :place => @od
-    @od_user2 = user :phone_number => "8558193", :place => @od
+    @hc_user = @health_center.users.make :phone_number => "8558190"
+    @vmw_user = @village.users.make :phone_number => "8558191"
+    @od_user1 = @od.users.make :phone_number => "8558192"
+    @od_user2 = @od.users.make :phone_number => "8558193"
 
-    @provincial_user = user :phone_number => "855444444", :place => @province
+    @provincial_user = @province.users.make :phone_number => "855444444"
     @national_user =  User.create!(:user_name =>"national", :phone_number => "097777777", :role=> "national")
     @admin_user =  User.create!(:user_name =>"admin", :phone_number => "09766666", :role=> "admin")
 
@@ -49,7 +49,7 @@ describe Report do
     end
 
     it "should return error when user can't report" do
-      user = user(:phone_number => "1")
+      user = User.make :phone_number => "1"
       User.should_receive(:find_by_phone_number).with("sms://1").and_return(user)
       user.should_receive(:can_report?).and_return(false)
 

@@ -22,71 +22,23 @@ describe User do
     User.count.should == 0
   end
 
-  it "should return phone numbers of user from district, province, national when user is from health center" do
-    province1 = Province.create! :name => "Pro1", :code => "Pro1"
-    district1 = province1.ods.create! :name => "Dist1", :code => "Dist1"
-
-    hc1 = district1.health_centers.make
-
-    user_hc1 = user :phone_number => "123456", :place => hc1
-
-    user :phone_number => "1234511", :place => district1
-    user :phone_number => "1234512", :place => district1
-    user :user_name => "foo", :password => '123456', :email => "foo@foo.com", :place => district1
-
-    user :phone_number => "123458", :place => province1
-    user :user_name => "foo2", :password => '123456', :email => "foo2@foo.com", :place => province1
-
-    national_user "1234591"
-    national_user "1234592"
-
-    recipients = user_hc1.alert_numbers
-
-    recipients.should =~["1234511", "1234512","123458", "1234591", "1234592"]
-  end
-
-  it "should return phone numbers of user from health center, district, province, national when user is a village malaria worker" do
-    province1 = Province.create! :name => "Pro1", :code => "Pro1"
-    district1 = province1.ods.create! :name => "Dist1", :code => "Dist1"
-    hc1 = district1.health_centers.make
-    vill1 = hc1.villages.make
-
-    user_vill1 = user :phone_number => "1", :place => vill1
-
-    user_hc1 = user :phone_number => "123456", :place => hc1
-
-    user :phone_number => "1234511", :place => district1
-    user :phone_number => "1234512", :place => district1
-    user :user_name => "foo", :password => '123456', :email => "foo@foo.com", :place => district1
-
-    user :phone_number => "123458", :place => province1
-    user :user_name => "foo2", :password => '123456', :email => "foo2@foo.com", :place => province1
-
-    national_user "1234591"
-    national_user "1234592"
-
-    recipients = user_vill1.alert_numbers
-
-    recipients.should =~ ["123456", "1234511", "1234512","123458", "1234591", "1234592"]
-  end
-
   it "should not be able to report unless she's in a health center or village" do
-    [user(:phone_number => "1"), user(:phone_number => "2", :place => OD.make(:code => '2')), user(:phone_number => "3", :place => Province.make(:code => '3'))].each do |u|
+    [User.make, User.make(:in_od), User.make(:in_province)].each do |u|
       u.can_report?().should be_false
     end
   end
 
   it "should be able to report if she's in a health center or village" do
-    [user(:phone_number => "1", :place => Village.make(:code => '1')), user(:phone_number => "2", :place => HealthCenter.make(:code => 2))].each do |u|
+    [User.make(:in_village), User.make(:in_health_center)].each do |u|
       u.can_report?().should be_true
     end
   end
 
   it "should provide the correct parser" do
-    parser = user(:phone_number => "1", :place => HealthCenter.make(:code => '1')).report_parser
+    parser = User.make(:in_health_center).report_parser
     parser.class.should == HCReportParser
 
-    parser = user(:phone_number => "2", :place => Village.make(:code => '2')).report_parser
+    parser = User.make(:in_village).report_parser
     parser.class.should == VMWReportParser
   end
 
@@ -235,7 +187,7 @@ describe User do
 
     it "should not set custom attributes for user in province" do
       @nuntium_api.should_not_receive(:set_custom_attributes)
-      User.create! :phone_number => '123', :place => province('foo')
+      User.create! :phone_number => '123', :place => Province.make
     end
 
     it "should not set custom attributes if it has no phone" do
@@ -246,7 +198,7 @@ describe User do
     it "should unset custom attributes if moved to province" do
       u = User.create! :phone_number => '123', :place => Village.make
       @nuntium_api.should_receive(:set_custom_attributes).with('sms://123', {:application => nil})
-      u.place = province('bar')
+      u.place = Province.make
       u.save!
     end
 
@@ -262,13 +214,13 @@ describe User do
       @nuntium_api.should_receive(:set_custom_attributes).with('sms://123', {:application => nil})
       @nuntium_api.should_not_receive(:set_custom_attributes).with('sms://456', anything)
       u.phone_number = '456'
-      u.place = province('bar')
+      u.place = Province.make
       u.save!
     end
 
     it "should not set or clear custom attributes for new or updated province user" do
       @nuntium_api.should_not_receive(:set_custom_attributes)
-      u = User.create! :phone_number => '123', :place => province('foo')
+      u = User.create! :phone_number => '123', :place => Province.make
       u.phone_number = '456'
       u.save!
     end

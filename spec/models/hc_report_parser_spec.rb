@@ -6,7 +6,7 @@ describe HCReportParser do
 
   before(:each) do
     @health_center = HealthCenter.make
-    @user = user :phone_number => "1", :place => @health_center
+    @user = @health_center.users.make :phone_number => "1"
     @parser = HCReportParser.new @user
   end
 

@@ -155,7 +155,7 @@ describe Report do
     end
 
     describe "national" do
-      let!(:national_user) { User.make :role => 'national' }
+      let!(:national_user) { User.make :national }
 
       it "should be not be triggered when disabled" do
         Setting[:national_alert] = '0'
@@ -175,7 +175,7 @@ describe Report do
     end
 
     describe "admin" do
-      let!(:admin_user) { User.make :role => 'admin' }
+      let!(:admin_user) { User.make :admin }
 
       it "should be not be triggered when disabled" do
         Setting[:admin_alert] = '0'

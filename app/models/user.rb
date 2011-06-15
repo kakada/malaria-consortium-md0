@@ -45,17 +45,6 @@ class User < ActiveRecord::Base
     Rails.root.join(places_csv_directory, "#{id}.csv")
   end
 
-  def alert_numbers
-    national_users = User.find_all_by_role "national"
-
-    recipients = []
-
-    recipients.concat User.phone_numbers health_center.users unless place.health_center?
-    recipients.concat User.phone_numbers od.users
-    recipients.concat User.phone_numbers province.users
-    recipients.concat User.phone_numbers national_users
-  end
-
   def can_report?
     place_id && (place.village? || place.health_center?)
   end

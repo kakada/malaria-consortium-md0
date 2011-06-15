@@ -32,6 +32,30 @@ User.blueprint do
   phone_number { Sham.number8 }
 end
 
+User.blueprint :admin do
+  role { 'admin' }
+end
+
+User.blueprint :national do
+  role { 'national' }
+end
+
+User.blueprint :in_province do
+  place { Province.make }
+end
+
+User.blueprint :in_od do
+  place { OD.make }
+end
+
+User.blueprint :in_village do
+  place { Village.make }
+end
+
+User.blueprint :in_health_center do
+  place { HealthCenter.make }
+end
+
 Report.blueprint do
   malaria_type { ['F', 'M', 'V'].sample }
   sex { ['Female', 'Male'].sample }

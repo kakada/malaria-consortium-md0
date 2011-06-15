@@ -13,8 +13,7 @@ describe SettingsController do
     Setting[:admin_alert] = "1"
     Setting[:national_alert] = "1"
 
-    @user = admin_user "12345678"
-    sign_in @user
+    sign_in User.make(:admin)
   end
 
   def mock_setting(stubs={})

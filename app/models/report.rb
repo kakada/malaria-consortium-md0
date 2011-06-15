@@ -168,8 +168,7 @@ class Report < ActiveRecord::Base
     messages.each do |message|
       message['user'] = users[message['to'].without_protocol]
       message['state'] = case message['state']
-                         when 'delivered' then 'sent to phone'
-                         when 'confirmed' then 'received by phone'
+                         when 'delivered', 'confirmed' then 'sent'
                          else message['state']
                          end
     end

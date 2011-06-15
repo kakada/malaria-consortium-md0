@@ -30,7 +30,7 @@
 <div class="round report"  >
   <%= form_tag report_form_reports_path, {:method=>"get", :id =>"report_form"} do  %>
       <%= hidden_field_tag :place, params[:place] %>
-      <div class="input">
+      <p>
         <%
           to = Time.now
           from = to.to_i - 7 * 24 * 3600
@@ -42,9 +42,9 @@
 
         <%= label_tag :to   %>
         <%= text_field_tag :to ,params[:to].present? ? params[:to] : to.strftime("%Y-%m-%d") , :class=>"calendar round " %>
-      </div>
+      </p>
 
-      <div class="input" >
+      <p>
         
         <%= radio_button_tag :place_type , "Village", true %>
         <%= label_tag "place_type_Village", "Village " %>
@@ -52,9 +52,9 @@
 
         <%= radio_button_tag :place_type, "HealthCenter",  params[:place_type] == "HealthCenter" %>
         <%= label_tag "place_type_HealthCenter", "HealthCenter" %>
-      </div>
+      </p>
 
-      <div class="input" >
+      <p>
         
         <%= radio_button_tag :ncase, "1", true %>
         <%= label_tag "ncase_1", "Reported" %>
@@ -62,7 +62,7 @@
 
         <%= radio_button_tag :ncase, "0", params['ncase'] == "0" %>
         <%= label_tag "ncase_0", "Not reported" %>
-      </div>
+      </p>
       <span> <%= submit_tag "Show report" , :name => nil  %>  </span>
   <% end %>
  </div>

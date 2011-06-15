@@ -1,19 +1,21 @@
 function loading(container,message){
-       var map = $(container);
+       if(typeof container == "undefined" || !container )
+           container = document.body
+       var containner = $(container);
 
        var loading = $("#ajax_loading")
-       if(typeof message != "undefined")
-           loading.html(message);
-       else
+       if(typeof message == "undefined" || !message)
            loading.html("Waiting for server response");
+       else
+           loading.html(message);
        
-       var pos =  map.offset();
+       var pos =  containner.offset();
 
        var loading_width = loading.width();
        var loading_height= loading.height();
 
-       var width = map.width();
-       var height = map.height();
+       var width = containner.width();
+       var height = containner.height();
 
        var top = pos.top + (height/2) -(loading_height/2) + "px" ;
        var left = pos.left + (width/2) -(loading_width/2) + "px" ;

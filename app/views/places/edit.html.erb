@@ -49,7 +49,7 @@
   });
 </script>
 <% end %>
-<h2> Edit place </h2>
+<h2> Edit <%=  @place.type.titleize %> </h2>
 <% if @place.errors.size > 0  %>
   <div class="error"><%= @place.errors.full_messages.join("<br />").html_safe  %> </div>
 <% end %>

@@ -314,14 +314,27 @@ input[type=text].error,  input[type=password].error{
 .pagination{
     margin: 0 auto;
     margin-bottom: 10px;
-    padding: 7px 0px;
     float:left;
 }
+#place_search{
+    width: 300px;
+    background-image: url(../images/search.png);
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding-left: 20px;
+    height: 18px;
+}
 .pagination a,.pagination span {
-    padding:2px 6px;
     background-color: #ffe;
     border:1px solid #fef;
+    padding: 3px 6px;
 }
+
+.pagination_container{
+    float: left;
+    padding: 5px;
+}
+
 .pagination a:hover{
    font-weight: bold;
 }

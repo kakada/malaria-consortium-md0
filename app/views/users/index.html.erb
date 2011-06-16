@@ -26,6 +26,7 @@
     }
     function userSearch(){
       $("#user_search").keyup(function(){
+         activeRow = 0;
          var url = "<%= users_path() %>"
          var text = this.value;
          if(1){

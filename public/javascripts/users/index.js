@@ -1,7 +1,7 @@
 var msg =""
 var activeRow = 0;
 $(function(){
-    $("a.editRow").click(function(e){
+    $("a.editRow").live("click",function(){
       var url = $(this).attr("data-url");
       var id  = $(this).attr("data-rel");
 

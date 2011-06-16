@@ -3,8 +3,9 @@ class UsersController < ApplicationController
   def index
     @title = "User management"
     @page = get_page
-    @user = User.new {|u| u.intended_place_code = ""}
-    @users = User.paginate :page => (@page || '1').to_i, :per_page => PerPage, :order => 'id desc'
+    user_form
+    @users = User.paginate_user :query =>params[:query], :page => (@page || '1').to_i, :per_page => PerPage
+    render :file => "users/_list_users.html.erb", :layout => false if request.xhr?
   end
 
   #POST /users/:id
@@ -29,13 +30,10 @@ class UsersController < ApplicationController
 
     if @user.save
       flash["msg-notice"] = "Successfully created"
-      redirect_to :action => "index"
+      redirect_to users_path
     else
-      @user.intended_place_code = params[:intended_place_code]
       flash["msg-error"] = "Failed to create"
-      @page = get_page
-      @users = User.paginate :page => @page, :per_page => PerPage, :order => 'id desc'
-      render :index
+      redirect_to users_path(attributes.except(:password))
     end
   end
 
@@ -114,4 +112,15 @@ class UsersController < ApplicationController
      File.join Rails.root, "tmp", file_name
   end
 
+  def user_form
+    if(params[:user_name].present?)
+      attributes = params.slice :user_name, :email, :password, :phone_number, :role, :id, :intended_place_code
+      attributes[:password_confirmation] = attributes[:password]
+      @user = User.new attributes
+      @user.valid?
+      @user.intended_place_code = params[:intended_place_code]
+    else
+      @user = User.new
+    end
+  end
 end

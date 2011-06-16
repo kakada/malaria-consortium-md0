@@ -37,10 +37,10 @@ module UsersHelper
 
   def input_field_tag field, user, type = "text", options = {}
     element = ""
-    if(type.nil?)
+    if(type.present?)
       type = "text"
     end
-    if(field.to_s == "intended_place_code" )
+    if(field == :intended_place_code )
       element << text_field_tag(field, user.send(field).nil? ? ((user.place.nil?)?"":user.place.code) : user.send(field)  , options )
     else
       if(type == "text" )

@@ -2,10 +2,6 @@ class OD < Place
   alias_method :province, :parent
   has_many :health_centers, :class_name => "HealthCenter", :foreign_key => "parent_id"
 
-  def count_reports_since time
-    Report.joins(:place).where("reports.created_at >= ? AND places.parent_id = ?", time, id).count
-  end
-
   def create_alerts(message, options = {})
     alerts = super
     alerts += parent.create_alerts message if Setting[:provincial_alert] != "0"

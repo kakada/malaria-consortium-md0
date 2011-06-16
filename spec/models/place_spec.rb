@@ -56,41 +56,6 @@ describe Place do
       end
     end
 
-    describe "od_count_reports_since" do
-      before(:each) do
-
-        @country = Country.make  :code => "Cty1"
-        @province = Province.make :parent =>@country ,:code => "Pro1"
-        @od = OD.make :parent => @province ,  :code => "OD1"
-
-        @hc1 = HealthCenter.make :parent => @od, :code => "1"
-        @hc2 = HealthCenter.make :parent => @od, :code => "2"
-        @hc3 = HealthCenter.make :parent => @od, :code => "3"
-
-        @od2 = OD.make :code => "od2"
-        @hc4 = HealthCenter.make :parent => @od2, :code => "4"
-
-        @village = Village.make :code => '11'
-
-        @user = User.make :place => @hc1, :phone_number => '1'
-        @report_hc1 = Report.create! :place => @hc1, :village => @village, :malaria_type => 'M', :sex => 'Male', :age => 23, :sender => @user
-        @report_hc2 = Report.create! :place => @hc2, :village => @village, :malaria_type => 'F', :sex => 'Male', :age => 23, :sender => @user
-        @report_hc3 = Report.create! :place => @hc3, :village => @village, :malaria_type => 'F', :sex => 'Male', :age => 23, :sender => @user, :created_at => 8.days.ago
-
-        @report_hc4 = Report.create! :place => @hc4, :village => @village, :malaria_type => 'F', :sex => 'Male', :age => 23, :sender => @user, :created_at => 8.days.ago
-      end
-
-      it "should count all od1 reports" do
-        reports_count = @od.count_reports_since 9.days.ago
-        reports_count.should == 3
-      end
-
-      it "should count only the newest ones" do
-        reports_count = @od.count_reports_since 7.days.ago
-        reports_count.should == 2
-      end
-    end
-
     describe "hc_count_reports_since" do
       before(:each) do
         @hc1 = HealthCenter.make :code => "1"

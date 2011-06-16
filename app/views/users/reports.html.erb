@@ -1,4 +1,5 @@
 <div id="fancy-div-detail">
+<h3>Messages sent by <%= @user.user_name %></h3>
 <%= page_entries_info @reports, :entry_name => 'message' %><br/><br/>
 <%= will_paginate @reports %>
 

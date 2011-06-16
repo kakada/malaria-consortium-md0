@@ -77,9 +77,9 @@ class Report < ActiveRecord::Base
     when :single
       alerts += village.od.create_alerts msg
     when :village
-      alerts += village.od.create_alerts village.aggregate_report(7.days.ago.at_beginning_of_day)
+      alerts += village.od.create_alerts village.aggregate_report(Time.last_week)
     when :health_center
-      alerts += village.od.create_alerts village.parent.aggregate_report(7.days.ago.at_beginning_of_day)
+      alerts += village.od.create_alerts village.parent.aggregate_report(Time.last_week)
     end
 
     alerts

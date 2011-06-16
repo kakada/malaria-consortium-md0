@@ -1,6 +1,7 @@
 <div id="fancy-div-detail" >
   <h3>Messages sent at <%= @place.description %></h3>
- <%= will_paginate @reports %>
+  <%= page_entries_info @reports, :entry_name => 'message' %><br/><br/>
+  <%= will_paginate @reports %>
   <table class="table-grid round" width="600" >
     <thead>
       <tr>
@@ -18,18 +19,18 @@
     </thead>
     <tbody>
       <% @reports.each_with_index do |report, index| %>
-          <tr class="<%= index % 2 == 0 ? "pair" : "impair"  %> ">
-            <td><%= "#{report.malaria_type} -  #{get_malaria_type(report.malaria_type)}" %></td>
-            <td><%=  report.sex %></td>
-            <td><%=  report.age %></td>
-            <td><%=  mobile(report.mobile) %></td>
-            <td><%=  report.created_at %></td>
-            <td><%=  report.place.name_with_code %></td>
-            <td><%=  report.place.type %></td>
-            <td><%=  report.place.health_center.name_with_code %></td>
-            <td><%=  report.place.od.name_with_code %></td>
-            <td><%=  report.place.province.name_with_code %></td>
-          </tr>
+        <tr class="<%= index % 2 == 0 ? "pair" : "impair"  %> ">
+          <td><%= "#{report.malaria_type} -  #{get_malaria_type(report.malaria_type)}" %></td>
+          <td><%=  report.sex %></td>
+          <td><%=  report.age %></td>
+          <td><%=  mobile(report.mobile) %></td>
+          <td><%=  report.created_at %></td>
+          <td><%=  report.place.name_with_code %></td>
+          <td><%=  report.place.type %></td>
+          <td><%=  report.place.health_center.name_with_code %></td>
+          <td><%=  report.place.od.name_with_code %></td>
+          <td><%=  report.place.province.name_with_code %></td>
+        </tr>
       <% end %>
     </tbody>
   </table>

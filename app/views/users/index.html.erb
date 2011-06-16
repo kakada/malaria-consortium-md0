@@ -8,8 +8,10 @@
   <div class="clear"></div>
 </div>
 
+<%= page_entries_info @users %><br/><br/>
+
 <div class="clear"></div>
 <h4 class="round msg-error" id="actionNotifier" style="display: none;" > </h4>
-<div class="pagination_container" ><div class="pagination">&nbsp;</div> <%= will_paginate @users %> </div>
+<div class="pagination_container"><div class="pagination">&nbsp;</div> <%= will_paginate @users %> </div>
 <div class="clear"> </div>
 <%= render :partial => "list_users", :locals => { :users => @users, :user => @user} %>

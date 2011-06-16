@@ -70,13 +70,6 @@ class Place < ActiveRecord::Base
     where "code LIKE :q OR name LIKE :q", :q => "#{query.strip}%"
   end
 
-  def count_sent_reports_since time
-    Report.where("created_at >= ? AND place_id = ?", time, id).count
-  end
-
-  def matches_threshold(threshold)
-  end
-
   def get_parent type
     p = self
     while p != nil && p.class != type

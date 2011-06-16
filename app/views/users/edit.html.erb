@@ -11,13 +11,14 @@
 <td><%= input_field_tag :password, @user , "password"   %>  </td>
 <td><%= input_field_tag :intended_place_code, @user, 'text', :class => :intended_place_code %></td>
 
-<td><%= select_tag(:role ,options_for_select(User::Roles,  (@user.nil?)? "" : @user.send(:role)), {} )  %>  </td>
+<td><%= select_tag(:role ,options_for_select(User::Roles,  (@user.nil?)? "" : @user.send(:role)), {:onchange => "roleChange(this)" } )  %>  </td>
 
 <td>
   <%=  submit_tag "Save", :id => "saveUser_" + @user.id.to_s, :"data-url" => user_path(@user), :name => "updateUser" , :class => "updateUser" %>
   <%=  submit_tag "Cancel", :id => "cancelUser_" + @user.id.to_s,:"data-url" => user_path(@user), :name => "cancelUser", :class => "cancelUser" %>
 </td>
 <script type="text/javascript" >
+    
     var msg = "<%=flash_msg @msg %>" ;
 
     $("#saveUser_" + <%= @user.id %> ).click(function(e){

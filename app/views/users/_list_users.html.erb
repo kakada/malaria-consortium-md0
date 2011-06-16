@@ -31,7 +31,7 @@
           </td>
           <td><%= input_field_tag :password, @user , "password"   %>  </td>
           <td><%= input_field_tag :intended_place_code, @user, "text" , :autocomplete => :off %></td>
-          <td><%= select_tag(:role ,options_for_select(User::Roles,  (@user.nil?)? "" : @user.send(:role)), {} )  %>  </td>
+          <td><%= select_tag(:role ,options_for_select(User::Roles,  (@user.nil?)? "" : @user.send(:role)), {:onchange => "roleChange(this)"} )  %>  </td>
           <td >
             <%=  submit_tag "Add", :id => "saveUser", :name => "saveUser" %>
           </td>

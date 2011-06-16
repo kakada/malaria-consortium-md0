@@ -15,6 +15,18 @@ $(function(){
     });
  });
 
+function roleChange(select){
+   var place_code =  $(select).parent().prev().children().get(0);
+   if( $(select).val() != "default"){
+       place_code.value = ""
+       place_code.disabled = true;
+   }
+   else{
+       place_code.disabled = false;
+   }
+
+}
+
 function showNotice(){
   $("#div_notice").html(msg);
 }

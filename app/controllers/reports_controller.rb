@@ -53,8 +53,8 @@ class ReportsController < ApplicationController
 
   #GET report_detail
   def report_detail
-    place = Place.find(params[:place_id])
-    @reports = Report.where(" #{place.foreign_key} = ? AND created_at BETWEEN ? AND ? AND error= 0 ", params[:place_id], params[:from], params[:to] )
+    @place = Place.find(params[:place_id])
+    @reports = Report.no_error.at_place(@place).between_dates(params[:from], params[:to])
     @reports = @reports.paginate :page => get_page, :per_page => 20
     render :layout =>false
   end

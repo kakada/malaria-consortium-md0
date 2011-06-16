@@ -1,5 +1,3 @@
-
-
 <% if @places.size > 0 %>
 <div class="clear"></div>
 <div>
@@ -8,18 +6,13 @@
   <div class="clear"></div>
 </div>
 
-
-
 <div class="search_box" style="float:right;" >
-  <input type="text" id="place_search" name="place_search" value="<%= params[:query] %>" />
+  <input type="text" id="place_search" name="place_search" class="search" value="<%= params[:query] %>" />
   <script type="text/javascript" >
     $(function(){
       loadingMessage = "Retrieving places";
       placeSearch();
       delegatePaginationItem();
-
-      
-
     })
     function delegatePaginationItem(){
       $("div.pagination a").live("click",function(){
@@ -38,7 +31,7 @@
              type: "get",
              success: function(responseText, status, response){
                loading(document.body).hide();
-               $("#content_places").html(responseText)
+               $("#content_table").html(responseText)
              }
            });
          }
@@ -46,9 +39,9 @@
     }
   </script>
 </div>
-<div id="content_places">
- <%= render "places" %>
-</div>
+
+<%= render "places" %>
+
 <% else %>
 <div> No places</div>
 <% end %>

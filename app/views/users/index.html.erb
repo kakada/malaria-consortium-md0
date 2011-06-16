@@ -9,7 +9,38 @@
 </div>
 
 <div class="clear"></div>
+<div class="search_box" style="float:right;" >
+  <input type="text" id="user_search" class="search" name="user_search" value="<%= params[:query] %>" />
+  <script type="text/javascript" >
+    $(function(){
+      loadingMessage = "Retrieving Users";
+      userSearch();
+      delegatePaginationItem();
+    })
+    function delegatePaginationItem(){
+      $("div.pagination a").live("click",function(){
+        loading(false, loadingMessage);
+      });
+    }
+    function userSearch(){
+      $("#user_search").keyup(function(){
+         var url = "<%= users_path() %>"
+         var text = this.value;
+         if(1){
+           loading(document.body, loadingMessage)
+           $.ajax({
+             url: url,
+             data: {query: text },
+             type: "get",
+             success: function(responseText, status, response){
+               loading(document.body).hide();
+               $("#content_table").html(responseText)
+             }
+           });
+         }
+       });
+    }
+  </script>
+</div>
 <h4 class="round msg-error" id="actionNotifier" style="display: none;" > </h4>
-<div class="pagination_container" ><div class="pagination">&nbsp;</div> <%= will_paginate @users %> </div>
-<div class="clear"> </div>
-<%= render :partial => "list_users", :locals => { :users => @users, :user => @user} %>
+<%= render "list_users" %>

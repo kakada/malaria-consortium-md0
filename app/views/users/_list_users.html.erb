@@ -1,54 +1,57 @@
-<%= hidden_field_tag "data-ref-validate",validate_users_path %>
+<div id="content_table">
+  <div class="pagination_container" ><div class="pagination">&nbsp;</div> <%= will_paginate @users %> </div>
+  <div class="clear"> </div>
 
-<%= form_for @user, :url => create_new_users_path, :html=>{:id => "createUserForm" } do |form| %>
-  <%= hidden_field_tag :page, @page  %>
-  <table width="100%" class="table-grid round" >
-    <thead>
-      <tr>
-        <th><%= t("Name") %>   </th>
-        <th><%= t("Email") %>  </th>
-        <th><%= t("Phone") %>  </th>
-        <th><%= t("Password") %>  </th>
-        <th><%= t("Place") %>  </th>
-        <th><%= t("Role") %>  </th>
-        <th width="130" > </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr id="inputRow" id="tr_0" >
-        <td>
-          <%= hidden_field_tag :id, @user[:id]  %>
-          <%= input_field_tag :user_name, @user  %>
-        </td>
-        <td>
-          <%= input_field_tag :email, @user   %>
-        </td>
-        <td>
-            <%= input_field_tag :phone_number, @user  %>
-        </td>
-        <td><%= input_field_tag :password, @user , "password"   %>  </td>
-        <td><%= input_field_tag :intended_place_code, @user, {}, :autocomplete => :off %></td>
-        <td><%= select_tag(:role ,options_for_select(User::Roles,  (@user.nil?)? "" : @user.send(:role)), {} )  %>  </td>
-        <td >
-          <%=  submit_tag "Add", :id => "saveUser", :name => "saveUser" %>
-        </td>
-      </tr>
-      <% users.each_with_index do |user,index| %>
-        <tr class="<%= index.parity %>" id="tr_<%= user.id %>">
-          <%= render :partial => "user_row", :locals => {:user => user} %>
+  <%= hidden_field_tag "data-ref-validate",validate_users_path %>
+  <%= form_for @user, :url => create_new_users_path, :html=>{:id => "createUserForm" } do |form| %>
+    <%= hidden_field_tag :page, @page  %>
+    <table width="100%" class="table-grid round" >
+      <thead>
+        <tr>
+          <th><%= t("Name") %>   </th>
+          <th><%= t("Email") %>  </th>
+          <th><%= t("Phone") %>  </th>
+          <th><%= t("Password") %>  </th>
+          <th><%= t("Place") %>  </th>
+          <th><%= t("Role") %>  </th>
+          <th width="130" > </th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% end %>
-
-<script type="text/javascript">
-  $(function() {
-      $('#intended_place_code').autocomplete({
-        serviceUrl: '<%= autocomplete_places_path %>',
-        minChars: 2,
-        maxHeight: 300,
-        zIndex: 9999,
+      </thead>
+      <tbody>
+        <tr id="inputRow" id="tr_0" >
+          <td>
+            <%= hidden_field_tag :id, @user[:id]  %>
+            <%= input_field_tag :user_name, @user  %>
+          </td>
+          <td>
+            <%= input_field_tag :email, @user   %>
+          </td>
+          <td>
+              <%= input_field_tag :phone_number, @user  %>
+          </td>
+          <td><%= input_field_tag :password, @user , "password"   %>  </td>
+          <td><%= input_field_tag :intended_place_code, @user, "text" , :autocomplete => :off %></td>
+          <td><%= select_tag(:role ,options_for_select(User::Roles,  (@user.nil?)? "" : @user.send(:role)), {} )  %>  </td>
+          <td >
+            <%=  submit_tag "Add", :id => "saveUser", :name => "saveUser" %>
+          </td>
+        </tr>
+        <% @users.each_with_index do |user,index| %>
+          <tr class="<%= index.parity %>" id="tr_<%= user.id %>">
+            <%= render :partial => "user_row", :locals => {:user => user} %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <script type="text/javascript">
+      $(function() {
+          $('#intended_place_code').autocomplete({
+            serviceUrl: '<%= autocomplete_places_path %>',
+            minChars: 2,
+            maxHeight: 300,
+            zIndex: 9999
+          });
       });
-  });
-</script>
+    </script>
+  <% end %>
+</div>

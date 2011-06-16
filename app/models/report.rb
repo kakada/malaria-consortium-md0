@@ -36,6 +36,8 @@ class Report < ActiveRecord::Base
   end
 
   def self.between_dates(from, to)
+    from = Time.parse(from).at_beginning_of_day
+    to = Time.parse(to).at_beginning_of_day + 1.day
     where 'reports.created_at between ? and ?', from, to
   end
 
@@ -75,9 +77,9 @@ class Report < ActiveRecord::Base
     when :single
       alerts += village.od.create_alerts msg
     when :village
-      alerts += village.od.create_alerts village.aggregate_report(7.days.ago)
+      alerts += village.od.create_alerts village.aggregate_report(7.days.ago.at_beginning_of_day)
     when :health_center
-      alerts += village.od.create_alerts village.parent.aggregate_report(7.days.ago)
+      alerts += village.od.create_alerts village.parent.aggregate_report(7.days.ago.at_beginning_of_day)
     end
 
     alerts

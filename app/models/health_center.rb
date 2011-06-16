@@ -16,7 +16,7 @@ class HealthCenter < Place
   end
 
   def reports_reached_threshold(threshold)
-    count_reports_since(7.days.ago) >= threshold.value
+    count_reports_since(7.days.ago.at_beginning_of_day) >= threshold.value
   end
 
   def aggregate_report time

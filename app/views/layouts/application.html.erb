@@ -15,12 +15,27 @@
   <body>
     <div class="container">
       <div id="header">
-        <%= link_to image_tag("cnm_malaria.png",:alt =>"CNM malaria.png", :class=>"logo"), root_path , :title => "National Malaria Center of Cambodia"  %>
-        <%= link_to image_tag("malaria_consortium.png",:alt =>"Malaria consortium", :class=>"logo"), root_path, :title => 'Malaria consortium' %>
-        <%#= link_to image_tag("InSTEDD_Logo.png",:alt =>"Instedd",:class => "logo"), "http://www.instedd.org", :title => 'InSTEDD innovation Support to Emergencies Diseases and Disasters', :target => :_blank  %>
-        <% if user_signed_in? %>
-          <%= render 'layouts/toolbar' %>
-        <% end %>
+        <table width="100%" cellpadding="0"  cellspacing="0" >
+          <tr valign="bottom">
+            <td width="100px" valign="bottom">
+              <%= link_to image_tag("cnm_malaria.png",:alt =>"CNM malaria.png", :class=>"logo"), root_path , :title => "National Malaria Center of Cambodia"  %>
+            </td>
+            <td width="50px" valign="top">
+              <%= link_to image_tag("malaria_consortium.png",:alt =>"Malaria consortium", :class=>"logo"), root_path, :title => 'Malaria consortium' %>
+            </td>
+           <td width="50px" valign="top">
+              <%= link_to image_tag("InSTEDD_Logo.gif",:alt =>"Instedd",:class => "logo"), "http://www.instedd.org", :title => 'InSTEDD innovation Support to Emergencies Diseases and Disasters', :target => :_blank  %>
+            </td>
+
+            <td align="right" valign="top" >
+              <% if user_signed_in? %>
+                  <%= render 'layouts/toolbar' %>
+              <% end %>
+            </td>
+            
+          </tr>
+        </table>
+       
       </div>
 
       <div id="main">

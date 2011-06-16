@@ -8,7 +8,7 @@ class Village < Place
   end
 
   def reports_since time
-    Report.where("created_at >= ? AND village_id = ?", time, id)
+    Report.no_error.where("created_at >= ? AND village_id = ?", time, id)
   end
 
   def count_reports_since time

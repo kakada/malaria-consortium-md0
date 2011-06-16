@@ -8,7 +8,7 @@ class HealthCenter < Place
   end
 
   def reports_since time
-    Report.where(:village_id => Village.where(:parent_id => id)).where("created_at >= ?", time)
+    Report.no_error.where(:village_id => Village.where(:parent_id => id)).where("created_at >= ?", time)
   end
 
   def count_reports_since time

@@ -638,3 +638,19 @@ tr.error{
 .logo {
   vertical-align: top;
 }
+.down{
+    background-image: url(../images/down.png);
+    background-position: right center;
+    padding-right: 20px;
+    background-repeat: no-repeat;
+}
+.up{
+    background-image: url(../images/up.png);
+    background-position: right center;
+    padding-right: 20px;
+    background-repeat: no-repeat;
+}
+.watermark{
+    color: #ddd;
+    font-style: italic;
+}

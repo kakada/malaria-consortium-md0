@@ -67,7 +67,7 @@ class Place < ActiveRecord::Base
   end
 
   def self.search_for_autocomplete(query)
-    where "code LIKE :q OR name LIKE :q", :q => "#{query.strip}%"
+    where "code LIKE :q OR name LIKE :q OR name_kh LIKE :q", :q => "#{query.strip}%"
   end
 
   def get_parent type

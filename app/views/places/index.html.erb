@@ -7,6 +7,9 @@
 </div>
 
 <%= page_entries_info @places %><br/><br/>
+<% content_for :head do %>
+  <%= javascript_include_tag "jquery.watermark.min"  %>
+<% end %>
 <div class="search_box" style="float:right;" >
   <input type="text" id="place_search" name="place_search" class="search" value="<%= params[:query] %>" />
   <script type="text/javascript" >
@@ -14,6 +17,7 @@
       loadingMessage = "Retrieving places";
       placeSearch();
       delegatePaginationItem();
+       $('.search').watermark('Place Code, Place Name , Place Name KH');
     })
     function delegatePaginationItem(){
       $("div.pagination a").live("click",function(){

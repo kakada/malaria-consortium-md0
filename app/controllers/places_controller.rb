@@ -4,8 +4,21 @@ class PlacesController < ApplicationController
   def index
     @places = Place
     @places = @places.search_for_autocomplete params[:query] if params[:query].present?
-    @places = @places.paginate :page => get_page, :per_page => PerPage, :order => "id asc"
+
+    sort = params[:sort].present? ? params[:sort]: " id "
+
+    dir = params[:dir].present? ? params[:dir]: "up"
+    sort_type = {"asc" => "up", "desc" => "down" }.select{|key, value| value == dir }
+    if(dir == "up")
+      @revert = "down"
+    else
+      @revert = "up"
+    end
+    sort_type = sort_type.first[0]
+
+    @places = @places.paginate :page => get_page, :per_page => PerPage, :order => "#{sort} #{sort_type} "
     render :file => "/places/_places.html.erb", :layout => false if request.xhr?
+    
   end
 
   def edit

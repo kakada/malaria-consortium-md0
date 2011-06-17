@@ -1,12 +1,30 @@
 <div id="toolbar">
   <%= current_user.email %> |
-  <%= link_to "Home", reports_path %> |
-  <%= link_to "Users", users_path %> |
-  <%= link_to "Thresholds", thresholds_path %> |
-  <%= link_to "Alerts", alert_config_path %> |
-  <%= link_to "Templates", settings_templates_path %> |
-  <%= link_to "Places", places_path %> |
-  <%= link_to "Sign out", destroy_user_session_path %>
+  <%
+     toolbar = [
+              {:text => "Home", :url => reports_path , :controller => "reports#index" },
+              {:text => "Users", :url => users_path , :controller => "users#index"},
+              {:text => "Thresholds", :url => thresholds_path , :controller => "thresholds#index"},
+              {:text => "Alerts", :url => alert_config_path , :controller => "settings#alert_config"},
+              {:text => "Templates", :url => settings_templates_path , :controller => "settings#template_config"},
+              {:text => "Places", :url => places_path , :controller => "places#index"},
+              {:text => "Sign out", :url => destroy_user_session_path , :controller => "users#destroy"}
+     ]
+     links = []
+     toolbar.each do |element|
+       path = "#{params[:controller]}##{params[:action]}"
+
+       cls = "normal"
+       if(path == element[:controller] )
+         cls = "selected"
+       end
+       links << link_to(element[:text], element[:url],:class => cls)
+     end
+
+  %>
+
+  <%= links.join("<span class='bar'> | </span>").html_safe %>
+ 
   <% if content_for? :reports %>
     <div id="search_box">
       <%= render 'layouts/search_place' %>

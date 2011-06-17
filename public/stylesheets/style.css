@@ -654,3 +654,15 @@ tr.error{
     color: #ddd;
     font-style: italic;
 }
+a.normal{
+    font-weight: 300;
+}
+a.selected{
+    font-weight: bold;
+    text-decoration: underline;
+}
+.bar{
+  color: gray;
+  line-height: 0.7;
+  text-decoration: none;
+}

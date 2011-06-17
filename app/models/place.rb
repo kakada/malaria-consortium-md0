@@ -67,14 +67,10 @@ class Place < ActiveRecord::Base
   end
 
   def self.search_for_autocomplete(query)
-    search = "#{query.strip}%"
-    case query
-    when /\s*\d+\s*/
-      where "code LIKE ?", search
-    when /\s*\w+\s*/
-      where "name LIKE ?", search
+    if query =~ /^\s*\d+\s*$/
+      where "code LIKE ?", "#{query.strip}%"
     else
-      where "code LIKE :search OR name LIKE :search", :search => search
+      where "name LIKE ?", "#{query.strip}%"
     end
   end
 

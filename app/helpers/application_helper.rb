@@ -40,4 +40,5 @@ module ApplicationHelper
   def current_url_for(options)
     url_for(params.dup.merge(options))
   end
+
 end

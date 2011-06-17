@@ -8,12 +8,12 @@
     <table width="100%" class="table-grid round" >
       <thead>
         <tr>
-          <th><%= t("Name") %>   </th>
-          <th><%= t("Email") %>  </th>
-          <th><%= t("Phone") %>  </th>
+          <th class="<%= @revert  %> " ><%= link_to t("Name"), users_path(:sort => "user_name", :dir => @revert, :query => params[:query]) %>   </th>
+          <th class="<%= @revert  %> " ><%= link_to t("Email"), users_path(:sort => "email", :dir => @revert, :query => params[:query]) %>  </th>
+          <th class="<%= @revert  %> " ><%= link_to t("Phone"), users_path(:sort => "phone_number", :dir => @revert, :query => params[:query]) %>  </th>
           <th><%= t("Password") %>  </th>
-          <th><%= t("Place") %>  </th>
-          <th><%= t("Role") %>  </th>
+          <th class="<%= @revert  %> " ><%= link_to t("Place"), users_path(:sort => "places.name", :dir => @revert, :query => params[:query]) %>   </th>
+          <th class="<%= @revert  %> " ><%= link_to t("Role"), users_path(:sort => "role", :dir => @revert, :query => params[:query])  %>  </th>
           <th width="130" > </th>
         </tr>
       </thead>

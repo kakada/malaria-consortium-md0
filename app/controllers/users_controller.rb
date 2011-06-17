@@ -4,7 +4,11 @@ class UsersController < ApplicationController
     @title = "User management"
     @page = get_page
     user_form
-    @users = User.paginate_user :query =>params[:query], :page => (@page || '1').to_i, :per_page => PerPage
+
+    sort_params = sort_params(params)
+    @revert = sort_params[:revert_dir]
+
+    @users = User.paginate_user :query =>params[:query], :page => (@page || '1').to_i, :per_page => PerPage, :order => "#{sort_params[:field]} #{sort_params[:dir]} "
     render :file => "users/_list_users.html.erb", :layout => false if request.xhr?
   end
 

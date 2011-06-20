@@ -172,7 +172,6 @@ describe User do
   end
 
   describe "setting nuntium custom attributes" do
-
     before(:each) do
       @nuntium_api.should_not_receive(:set_custom_attributes).with('sms://', anything)
     end
@@ -220,6 +219,14 @@ describe User do
       u = User.create! :phone_number => '123', :place => Province.make
       u.phone_number = '456'
       u.save!
+    end
+
+    it "should delete custom attributes when a user is deleted" do
+      @nuntium_api.should_receive(:set_custom_attributes)
+      user = User.create! :phone_number => '123', :place => Village.make
+
+      @nuntium_api.should_receive(:set_custom_attributes).with('sms://123', {:application => nil})
+      user.destroy
     end
   end
 

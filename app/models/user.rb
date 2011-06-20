@@ -25,6 +25,7 @@ class User < ActiveRecord::Base
 
   before_save :set_place_class_and_hierarchy, :if => :place_id?
   before_save :set_nuntium_custom_attributes
+  before_destroy :remove_nuntium_custom_attributes
 
   # Delegate country, province, etc., to place
   Place::Types.each { |type| delegate type.tableize.singularize, :to => :place }
@@ -147,6 +148,12 @@ class User < ActiveRecord::Base
       elsif !new_record? && !phone_number_changed? && place_id_changed?
         Nuntium.new_from_config.set_custom_attributes "sms://#{phone_number}", {:application => nil}
       end
+    end
+  end
+
+  def remove_nuntium_custom_attributes
+    if phone_number.present? && is_reporting_place?(place)
+      Nuntium.new_from_config.set_custom_attributes "sms://#{phone_number}", {:application => nil}
     end
   end
 

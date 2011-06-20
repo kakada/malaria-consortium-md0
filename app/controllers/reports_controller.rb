@@ -44,13 +44,6 @@ class ReportsController < ApplicationController
     end
   end
 
-  def destroy
-    redirect_to(reports_path(params.slice(:error, :place, :page)), :notice => "You can't delete a report that doesn't have errors") unless @report.error
-    @report.destroy
-
-    redirect_to reports_path(params.slice(:error, :place, :page)), :notice => "Report delete successfully"
-  end
-
   #GET report_form
   def report_form
     @tab = :reported_case

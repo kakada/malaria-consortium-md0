@@ -47,8 +47,7 @@
           <% if report.error? %>
             <td colspan="3" align="center"><nobr><span style="color:#900"><%= report.error_message %></span>
             <% if report.error? %>
-              <%= link_to 'edit', edit_report_path(report, params.slice(:error, :place, :page)) %> |
-              <%= link_to 'delete', report_path(report, params.slice(:error, :place, :page)), :method => :delete, :confirm => "Are you sure you want to delete this report?" %><br/>
+              <%= link_to 'edit', edit_report_path(report, params.slice(:error, :place, :page)) %>
             <% end %>
             </nobr></td>
           <% else %>

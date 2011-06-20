@@ -4,7 +4,7 @@
       [
         ['All messages', :all_messages, :reports, {}],
         ['Error messages', :error_messages, :reports, {:error => true}],
-        ['Last error message per sender', :last_error_messages, :reports, {:error => :last}],
+        ['Last error message per sender per day', :last_error_messages, :reports, {:error => :last}],
         ["Places reporting and not reporting", :reported_case, :report_form_reports , {}] ,
         ['Map', :map, :map_view_map_visualizations, {}],
       ].each do |label, tab, path, options| %>

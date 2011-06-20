@@ -45,7 +45,11 @@
           <td><%= report.sender_address.try(:without_protocol)  %></td>
           <td><%= report.text %></td>
           <% if report.error? %>
-            <td style="color:#900" colspan="3" align="center"><nobr><%= report.error_message %>
+            <td colspan="3" align="center"><nobr><span style="color:#900"><%= report.error_message %></span>
+            <% if report.error? %>
+              <%= link_to 'edit', edit_report_path(report, params.slice(:error, :place, :page)) %> |
+              <%= link_to 'delete', report_path(report, params.slice(:error, :place, :page)), :method => :delete, :confirm => "Are you sure you want to delete this report?" %><br/>
+            <% end %>
             </nobr></td>
           <% else %>
             <td><%= report.malaria_type %></td>
@@ -56,12 +60,8 @@
           <td><%= report.type == 'HealthCenterReport' ? 'health center' : 'village' unless report.error? %></td>
           <td><%= report.health_center.try(:short_description) %></td>
           <td><%= report.village.try(:short_description) %></td>
-          <td>
-            <span class="generated_messages"><%= link_to image_tag('generated_messages.png'), generated_messages_report_path(report) %></span>
-            <% if report.error? %>
-              <%= link_to image_tag('edit.png'), edit_report_path(report, params.slice(:error, :place, :page)) %>
-            <% end %>
-          </td>
+          <td style="text-align:center">
+            <span class="generated_messages"><%= link_to 'generated messages', generated_messages_report_path(report) %></span><br/>
         </tr>
       <% end %>
     </table>

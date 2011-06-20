@@ -7,6 +7,6 @@
 <td>
   <div >
     <%= link_to "Edit", edit_user_path(user) ,:class => "clickable editRow", :id=>"a_#{user.id}", :"data-url" => edit_user_path(user), :"data-rel" => user.id %> |
-    <%= link_to "Delete", user_path(user, :page => params[:page]), :method => :delete, :confirm =>"Are you sure to remove this user" %>
+    <%= link_to "Delete", user_path(user, :page => params[:page]), :method => :delete, :confirm =>"Are you sure you want to delete this user?" %>
   </div>
 </td>

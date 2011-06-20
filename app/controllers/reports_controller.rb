@@ -2,7 +2,7 @@ class ReportsController < ApplicationController
   include ReportsConcern
 
   before_filter :set_tab
-  before_filter :get_report, :only => [:edit, :update]
+  before_filter :get_report, :only => [:edit, :update, :destroy]
 
   def index
     @pagination = {
@@ -42,6 +42,13 @@ class ReportsController < ApplicationController
     else
       edit and render :edit
     end
+  end
+
+  def destroy
+    redirect_to(reports_path(params.slice(:error, :place, :page)), :notice => "You can't delete a report that doesn't have errors") unless @report.error
+    @report.destroy
+
+    redirect_to reports_path(params.slice(:error, :place, :page)), :notice => "Report delete successfully"
   end
 
   #GET report_form

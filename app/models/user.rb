@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   Roles = ["default", "national", "admin" ]
 
   belongs_to :place
-  has_many :reports, :foreign_key => 'sender_id'
+  has_many :reports, :foreign_key => 'sender_id', :dependent => :destroy
 
   before_validation :try_fetch_place
 

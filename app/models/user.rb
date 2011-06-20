@@ -9,7 +9,6 @@ class User < ActiveRecord::Base
   Roles = ["default", "national", "admin" ]
 
   belongs_to :place
-  belongs_to :last_report, :class_name => 'Report'
   has_many :reports, :foreign_key => 'sender_id'
 
   before_validation :try_fetch_place

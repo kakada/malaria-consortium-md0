@@ -37,7 +37,6 @@
         </tr>
       </thead>
       <% @reports.each_with_index do |report, i| %>
-        <% report = report.last_report if report.is_a? User %>
         <tr class="<%= i.parity %>">
           <td title="<%= report.created_at %>"><%= time_ago_in_words report.created_at %> ago</td>
           <td class="user_messages"> 
@@ -47,11 +46,7 @@
           <td><%= report.text %></td>
           <% if report.error? %>
             <td style="color:#900" colspan="3" align="center"><nobr><%= report.error_message %>
-              <% if params[:error] == 'last' %>
-                <%= link_to 'mark as investigated', mark_as_investigated_user_path(report.sender, params.slice(:error, :place, :page)), :confirm => 'Are you sure?' %>
-              <% else %>
-                <%= link_to 'click to edit', edit_report_path(report, params.slice(:error, :place, :page)) %>
-              <% end %>
+            <%= link_to 'click to edit', edit_report_path(report, params.slice(:error, :place, :page)) %>
             </nobr></td>
           <% else %>
             <td><%= report.malaria_type %></td>

@@ -30,7 +30,6 @@ Local::Application.routes.draw do
   end
   resources :users do
     member do
-      get 'mark_as_investigated'
       get 'reports'
     end
     collection do

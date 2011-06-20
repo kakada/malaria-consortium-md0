@@ -57,8 +57,8 @@ describe Report do
       report = setup_successful_parser "successful report"
       report.stub(:human_readable => 'xxx')
       report.stub!(:generate_alerts).and_return([{:body => "alert1", :to => "sms://1"},
-                                                  {:body => "alert2", :to => "sms://2"},
-                                                  {:body => "alert3", :to => "sms://3"}])
+                                                 {:body => "alert2", :to => "sms://2"},
+                                                 {:body => "alert3", :to => "sms://3"}])
 
       response = Report.process @valid_message
 
@@ -72,11 +72,11 @@ describe Report do
       report.place.should == @health_center
 
       response.should =~ [
-                            {:to => @hc_user.phone_number.with_sms_protocol, :body => report.human_readable, :from => Report.from_app},
-                            {:body => "alert1", :to => "sms://1", :from => Report.from_app},
-                            {:body => "alert2", :to => "sms://2", :from => Report.from_app},
-                            {:body => "alert3", :to => "sms://3", :from => Report.from_app}
-                          ]
+        {:to => @hc_user.phone_number.with_sms_protocol, :body => report.human_readable, :from => Report.from_app},
+        {:body => "alert1", :to => "sms://1", :from => Report.from_app},
+        {:body => "alert2", :to => "sms://2", :from => Report.from_app},
+        {:body => "alert3", :to => "sms://3", :from => Report.from_app}
+      ]
 
       response.each do |reply|
         assert_nuntium_fields reply
@@ -95,7 +95,7 @@ describe Report do
 
     it "should upcase malaria type" do
       report = Report.new :malaria_type => 'f', :age => 123, :sex => 'Male',
-                          :village_id => @village.id, :sender_id => @hc_user.id, :place_id => @health_center.id
+        :village_id => @village.id, :sender_id => @hc_user.id, :place_id => @health_center.id
       report.save!
       report.malaria_type.should == 'F'
     end
@@ -119,12 +119,27 @@ describe Report do
       parser.should_receive(:errors?).and_return(false)
 
       report = Report.new :malaria_type => 'F', :age => 123, :sex => 'Male',
-                          :village_id => @village.id, :sender_id => @hc_user.id, :place_id => @health_center.id
+        :village_id => @village.id, :sender_id => @hc_user.id, :place_id => @health_center.id
 
       report.stub!(:human_readable).and_return success_message
 
       parser.should_receive(:report).and_return(report)
       report
     end
+  end
+
+  it "returns last errors per sender per day" do
+    user1 = User.make
+    user2 = User.make
+
+    Report.make :error => true, :sender => user1, :created_at => '2011-06-20 10:00:00'
+    Report.make :sender => user1, :created_at => '2011-06-20 12:00:00'
+
+    Report.make :error => true, :sender => user2, :created_at => '2011-06-20 10:00:00'
+    last1 = Report.make :error => true, :sender => user2, :created_at => '2011-06-20 12:00:00'
+    last2 = Report.make :error => true, :sender => user2, :created_at => '2011-06-21 12:00:00'
+
+    reports = Report.last_error_per_sender_per_day
+    reports.should eq([last2, last1])
   end
 end

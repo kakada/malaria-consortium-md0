@@ -68,15 +68,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def mark_as_investigated
-    user = User.find params[:id]
-    user.last_report = nil
-    user.last_report_error = false
-    user.save!
-
-    redirect_to reports_path(params.slice(:error, :place, :page)), :notice => 'Report marked as investigated'
-  end
-
   #GET /users/csv_template
   def csv_template
     column_headers = "Name,Email,Phone,Password,Place code,Role"

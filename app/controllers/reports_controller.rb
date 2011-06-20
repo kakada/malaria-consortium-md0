@@ -11,13 +11,13 @@ class ReportsController < ApplicationController
     }
 
     if params[:error] == 'last'
-      @reports = User.order('updated_at desc').where(:last_report_error => true).includes(:last_report).paginate @pagination
+      @reports = @place.reports.last_error_per_sender_per_day
     else
       @reports = @place.reports
       @reports = @reports.order('id desc').includes(:sender, :village, :health_center)
       @reports = @reports.where(:error => true) if params[:error] == 'true'
-      @reports = @reports.paginate @pagination
     end
+    @reports = @reports.paginate @pagination
   end
 
   def edit

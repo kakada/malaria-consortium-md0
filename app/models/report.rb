@@ -17,8 +17,6 @@ class Report < ActiveRecord::Base
 
   before_validation :upcase_strings
   before_save :complete_fields
-  after_create :copy_self_to_sender, :if => :sender_id?
-  after_update :remove_self_from_sender, :if => :sender_id?
 
   def self.process(message = {})
     message = message.with_indifferent_access
@@ -51,6 +49,11 @@ class Report < ActiveRecord::Base
     when 'Pv' then where :malaria_type => 'V'
     else where('1 = 1')
     end
+  end
+
+  def self.last_error_per_sender_per_day
+    subquery = Report.select('max(id)').group("date(created_at), sender_id").to_sql
+    where(:error => true).where("id IN (#{subquery})").order('id desc').all
   end
 
   def self.unknown_user(original_message = nil)
@@ -216,18 +219,5 @@ class Report < ActiveRecord::Base
 
   def upcase_strings
     malaria_type.upcase! if malaria_type
-  end
-
-  def copy_self_to_sender
-    sender.last_report = self
-    sender.last_report_error = self.error?
-    sender.save!
-  end
-
-  def remove_self_from_sender
-    if sender.last_report_id == self.id
-      sender.last_report_error = self.error?
-      sender.save!
-    end
   end
 end

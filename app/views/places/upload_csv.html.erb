@@ -1,23 +1,39 @@
-<%= form_tag(confirm_import_places_path, :method => "post") do %>
+<br />
 
-	<table width="100%" class="round full table-grid">
-    <caption style="font-size: 130%; font-weight: bold">
-      <div>The places listed below will be created once you confirm</div>
-      <div><%= submit_tag("Confirm Places") %></div>
-      <br />
-    </caption>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Khmer Name</th>
-        <th>Code</th>
-        <th>Lat</th>
-        <th>Lng</th>
-      </tr>
-    </thead>
-    <%= render :partial => "place", :collection => @places %>
-	</table>
+  <div style="float:left;">
+    <span style="font-weight: bold;font-size: 15px;" >
+      <span> The places listed below will be created once you confirm </span>
+    </span>
+  </div>
 
-  <br />
-  <div style="text-align:center"><%= submit_tag("Confirm Places") %></div>
-<% end %>
+  <div style="float:right;" >
+    <%= link_to "Confirm import now",places_url(), :class=>"confirm_import round" %>
+  </div>
+  <div class="clear">&nbsp;</div>
+  
+  <%= form_tag(confirm_import_places_path, :method => "post", :id => "form_import" ) do %>
+    <table width="100%" class="round full table-grid">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Khmer Name</th>
+          <th>Code</th>
+          <th>Latitude</th>
+          <th>Longitude</th>
+        </tr>
+      </thead>
+      <%= render :partial => "place", :collection => @places %>
+    </table>
+    <br />
+  <% end %>
+  <div style="float:left;">
+    <span style="font-weight: bold;font-size: 15px;" >
+      <span> The places listed below will be created once you confirm </span>
+    </span>
+  </div>
+  
+  <div style="float:right;" >
+    <%= link_to "Confirm import now",places_url(), :class=>"confirm_import round",   %>
+  </div>
+  <div class="clear">&nbsp;</div> <br />
+

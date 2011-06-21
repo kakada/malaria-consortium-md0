@@ -27,7 +27,9 @@ class PlacesController < ApplicationController
   end
 
   def confirm_import
-    PlaceImporter.new(current_user.places_csv_file_name).import
+    places = PlaceImporter.new(current_user.places_csv_file_name).import
+    flash["notice"] = "#{places.size} has been added successfully"
+    redirect_to places_url(:page => get_page)
   end
 
   def import

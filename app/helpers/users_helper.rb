@@ -41,7 +41,7 @@ module UsersHelper
       type = "text"
     end
     if(field == :intended_place_code )
-      element << text_field_tag(field, user.send(field).nil? ? ((user.place.nil?)?"":user.place.code) : user.send(field)  , options )
+      element << text_field_tag(field, user.send(field).nil? ? ((user.place.nil?)?"":user.place.description) : user.send(field)  , options )
     else
       if(type == "text" )
         element << text_field_tag(field, user.send(field),options )
@@ -62,7 +62,7 @@ module UsersHelper
 
   def cell user, field, ui_field_name = nil , options = {}
     element = '<td>'
-    element << "<span>" <<  user.send(field) << "</span>"
+    element << "<span>" <<  user.send(field).to_s << "</span>"
     element << '<div class="validation_error server">'
     element << (user.errors[field] ? user.errors[field].join(". ") : " ")
   	element << '</div>'

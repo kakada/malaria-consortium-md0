@@ -32,6 +32,14 @@
       params["intended_place_code"] = $(tr.children[4].children[0]).val();
       params["role"] =                $(tr.children[5].children[0]).val();
 
+      if(params["role"] == "default"){
+        if(params["intended_place_code"] == ""){
+          alert("Please enter place code");
+          return false;
+        }
+      }
+
+      
       var url = $(this).attr("data-url");
       $.ajax({
         url : url,

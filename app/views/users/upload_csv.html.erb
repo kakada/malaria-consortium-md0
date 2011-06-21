@@ -1,9 +1,24 @@
-<% if(@users.size) %>
+<% if(@users.size)
+    total = @users.inject(0) do |result,current|
+    result += (current.errors.size == 0)? 1 : 0
+   end
+%>
+
 <br />
 
-<div style="float:left;"> # <%=  @users.size %> records  </div>
-<div style="float:right;" ><%= link_to "Confirm import now", confirm_import_users_path(:file=>@file_name),:class=>"confirm_import", :id=>"confirm_import"  %>  </div>
-<div style="clear:both;" ></div>
+<div style="float:left;"> 
+  <span style="font-weight: bold;font-size: 15px;" >
+    <span># Total records : <%=  @users.size %>  </span>
+    <span style="margin-left: 30px;" > # Bad records : <%= @users.size-total  %> </span>
+    <span style="margin-left: 30px;" > # Good records : <%= total  %>  </span>
+  </span>
+</div>
+
+<div style="float:right;" >
+  <%= link_to "Confirm import now", confirm_import_users_path(:file=>@file_name),:class=>"confirm_import round", :id=>"confirm_import" if total >0  %>
+  <%= "<span class='confirm_import round' style='color:red' > Unable to import </span>".html_safe if total == 0 %>
+</div>
+<div style="clear:both;" > &nbsp;</div>
 <div >
   <table class="full table-grid round" >
     <thead>
@@ -19,7 +34,9 @@
       </tr>
     </thead>
     <tbody>
-    <% @users.each_with_index do |user,i| %>
+    <%
+
+    @users.each_with_index do |user,i| %>
       <tr class="<%= (i%2 == 0)?"odd ":"even " %> <%= user.errors.size > 0 ? "error ":" " %>" >
         <td> <%= i+1 %> </td>
         <%= cell user, :user_name %>

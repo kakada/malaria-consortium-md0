@@ -358,7 +358,7 @@ div.msg-error, div.alert, div.error {
     background-image: url(../images/stop.png);
     background-repeat: no-repeat;
     background-position: left center;
-    padding: 5px 5px 5px 24px;
+    padding: 5px 5px 5px 30px;
     border: 2px solid #ccc;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
@@ -665,4 +665,17 @@ a.selected{
   color: gray;
   line-height: 0.7;
   text-decoration: none;
+}
+.report{
+  margin-top: 20px;
+}
+.confirm_import{
+  border: 1px solid #ccc;
+  background-color: #eee;
+  padding: 5px 10px;
+  font-weight: bold;
+}
+.confirm_import:hover{
+    background-color: #cecece;
+    text-decoration: none;
 }

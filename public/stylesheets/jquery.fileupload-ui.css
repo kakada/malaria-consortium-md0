@@ -24,8 +24,9 @@ form.file_upload {
   width: 12em;
   height: 2.5em;
   line-height: 2.5em;
-  background: #eee;
   border: 1px solid #ccc;
+  background-color: #eee;
+  font-weight: bold;
 }
 
 form.file_upload_small {

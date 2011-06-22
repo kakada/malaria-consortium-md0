@@ -20,7 +20,9 @@ Local::Application.routes.draw do
   end
   resources :reports do
     collection do
-      get "report_form"
+      get "error"
+      get "last_error_per_sender_per_day"
+      get "places_reporting_and_not_reporting"
       get "report_detail"
       get "report_csv"
       get "duplicated"

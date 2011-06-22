@@ -140,7 +140,7 @@ describe Report do
     last2 = Report.make :error => true, :sender => user2, :created_at => '2011-06-21 12:00:00'
 
     reports = Report.last_error_per_sender_per_day
-    reports.should eq([last2, last1])
+    reports.all.should =~ [last2, last1]
   end
 
   it "returns duplicated reports per sender per day" do

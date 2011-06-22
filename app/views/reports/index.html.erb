@@ -47,7 +47,7 @@
           <% if report.error? %>
             <td colspan="3" align="center"><nobr><span class="error_report"><%= report.error_message %></span>
             <% if report.error? %>
-              <%= link_to 'edit', edit_report_path(report, params.slice(:error, :place, :page)) %>
+              <%= link_to 'edit', edit_report_path(report, :next_url => request.url) %>
             <% end %>
             </nobr></td>
           <% else %>
@@ -62,7 +62,7 @@
           <td>
             <span class="generated_messages"><%= link_to 'Messages', generated_messages_report_path(report) %></span> |
             <% if report.ignored? %>
-              <%= link_to 'Stop ignoring', stop_ignoring_report_path(report, params.slice(:error, :place, :page)) %>
+              <%= link_to 'Stop ignoring', stop_ignoring_report_path(report, :next_url => request.url) %>
             <% else %>
               <%= link_to 'Ignore', ignore_report_path(report, :next_url => request.url) %>
             <% end %>

@@ -21,14 +21,14 @@
         })
     });
 
-    
+
   </script>
 <% end %>
 
 <% content_for :reports do %>
 
 <div class="round report"  >
-  <%= form_tag report_form_reports_path, {:method=>"get", :id =>"report_form"} do  %>
+  <%= form_tag '', {:method=>"get", :id =>"report_form"} do  %>
       <%= hidden_field_tag :place, params[:place] %>
       <p>
         <%
@@ -45,20 +45,20 @@
       </p>
 
       <p>
-        
+
         <%= radio_button_tag :place_type , "Village", true %>
         <%= label_tag "place_type_Village", "Village " %>
-        
+
 
         <%= radio_button_tag :place_type, "HealthCenter",  params[:place_type] == "HealthCenter" %>
         <%= label_tag "place_type_HealthCenter", "HealthCenter" %>
       </p>
 
       <p>
-        
+
         <%= radio_button_tag :ncase, "1", true %>
         <%= label_tag "ncase_1", "Reported" %>
-        
+
 
         <%= radio_button_tag :ncase, "0", params['ncase'] == "0" %>
         <%= label_tag "ncase_0", "Not reported" %>

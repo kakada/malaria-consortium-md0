@@ -1,9 +1,7 @@
 <% content_for :reports do %>
   <h3>Edit incorrect message from <%= @report.sender.try(:user_name) %> <%= @report.sender_address %> with text <%= @report.text %></h3>
   <%= form_for @report.becomes(Report) do |f| %>
-    <% [:error, :place, :page].each do |key| %>
-      <input type="hidden" name="<%= key %>" value="<%= params[key] %>" />
-    <% end %>
+    <input type="hidden" name="next_url" value="<%= params[:next_url] %>" />
     <% if @report.errors.any? %>
       <div id="error_explanation">
         <h2><%= pluralize(@report.errors.count, "error") %> prohibited you from editing this message:</h2>

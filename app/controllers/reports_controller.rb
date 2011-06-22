@@ -1,24 +1,28 @@
 class ReportsController < ApplicationController
   include ReportsConcern
 
-  before_filter :set_tab
   before_filter :get_report, :only => [:edit, :update, :ignore, :stop_ignoring]
 
   def index
-    @pagination = {
-      :page => get_page,
-      :per_page => 20,
-      :order => 'id desc'
-    }
+    paginated_reports :all_messages
+  end
 
-    if params[:error] == 'last'
-      @reports = @place.reports.last_error_per_sender_per_day
-    else
-      @reports = @place.reports
-      @reports = @reports.where(:error => true) if params[:error] == 'true'
+  def error
+    paginated_reports :error_messages do |reports|
+      reports.where(:error => true)
     end
-    @reports = @reports.includes(:sender, :village, :health_center)
-    @reports = @reports.paginate @pagination
+  end
+
+  def last_error_per_sender_per_day
+    paginated_reports :last_error_per_sender_per_day do |reports|
+      reports.last_error_per_sender_per_day
+    end
+  end
+
+  def duplicated
+    paginated_reports :duplicated_messages do |reports|
+      reports.duplicated_per_sender_per_day
+    end
   end
 
   def edit
@@ -39,7 +43,7 @@ class ReportsController < ApplicationController
     @report.update_attributes params[:report].slice(:sex, :age, :malaria_type, :village_id)
     @report.error = false
     if @report.save
-      redirect_to reports_path(params.slice(:error, :place, :page)), :notice => 'Report edited successfully'
+      redirect_to params[:next_url], :notice => 'Report edited successfully'
     else
       edit and render :edit
     end
@@ -59,9 +63,8 @@ class ReportsController < ApplicationController
     redirect_to params[:next_url], :notice => 'Report is not ignored anymore'
   end
 
-  #GET report_form
-  def report_form
-    @tab = :reported_case
+  def places_reporting_and_not_reporting
+    @tab = :places_reporting_and_not_reporting
     @reports = []
     @reports = Report.report_cases_paginate params if params[:from].present?
   end
@@ -88,33 +91,24 @@ class ReportsController < ApplicationController
     render :layout => false
   end
 
-  def duplicated
-    @tab = :duplicated_messages
+
+  private
+
+  def get_report
+    @report = Report.find params[:id]
+  end
+
+  def paginated_reports(tab_name)
+    @tab = tab_name
     @pagination = {
       :page => get_page,
       :per_page => 20,
       :order => 'reports.id desc'
     }
-    @reports = @place.reports.duplicated_per_sender_per_day
+    @reports = @place.reports
+    @reports = yield @reports if block_given?
     @reports = @reports.includes(:sender, :village, :health_center)
     @reports = @reports.paginate @pagination
     render 'index'
-  end
-
-  private
-
-  def set_tab
-    @tab = case params[:error]
-    when 'true'
-      :error_messages
-    when 'last'
-      :last_error_messages
-    else
-      :all_messages
-    end
-  end
-
-  def get_report
-    @report = Report.find params[:id]
   end
 end

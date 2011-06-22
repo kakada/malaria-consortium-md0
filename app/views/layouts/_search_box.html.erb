@@ -1,5 +1,4 @@
 <form id="place_search_form">
-  <input type="hidden" name="error" value="<%= params[:error] %>" />
   <%= text_field_tag 'place_search', params['place_search'], :style => 'width:280px' ,:class => "search", :autocomplete => :off %>
   <%= submit_tag 'Search place', :id =>"submit" %>
   <% if params[:place_search] && !@place %>

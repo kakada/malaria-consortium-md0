@@ -1,5 +1,5 @@
 <%= will_paginate @reports %>
-<div style="width:600px;"  >
+<div >
   <% if(@reports.size > 0) %>
   <div style="float:left;width:300px;"><%= @place.type  %></div>
   <% if(@place.type != "Village") %>
@@ -9,28 +9,32 @@
   <% end %>
   <div class="clear"></div>
 
-  <table style="border:1px solid #ccc;width: 94%;" class="round"  >
-    <tr>
-      <th> Date </th>
-      <th> Species </th>
-      <th> Sex </th>
-      <th> Age </th>
-      <th> Reporter </th>
-      <th> Village</th>
-      <th> Phone number </th>
-      <th> Mobile</th>
-    </tr>
-
+  <table style="border:1px solid #ccc;" class="round table-grid full"  >
+    <thead>
+      <tr>
+        <th> Date </th>
+        <th> Type </th>
+        <th> Mobile</th>
+        <th> Sex </th>
+        <th> Age </th>
+        <th> Reporter </th>
+        <th> Source</th>
+        <th> Village</th>
+        <th> Phone</th>
+      </tr>
+    </thead>
     <% @reports.each_with_index do |report,index| %>
-      <tr class="<%= (index%2==0)?"pair":"impair" %> " >
-        <td> <%= report.created_at.to_datetime.strftime("%Y-%m-%d")  %>   </td>
+      <tr class="<%=  index.parity  %> " >
+        <td> <%= time_ago_in_words report.created_at  %> ago   </td>
         <td> <%= get_malaria_type(report.malaria_type) %>  </td>
-        <td> <%= report.sex %>  </td>
+        <td> <%= (report.mobile)?"Yes": "No" %> </td>
+        <td> <%= report.sex[0,1] %>  </td>
         <td> <%= report.age %>  </td>
         <td> <%= report.sender.user_name %> </td>
+        <td> <%= report.sender.place.class.to_s %> </td>
         <td> <%= report.village.name_with_code  %> </td>
         <td> <%= report.sender.phone_number %> </td>
-        <td> <%= (report.mobile)?"Yes": "No" %> </td>
+        
       </tr>
     <% end %>
     <tr><td colspan="6" ></td></tr>

@@ -64,7 +64,7 @@
             <% if report.ignored? %>
               <%= link_to 'Stop ignoring', stop_ignoring_report_path(report, params.slice(:error, :place, :page)) %>
             <% else %>
-              <%= link_to 'Ignore', ignore_report_path(report, params.slice(:error, :place, :page)) %>
+              <%= link_to 'Ignore', ignore_report_path(report, :next_url => request.url) %>
             <% end %>
         </tr>
       <% end %>

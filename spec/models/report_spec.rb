@@ -142,4 +142,26 @@ describe Report do
     reports = Report.last_error_per_sender_per_day
     reports.should eq([last2, last1])
   end
+
+  it "returns duplicated reports per sender per day" do
+    user1 = User.make
+    user2 = User.make
+
+    r1 = Report.make :text => 'foo', :sender => user1, :created_at => '2011-06-20 10:00:00'
+    r2 = Report.make :text => 'foo', :sender => user1, :created_at => '2011-06-20 12:00:00'
+    r3 = Report.make :text => 'foo', :sender => user1, :created_at => '2011-06-20 13:00:00'
+
+    Report.make :text => 'bar', :sender => user1, :created_at => '2011-06-20 14:00:00'
+
+    r4 = Report.make :text => 'baz', :sender => user2, :created_at => '2011-06-20 15:00:00'
+    r5 = Report.make :text => 'baz', :sender => user2, :created_at => '2011-06-20 16:00:00'
+
+    Report.make :text => 'foo', :sender => user2, :created_at => '2011-06-20 16:00:00'
+
+    Report.make :text => 'coco', :sender => user1, :created_at => '2011-06-21 15:00:00'
+    Report.make :text => 'coco', :sender => user1, :created_at => '2011-06-22 16:00:00'
+
+    reports = Report.duplicated_per_sender_per_day
+    reports.all.should =~ [r5, r4, r3, r2, r1]
+  end
 end

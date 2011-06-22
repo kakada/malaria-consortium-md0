@@ -57,7 +57,19 @@ class Report < ActiveRecord::Base
 
   def self.last_error_per_sender_per_day
     subquery = Report.select('max(id)').group("date(created_at), sender_id").to_sql
-    where(:error => true, :ignored => false).where("id IN (#{subquery})").order('id desc').all
+    where(:error => true, :ignored => false).where("id IN (#{subquery})")
+  end
+
+  def self.duplicated_per_sender_per_day
+    subquery = Report.
+      select('distinct reports.id').
+      from('reports, reports r2').
+      where('date(reports.created_at) = date(r2.created_at)').
+      where('reports.sender_id = r2.sender_id').
+      where('reports.text = r2.text').
+      where("reports.id <> r2.id").to_sql
+
+    where("reports.id IN (#{subquery})")
   end
 
   def self.unknown_user(original_message = nil)

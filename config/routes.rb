@@ -23,6 +23,7 @@ Local::Application.routes.draw do
       get "report_form"
       get "report_detail"
       get "report_csv"
+      get "duplicated"
     end
     member do
       get 'generated_messages'

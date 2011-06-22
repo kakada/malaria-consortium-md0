@@ -7,16 +7,17 @@ class ReportsController < ApplicationController
   def index
     @pagination = {
       :page => get_page,
-      :per_page => 20
+      :per_page => 20,
+      :order => 'id desc'
     }
 
     if params[:error] == 'last'
       @reports = @place.reports.last_error_per_sender_per_day
     else
       @reports = @place.reports
-      @reports = @reports.order('id desc').includes(:sender, :village, :health_center)
       @reports = @reports.where(:error => true) if params[:error] == 'true'
     end
+    @reports = @reports.includes(:sender, :village, :health_center)
     @reports = @reports.paginate @pagination
   end
 
@@ -48,14 +49,14 @@ class ReportsController < ApplicationController
     @report.ignored = true
     @report.save
 
-    redirect_to reports_path(params.slice(:error, :place, :page)), :notice => 'Report ignored successfully'
+    redirect_to params[:next_url], :notice => 'Report ignored successfully'
   end
 
   def stop_ignoring
     @report.ignored = false
     @report.save
 
-    redirect_to reports_path(params.slice(:error, :place, :page)), :notice => 'Report is not ignored anymore'
+    redirect_to params[:next_url], :notice => 'Report is not ignored anymore'
   end
 
   #GET report_form
@@ -85,6 +86,19 @@ class ReportsController < ApplicationController
     @report = Report.find(params[:id])
     @messages = @report.generated_messages
     render :layout => false
+  end
+
+  def duplicated
+    @tab = :duplicated_messages
+    @pagination = {
+      :page => get_page,
+      :per_page => 20,
+      :order => 'reports.id desc'
+    }
+    @reports = @place.reports.duplicated_per_sender_per_day
+    @reports = @reports.includes(:sender, :village, :health_center)
+    @reports = @reports.paginate @pagination
+    render 'index'
   end
 
   private

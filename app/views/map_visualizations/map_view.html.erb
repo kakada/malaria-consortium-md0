@@ -51,7 +51,7 @@
 
      function loadMapCookie(){
        var param = $.cookies.get("mapvisual") || {
-          time : "week",
+          time : "week"
           //slide_value: 0
        };
 
@@ -87,7 +87,6 @@
                     date_to : $("#to").val(),
                     slide_value: MD.visualizor.slider("value")
        }
-       console.dir(param);
        $.cookies.set("mapvisual",param);
      }
 
@@ -215,7 +214,6 @@
        var items =$("div.pagination > a");
        items.live("click",function(){
           var url = this.href ;
-          console.log(url);
           getListReportByItem(url);
           return false;
        });

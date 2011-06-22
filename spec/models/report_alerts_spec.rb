@@ -23,6 +23,15 @@ describe Report do
     Report.make(:village => village).alert_triggered.should == :village
   end
 
+  it "should alert from village after threshold ignoring ignored" do
+    village = Village.make
+    Threshold.create! :place => village, :place_class => Village.name, :value => 2
+
+    Report.make(:village => village).alert_triggered.should == nil
+    Report.make(:village => village, :ignored => true).alert_triggered.should == nil
+    Report.make(:village => village).alert_triggered.should == :village
+  end
+
   it "should alert from village after default threshold set at HC level" do
     village = Village.make
     Threshold.create! :place => village.parent, :place_class => Village.name, :value => 2
@@ -45,6 +54,15 @@ describe Report do
 
     Report.make(:village => village).alert_triggered.should == nil
     Report.make(:village => village, :error => true).alert_triggered.should == nil
+    Report.make(:village => village).alert_triggered.should == :health_center
+  end
+
+  it "should alert from hc after threshold ignoring ignored" do
+    village = Village.make
+    Threshold.create! :place => village.parent, :place_class => HealthCenter.name, :value => 2
+
+    Report.make(:village => village).alert_triggered.should == nil
+    Report.make(:village => village, :ignored => true).alert_triggered.should == nil
     Report.make(:village => village).alert_triggered.should == :health_center
   end
 

@@ -40,7 +40,11 @@ class Report < ActiveRecord::Base
   end
 
   def self.no_error
-    where 'reports.error = 0 '
+    where 'reports.error = ?', false
+  end
+
+  def self.not_ignored
+    where 'reports.ignored = ?', false
   end
 
   def self.with_malaria_type(type)
@@ -53,7 +57,7 @@ class Report < ActiveRecord::Base
 
   def self.last_error_per_sender_per_day
     subquery = Report.select('max(id)').group("date(created_at), sender_id").to_sql
-    where(:error => true).where("id IN (#{subquery})").order('id desc').all
+    where(:error => true, :ignored => false).where("id IN (#{subquery})").order('id desc').all
   end
 
   def self.unknown_user(original_message = nil)
@@ -107,7 +111,7 @@ class Report < ActiveRecord::Base
   def self.report_cases options
     place = options[:place].present? ?  Place.find(options[:place]) : Country.first
     reports = Report.at_place(place).between_dates(options[:from], options[:to]).where("reports.#{options[:place_type].foreign_key} IS NOT NULL")
-    reports = reports.where(:error => false)
+    reports = reports.no_error.not_ignored
     if options[:ncase] == '0'
       reports = reports.select "DISTINCT(#{options[:place_type].foreign_key})"
       ids = reports.map &:"#{options[:place_type].foreign_key}"

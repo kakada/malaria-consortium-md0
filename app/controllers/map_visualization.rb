@@ -3,6 +3,7 @@ class MapVisualization
     place = Place.find options[:id]
     Report.
       no_error.
+      not_ignored.
       at_place(place).
       between_dates(options[:from], options[:to]).
       with_malaria_type(options[:type]).
@@ -13,7 +14,7 @@ class MapVisualization
   def self.report_case_count(options = {})
     if options[:id].blank? || options[:id].to_i == 0
       place = Country.national
-      reports = Report.no_error.between_dates(options[:from], options[:to]).with_malaria_type(options[:type])
+      reports = Report.no_error.not_ignored.between_dates(options[:from], options[:to]).with_malaria_type(options[:type])
       places = [place.as_json(:only => [:id, :name, :type, :lat, :lng]).merge('total' => reports.count)]
     else
       place = Place.find options[:id]
@@ -33,7 +34,7 @@ class MapVisualization
   private
 
   def self.get_report_case_count_query place, options
-    sub_reports = Report.no_error.between_dates(options[:from], options[:to]).with_malaria_type(options[:type])
+    sub_reports = Report.no_error.not_ignored.between_dates(options[:from], options[:to]).with_malaria_type(options[:type])
     report_sub_table = " (#{sub_reports.to_sql}) AS report "
 
     sql = " SELECT top_places.*, count(report.id) as total FROM places top_places "

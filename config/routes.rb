@@ -26,6 +26,8 @@ Local::Application.routes.draw do
     end
     member do
       get 'generated_messages'
+      get 'ignore'
+      get 'stop_ignoring'
     end
   end
   resources :users do

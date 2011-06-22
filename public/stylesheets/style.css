@@ -679,3 +679,15 @@ a.selected{
     background-color: #cecece;
     text-decoration: none;
 }
+.error_report {
+  color: #900;
+}
+.ignored {
+  color: #BBB;
+}
+.ignored .error_report {
+  color: #977;
+}
+.ignored a {
+  color: #89c;
+}

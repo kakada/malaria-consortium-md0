@@ -2,7 +2,7 @@ class ReportsController < ApplicationController
   include ReportsConcern
 
   before_filter :set_tab
-  before_filter :get_report, :only => [:edit, :update, :destroy]
+  before_filter :get_report, :only => [:edit, :update, :ignore, :stop_ignoring]
 
   def index
     @pagination = {
@@ -44,6 +44,20 @@ class ReportsController < ApplicationController
     end
   end
 
+  def ignore
+    @report.ignored = true
+    @report.save
+
+    redirect_to reports_path(params.slice(:error, :place, :page)), :notice => 'Report ignored successfully'
+  end
+
+  def stop_ignoring
+    @report.ignored = false
+    @report.save
+
+    redirect_to reports_path(params.slice(:error, :place, :page)), :notice => 'Report is not ignored anymore'
+  end
+
   #GET report_form
   def report_form
     @tab = :reported_case
@@ -54,7 +68,7 @@ class ReportsController < ApplicationController
   #GET report_detail
   def report_detail
     @place = Place.find(params[:place_id])
-    @reports = Report.no_error.at_place(@place).between_dates(params[:from], params[:to])
+    @reports = Report.no_error.not_ignored.at_place(@place).between_dates(params[:from], params[:to])
     @reports = @reports.paginate :page => get_page, :per_page => 20
     render :layout =>false
   end

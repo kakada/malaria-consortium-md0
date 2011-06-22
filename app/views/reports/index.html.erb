@@ -37,7 +37,7 @@
         </tr>
       </thead>
       <% @reports.each_with_index do |report, i| %>
-        <tr class="<%= i.parity %>">
+        <tr class="<%= i.parity %> <%= 'ignored' if report.ignored? %>">
           <td title="<%= report.created_at %>"><%= time_ago_in_words report.created_at %> ago</td>
           <td class="user_messages">
             <%= link_to report.sender.user_name, reports_user_path(:id => report.sender.id, :report_id => report.id) if report.sender %>
@@ -45,7 +45,7 @@
           <td><%= report.sender_address.try(:without_protocol)  %></td>
           <td><%= report.text %></td>
           <% if report.error? %>
-            <td colspan="3" align="center"><nobr><span style="color:#900"><%= report.error_message %></span>
+            <td colspan="3" align="center"><nobr><span class="error_report"><%= report.error_message %></span>
             <% if report.error? %>
               <%= link_to 'edit', edit_report_path(report, params.slice(:error, :place, :page)) %>
             <% end %>
@@ -59,8 +59,13 @@
           <td><%= report.type == 'HealthCenterReport' ? 'health center' : 'village' unless report.error? %></td>
           <td><%= report.health_center.try(:short_description) %></td>
           <td><%= report.village.try(:short_description) %></td>
-          <td style="text-align:center">
-            <span class="generated_messages"><%= link_to 'generated messages', generated_messages_report_path(report) %></span><br/>
+          <td>
+            <span class="generated_messages"><%= link_to 'Messages', generated_messages_report_path(report) %></span> |
+            <% if report.ignored? %>
+              <%= link_to 'Stop ignoring', stop_ignoring_report_path(report, params.slice(:error, :place, :page)) %>
+            <% else %>
+              <%= link_to 'Ignore', ignore_report_path(report, params.slice(:error, :place, :page)) %>
+            <% end %>
         </tr>
       <% end %>
     </table>

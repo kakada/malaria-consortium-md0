@@ -2,12 +2,12 @@
   <%= current_user.email %> |
   <%
      toolbar = [
-              {:text => "Home", :url => reports_path , :controller => "reports#index" },
+              {:text => "Home", :url => reports_path , :controller => ["reports", "map_visualizations"] },
               {:text => "Users", :url => users_path , :controller => "users#index"},
               {:text => "Thresholds", :url => thresholds_path , :controller => "thresholds#index"},
               {:text => "Alerts", :url => alert_config_path , :controller => "settings#alert_config"},
               {:text => "Templates", :url => settings_templates_path , :controller => "settings#template_config"},
-              {:text => "Places", :url => places_path , :controller => "places#index"},
+              {:text => "Places", :url => places_path , :controller => ["places"]},
               {:text => "Sign out", :url => destroy_user_session_path , :controller => "users#destroy"}
      ]
      links = []
@@ -15,8 +15,11 @@
        path = "#{params[:controller]}##{params[:action]}"
 
        cls = "normal"
-       if(path == element[:controller] )
-         cls = "selected"
+       case element[:controller]
+       when Array
+         cls = "selected" if element[:controller].include? params[:controller]
+       when String
+         cls = "selected" if element[:controller] == path
        end
        links << link_to(element[:text], element[:url],:class => cls)
      end
@@ -24,7 +27,7 @@
   %>
 
   <%= links.join("<span class='bar'> | </span>").html_safe %>
- 
+
   <% if content_for? :reports %>
     <div id="search_box">
       <%= render 'layouts/search_place' %>

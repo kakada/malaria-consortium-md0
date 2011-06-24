@@ -691,3 +691,7 @@ a.selected{
 .ignored a {
   color: #89c;
 }
+.sort{
+    display: block;
+    width: 100%;
+}

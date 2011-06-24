@@ -26,12 +26,15 @@
            <td width="50px" valign="top">
               <%= link_to image_tag("InSTEDD_Logo.gif",:alt =>"Instedd",:class => "logo"), "http://www.instedd.org", :title => 'InSTEDD innovation Support to Emergencies Diseases and Disasters', :target => :_blank  %>
             </td>
+            <td></td>
 
             <td align="right" valign="top" >
               <% if user_signed_in? %>
                   <%= render 'layouts/toolbar' %>
               <% end %>
             </td>
+
+
             
           </tr>
         </table>

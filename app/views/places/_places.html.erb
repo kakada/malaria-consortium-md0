@@ -4,12 +4,12 @@
 <table class="round full table-grid">
   <thead>
     <tr>
-      <th width="60" class="<%= @revert %>"> <%= link_to "Type", places_path(:sort => "type", :dir => @revert, :query => params[:query]) %> </th>
-      <th width="80" class="<%= @revert %>"> <%= link_to "Code", places_path(:sort => "code",:dir => @revert, :query => params[:query]) %> </th>
-      <th width="150"  class="<%= @revert %>"> <%= link_to "Name", places_path(:sort => "name", :dir => @revert, :query => params[:query]) %> </th>
-      <th width="150"  class="<%= @revert %>"> <%= link_to "Name KH", places_path(:sort => "name_kh", :dir => @revert, :query => params[:query]) %></th>
-      <th width="100" class="<%= @revert %>"> <%= link_to "Latitude", places_path(:sort => "lat", :dir => @revert, :query => params[:query]) %> </th>
-      <th width="100" class="<%= @revert %>"> <%= link_to "Longitude", places_path(:sort => "lng",:dir => @revert, :query => params[:query]) %> </th>
+      <th width="60" class="<%= @revert %>"> <%= link_to "Type", places_path(:sort => "type", :dir => @revert, :query => params[:query]), :class=>"sort" %> </th>
+      <th width="80" class="<%= @revert %>"> <%= link_to "Code", places_path(:sort => "code",:dir => @revert, :query => params[:query]), :class=>"sort" %> </th>
+      <th width="150"  class="<%= @revert %>"> <%= link_to "Name", places_path(:sort => "name", :dir => @revert, :query => params[:query]), :class=>"sort" %> </th>
+      <th width="150"  class="<%= @revert %>"> <%= link_to "Name KH", places_path(:sort => "name_kh", :dir => @revert, :query => params[:query]), :class=>"sort" %></th>
+      <th width="100" class="<%= @revert %>"> <%= link_to "Latitude", places_path(:sort => "lat", :dir => @revert, :query => params[:query]), :class=>"sort" %> </th>
+      <th width="100" class="<%= @revert %>"> <%= link_to "Longitude", places_path(:sort => "lng",:dir => @revert, :query => params[:query]), :class=>"sort" %> </th>
       <th width="150" > Parent </th>
       <th width="50"> </th>
     </tr>

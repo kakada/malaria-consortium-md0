@@ -50,9 +50,10 @@
      }
 
      function loadMapCookie(){
+       var defaultType = "week"
        var param = $.cookies.get("mapvisual") || {
-          time : "week"
-          //slide_value: 0
+          time : defaultType,
+          slide_value: MD.visualize.max_values[defaultType]
        };
 
        $("input[name=time]").each(function(){

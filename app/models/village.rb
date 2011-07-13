@@ -32,14 +32,17 @@ class Village < Place
   end
 
   def self.strip_code
-    Village.all.each do |village|
+    Village.all.each_with_index do |village,index|
       if !village.code.nil?
         code = village.code[0,8]
         if village.code !=code
-          p "stripping code from #{village.code}  --> #{code}"
+          p "#{index}: stripping code from #{village.code}  --> #{code}"
           village.code = code
-          village.save
-          puts "done\n\n"
+          if village.save
+            puts "save\n\n"
+          else
+            puts "failed to savesss"
+          end
         end
         
       end

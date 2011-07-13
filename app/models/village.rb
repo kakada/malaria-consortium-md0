@@ -30,4 +30,20 @@ class Village < Place
     }
     Setting[:aggregate_village_cases_template].apply(template_values)
   end
+
+  def self.strip_code
+    Village.all.each do |village|
+      if !village.code.nil?
+        code = village.code[0,8]
+        if village.code !=code
+          p "stripping code from #{village.code}  --> #{code}"
+          village.code = code
+          village.save
+          puts "done\n\n"
+        end
+        
+      end
+    end
+  end
+
 end

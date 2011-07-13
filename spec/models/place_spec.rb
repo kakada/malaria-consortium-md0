@@ -14,7 +14,7 @@ describe Place do
             :code => "d10010"
         })
 
-      health_center = od.health_centers.create!({
+      @health_center = od.health_centers.create!({
           :name => "health_center",
           :name_kh => "health_center_kh",
           :code => "h10010"
@@ -24,7 +24,7 @@ describe Place do
         :name => "value for name",
         :name_kh => "value for name_kh",
         :code => "v10010",
-        :parent_id => health_center.id,
+        :parent_id => @health_center.id,
       }
     end
 
@@ -62,5 +62,22 @@ describe Place do
 
     it "returns Village for Village.sub_place_class" do
       Place::Types.last.constantize.sub_place_class.should == Place::Types.last
+    end
+    
+  
+    describe "strip village code to 8 digit" do
+      before(:each) do
+        @v1 = Village.create! :name => "v1", :code => "10010090983", :parent_id => @health_center.id
+        @v2 = Village.create! :name => "v2", :code => "10012345984", :parent_id => @health_center.id
+        @v3 = Village.create! :name => "v3", :code => "10034330985", :parent_id => @health_center.id
+      end
+
+      it "should update village code to 8 digit" do
+        Village.strip_code
+        villages = Village.all
+        villages[0].code.should == "10010090"
+        villages[1].code.should == "10012345"
+        villages[2].code.should == "10034330"
+      end
     end
 end

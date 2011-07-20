@@ -9,21 +9,20 @@ As day-3 reporting model has proved to be an effective mechanism for reporting c
 
 ## Feature
 
-Malaria Day Zero Alert System Features
-* Import places(Health clinic and its geographic location information) and  users (Village Malaria Worker, Health Center, Operational Disrict, Provincial, National, admin)
-* Custom Alert Message
-* SMS report update from HC and VMW(Village Malaria Worker)
-* Error message back to sender on fail SMS update
-* Log all invalid SMS (error messages)
-* Display Last error SMS received in a day from each number
-* Ability to edit and Mark error message as investigated
-* Set HC threshold rules for alert message to OD
-* Set Village threshold rules for alert message to OD
-* SMS alert setting for Operational District (report every cases or report base on threshold)
-* SMS alert setting for Provincial, National, and Admin
-* Alert message to supervising HC
-* System recognition of   SMS report format
-* Listing duplicate SMS report
+* Malaria Day Zero Alert System Features.
+* Import places(Health clinic and its geographic location information) and  users (Village Malaria Worker, Health Center, Operational Disrict, Provincial, National, admin).
+* Custom Alert Message.
+* SMS report update from HC and VMW(Village Malaria Worker).
+* Error message back to sender on fail SMS update.
+* Log all invalid SMS (error messages).
+* Display Last error SMS received in a day from each number.
+* Ability to edit and Mark error message as investigated.
+* Set HC threshold rules for alert message to OD.
+* Set Village threshold rules for alert message to OD.
+* SMS alert setting for Operational District (report every cases or report base on threshold).
+* SMS alert setting for Provincial, National, and Admin.
+* Alert message to supervising HC.
+* System recognition of   SMS report format.
+* Listing duplicate SMS report.
 * Ability to edit incoming SMS report.
-* Display D0 data  aggregation on the map with timeline filtering options View  places that have or not have report case
-
+* Display D0 data  aggregation on the map with timeline filtering options View  places that have or not have report case.

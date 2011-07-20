@@ -1,52 +1,53 @@
-<% if @places.size > 0 %>
+
 <div class="clear"></div>
 <div>
   <h2 style="float:left;"> List of places </h2>
   <div style="float:right;"><%= link_to "Import places", import_places_path, :class => "import_button" %></div>
   <div class="clear"></div>
-</div>
-
-<%= page_entries_info @places %><br/><br/>
-<% content_for :head do %>
-  <%= javascript_include_tag "jquery.watermark.min"  %>
-<% end %>
-<div class="search_box" style="float:right;" >
-  <input type="text" id="place_search" name="place_search" class="search" value="<%= params[:query] %>" />
-  <script type="text/javascript" >
-    $(function(){
-      loadingMessage = "Retrieving places";
-      placeSearch();
-      delegatePaginationItem();
-       $('.search').watermark('Place Code, Place Name , Place Name KH');
-    })
-    function delegatePaginationItem(){
-      $("div.pagination a").live("click",function(){
-        loading(false, loadingMessage);
-      });
-    }
-    function placeSearch(){
-      $("#place_search").keyup(function(){
-         var url = "<%= places_path() %>"
-         var text = this.value;
-         if(1){
-           loading(document.body, loadingMessage)
-           $.ajax({
-             url: url,
-             data: {query: text },
-             type: "get",
-             success: function(responseText, status, response){
-               loading(document.body).hide();
-               $("#content_table").html(responseText)
+  <% if @places.size > 0 %>
+      <%= page_entries_info @places %><br/><br/>
+      <% content_for :head do %>
+        <%= javascript_include_tag "jquery.watermark.min"  %>
+      <% end %>
+    <div class="search_box" style="float:right;" >
+      <input type="text" id="place_search" name="place_search" class="search" value="<%= params[:query] %>" />
+      <script type="text/javascript" >
+        $(function(){
+          loadingMessage = "Retrieving places";
+          placeSearch();
+          delegatePaginationItem();
+           $('.search').watermark('Place Code, Place Name , Place Name KH');
+        })
+        function delegatePaginationItem(){
+          $("div.pagination a").live("click",function(){
+            loading(false, loadingMessage);
+          });
+        }
+        function placeSearch(){
+          $("#place_search").keyup(function(){
+             var url = "<%= places_path() %>"
+             var text = this.value;
+             if(1){
+               loading(document.body, loadingMessage)
+               $.ajax({
+                 url: url,
+                 data: {query: text },
+                 type: "get",
+                 success: function(responseText, status, response){
+                   loading(document.body).hide();
+                   $("#content_table").html(responseText)
+                 }
+               });
              }
            });
-         }
-       });
-    }
-  </script>
-</div>
+        }
+      </script>
+    </div>
+    <%= render "places" %>
 
-<%= render "places" %>
-
-<% else %>
+  <% else %>
 <div> No places</div>
 <% end %>
+</div>
+
+

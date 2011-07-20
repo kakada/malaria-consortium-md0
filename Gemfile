@@ -5,7 +5,7 @@ gem 'rails', '3.0.6'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'mysql2' 
+gem 'mysql2', '0.2.2'
 
 # Use unicorn as the web server
 # gem 'unicorn'
@@ -37,7 +37,7 @@ gem 'will_paginate', :git => 'git://github.com/mislav/will_paginate.git', :branc
 gem 'jquery-rails'
 gem 'nuntium_api', '>=0.11', :require => 'nuntium'
 gem 'devise'
-gem 'rmagick', :require => 'RMagick'
+#gem "rmagick"
 
 group :development, :test do
   gem "autotest"

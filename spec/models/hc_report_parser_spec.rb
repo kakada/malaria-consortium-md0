@@ -11,7 +11,7 @@ describe HCReportParser do
 
   describe "syntactic" do
     it "should return general parser error when malaria type, age or gender are invalid" do
-      assert_parse_error "d12m11111111", :invalid_malaria_type
+      assert_parse_error "d12m1111111111", :invalid_malaria_type
     end
 
     it "should return error message invalid village code" do
@@ -23,9 +23,9 @@ describe HCReportParser do
     end
 
     it "should return valid fields when format is correct" do
-      village = @health_center.villages.make :code => '12345678'
+      village = @health_center.villages.make :code => '1234567890'
 
-      @parser.parse "F123M12345678"
+      @parser.parse "F123M1234567890"
       @parser.errors?().should == false
       @parser.report.malaria_type.should == "F"
       @parser.report.age.should == 123
@@ -36,13 +36,13 @@ describe HCReportParser do
 
   describe "semantic" do
     it "should return error message when village code doesnt exist" do
-      assert_parse_error "F123M11111111", :non_existent_village
+      assert_parse_error "F123M1111111111", :non_existent_village
     end
 
     it "should not return error message when village isnt supervised by user's health center" do
-      @health_center.villages.make :code => '87654321'
+      @health_center.villages.make :code => '9876543210'
 
-      @parser.parse "F123M87654321"
+      @parser.parse "F123M9876543210"
       @parser.errors?().should == false
     end
   end

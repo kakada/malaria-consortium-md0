@@ -695,3 +695,15 @@ a.selected{
     display: block;
     width: 100%;
 }
+.map_small{
+    width: 600px;
+    height: 350px;
+    border: 1px solid #ccc;
+}
+
+.input input{
+    width: 600px ;
+    
+}
+
+

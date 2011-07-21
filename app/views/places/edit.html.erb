@@ -6,7 +6,7 @@
    <%= javascript_include_tag "places/place_edit" %>
   <script type="text/javascript" >
   $(function(){
-    MD.createMap("#map_canvas");
+    MD.createMap("#map");
     var lat = "<%= @place.lat.presence || 12.715367 %> ";
     var lng = "<%= @place.lng.presence || 104.897460 %> ";
     var marker = MD.createMarker({
@@ -87,9 +87,9 @@
     <%= form.text_field :lng %>
   </div>
 
-  <div id="map_canvas" style="width:500px;height: 300px;border: 1px solid #ccc;"> Your browser doesn't support map </div> <br />
+  <div id="map" class="map_small"> Your browser doesn't support map </div> <br />
 
-  <div class="input  ">
+  <div >
     <%= form.submit "Save" %>
   </div>
 <% end %>

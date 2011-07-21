@@ -8,7 +8,7 @@ class HCReportParser < ReportParser
   def parse message
     super(message)
 
-    village_code = @scanner.scan /\d{10}/
+    village_code = @scanner.scan /^(\d{8}|\d{10})$/
 
     generate_error :invalid_village_code and return if village_code.nil? || !@scanner.eos?
 

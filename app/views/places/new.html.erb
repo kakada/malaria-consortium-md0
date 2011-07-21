@@ -80,13 +80,34 @@
         $("#div_place_name").css({"visibility":"hidden"});
       }
     }
-    
-    function handlePlaceType(type){
-      
-      if(type == "Province"){
-         $("#parent_place").html("");
 
-      }else{
+    $("#place_type").keyup(function(){
+        handlePlaceType($(this).val());
+      }).blur(function(){
+        handlePlaceType($(this).val());
+      }).change(function(){
+        getParent($(this).val());
+      });
+    });
+
+    function handlePlaceType(value){
+      if($.trim(value)== ""){
+        $("#div_place_type").css({"visibility":"visible"});
+      }
+      else{
+        $("#div_place_type").css({"visibility":"hidden"});
+      }
+    }
+
+
+    
+    function getParent(type){
+      
+      if(type == "Province" || $.trim(type)=="" ){
+         $("#parent_place").html("");
+         handlePlaceType(type);
+      }
+      else {
          loading();
          var url = "<%= retrieve_parent_places_path %>"
          $.ajax({
@@ -102,11 +123,7 @@
       }
     }
 
-    $("#place_type").change(function(){    
-      handlePlaceType($(this).val());
-    }).blur(function(){
-      handlePlaceType($(this).val());
-    });
+    
 
     $("#new_place").submit(function(){
       handlePlaceName($("#place_name").val());
@@ -121,8 +138,6 @@
 
       return false;
     })
-
-  });
 </script>
 <% end %>
 <%= form_for(@place.becomes(Place)) do |form| %>
@@ -145,6 +160,7 @@
   <div class="input  ">
       <%= form.label :type %>
       <%= select("place","type",Place::Option, {:include_blank => true})  %>
+      <div class="inline round" id="div_place_type" >Place type can not be blank</div>
   </div>
 
   <div id="parent_place">

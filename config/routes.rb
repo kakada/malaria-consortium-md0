@@ -56,6 +56,8 @@ Local::Application.routes.draw do
       get "map_view"
       get "map_report"
       get 'autocomplete'
+      get 'retrieve_parent'
+      get 'check_code'
     end
 
     resources :users

@@ -2,7 +2,10 @@
 <div class="clear"></div>
 <div>
   <h2 style="float:left;"> List of places </h2>
-  <div style="float:right;"><%= link_to "Import places", import_places_path, :class => "import_button" %></div>
+  <div style="float:right;">
+    <%= link_to "Add new place", new_place_path, :class => "menu" %> <span class="separator"> | </span>
+    <%= link_to "Import places", import_places_path, :class => "import_button" %>
+  </div>
   <div class="clear"></div>
   <% if @places.size > 0 %>
       <%= page_entries_info @places %><br/><br/>

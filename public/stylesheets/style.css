@@ -447,9 +447,9 @@ div.msg-error, div.alert, div.error {
     background-repeat: no-repeat;
 }
 .separator{
-    border-bottom: 1px solid #eee;
     line-height: 1.4;
     width: 60%;
+    color: gray;
 }
 .no-style{
     list-style-type: none;
@@ -675,7 +675,7 @@ a.selected{
   padding: 5px 10px;
   font-weight: bold;
 }
-.confirm_import:hover{
+.confirm_import:hover {
     background-color: #cecece;
     text-decoration: none;
 }
@@ -701,9 +701,23 @@ a.selected{
     border: 1px solid #ccc;
 }
 
-.input input{
+.input input, .input select{
     width: 600px ;
     
 }
-
+a.menu{
+    font-weight: bold;
+    font-size: 14px
+}
+.inline{
+    background-color: PowderBlue;
+    border: 1px solid #22FF99;
+    color: red;
+    display: inline;
+    font-weight: bold;
+    margin-left: 20px;
+    opacity: 0.6;
+    padding: 3px 10px;
+    visibility: hidden;
+}
 

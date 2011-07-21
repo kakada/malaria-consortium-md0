@@ -1,0 +1,13 @@
+<% if(@code.present?) %>
+  <% if @place %>
+     $("#div_place_code").html("Place code already exist");
+     $("#div_place_code").css({"visibility":"visible"});
+  <% else %>
+     $("#div_place_code").css({"visibility":"hidden"});
+  <% end %>
+
+<% else %>
+   $("#div_place_code").html("Place code can not be blank");
+   $("#div_place_code").css({"visibility":"visible"});
+<% end %>
+unload();

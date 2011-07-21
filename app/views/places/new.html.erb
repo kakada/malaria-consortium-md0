@@ -1,0 +1,170 @@
+<%= content_for :head do  %>
+   <%= javascript_include_tag "http://maps.google.com/maps/api/js?sensor=false"  %>
+   <%= javascript_include_tag "styled_marker"  %>
+   <%= javascript_include_tag "map.min"  %>
+   <%= javascript_include_tag "map.markerwithlabel"  %>
+  <script type="text/javascript" >
+  $(function(){
+    MD.createMap("#map");
+    var lat = "<%= @place.lat.presence ? @place.lat : 12.715367 %>";
+    var lng = "<%= @place.lng.presence ? @place.lng : 104.897460 %>";
+    var marker = MD.createMarker({
+      "lat" : lat ,
+      "lng" : lng,
+      "title": "<%= @place.name  %> ",
+      "draggable" : true
+    })
+    MD.centerTo(lat, lng);
+    $("#place_lat").val(lat);
+    $("#place_lng").val(lng);
+
+
+    google.maps.event.addListener(marker, 'dragend', function(mouseEvent){
+      var lat = mouseEvent.latLng.lat().toFixed(6);
+      var lng = mouseEvent.latLng.lng().toFixed(6);
+      $("#place_lat").val(lat);
+      $("#place_lng").val(lng);
+      MD.centerTo(lat, lng);
+    });
+
+    $("#place_lat,#place_lng").keyup(function(){
+      moveMarker();
+    })
+
+    function moveMarker(){
+      lat =  $("#place_lat").val();
+      lng = $("#place_lng").val();
+
+      markers= MD.getMarkers();
+      marker = markers[0];
+      marker.setPosition(MD.createLatLng(lat, lng));
+      MD.centerTo(lat, lng);
+    }
+
+    $('#place_intended_parent_code').autocomplete({
+      serviceUrl: '<%= autocomplete_places_path(:type => @place.parent_class) %>',
+      minChars: 2,
+      maxHeight: 300,
+      zIndex: 9999
+    });
+
+    $("#place_code").keyup(function(){
+      handlePlaceCode($(this).val());
+    }).blur(function(){
+      handlePlaceCode($(this).val());
+    });
+
+    function handlePlaceCode(code){
+      loading();
+      $.ajax({
+           url:'<%=check_code_places_path %>',
+           cache : false,
+           data : {"code": code},
+           success: function(){
+            
+           }
+         });
+    }
+
+    $("#place_name").keyup(function(){
+        handlePlaceName($(this).val());
+      }).blur(function(){
+        handlePlaceName($(this).val());
+      });
+
+    function handlePlaceName(value){
+      if($.trim(value)== ""){
+        $("#div_place_name").css({"visibility":"visible"});
+      }
+      else{
+        $("#div_place_name").css({"visibility":"hidden"});
+      }
+    }
+    
+    function handlePlaceType(type){
+      
+      if(type == "Province"){
+         $("#parent_place").html("");
+
+      }else{
+         loading();
+         var url = "<%= retrieve_parent_places_path %>"
+         $.ajax({
+           url:url,
+           cache : false,
+           data : {"type": type},
+           dataType: "html",
+           success: function(response,status,responseObj){
+             $("#parent_place").html(response);
+             unload();
+           }
+         });
+      }
+    }
+
+    $("#place_type").change(function(){    
+      handlePlaceType($(this).val());
+    }).blur(function(){
+      handlePlaceType($(this).val());
+    });
+
+    $("#new_place").submit(function(){
+      handlePlaceName($("#place_name").val());
+      handlePlaceCode($("#place_code").val());
+
+      for(var i=0;i< $("div.inline").length;i++){
+        if($("div.inline").get(i).style.visibility == "visible"){
+          alert("Please fix the error before being able to continue");
+          return false;
+        }
+      }
+
+      return false;
+    })
+
+  });
+</script>
+<% end %>
+<%= form_for(@place.becomes(Place)) do |form| %>
+  <input type="hidden" value="<%= params[:page] %>" name="page" />
+  <div class="input">
+    <%= form.label :name %>
+    <%= form.text_field :name %><div class="inline round" id="div_place_name" >Name can not be empty</div>
+  </div>
+
+  <div class="input  ">
+    <%= form.label :name_kh %>
+    <%= form.text_field :name_kh %>
+  </div>
+
+  <div class="input  ">
+    <%= form.label :code %>
+    <%= form.text_field :code , :autocomplete => "off" %><div class="inline round" id="div_place_code" >Place code can not be blank</div>
+  </div>
+
+  <div class="input  ">
+      <%= form.label :type %>
+      <%= select("place","type",Place::Option, {:include_blank => true})  %>
+  </div>
+
+  <div id="parent_place">
+    
+  </div>
+
+  <div class="input  ">
+    <%= form.label :lat, "Latitude" %>
+    <%= form.text_field :lat %>
+  </div>
+
+  <div class="input  ">
+    <%= form.label :lng, "Logitude" %>
+    <%= form.text_field :lng %>
+  </div>
+
+  <div id="map" class="map_small"> Your browser doesn't support map </div> <br />
+
+  <div >
+    <%= form.submit "Save" %>
+  </div>
+<% end %>
+

@@ -59,4 +59,18 @@ class PlacesController < ApplicationController
     render :json => {:query => params[:query], :suggestions => suggestions}
   end
 
+  def new
+    @place = Province.new
+  end
+
+  def retrieve_parent
+    @place_class = Place.get_parent_class params[:type]
+    render :layout =>false
+  end
+
+  def check_code
+    @code = params[:code]
+    @place = Place.find_by_code(params[:code])
+  end
+
 end

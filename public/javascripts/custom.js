@@ -24,3 +24,6 @@ function loading(container,message){
        $("#ajax_loading").show();
        return $("#ajax_loading");
 }
+function unload(){
+    $("#ajax_loading").hide();
+}

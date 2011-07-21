@@ -1,0 +1,6 @@
+<%  if(@place_class)   %>
+    <div class="input">
+      <%= label :parent_code, @place_class.to_s.titleize  %>
+      <%= collection_select("place","parent_code", @place_class.all,:id,:description) %>
+    </div>
+<% end %>

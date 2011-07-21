@@ -80,4 +80,19 @@ describe Place do
         villages[2].code.should == "10034330"
       end
     end
+
+
+    describe "get parent class" do
+      it "should return HealthCenter class when type is a village" do
+        type = "Village"
+        parent = Place.get_parent_class(type)
+        parent.should == HealthCenter
+      end
+
+      it "should return OD class when type equal to HealthCenter" do
+        type = "HealthCenter"
+        parent = Place.get_parent_class(type)
+        parent.should == OD
+      end
+    end
 end

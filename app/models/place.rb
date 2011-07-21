@@ -1,6 +1,7 @@
 class Place < ActiveRecord::Base
   # The hierarchy of place types. Must be ordered by top to bottom.
   Types = ["Country", "Province", "OD", "HealthCenter", "Village"]
+  Option = ["Province", "OD", "HealthCenter", "Village"]
 
   has_many :users
   has_many :reports
@@ -40,6 +41,17 @@ class Place < ActiveRecord::Base
 
   def self.parent_class
     Types[Types.index(to_s) - 1] || Types.first
+  end
+
+  def self.get_parent_class type
+     if type == "Village"
+        cls = HealthCenter
+     elsif type == "HealthCenter"
+       cls = OD
+     elsif type == "OD"
+       cls = Province
+     end
+     cls
   end
 
   def parent_class

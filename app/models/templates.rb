@@ -4,7 +4,7 @@ class Templates
   extend ActiveModel::Naming
 
   Keys = {
-    :single_village_case_template => {:params => %w(malaria_type sex age village contact_number), :label => 'individual case report from a village malaria worker'},
+    :single_village_case_template => {:params => %w(malaria_type   sex age village contact_number), :label => 'individual case report from a village malaria worker'},
     :single_hc_case_template => {:params => %w(malaria_type sex age village contact_number health_center), :label => 'individual case report from a health center'},
     :aggregate_village_cases_template => {:params => %w(cases f_cases v_cases m_cases village), :label => 'aggregated cases report at village level'},
     :aggregate_hc_cases_template => {:params => %w(cases f_cases v_cases m_cases health_center), :label => 'aggregated cases report at health center level'},

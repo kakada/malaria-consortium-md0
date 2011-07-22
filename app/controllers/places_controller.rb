@@ -12,6 +12,30 @@ class PlacesController < ApplicationController
     
   end
 
+  def create   
+    begin
+      cls_name = params[:place][:type].constantize
+      place = cls_name.new :name => params[:place][:name],
+                           :name_kh => params[:place][:name_kh],
+                           :code => params[:place][:code],
+                           :lat => params[:place][:lat],
+                           :lng => params[:place][:lng]
+
+      if params[:place][:parent_code].present?
+        parent = Place.find(params[:place][:parent_code])
+        p parent
+        place.parent = parent
+      end
+
+      place.save
+      flash[:notice] = "#{place.type} - #{view_context.link_to(place.name, edit_place_path(place))} has been created"
+      render :text => "sucess"
+      
+    rescue Exception => e
+      render :text => e.message #e.backtrace.inspect  
+    end
+  end
+
   def edit
     @place = Place.find(params[:id])
   end

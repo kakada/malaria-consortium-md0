@@ -81,13 +81,8 @@
       }
     }
 
-    $("#place_type").keyup(function(){
-        handlePlaceType($(this).val());
-      }).blur(function(){
-        handlePlaceType($(this).val());
-      }).change(function(){
+    $("#place_type").change(function(){
         getParent($(this).val());
-      });
     });
 
     function handlePlaceType(value){
@@ -102,10 +97,9 @@
 
     
     function getParent(type){
-      
+      handlePlaceType(type); 
       if(type == "Province" || $.trim(type)=="" ){
          $("#parent_place").html("");
-         handlePlaceType(type);
       }
       else {
          loading();
@@ -122,22 +116,34 @@
          });
       }
     }
-
-    
-
     $("#new_place").submit(function(){
       handlePlaceName($("#place_name").val());
       handlePlaceCode($("#place_code").val());
-
       for(var i=0;i< $("div.inline").length;i++){
         if($("div.inline").get(i).style.visibility == "visible"){
           alert("Please fix the error before being able to continue");
           return false;
         }
       }
-
+      loading();
+      data = $(this).serialize();
+      $.ajax({
+        url:this.action,
+        type: "post",
+        dataType: "html",
+        data: data,
+        success: function(responseText, status, responseObj){
+          if(responseText == "sucess"){
+            window.location.href= "<%= places_url  %> ";
+          }
+          else{
+             alert(responseText);
+          }
+        }
+      });
       return false;
     })
+  });
 </script>
 <% end %>
 <%= form_for(@place.becomes(Place)) do |form| %>

@@ -80,22 +80,22 @@ describe Report do
   it "generate alert from village for od" do
     report = VMWReport.make
     od_user = User.make :place => report.village.get_parent(OD)
-    Setting[:single_village_case_template] = '{malaria_type} {sex} {age} {village} {contact_number}'
+    Setting[:single_village_case_template] = '{test_result} {malaria_type} {sex} {age} {village} {contact_number}'
 
     alerts = report.generate_alerts
     alerts.should =~ [
-      {:to => od_user.phone_number.with_sms_protocol, :body => "#{report.malaria_type} #{report.sex} #{report.age} #{report.village.name} #{report.sender.phone_number}"}
+      {:to => od_user.phone_number.with_sms_protocol, :body => "#{report.get_full_malaria_type} #{report.malaria_type} #{report.sex} #{report.age} #{report.village.name} #{report.sender.phone_number}"}
     ]
   end
 
   it "generate alert from hc for od" do
     report = HealthCenterReport.make
     od_user = User.make :place => report.village.get_parent(OD)
-    Setting[:single_hc_case_template] ='{malaria_type} {sex} {age} {village} {health_center} {contact_number}'
+    Setting[:single_hc_case_template] ='{test_result} {malaria_type} {sex} {age} {village} {health_center} {contact_number}'
 
     alerts = report.generate_alerts
     alerts.should =~ [
-      {:to => od_user.phone_number.with_sms_protocol, :body => "#{report.malaria_type} #{report.sex} #{report.age} #{report.village.name} #{report.place.name} #{report.sender.phone_number}"}
+      {:to => od_user.phone_number.with_sms_protocol, :body => "#{report.get_full_malaria_type} #{report.malaria_type} #{report.sex} #{report.age} #{report.village.name} #{report.place.name} #{report.sender.phone_number}"}
     ]
   end
 
@@ -120,16 +120,19 @@ describe Report do
     village = Village.make
     od_user = User.make :place => village.get_parent(OD)
     Threshold.create! :place => village.parent, :place_class => HealthCenter.name, :value => 2
-    Setting[:aggregate_hc_cases_template] = '{cases} ({f_cases}, {v_cases}) {health_center}'
+    Setting[:aggregate_hc_cases_template] = '{cases} ({pf_cases}, {pv_cases}, {f_cases}, {m_cases}, {v_cases}) {health_center}'
 
     VMWReport.make(:village => village, :malaria_type => 'V').generate_alerts.should =~ []
 
     VMWReport.make(:village => village, :malaria_type => 'F').generate_alerts.should =~ [
-      {:to => od_user.phone_number.with_sms_protocol, :body => "2 (1, 1) #{village.parent.name}"}
+      {:to => od_user.phone_number.with_sms_protocol, :body => "2 (1, 1, 1, 0, 1) #{village.parent.name}"}
     ]
-
+     VMWReport.make(:village => village, :malaria_type => 'M').generate_alerts.should =~ [
+      {:to => od_user.phone_number.with_sms_protocol, :body => "3 (2, 1, 1, 1, 1) #{village.parent.name}"}
+    ]
+     
     VMWReport.make(:village => village, :malaria_type => 'F').generate_alerts.should =~ [
-      {:to => od_user.phone_number.with_sms_protocol, :body => "3 (2, 1) #{village.parent.name}"}
+      {:to => od_user.phone_number.with_sms_protocol, :body => "4 (3, 1, 2, 1, 1) #{village.parent.name}"}
     ]
   end
 

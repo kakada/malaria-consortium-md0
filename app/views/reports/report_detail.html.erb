@@ -20,7 +20,7 @@
     <tbody>
       <% @reports.each_with_index do |report, index| %>
         <tr class="<%= index % 2 == 0 ? "pair" : "impair"  %> ">
-          <td><%= "#{report.malaria_type} -  #{get_malaria_type(report.malaria_type)}" %></td>
+          <td><%= "#{report.malaria_type} - #{report.get_full_malaria_type}" %></td>
           <td><%=  report.sex %></td>
           <td><%=  report.age %></td>
           <td><%=  mobile(report.mobile) %></td>

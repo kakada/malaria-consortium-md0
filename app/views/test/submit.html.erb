@@ -8,8 +8,8 @@
     <td>
       <%= response[:to] %>
       <% user = User.find_by_phone_number(response[:to].without_protocol) -%>
-      (<%= user.user_name %>)<br/>
-      <%= user.place.try(:description) %>
+      (<%= user.user_name unless user.nil? %>)<br/>
+      <%= user.place.try(:description) unless user.nil? %>
     </td>
     <td><%= response[:body]%></td>
   </tr>

@@ -72,6 +72,13 @@ class Report < ActiveRecord::Base
     where("reports.id IN (#{subquery})")
   end
 
+  def get_full_malaria_type
+    if(malaria_type == "F" || malaria_type == "M")
+      return "Pf"
+    end
+    "Pv"
+  end
+
   def self.unknown_user(original_message = nil)
     "You are not registered in Maladira Day 0."
   end
@@ -91,8 +98,8 @@ class Report < ActiveRecord::Base
 
     # Always notify the HC about the new case (TODO: what if it's already a HC report?)
     alerts += village.parent.create_alerts(msg, :except => sender)
-
-    case alert_triggered
+    type = alert_triggered
+    case type
     when :single
       alerts += village.od.create_alerts msg
     when :village
@@ -100,7 +107,7 @@ class Report < ActiveRecord::Base
     when :health_center
       alerts += village.od.create_alerts village.parent.aggregate_report(Time.last_week)
     end
-
+    p self
     alerts
   end
 

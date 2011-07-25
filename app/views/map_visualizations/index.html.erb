@@ -26,7 +26,7 @@
     <% @reports.each_with_index do |report,index| %>
       <tr class="<%=  index.parity  %> " >
         <td> <%= time_ago_in_words report.created_at  %> ago   </td>
-        <td> <%= get_malaria_type(report.malaria_type) %>  </td>
+        <td> <%= report.get_full_malaria_type %>  </td>
         <td> <%= (report.mobile)?"Yes": "No" %> </td>
         <td> <%= report.sex[0,1] %>  </td>
         <td> <%= report.age %>  </td>

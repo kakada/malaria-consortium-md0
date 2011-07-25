@@ -21,11 +21,17 @@ class HealthCenter < Place
 
   def aggregate_report time
     counts = reports_since(time).group(:malaria_type).count
+    f = counts["F"].nil? ? 0 : counts["F"]
+    m = counts["M"].nil? ? 0 : counts["M"]
+    v = counts["V"].nil? ? 0 : counts["V"]
+    
     template_values = {
       :cases => counts.values.sum,
-      :f_cases => counts['F'] || 0,
-      :v_cases => counts['V'] || 0,
-      :m_cases => counts['M'] || 0,
+      :pf_cases => f+m,
+      :pv_cases => v,
+      :f_cases => f,
+      :v_cases => v,
+      :m_cases => m,
       :health_center => self.name
     }
     Setting[:aggregate_hc_cases_template].apply(template_values)

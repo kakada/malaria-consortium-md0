@@ -7,6 +7,7 @@ class HealthCenterReport < Report
 
   def single_case_message
     template_values = {
+      :test_result => get_full_malaria_type,
       :malaria_type => malaria_type,
       :sex => sex,
       :age => age,
@@ -14,6 +15,6 @@ class HealthCenterReport < Report
       :contact_number => sender.phone_number,
       :health_center => sender.place.name
     }
-    single_case_msg = Setting[:single_hc_case_template].apply(template_values)
+    Setting[:single_hc_case_template].apply(template_values)
   end
 end

@@ -21,11 +21,19 @@ class Village < Place
 
   def aggregate_report time
     counts = reports_since(time).group(:malaria_type).count
+
+    f = counts["F"].nil? ? 0 : counts["F"]
+    m = counts["M"].nil? ? 0 : counts["M"]
+    v = counts["V"].nil? ? 0 : counts["V"]
+
+
     template_values = {
       :cases => counts.values.sum,
-      :f_cases => counts['F'] || 0,
-      :v_cases => counts['V'] || 0,
-      :m_cases => counts['M'] || 0,
+      :pf_cases => f + m,
+      :pv_cases => v,
+      :f_cases => f,
+      :v_cases => v,
+      :m_cases => m,
       :village => self.name
     }
     Setting[:aggregate_village_cases_template].apply(template_values)
@@ -36,12 +44,12 @@ class Village < Place
       if !village.code.nil?
         code = village.code[0,8]
         if village.code !=code
-          p "#{index}: stripping code from #{village.code}  --> #{code}"
+          #p "#{index}: stripping code from #{village.code}  --> #{code}"
           village.code = code
           if village.save
-            puts "save\n\n"
+            # p "save\n\n"
           else
-            puts "failed to savesss"
+            # p "failed to savesss"
           end
         end
         

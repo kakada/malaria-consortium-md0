@@ -8,6 +8,7 @@ class VMWReport < Report
 
   def single_case_message
     template_values = {
+      :test_result => get_full_malaria_type,
       :malaria_type => malaria_type,
       :sex => sex,
       :age => age,

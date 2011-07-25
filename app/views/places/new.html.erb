@@ -146,6 +146,7 @@
   });
 </script>
 <% end %>
+<h2> Add new place </h2>
 <%= form_for(@place.becomes(Place)) do |form| %>
   <input type="hidden" value="<%= params[:page] %>" name="page" />
   <div class="input">

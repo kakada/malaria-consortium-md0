@@ -107,7 +107,6 @@ class Report < ActiveRecord::Base
     when :health_center
       alerts += village.od.create_alerts village.parent.aggregate_report(Time.last_week)
     end
-    p self
     alerts
   end
 

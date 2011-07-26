@@ -8,6 +8,7 @@ The shift over the last few years away from failing drugs to the highly effectiv
 As day-3 reporting model has proved to be an effective mechanism for reporting cases by SMS, and in light of the move towards the elimination of malaria in Cambodia, it has been decided to scale up the system day-0 reporting of all Pf cases from VMWs and health facilities. As the number of cases will be higher for day-0 than day-3 and given the probable need for more widespread implementation it has been decided to move to a more robust internet based platform.
 
 ## Features
+
 * Import places(Health clinic and its geographic location information) and  users (Village Malaria Worker, Health Center, Operational Disrict, Provincial, National, admin).
 * Custom Alert Message.
 * SMS report update from HC and VMW(Village Malaria Worker).

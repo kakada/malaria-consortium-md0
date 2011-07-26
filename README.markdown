@@ -7,7 +7,8 @@ Malaria Day Zero Alert System is a web base application with SMS service that  e
 The shift over the last few years away from failing drugs to the highly effective artemisinin-based combination therapies (ACTs) has been a breakthrough, and it was hoped that their design as combinations of two efficacious drugs with different modes of action would preserve them for many years of use.  However, recent evidence suggests that artemisinin tolerant/resistant Plasmodium falciparum parasites are present on the Thai-Cambodian border and it is imperative to mount a vigorous response to stop spread from areas where artemisinin resistance has been identified, whilst simultaneously undertaking further research to define the nature and geographical extent of the problem.
 As day-3 reporting model has proved to be an effective mechanism for reporting cases by SMS, and in light of the move towards the elimination of malaria in Cambodia, it has been decided to scale up the system day-0 reporting of all Pf cases from VMWs and health facilities. As the number of cases will be higher for day-0 than day-3 and given the probable need for more widespread implementation it has been decided to move to a more robust internet based platform.
 
-## Features.
+## Features
+
 * Import places(Health clinic and its geographic location information) and  users (Village Malaria Worker, Health Center, Operational Disrict, Provincial, National, admin).
 * Custom Alert Message.
 * SMS report update from HC and VMW(Village Malaria Worker).

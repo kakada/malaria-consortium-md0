@@ -99,6 +99,7 @@ class Report < ActiveRecord::Base
     # Always notify the HC about the new case (TODO: what if it's already a HC report?)
     alerts += village.parent.create_alerts(msg, :except => sender)
     type = alert_triggered
+
     case type
     when :single
       alerts += village.od.create_alerts msg
@@ -107,6 +108,14 @@ class Report < ActiveRecord::Base
     when :health_center
       alerts += village.od.create_alerts village.parent.aggregate_report(Time.last_week)
     end
+
+    # if alert message if created for od then save then specify the report is being triggered to od
+    if !type.nil?
+      self.trigger_to_od =  true
+      save!
+    end
+    
+
     alerts
   end
 
@@ -230,6 +239,7 @@ class Report < ActiveRecord::Base
     return parser.error if parser.errors?
 
     alerts = report.generate_alerts
+
     reply = sender.message report.human_readable
 
     [nil, alerts.push(reply)]

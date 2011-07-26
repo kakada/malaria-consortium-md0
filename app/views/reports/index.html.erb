@@ -33,6 +33,7 @@
           <th>Reported at</th>
           <th>Health Center</th>
           <th>Village</th>
+          <th>Trigger</th>
           <th></th>
         </tr>
       </thead>
@@ -59,6 +60,8 @@
           <td><%= report.type == 'HealthCenterReport' ? 'health center' : 'village' unless report.error? %></td>
           <td><%= report.health_center.try(:short_description) %></td>
           <td><%= report.village.try(:short_description) %></td>
+          <td><%= report.trigger_to_od == true ? "Yes": "No"  %>  </td>
+
           <td>
             <span class="generated_messages"><%= link_to 'Messages', generated_messages_report_path(report) %></span> |
             <% if report.ignored? %>
@@ -66,6 +69,7 @@
             <% else %>
               <%= link_to 'Ignore', ignore_report_path(report, :next_url => request.url) %>
             <% end %>
+          </td>
         </tr>
       <% end %>
     </table>

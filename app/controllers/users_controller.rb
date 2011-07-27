@@ -56,8 +56,10 @@ class UsersController < ApplicationController
     attributes[:password_confirmation] = attributes[:password]
 
     @user = User.find params[:id]
+    
+    
 
-    if(@user.update_attributes(attributes))
+    if(@user.update_params attributes)
       @user.reload #reload the user with its related model(place model)
       @msg = {"msg-notice" => "Update successfully."}
       render :show, :layout => false

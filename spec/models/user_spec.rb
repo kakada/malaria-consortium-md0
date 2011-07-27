@@ -229,4 +229,39 @@ describe User do
       user.destroy
     end
   end
+
+  describe "update params" do
+    before(:each) do
+      @village = Village.make
+      @healthcenter = @village.health_center
+      @od = @village.od
+      @province = @village.province
+
+      @user = User.make :place => @village
+
+      @attributes = {
+        :user_name => "valide" ,
+        :email => "valid@yahoo.com" ,
+        :password => "123456" ,
+        :password_confirmation => "123456",
+        :phone_number => "0975553553" ,
+        :intended_place_code => @od.description
+      }
+      
+    end
+
+    it "should save the user " do
+      state = @user.update_params @attributes
+      state.should be_true
+      user = User.find(@user.id)
+      
+      user.user_name.should == @attributes[:user_name]
+      user.email.should == @attributes[:email]
+      user.phone_number.should == @attributes[:phone_number]
+      user.place_class.should == "OD"
+
+    end
+
+    
+  end
 end

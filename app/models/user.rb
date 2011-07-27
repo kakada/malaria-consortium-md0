@@ -121,6 +121,16 @@ class User < ActiveRecord::Base
     role == 'admin'
   end
 
+  def update_params attributes
+    state = self.update_attributes(attributes)
+    if state
+      self.reload
+      set_place_class_and_hierarchy
+      self.save
+    end
+    state
+  end
+
   private
 
   def self.phone_numbers users

@@ -11,9 +11,11 @@ class VMWReportParser < ReportParser
     if @scanner.eos?
       @report.mobile = false
     else
-      is_mobile_patient = @scanner.scan /./
-
-      generate_error :too_long_vmw_report and return if !@scanner.eos? || is_mobile_patient.nil?
+      is_mobile_patient = @scanner.scan /\./
+      if is_mobile_patient.nil? || !@scanner.eos?
+        generate_error :too_long_vmw_report
+        return
+      end
 
       @report.mobile = true
     end

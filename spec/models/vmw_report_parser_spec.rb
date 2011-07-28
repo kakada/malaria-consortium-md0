@@ -17,6 +17,14 @@ describe VMWReportParser do
   end
 
   it "should support a trailing period, which indicates the report corresponds to a mobile patient" do
+    assert_parse_error "F123M..", :too_long_vmw_report
+  end
+
+  it "should support a trailing period, which indicates the report corresponds to a mobile patient" do
+    assert_parse_error "F123M.D", :too_long_vmw_report
+  end
+
+  it "should support a trailing period, which indicates the report corresponds to a mobile patient" do
     @parser.parse "F123M."
     @parser.errors?().should == false
     @parser.report.malaria_type.should == "F"
@@ -24,6 +32,11 @@ describe VMWReportParser do
     @parser.report.sex.should == "Male"
     @parser.report.mobile == true
   end
+
+  it "should support a trailing period, which indicates the report corresponds to a mobile patient" do
+    assert_parse_error "F123MM", :too_long_vmw_report
+  end
+
 
   it "should add field :is_mobile_patient set as false if there's no trailing period" do
     @parser.parse "F123M"

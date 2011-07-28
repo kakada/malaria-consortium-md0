@@ -15,4 +15,14 @@ class String
       values[key[1..-2].to_sym] || '??'
     end
   end
+
+
+  def strip_village_code
+    if self =~ /^(\d{8})00$/
+      $1
+    else
+      self
+    end 
+  end
+
 end

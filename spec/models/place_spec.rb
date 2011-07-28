@@ -65,20 +65,22 @@ describe Place do
     end
     
   
-    describe "strip village code to 8 digit" do
-      before(:each) do
-        @v1 = Village.create! :name => "v1", :code => "10010090983", :parent_id => @health_center.id
-        @v2 = Village.create! :name => "v2", :code => "10012345984", :parent_id => @health_center.id
-        @v3 = Village.create! :name => "v3", :code => "10034330985", :parent_id => @health_center.id
-      end
-
-      it "should update village code to 8 digit" do
+    describe "strip village code to 8 digits when last 2 digits are ceros" do
+      
+      it "should not update village code " do
+        @v1 = Village.create! :name => "v1", :code => "1234567800", :parent_id => @health_center.id
         Village.strip_code
         villages = Village.all
-        villages[0].code.should == "10010090"
-        villages[1].code.should == "10012345"
-        villages[2].code.should == "10034330"
+        villages[0].code.should == "12345678"
       end
+
+      it "should not update village code" do
+        @v1 = Village.create! :name => "v1", :code => "1234567809", :parent_id => @health_center.id
+        Village.strip_code
+        villages = Village.all
+        villages[0].code.should == "1234567809"
+      end
+
     end
 
 

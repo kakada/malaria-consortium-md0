@@ -15,8 +15,8 @@ class Templates
     :invalid_age => {:params => %w(original_message), :label => 'invalid age message'},
     :invalid_sex => {:params => %w(original_message), :label => 'invalid sex message'},
     :invalid_village_code => {:params => %w(original_message), :label => 'invalid village code'},
-    :non_existent_village => {:params => %w(original_message), :label => 'non existent village'},
-    :too_long_village_report => {:params => %w(original_message), :label => 'too long village report'},
+    :non_existent_village => {:params => %w(original_message), :label => 'non existing village'},
+    :too_long_village_report => {:params => %w(original_message), :label => 'invalid mobile patient'},
   }
 
   def initialize(values = {})

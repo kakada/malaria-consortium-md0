@@ -14,10 +14,10 @@ class ApplicationController < ActionController::Base
   end
 
   def sort_params options
-    sort = options[:sort].present? ? options[:sort]: " id "
+    sort = options[:sort].present? ? options[:sort]: " updated_at "
     dir = options[:dir].present? ? options[:dir]: "up"
 
-    sort_dir = {"asc" => "up", "desc" => "down" }.select{|key, value| value == dir }
+    sort_dir = {"desc" => "up", "asc" => "down" }.select{|key, value| value == dir }
     if(dir == "up")
       revert = "down"
     else
@@ -32,6 +32,4 @@ class ApplicationController < ActionController::Base
   def set_cambodia_time_zone
     Time.zone = "Bangkok" # Same time zone as Cambodia
   end
-
-  
 end

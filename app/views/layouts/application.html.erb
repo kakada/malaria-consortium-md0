@@ -45,7 +45,9 @@
         <% end %>
       </div>
       <div id="version_separator"></div>
-      <div id="version" class="clear"></div>
+      <div id="version" class="clear">
+        <%= "Version: #{Setting['app_version']}" if !Setting["app_version"].empty?  %>
+      </div>
     </div>
     <div id="ajax_loading" class="loading round" >Waiting for server response</div>
     <% if(Rails.env.development?) %>

@@ -5,6 +5,14 @@
    <%= javascript_include_tag "map.markerwithlabel"  %>
   <script type="text/javascript" >
   $(function(){
+
+    /* it is kind of hack since select does not render the select well */
+    $("#place_type").get(0).selectedIndex = 0;
+    getParent("Village");
+    /********************************************************************/
+
+
+
     MD.createMap("#map");
     var lat = "<%= @place.lat.presence ? @place.lat : 12.715367 %>";
     var lng = "<%= @place.lng.presence ? @place.lng : 104.897460 %>";
@@ -166,12 +174,12 @@
 
   <div class="input  ">
       <%= form.label :type %>
-      <%= select("place","type",Place::Option, {:include_blank => true})  %>
+      <%= select("place","type", Place::Types[1,4].reverse, {:include_blank => false}, :selected => 1 )  %>
       <div class="inline round" id="div_place_type" >Place type can not be blank</div>
   </div>
 
   <div id="parent_place">
-    
+    <%#= render :partial => "render_place", :locals => {:place_class => HealthCenter} %>
   </div>
 
   <div class="input  ">

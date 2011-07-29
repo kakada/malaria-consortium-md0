@@ -1,7 +1,6 @@
 class Place < ActiveRecord::Base
   # The hierarchy of place types. Must be ordered by top to bottom.
   Types = ["Country", "Province", "OD", "HealthCenter", "Village"]
-  Option = ["Province", "OD", "HealthCenter", "Village"]
 
   has_many :users
   has_many :reports

@@ -37,7 +37,7 @@ module UsersHelper
 
   def input_field_tag field, user, type = "text", options = {}
     element = ""
-    if(type.present?)
+    if(!type.present?)
       type = "text"
     end
     if(field == :intended_place_code )
@@ -47,7 +47,7 @@ module UsersHelper
         element << text_field_tag(field, user.send(field),options )
       elsif(type=="hidden")
         element << hidden_t_field_tag(field, user.send(field),options )
-      elsif(type == "password")
+      elsif(type == "password" || type == :password )
         element << password_field_tag(field, user.send(field),options )
       end
     end

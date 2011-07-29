@@ -36,12 +36,12 @@ class ReportsController < ApplicationController
         [village.short_description, village.id]
       end]
     end
-    @villages.insert 0, ['', ['Select one...', '']]
   end
 
   def update
     @report.update_attributes params[:report].slice(:sex, :age, :malaria_type, :village_id)
     @report.error = false
+    
     if @report.save
       redirect_to params[:next_url], :notice => 'Report edited successfully'
     else

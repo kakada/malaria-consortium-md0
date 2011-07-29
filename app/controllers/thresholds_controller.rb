@@ -5,16 +5,16 @@ class ThresholdsController < ApplicationController
 
   def index
     @provinces = Province.includes(:ods).all
+    
     if params[:od_id].present?
       @od ||= OD.find(params[:od_id])
     end
-    @thresholds = Threshold.includes(:place => [:parent => :parent])
+    @thresholds = Threshold.order("updated_at DESC").includes(:place => [:parent => :parent])
 
     if @od
       @health_centers = HealthCenter.includes(:villages).where(:parent_id => @od.id).order(:name)
       @thresholds = @thresholds.where('place_hierarchy LIKE ? OR place_hierarchy = ?', "#{@od.hierarchy}.%", @od.hierarchy)
     end
-
     render 'index'
   end
 
@@ -26,7 +26,7 @@ class ThresholdsController < ApplicationController
   def create
     place_class, place_id = params[:threshold][:place_code].split(':')
     threshold = Threshold.create! :place_id => place_id, :place_class => place_class, :value => params[:threshold][:value]
-    redirect_to :action => :index, :od_id => threshold.place.get_parent(OD).id
+    redirect_to :action => :index #, :od_id => threshold.place.get_parent(OD).id
   end
 
   def update

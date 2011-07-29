@@ -1,6 +1,6 @@
 <% content_for :reports do %>
   <h3>Edit incorrect message from <%= @report.sender.try(:user_name) %> <%= @report.sender_address %> with text <%= @report.text %></h3>
-  <%= form_for @report.becomes(Report) do |f| %>
+  <%= form_for @report.becomes(Report), :html =>{"onsubmit" => "return submit();"} do |f| %>
     <input type="hidden" name="next_url" value="<%= params[:next_url] %>" />
     <% if @report.errors.any? %>
       <div id="error_explanation">
@@ -14,20 +14,30 @@
     <% end %>
     <p>
       <%= f.label :malaria_type, 'Type' %><br/>
-      <%= f.select :malaria_type, options_for_select(['Select one...', 'F', 'V', 'M'], @report.malaria_type) %>
+      <%= f.select :malaria_type, options_for_select(['', 'F', 'V', 'M'], @report.malaria_type) %>
     </p>
     <p>
       <%= f.label :sex %><br/>
-      <%= f.select :sex, options_for_select(['Select one...', 'Male', 'Female'], @report.sex) %>
+      <%= f.select :sex, options_for_select(['', 'Male', 'Female'], @report.sex) %>
     </p>
     <p>
       <%= f.label :age %><br/>
-      <%= f.number_field :age %>
+      <%= f.number_field :age ,  :maxlength => "3" %>
     </p>
     <p>
       <%= f.label :village_id %><br/>
-      <%= f.select :village_id, grouped_options_for_select(@villages, @report.village_id) %>
+      <%= f.select :village_id, grouped_options_for_select(@villages, @report.village_id), :include_blank => true  %>
     </p>
     <%= f.submit %>
   <% end %>
+
+
+  <script type="text/javascript" >
+    function submit(){
+      return false;
+    }
+  </script>
+
 <% end %>
+
+

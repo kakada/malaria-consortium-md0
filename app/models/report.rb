@@ -120,19 +120,22 @@ class Report < ActiveRecord::Base
   end
 
   def alert_triggered
+
+    village_threshold = Threshold.find_for village
+    if village_threshold
+      return :village if village.reports_reached_threshold village_threshold
+    end
+
     hc_threshold = Threshold.find_for village.parent
     if hc_threshold
       return :health_center if village.parent.reports_reached_threshold hc_threshold
     end
 
-    village_threshold = Threshold.find_for village
-    if village_threshold
-      return :village if village.reports_reached_threshold village_threshold
-    elsif hc_threshold.nil?
+    if village_threshold.nil? && hc_threshold.nil?
       return :single
     end
-
     return nil
+    
   end
 
   def self.report_cases options

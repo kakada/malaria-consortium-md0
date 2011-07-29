@@ -10,8 +10,15 @@ describe Report do
     village = Village.make
     Threshold.create! :place => village, :place_class => Village.name, :value => 2
 
-    Report.make(:village => village).alert_triggered.should == nil
-    Report.make(:village => village).alert_triggered.should == :village
+
+    report = Report.make(:village => village)
+    report.alert_triggered.should == nil
+
+    
+    report = Report.make(:village => village)
+    report.alert_triggered.should == :village
+
+    
   end
 
   it "should alert from village after threshold ignoring errors" do
@@ -73,8 +80,10 @@ describe Report do
 
     Report.make(:village => village).alert_triggered.should == nil
     Report.make(:village => village).alert_triggered.should == :village
-    Report.make(:village => village).alert_triggered.should == :health_center
-    Report.make(:village => village).alert_triggered.should == :health_center
+
+    Report.make(:village => village).alert_triggered.should == :village
+    Report.make(:village => village).alert_triggered.should == :village
+    
   end
 
   it "generate alert from village for od" do

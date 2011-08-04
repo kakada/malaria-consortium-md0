@@ -38,7 +38,7 @@
         </tr>
         <% @users.each_with_index do |user,index| %>
           <tr class="<%= index.parity %>" id="tr_<%= user.id %>">
-            <%= render :partial => "user_row", :locals => {:user => user} %>
+            <%= render :partial => "user_row", :locals => { :user => user, :query => @query } %>
           </tr>
         <% end %>
       </tbody>

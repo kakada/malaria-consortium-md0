@@ -106,15 +106,30 @@ class User < ActiveRecord::Base
   end
 
   def self.paginate_user(options={})
+    @users = self.search options
+    @users = @users.paginate :page => (options[:page] || '1').to_i, :per_page => options[:per_page]
+  end
+
+  def self.search options
     if(options[:query].present?)
       query = options[:query]
       @users = User.joins(" INNER JOIN places ON users.place_id = places.id ")
-      @users  = @users.where "users.user_name LIKE :q OR users.phone_number LIKE :q OR places.code LIKE :q OR places.name LIKE :q ", :q => "#{query.strip}%"
+      @users = @users.where "users.user_name LIKE :q OR users.phone_number LIKE :q OR places.code LIKE :q OR places.name LIKE :q ", :q => "#{query}%"
+
+      if(options[:type].present?)
+        @users = @users.where("place_class = :type", :type => options[:type] )
+      end
+
       @users = @users.order(options[:order])
+
     else
-      @users = User.includes(:place).order(options[:order]).all
+      if(options[:type].present?)
+         @users = User.where("place_class = :type", :type => options[:type])
+         @users = @users.includes(:place).order(options[:order]).all
+      else
+         @users = User.includes(:place).order(options[:order]).all
+      end
     end
-    @users = @users.paginate :page => (options[:page] || '1').to_i, :per_page => options[:per_page]
   end
 
   def admin?

@@ -13,38 +13,51 @@
 
 <div class="clear"></div>
 <div class="search_box" style="float:right;" >
+  <%= select(:user, :place, Place::Types[1,4], {:include_blank => "All" } ) %>
   <input type="text" id="user_search" class="search" name="user_search" value="<%= params[:query] %>" />
   <script type="text/javascript" >
     $(function(){
       loadingMessage = "Retrieving Users";
-      userSearch();
       delegatePaginationItem();
+      
       $('.search').watermark('User name, Phone , Place Code, Place Name');
-    })
+
+      $("#user_place").change(function(){
+        userSearch();
+      });
+
+      $("#user_search").keyup(function(){
+         userSearch();
+      });
+    });
+    
     function delegatePaginationItem(){
       $("div.pagination a").live("click",function(){
         loading(false, loadingMessage);
       });
     }
+    
+    
+
     function userSearch(){
-      $("#user_search").keyup(function(){
-         activeRow = 0;
-         var url = "<%= users_path() %>"
-         var text = this.value;
-         if(1){
-           loading(document.body, loadingMessage)
-           $.ajax({
-             url: url,
-             data: {query: text },
-             type: "get",
-             success: function(responseText, status, response){
-               loading(document.body).hide();
-               $("#content_table").html(responseText)
-             }
-           });
-         }
-       });
+       activeRow = 0;
+       var url = "<%= users_path() %>"
+       var text = $("#user_search").val();
+       var type = $("#user_place").val();
+       if(1){
+         loading(document.body, loadingMessage)
+         $.ajax({
+           url: url,
+           data: {query: text , type: type },
+           type: "get",
+           success: function(responseText, status, response){
+             loading(document.body).hide();
+             $("#content_table").html(responseText)
+           }
+         });
+       }
     }
+
   </script>
 </div>
 <h4 class="round msg-error" id="actionNotifier" style="display: none;" > </h4>

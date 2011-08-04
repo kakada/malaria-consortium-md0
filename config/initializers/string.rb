@@ -25,4 +25,12 @@ class String
     end 
   end
 
+  def highlight_search portion
+    if(portion.present?)
+      reg = Regexp.new(Regexp.escape(portion),Regexp::IGNORECASE | Regexp::MULTILINE)
+      return self.gsub( reg , "<span class='highlight'>#{portion}</span>").html_safe
+    end
+    self
+  end
+
 end

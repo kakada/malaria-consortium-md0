@@ -69,4 +69,5 @@ module UsersHelper
   	element << '</td>'
   	element.html_safe
   end
+  
 end

@@ -44,10 +44,33 @@ describe String do
       result.should == "12345678"
       
     end
-
-
-
-
   end
 
+  describe "highlight search" do
+    before(:each) do
+      @string = "vatanak monkol borey srey sonthor"
+    end
+
+    it "should highlight the 'vatanak' " do
+      str = @string.highlight_search("vatanak")
+      str.should == "<span class='highlight'>vatanak</span> monkol borey srey sonthor"
+    end
+
+    it "should highlight the 'rey' string " do
+      str = @string.highlight_search("rey")
+      str.should == "vatanak monkol bo<span class='highlight'>rey</span> s<span class='highlight'>rey</span> sonthor"
+    end
+
+    it "should highlight the 'rey' string ignoring the case " do
+      str = @string.highlight_search("Rey")
+      str.should == "vatanak monkol bo<span class='highlight'>rey</span> s<span class='highlight'>rey</span> sonthor"
+    end
+
+
+    it "should return the same string when no " do
+      str = @string.highlight_search("no found")
+      str.should == @string
+    end
+    
+  end
 end

@@ -7,8 +7,16 @@ class UsersController < ApplicationController
 
     sort_params = sort_params(params)
     @revert = sort_params[:revert_dir]
+    
+    if params[:query].present?
+      @query = params[:query].strip
+    end
 
-    @users = User.paginate_user :query =>params[:query], :page => (@page || '1').to_i, :per_page => PerPage, :order => "#{sort_params[:field]} #{sort_params[:dir]} "
+    @type  = params[:type]
+    @users = User.paginate_user :query => @query, :type => @type,
+                                :page => (@page || '1').to_i, :per_page => PerPage,
+                                :order => "#{sort_params[:field]} #{sort_params[:dir]} "
+                              
     render :file => "users/_list_users.html.erb", :layout => false if request.xhr?
   end
 

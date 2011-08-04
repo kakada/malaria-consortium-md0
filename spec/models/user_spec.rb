@@ -55,6 +55,8 @@ describe User do
     User.count.should == 2
   end
 
+
+
   describe "intended place code" do
     it "should try to find place by code before saving if intended place code is not nil" do
       province1 = Province.create! :name => "Pro1", :code => "Pro1"
@@ -228,6 +230,68 @@ describe User do
       @nuntium_api.should_receive(:set_custom_attributes).with('sms://123', {:application => nil})
       user.destroy
     end
+  end
+
+  describe "search for user" do
+    before(:each) do
+       @village = Village.make
+       
+       @v1 = User.make :user_name => "user1" , :phone_number => "85597888120", :place =>@village
+       @h1 = User.make :user_name => "user2" , :phone_number => "85597888121", :place =>@village.health_center
+       @h2 = User.make :user_name => "dara", :phone_number => "85597888122", :place =>@village.health_center
+       
+       @d1 = User.make :user_name => "bopha",  :phone_number => "85597888123", :place =>@village.od
+
+       @p1 = User.make :user_name => "ratha", :phone_number => "85597888124", :place =>@village.province
+       @p2 = User.make :user_name => "vibol" , :phone_number => "85597888125", :place =>@village.province
+       @p3 = User.make :user_name => "rathana" , :phone_number => "85597888126", :place =>@village.province
+       
+       @d2 = User.make :user_name => "thuna" , :phone_number => "85597888127", :place =>@village.od
+    end
+
+    it "should return all users when no parameter provided" do
+      users = User.search :type => "", :query => ""
+      users.count.should == 8
+    end
+
+    it "should return all provincial users" do
+      users = User.search :type => "Province"
+      users.should =~ [@p1, @p2, @p3]
+    end
+
+    it "should return all village users" do
+      users = User.search :type => "Village"
+      users.should =~[@v1]
+    end
+
+    it "should return all health center users" do
+      users = User.search :type => "HealthCenter"
+      users.should =~ [@h2, @h1]
+    end
+
+    it "should return 2 users who have user_name start with 'user' " do
+       users = User.search :type=>"", :query => "user"
+       users.count.should == 2
+
+       users[0].user_name.should == "user2"
+       users[1].user_name.should == "user1"
+    end
+
+    it "should return 1 user who has user_name start with 'user' and come from a village " do
+      users = User.search :type=> "Village", :query => "user"
+      users.count.should == 1
+      users[0].user_name.should == "user1"
+      users[0].place_class.should == "Village"
+      
+    end
+
+    it "should return empty list when user not found" do
+      users = User.search :type => "Village", :query => "not available value"
+      users.count.should == 0
+    end
+
+    
+    
   end
 
   describe "update params" do

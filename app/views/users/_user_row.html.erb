@@ -1,8 +1,8 @@
-<td><%= user.user_name %> </td>
+<td><%= user.user_name.highlight_search(query) %> </td>
 <td><%= user.email %>  </td>
-<td><%= user.phone_number %>  </td>
+<td><%= user.phone_number.highlight_search(query) %>  </td>
 <td><%= user.encrypted_password.nil? ? '' : '**********' %>  </td>
-<td><%= user.place.nil? ? "" : user.place.description %>  </td>
+<td><%= user.place.nil? ? "" : user.place.description.highlight_search(query) %>  </td>
 <td><%= user.role %></td>
 <td>
   <div >

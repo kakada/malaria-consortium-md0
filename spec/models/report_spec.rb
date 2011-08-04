@@ -17,6 +17,7 @@ describe Report do
     @valid_vmw_message = {:from => "sms://8558191", :body => "F123M."}
   end
 
+
   describe "invalid message" do
     def assert_response_error expected_response, orig_msg
       response = Report.process(orig_msg)

@@ -720,4 +720,8 @@ a.menu{
     padding: 3px 10px;
     visibility: hidden;
 }
-
+.highlight{
+    background-color: #C6D880;
+    color : #000;
+    font-weight: bold;
+}

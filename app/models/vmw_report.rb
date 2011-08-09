@@ -17,5 +17,4 @@ class VMWReport < Report
     }
     Setting[:single_village_case_template].apply(template_values)
   end
-
 end

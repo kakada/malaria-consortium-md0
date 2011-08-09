@@ -4,6 +4,7 @@
 <td><%= user.encrypted_password.nil? ? '' : '**********' %>  </td>
 <td><%= user.place.nil? ? "" : user.place.description.highlight_search(query) %>  </td>
 <td><%= user.role %></td>
+<td><%= user.status_description  %></td>
 <td>
   <div >
     <%= link_to "Edit", edit_user_path(user) ,:class => "clickable editRow", :id=>"a_#{user.id}", :"data-url" => edit_user_path(user), :"data-rel" => user.id %> |

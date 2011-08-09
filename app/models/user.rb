@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   attr_accessor :intended_place_code
 
   Roles = ["default", "national", "admin" ]
+  Status = ["Deactive", "Active"]
 
   belongs_to :place
   has_many :reports, :foreign_key => 'sender_id', :dependent => :destroy
@@ -55,6 +56,14 @@ class User < ActiveRecord::Base
 
   def address
     phone_number.with_sms_protocol
+  end
+
+  def status_description
+    self.class::Status[self.status ? 1: 0 ]
+  end
+
+  def self.from_status status
+     self::Status.find_index(status) == 0 ? false : true
   end
 
   def message(body)

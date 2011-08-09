@@ -12,7 +12,8 @@
 <td><%= input_field_tag :intended_place_code, @user, 'text', :class => :intended_place_code %></td>
 
 <td><%= select_tag(:role ,options_for_select(User::Roles,  (@user.nil?)? "" : @user.send(:role)), {:onchange => "roleChange(this)" } )  %>  </td>
-
+<td><%= select_tag(:status ,options_for_select(User::Status, @user.status_description) )  %>  </td>
+          
 <td>
   <%=  submit_tag "Save", :id => "saveUser_" + @user.id.to_s, :"data-url" => user_path(@user), :name => "updateUser" , :class => "updateUser" %>
   <%=  submit_tag "Cancel", :id => "cancelUser_" + @user.id.to_s,:"data-url" => user_path(@user), :name => "cancelUser", :class => "cancelUser" %>
@@ -31,7 +32,7 @@
       params["password"] =            $(tr.children[3].children[0]).val();
       params["intended_place_code"] = $(tr.children[4].children[0]).val();
       params["role"] =                $(tr.children[5].children[0]).val();
-
+      params["status"] =              $(tr.children[6].children[0]).val();
       if(params["role"] == "default"){
         if(params["intended_place_code"] == ""){
           alert("Please enter place code");
@@ -81,6 +82,6 @@
       serviceUrl: '<%= autocomplete_places_path %>',
       minChars: 2,
       maxHeight: 300,
-      zIndex: 9999,
+      zIndex: 9999
     });
   </script>

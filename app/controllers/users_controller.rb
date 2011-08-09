@@ -35,8 +35,17 @@ class UsersController < ApplicationController
   end
 
   def create_new
-    attributes = params.slice :user_name, :email, :password, :phone_number, :role, :id, :intended_place_code
+
+    p params
+    
+    p "-----------------------"
+    attributes = params.slice :user_name, :email, :password, :phone_number, :role, :id, :intended_place_code, :status
+   
     attributes[:password_confirmation] = attributes[:password]
+    attributes[:status] = User.from_status(attributes[:status])
+
+    p attributes
+    p "+++++++++++++++++++++++++"
 
     @user = User.new attributes
 
@@ -60,12 +69,13 @@ class UsersController < ApplicationController
   end
 
   def update
-    attributes = params.slice :user_name, :email, :password, :phone_number, :role, :intended_place_code
+    attributes = params.slice :user_name, :email, :password, :phone_number, :role, :intended_place_code, :status
     attributes[:password_confirmation] = attributes[:password]
 
+    attributes[:status] = User.from_status(attributes[:status])
+
     @user = User.find params[:id]
-    
-    
+  
 
     if(@user.update_params attributes)
       @user.reload #reload the user with its related model(place model)
@@ -128,4 +138,5 @@ class UsersController < ApplicationController
       @user = User.new
     end
   end
+ 
 end

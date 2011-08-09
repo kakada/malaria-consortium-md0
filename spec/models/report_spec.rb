@@ -17,6 +17,8 @@ describe Report do
     @valid_vmw_message = {:from => "sms://8558191", :body => "F123M."}
   end
 
+  
+
 
   describe "invalid message" do
     def assert_response_error expected_response, orig_msg
@@ -63,7 +65,7 @@ describe Report do
 
       response = Report.process @valid_message
 
-      @valid_message = {:from => "sms://8558190", :body => "F123M12345678"}
+      @valid_message = {:from => "sms://8558190", :body => "f123M12345678"}
 
       report.malaria_type.should == 'F'
       report.age.should == 123
@@ -102,11 +104,11 @@ describe Report do
     end
 
     it "should notify hc when vmw reports" do
-      Setting[:single_village_case_template] = 'A {malaria_type} case ({sex}, {age}) has been detected in {village} by the VMW {contact_number}'
+      Setting[:single_village_case_template] = 'A {test_result}-{malaria_type} case ({sex}, {age}) has been detected in {village} by the VMW {contact_number}'
       response = Report.process @valid_vmw_message
       hc_msg = response.select {|x| x[:to] == @hc_user.phone_number.with_sms_protocol }
       hc_msg.should have(1).items
-      hc_msg[0][:body].should == "A F case (Male, 123) has been detected in #{@village.name} by the VMW #{@vmw_user.phone_number}"
+      hc_msg[0][:body].should == "A Pf-F case (Male, 123) has been detected in #{@village.name} by the VMW #{@vmw_user.phone_number}"
     end
 
     def assert_nuntium_fields data

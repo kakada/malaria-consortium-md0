@@ -2,7 +2,7 @@ class HealthCenterReport < Report
   default_scope where(:type => "HealthCenterReport")
 
   def human_readable
-    Setting[:successful_health_center_report].apply :malaria_type => malaria_type, :age => age, :sex => sex, :village_code => village.code
+    Setting[:successful_health_center_report].apply :test_result => get_full_malaria_type, :malaria_type => malaria_type, :age => age, :sex => sex, :village_code => village.code
   end
 
   def single_case_message

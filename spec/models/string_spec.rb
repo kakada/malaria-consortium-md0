@@ -67,7 +67,7 @@ describe String do
     end
 
 
-    it "should return the same string when no " do
+    it "should return the same string when no key is found " do
       str = @string.highlight_search("no found")
       str.should == @string
     end

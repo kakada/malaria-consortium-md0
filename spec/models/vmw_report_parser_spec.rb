@@ -25,9 +25,9 @@ describe VMWReportParser do
   end
 
   it "should support a trailing period, which indicates the report corresponds to a mobile patient" do
-    @parser.parse "F123M."
+    @parser.parse "f123m."
     @parser.errors?().should == false
-    @parser.report.malaria_type.should == "F"
+    @parser.report.malaria_type.should == "f"
     @parser.report.age.should == 123
     @parser.report.sex.should == "Male"
     @parser.report.mobile == true

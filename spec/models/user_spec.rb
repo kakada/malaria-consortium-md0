@@ -273,8 +273,9 @@ describe User do
        users = User.search :type=>"", :query => "user"
        users.count.should == 2
 
-       users[0].user_name.should == "user2"
-       users[1].user_name.should == "user1"
+       [users[0].user_name, users[1].user_name].should =~ ["user1", "user2"]
+
+      
     end
 
     it "should return 1 user who has user_name start with 'user' and come from a village " do

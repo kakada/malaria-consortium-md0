@@ -114,7 +114,6 @@ class Report < ActiveRecord::Base
       self.trigger_to_od =  true
       save!
     end
-    
 
     alerts
   end
@@ -214,6 +213,7 @@ class Report < ActiveRecord::Base
   private
 
   def complete_fields
+    self.malaria_type = self.malaria_type.nil? ? nil : self.malaria_type.upcase
     self.health_center = village_id? ? village.parent : place
     self.od = health_center.parent if health_center_id?
     self.province = od.parent if od_id?

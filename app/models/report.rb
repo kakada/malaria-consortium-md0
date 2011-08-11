@@ -145,7 +145,7 @@ class Report < ActiveRecord::Base
       reports = reports.select "DISTINCT(#{options[:place_type].foreign_key})"
       ids = reports.map &:"#{options[:place_type].foreign_key}"
 
-      places = Place.where("id NOT IN (?)", ids).where(:type => options[:place_type])
+      Place.where("id NOT IN (?)", ids).where(:type => options[:place_type])
     else
       reports = reports.includes options[:place_type].tableize.singularize.to_sym
       reports = reports.select 'reports.*, count(*) as total'
@@ -214,7 +214,7 @@ class Report < ActiveRecord::Base
 
   def complete_fields
     self.malaria_type = self.malaria_type.nil? ? nil : self.malaria_type.upcase
-    self.health_center = village_id? ? village.parent : place
+    self.health_center = village_id? ? village.parent : (place.class.to_s == "HeathCenter" ? place: nil)
     self.od = health_center.parent if health_center_id?
     self.province = od.parent if od_id?
     self.country = province.parent if province_id?
@@ -226,6 +226,7 @@ class Report < ActiveRecord::Base
       create_error_report message, 'unknown user'
       return unknown_user
     end
+
 
     if !sender.can_report?
       create_error_report message, 'access denied', sender
@@ -249,7 +250,14 @@ class Report < ActiveRecord::Base
   end
 
   def self.create_error_report(message, error_message, sender = nil)
-    Report.create! :sender_address => message[:from], :text => message[:body], :nuntium_token => message[:guid], :error => true, :error_message => error_message, :sender => sender, :place => sender.try(:place)
+    options = { :sender_address => message[:from], 
+                :text => message[:body],
+                :nuntium_token => message[:guid],
+                :error => true,
+                :error_message => error_message,
+                :sender => sender,
+                :place => sender.try(:place) }
+    Report.create! options
   end
 
   def upcase_strings

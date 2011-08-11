@@ -8,13 +8,13 @@
     <table width="100%" class="table-grid round" >
       <thead>
         <tr>
-          <th class="<%= @revert  %> " ><%= link_to t("Name"), users_path(:sort => "user_name", :dir => @revert, :query => params[:query]), :class=>"sort"  %>   </th>
-          <th class="<%= @revert  %> " ><%= link_to t("Email"), users_path(:sort => "email", :dir => @revert, :query => params[:query]),  :class=>"sort"  %>  </th>
-          <th class="<%= @revert  %> " ><%= link_to t("Phone"), users_path(:sort => "phone_number", :dir => @revert, :query => params[:query]),  :class=>"sort"  %>  </th>
-          <th><%= t("Password") %>  </th>
-          <th class="<%= @revert  %> " ><%= link_to t("Place"), users_path(:sort => "places.name", :dir => @revert, :query => params[:query]) ,  :class=>"sort" %>   </th>
-          <th class="<%= @revert  %> " ><%= link_to t("Role"), users_path(:sort => "role", :dir => @revert, :query => params[:query]) ,  :class=>"sort"   %>  </th>
-          <th> <%= t("Status")  %> </th>
+          <th class="<%= @revert  %> " ><%= link_to t("Name"), users_path(:sort => "user_name", :dir => @revert, :query => params[:query]), :class=>"sort"  %> </th>
+          <th class="<%= @revert  %> " ><%= link_to t("Email"), users_path(:sort => "email", :dir => @revert, :query => params[:query]),  :class=>"sort"  %> </th>
+          <th class="<%= @revert  %> " ><%= link_to t("Phone"), users_path(:sort => "phone_number", :dir => @revert, :query => params[:query]),  :class=>"sort"  %></th>
+          <th><%= t("Password") %></th>
+          <th class="<%= @revert  %> " ><%= link_to t("Place"), users_path(:sort => "places.name", :dir => @revert, :query => params[:query]) ,  :class=>"sort" %></th>
+          <th class="<%= @revert  %> " ><%= link_to t("Role"), users_path(:sort => "role", :dir => @revert, :query => params[:query]) , :class=>"sort" %></th>
+          <th class="<%= @revert  %> " ><%= link_to t("Status"), users_path(:sort => "status", :dir => @revert, :query => params[:query]) ,  :class=>"sort" %></th>
           <th width="130" > </th>
         </tr>
       </thead>

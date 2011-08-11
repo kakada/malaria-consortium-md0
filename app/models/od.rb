@@ -17,6 +17,6 @@ class OD < Place
     roles << 'admin' if Setting[:admin_alert] != "0"
     return [] if roles.empty?
 
-    User.where(:role => roles).reject{|user| user.phone_number.blank?}.map {|user| user.message(body) }
+    User.activated.where(:role => roles).reject{|user| user.phone_number.blank?}.map {|user| user.message(body) }
   end
 end

@@ -53,6 +53,73 @@ describe Report do
     end
   end
 
+  describe "precess message" do
+    before(:each) do
+      @village = Village.make :code => "1234567890"
+
+      @v1 = User.make :user_name => "vuser1" , :phone_number => "85560001", :place => @village
+      @v2 = User.make :user_name => "vuser2", :phone_number => "85560002", :place => @village, :status => false
+      @v3 = User.make :user_name => "vuser3", :phone_number => "85560003", :place => @village
+
+      @h1 = User.make :user_name => "huser" , :phone_number => "855970001", :place => @village.health_center
+      @h2 = User.make :user_name => "dara", :phone_number => "855970002", :place => @village.health_center
+      @h3 = User.make :user_name => "daroy", :phone_number => "855970003", :place => @village.health_center, :status =>  false
+
+      @d1 = User.make :user_name => "bopha",  :phone_number => "855980001", :place => @village.od, :status => false
+      @d2 = User.make :user_name => "thuna" , :phone_number => "855980002", :place => @village.od
+
+      @p1 = User.make :user_name => "ratha", :phone_number => "855990001", :place => @village.province
+      @p2 = User.make :user_name => "vibol" , :phone_number => "855990002", :place => @village.province, :status => false
+      @p3 = User.make :user_name => "rathana" , :phone_number => "855990003", :place => @village.province
+      @p4 = User.make :user_name => "vicheka" , :phone_number => "855990004", :place => @village.province, :status => false
+
+      @message = {:from => "sms://8558190", :body => "F123M1234567890"}
+      
+    end
+
+    it "should denied access if with desactived health center user (status is false)" do
+       response = Report.process @message.merge(:from => "sms://855970003" )
+       response[0][:body].should eq Report.user_should_belong_to_hc_or_village  
+    end
+
+    it "should denied access if with desactived village center user (status is false)" do
+       response = Report.process @message.merge(:from => "sms://85560002" )
+       response[0][:body].should eq Report.user_should_belong_to_hc_or_village
+    end
+
+
+    it "should denied access if user not from village or health center" do
+      responses = Report.process @message.merge(:from => "sms://855990001" )
+      responses[0][:body].should eq Report.user_should_belong_to_hc_or_village
+    end
+
+    
+
+    it "should denied access if status is false" do
+      responses = Report.process @message.merge(:from => "sms://855970002" )
+      responses.size.should eq 5
+      responses.should =~ [ {:to=>"sms://855970001", :body=>"", :from=>"malariad0://system" },
+                            {:to=>"sms://855970002", :body=>"", :from=>"malariad0://system" },
+                            {:to=>"sms://855980002", :body=>"", :from=>"malariad0://system" },
+                            {:to=>"sms://855990001", :body=>"", :from=>"malariad0://system" },
+                            {:to=>"sms://855990003", :body=>"", :from=>"malariad0://system" } ]
+      
+    end
+
+
+
+
+    
+    
+    
+
+  end
+
+
+
+
+
+
   describe "valid message" do
     it "should return human readable message with details" do
       User.should_receive(:find_by_phone_number).with("sms://8558190").and_return(@hc_user)

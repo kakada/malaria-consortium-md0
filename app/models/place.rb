@@ -94,7 +94,7 @@ class Place < ActiveRecord::Base
   end
 
   def create_alerts body, options = {}
-    users.reject{|user| user == options[:except]}.map{|user| user.message(body) }
+    users.reject{|user| (user == options[:except] or !user.status) }.map{|user| user.message(body) }
   end
 
   def reports

@@ -274,8 +274,6 @@ describe User do
        users.count.should == 2
 
        [users[0].user_name, users[1].user_name].should =~ ["user1", "user2"]
-
-      
     end
 
     it "should return 1 user who has user_name start with 'user' and come from a village " do
@@ -283,17 +281,89 @@ describe User do
       users.count.should == 1
       users[0].user_name.should == "user1"
       users[0].place_class.should == "Village"
-      
     end
 
     it "should return empty list when user not found" do
       users = User.search :type => "Village", :query => "not available value"
       users.count.should == 0
     end
-
-    
-    
   end
+
+  describe "count user with place" do
+    before(:each) do
+       @village = Village.make
+
+       @v1 = User.make :user_name => "vuser1" , :phone_number => "85597888120", :place => @village
+       @v2 = User.make :user_name => "vuser2", :phone_number => "8559736634664", :place => @village, :status => false
+       @v3 = User.make :user_name => "vuser3", :phone_number => "8559736634665", :place => @village
+       
+
+       @h1 = User.make :user_name => "huser" , :phone_number => "85597888121", :place => @village.health_center
+       @h2 = User.make :user_name => "dara", :phone_number => "85597888122", :place => @village.health_center
+
+       @d1 = User.make :user_name => "bopha",  :phone_number => "85597888123", :place => @village.od, :status => false
+       @d2 = User.make :user_name => "thuna" , :phone_number => "85597888127", :place => @village.od
+
+      
+       @p1 = User.make :user_name => "ratha", :phone_number => "85597888124", :place => @village.province
+       @p2 = User.make :user_name => "vibol" , :phone_number => "85597888125", :place => @village.province, :status => false
+       @p3 = User.make :user_name => "rathana" , :phone_number => "85597888126", :place => @village.province
+       @p4 = User.make :user_name => "vicheka" , :phone_number => "85597880000", :place => @village.province, :status => false
+       
+
+    end
+
+    it "should return all user with status iqual true" do
+      users = User.count_user
+      
+      users[0][:place].should eq Province
+      users[0][:count].should eq 2
+
+      users[1][:place].should eq OD
+      users[1][:count].should eq 1
+
+      users[2][:place].should eq HealthCenter
+      users[2][:count].should eq 2
+
+      users[3][:place].should eq Village
+      users[3][:count].should eq 2
+    end
+
+    it "should return all place class with it number of user" do
+
+      users = User.count_user @village.province
+
+      users[0][:place].should eq Province
+      users[0][:users].count.should eq 2
+      
+      users[0][:users][0].user_name.should eq "ratha"
+      users[0][:users][1].user_name.should eq "rathana"
+
+      users[1][:place].should eq OD
+      users[1][:count].should eq 1
+
+
+      users[2][:place].should eq HealthCenter
+      users[2][:count].should eq 2
+
+      users[3][:place].should eq Village
+      users[3][:count].should eq 2    
+    end
+
+    it "should return only village users with status true" do
+      users = User.count_user(@village)
+      users[0][:place].should eq Village
+      users[0][:users].count.should eq 2
+
+      users[0][:users][0].user_name.should  == "vuser1"
+      users[0][:users][1].user_name.should  == "vuser3"
+     
+    end
+
+
+  end
+
+
 
   describe "update params" do
     before(:each) do

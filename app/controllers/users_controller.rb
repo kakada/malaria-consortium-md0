@@ -36,16 +36,11 @@ class UsersController < ApplicationController
 
   def create_new
 
-    p params
-    
-    p "-----------------------"
     attributes = params.slice :user_name, :email, :password, :phone_number, :role, :id, :intended_place_code, :status
    
     attributes[:password_confirmation] = attributes[:password]
     attributes[:status] = User.from_status(attributes[:status])
 
-    p attributes
-    p "+++++++++++++++++++++++++"
 
     @user = User.new attributes
 

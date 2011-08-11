@@ -6,6 +6,15 @@ class User < ActiveRecord::Base
 
   attr_accessor :intended_place_code
 
+  class << self
+    def activated
+      self.where :status => true
+    end
+    def deactivated
+      self.where :status => false
+    end
+  end
+
   Roles = ["default", "national", "admin" ]
   Status = ["Deactive", "Active"]
 
@@ -47,7 +56,7 @@ class User < ActiveRecord::Base
   end
 
   def can_report?
-    place_id && (place.village? || place.health_center?)
+    place_id && self.status && (place.village? || place.health_center?)
   end
 
   def report_parser
@@ -140,6 +149,29 @@ class User < ActiveRecord::Base
       end
     end
   end
+
+  def self.count_user place=nil
+    users = []
+    if place
+        users.push :place => place.class, :users => (User.activated.where :place_class => place.class.to_s)
+
+        options = {}
+        options[place.foreign_key] = place.id
+
+        Place::Types.from(Place::Types.index(place.class.to_s) + 1).each do |type|
+          options[:place_class] = type
+          users.push :place => type.constantize, :count => User.activated.where(options).count
+        end
+    else
+        Place::Types.from(1).each do |type|
+          users.push :place => type.constantize, :count => User.activated.where(:place_class => type).count
+        end
+    end
+    users
+  end
+
+
+
 
   def admin?
     role == 'admin'

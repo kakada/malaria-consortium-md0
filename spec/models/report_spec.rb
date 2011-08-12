@@ -77,25 +77,22 @@ describe Report do
       
     end
 
-    it "should denied access if with desactived health center user (status is false)" do
+    it "should denied access when desactived health center user report (status is false)" do
        response = Report.process @message.merge(:from => "sms://855970003" )
        response[0][:body].should eq Report.user_should_belong_to_hc_or_village  
     end
 
-    it "should denied access if with desactived village center user (status is false)" do
+    it "should denied access when desactived village user report (status is false)" do
        response = Report.process @message.merge(:from => "sms://85560002" )
        response[0][:body].should eq Report.user_should_belong_to_hc_or_village
     end
-
 
     it "should denied access if user not from village or health center" do
       responses = Report.process @message.merge(:from => "sms://855990001" )
       responses[0][:body].should eq Report.user_should_belong_to_hc_or_village
     end
 
-    
-
-    it "should denied access if status is false" do
+    it "should alert messages to activated user only " do
       responses = Report.process @message.merge(:from => "sms://855970002" )
       responses.size.should eq 5
       responses.should =~ [ {:to=>"sms://855970001", :body=>"", :from=>"malariad0://system" },
@@ -103,21 +100,10 @@ describe Report do
                             {:to=>"sms://855980002", :body=>"", :from=>"malariad0://system" },
                             {:to=>"sms://855990001", :body=>"", :from=>"malariad0://system" },
                             {:to=>"sms://855990003", :body=>"", :from=>"malariad0://system" } ]
-      
     end
-
-
-
-
-    
-    
-    
-
   end
 
-
-
-
+  
 
 
   describe "valid message" do

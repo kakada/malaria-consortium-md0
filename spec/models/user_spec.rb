@@ -359,11 +359,70 @@ describe User do
       users[0][:users][1].user_name.should  == "vuser3"
      
     end
-
-
   end
 
+  describe "user_from_place" do
+    before(:each) do
+       @village = Village.make
 
+       @v1 = User.make :user_name => "vuser1" , :phone_number => "85597888120", :place => @village
+       @v2 = User.make :user_name => "vuser2", :phone_number => "8559736634664", :place => @village, :status => false
+       @v3 = User.make :user_name => "vuser3", :phone_number => "8559736634665", :place => @village
+
+       @h1 = User.make :user_name => "huser" , :phone_number => "85597888121", :place => @village.health_center
+       @h2 = User.make :user_name => "dara", :phone_number => "85597888122", :place => @village.health_center
+
+       @d1 = User.make :user_name => "bopha",  :phone_number => "85597888123", :place => @village.od, :status => false
+       @d2 = User.make :user_name => "thuna" , :phone_number => "85597888127", :place => @village.od
+
+       @p1 = User.make :user_name => "ratha", :phone_number => "85597888124", :place => @village.province
+       @p2 = User.make :user_name => "vibol" , :phone_number => "85597888125", :place => @village.province, :status => false
+       @p3 = User.make :user_name => "rathana" , :phone_number => "85597888126", :place => @village.province
+       @p4 = User.make :user_name => "vicheka" , :phone_number => "85597880000", :place => @village.province, :status => false
+    end
+
+    it "should return all activated village users" do
+      users = User.user_from_place( 0 , ["Village"])
+      users.count.should eq 2
+      [users[0].user_name, users[1].user_name].should =~ ["vuser1", "vuser3"]
+    end
+
+    it "should return all activated health center user" do
+      users = User.user_from_place( nil , ["HealthCenter"])
+      users.count.should eq 2
+      [users[0].user_name, users[1].user_name].should =~ ["huser", "dara"]
+    end
+
+    it "should return all activated od user" do
+      users = User.user_from_place( nil , ["OD"])
+      users.count.should eq 1
+      users[0].user_name.should eq "thuna"
+    end
+
+    it "should return all activated province user" do
+      users = User.user_from_place( nil , ["Province"])
+      users.count.should eq 2
+      [users[0].user_name, users[1].user_name].should =~ ["rathana", "ratha"]
+    end
+
+    it "should return all activated province and village user" do
+      users = User.user_from_place( nil , ["Province","Village"])
+      users.count.should eq 4
+      [users[0].user_name, users[1].user_name, users[2].user_name, users[3].user_name ].should =~ ["vuser1", "vuser3", "rathana", "ratha"]
+    end
+
+    it "should return only activated village user" do
+      users = User.user_from_place( @village.od.id , ["Province","Village"])
+      users.count.should eq 2
+      [users[0].user_name, users[1].user_name].should =~ ["vuser1", "vuser3"]
+    end
+
+    it "should return empty array" do
+      users = User.user_from_place( nil , [])
+      users.count.should eq 0
+    end
+    
+  end
 
   describe "update params" do
     before(:each) do

@@ -79,6 +79,13 @@ class User < ActiveRecord::Base
     {:to => address, :body => body}
   end
 
+
+  def self.user_from_place place_id, place_type
+    place = (place_id == 0 || place_id.nil?) ? Country.first : Place.find(place_id)
+    User.activated.where place.foreign_key => place.id, :place_class => place_type
+  end
+
+
   #data ={:user_name=>[],:password => [] ,...}
   def self.save_bulk data
     users = []

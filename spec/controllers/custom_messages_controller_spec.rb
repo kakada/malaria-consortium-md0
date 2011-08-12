@@ -21,19 +21,18 @@ describe CustomMessagesController do
       before(:each) do
         @valid_attribute = {
           :sms => "this is a a valid sms",
-          :place_id => "1",
+          :place_id => nil ,
           :places => ["OD","HealthCenter"],
           :users => ["1","2","3"],
           :format =>"js"
         }
-        @format = "js"
         @custom_message = Object.new
         CustomMessage.stub!(:new).with(@valid_attribute[:sms]).and_return(@custom_message)
         @custom_message.stub!(:valid?).and_return(true)
 
-        CustomMessage.stub!(:get_users).with(@valid_attribute[:place_id].to_i,@valid_attribute[:places]).and_return([])
         @custom_message.stub!(:send_sms_users)
         User.stub!(:find).with(@valid_attribute[:users]).and_return([])
+        User.stub!(:user_from_place).and_return([])
 
       end
 
@@ -44,16 +43,6 @@ describe CustomMessagesController do
 
       it "should be validate the custome_message return true" do
         @custom_message.should_receive(:valid?).and_return(true)
-        post :create, @valid_attribute
-      end
-
-      it "should find the users from place_id top hierachy in the places type collection" do
-        CustomMessage.should_receive(:get_users).with(@valid_attribute[:place_id].to_i,@valid_attribute[:places])
-        post :create , @valid_attribute
-      end
-
-      it "should find the user for the users collection" do
-        User.should_receive(:find).with(@valid_attribute[:users])
         post :create, @valid_attribute
       end
 

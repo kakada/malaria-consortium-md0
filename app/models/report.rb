@@ -136,20 +136,37 @@ class Report < ActiveRecord::Base
     return nil
     
   end
+  
 
   def self.report_cases options
-    place = options[:place].present? ?  Place.find(options[:place]) : Country.first
-    reports = Report.at_place(place).between_dates(options[:from], options[:to]).where("reports.#{options[:place_type].foreign_key} IS NOT NULL")
-    reports = reports.no_error.not_ignored
-    if options[:ncase] == '0'
-      reports = reports.select "DISTINCT(#{options[:place_type].foreign_key})"
-      ids = reports.map &:"#{options[:place_type].foreign_key}"
 
-      Place.where("id NOT IN (?)", ids).where(:type => options[:place_type])
+    place = options[:place].present? ?  Place.find(options[:place]) : Country.first
+    reports = Report.
+                    at_place(place).between_dates(options[:from], options[:to]).
+                    where("reports.#{options[:place_type].foreign_key} IS NOT NULL")
+
+    reports = reports.no_error.not_ignored
+
+    
+    if options[:ncase] == '0'
+
+      # select only places that reported
+      reports = reports.select "DISTINCT(#{options[:place_type].foreign_key})"
+      reports = reports.map {|report| report.send("#{options[:place_type].foreign_key}")}
+
+      # Get only places that has user working on
+      places = Place.joins("INNER JOIN users ON users.place_id = places.id")
+      places = places.where(:type => options[:place_type])
+      places = places.where("places.id NOT IN (?)", reports) if reports.size > 0
+      places = places.select("DISTINCT(places.id)")
+
+      rows = places.map { |place| place.id}
+      places = Place.where("places.id IN (?)", rows ) if rows.size > 0
     else
       reports = reports.includes options[:place_type].tableize.singularize.to_sym
       reports = reports.select 'reports.*, count(*) as total'
       reports = reports.group "reports.#{options[:place_type].foreign_key}"
+      reports
     end
   end
 

@@ -3,8 +3,9 @@ class PlacesController < ApplicationController
 
   def index
     @places = Place
-    @places = @places.search_for_autocomplete params[:query] if params[:query].present?
 
+    @places = @places.search_for_autocomplete params[:query] if params[:query].present?
+    @query = params[:query]
     sort_params = sort_params(params)
     @revert = sort_params[:revert_dir]
     @places = @places.paginate :page => get_page, :per_page => PerPage, :order => "#{sort_params[:field]} #{sort_params[:dir]} "

@@ -18,9 +18,9 @@
     <% @places.each_with_index do |place,index| %>
       <tr class="<%= index.parity %>" >
         <td><%= place.type  %>  </td>
-        <td><%= place.code  %>  </td>
-        <td><%= place.name  %>  </td>
-        <td><%= place.name_kh  %>  </td>
+        <td><%= place.code.highlight_search(@query).html_safe  %>  </td>
+        <td><%= place.name.highlight_search(@query).html_safe  %>  </td>
+        <td><%= place.name_kh.highlight_search(@query).html_safe  %>  </td>
         <td><%= place.lat  %>  </td>
         <td><%= place.lng  %>  </td>
         <td><%= place.parent.try(:short_description)  %>  </td>

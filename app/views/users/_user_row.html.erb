@@ -1,8 +1,8 @@
-<td><%= user.user_name.highlight_search(query) %> </td>
+<td><%= user.user_name.highlight_search(query).html_safe %> </td>
 <td><%= user.email %>  </td>
-<td><%= user.phone_number.highlight_search(query) %>  </td>
+<td><%= user.phone_number.highlight_search(query).html_safe %>  </td>
 <td><%= user.encrypted_password.nil? ? '' : '**********' %>  </td>
-<td><%= user.place.nil? ? "" : user.place.description.highlight_search(query) %>  </td>
+<td><%= user.place.nil? ? "" : user.place.description.highlight_search(query).html_safe %>  </td>
 <td><%= user.role %></td>
 <td><%= user.status_description  %></td>
 <td>

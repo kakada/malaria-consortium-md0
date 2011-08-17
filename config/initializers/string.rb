@@ -29,7 +29,7 @@ class String
     if(portion.present?)
       reg = Regexp.new(Regexp.escape(portion),Regexp::IGNORECASE | Regexp::MULTILINE)
       return self.gsub(reg) do |match|
-         "<span class='highlight'>#{match}</span>".html_safe
+        "<span class='highlight'>#{match}</span>"
       end
     end
     self

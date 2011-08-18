@@ -24,9 +24,7 @@
         <td><%= place.lat  %>  </td>
         <td><%= place.lng  %>  </td>
         <td><%= place.parent.try(:short_description)  %>  </td>
-        <td>
-          <%= link_to "Edit", edit_place_path(place, :page => params[:page]) %>
-        </td>
+        <td><%= link_to "Edit", edit_place_path(place, :page => params[:page]) %></td>
       </tr>
     <% end %>
     </tbody>

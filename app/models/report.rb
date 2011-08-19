@@ -56,8 +56,8 @@ class Report < ActiveRecord::Base
   end
 
   def self.last_error_per_sender_per_day
-    subquery = Report.select('max(id)').group("date(created_at), sender_id").to_sql
-    where(:error => true, :ignored => false).where("id IN (#{subquery})")
+    subquery = Report.select('max(reports.id)').group("date(created_at), sender_id").to_sql
+    where(:error => true, :ignored => false).where("reports.id IN (#{subquery})")
   end
 
   def self.duplicated_per_sender_per_day

@@ -43,15 +43,13 @@ class Village < Place
     Village.all.each_with_index do |village,index|
       if !village.code.nil?
         code = village.code.strip_village_code
-        
-
         if village.code !=code
-          p "#{index}: stripping code from #{village.code}  --> #{code}"
+          #p "#{index}: stripping code from #{village.code}  --> #{code}"
           village.code = code
           if village.save
-             p "save\n\n"
+            # p "save\n\n"
           else
-             p "failed to savesss"
+            # p "failed to savesss"
           end
         end
         

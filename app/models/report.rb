@@ -2,7 +2,7 @@
 require 'csv'
 
 class Report < ActiveRecord::Base
-  validates_presence_of :malaria_type, :sex, :age, :sender_id, :place_id, :village_id, :unless => :error?
+  validates_presence_of :malaria_type, :sex, :age, :sender_id, :place_id, :unless => :error?
   validates_numericality_of :age, :greater_than_or_equal_to => 0, :unless => :error?
   validates_inclusion_of :malaria_type, :in => %w(F M V), :unless => :error?, :message => "Type should be in (F, M, V)"
   validates_inclusion_of :sex, :in => %w(Male Female), :unless => :error?
@@ -97,16 +97,16 @@ class Report < ActiveRecord::Base
     msg = single_case_message
 
     # Always notify the HC about the new case (TODO: what if it's already a HC report?)
-    alerts += village.parent.create_alerts(msg, :except => sender)
+    alerts += health_center.create_alerts(msg, :except => sender)
     type = alert_triggered
 
     case type
     when :single
-      alerts += village.od.create_alerts msg
+      alerts += od.create_alerts msg
     when :village
-      alerts += village.od.create_alerts village.aggregate_report(Time.last_week)
+      alerts += od.create_alerts village.aggregate_report(Time.last_week)
     when :health_center
-      alerts += village.od.create_alerts village.parent.aggregate_report(Time.last_week)
+      alerts += od.create_alerts health_center.aggregate_report(Time.last_week)
     end
 
     # if alert message if created for od then save then specify the report is being triggered to od
@@ -120,21 +120,20 @@ class Report < ActiveRecord::Base
 
   def alert_triggered
 
-    village_threshold = Threshold.find_for village
-    if village_threshold
-      return :village if village.reports_reached_threshold village_threshold
+    if village
+      village_threshold = Threshold.find_for village
+      return :village  if (village_threshold && village.reports_reached_threshold(village_threshold))
     end
 
-    hc_threshold = Threshold.find_for village.parent
+    hc_threshold = Threshold.find_for health_center
     if hc_threshold
-      return :health_center if village.parent.reports_reached_threshold hc_threshold
+      return :health_center if health_center.reports_reached_threshold hc_threshold
     end
 
     if village_threshold.nil? && hc_threshold.nil?
       return :single
     end
     return nil
-    
   end
   
 
@@ -231,7 +230,7 @@ class Report < ActiveRecord::Base
 
   def complete_fields
     self.malaria_type = self.malaria_type.nil? ? nil : self.malaria_type.upcase
-    self.health_center = village_id? ? village.parent : (place.class.to_s == "HeathCenter" ? place: nil)
+    self.health_center = !village_id.nil? ? village.parent : (place.class.to_s == "HealthCenter" ? place: nil)
     self.od = health_center.parent if health_center_id?
     self.province = od.parent if od_id?
     self.country = province.parent if province_id?

@@ -9,11 +9,10 @@ describe HCReportParser do
     @parser = HCReportParser.new @user
   end
 
-  describe "parser" do
+  describe "parse" do
     before(:each) do
       @village = Village.make :code => "00112233"
       @hc_user = @village.health_center.users.make :phone_number => "983838"
-      
     end
 
     it "should parse the message with mobile patient" do

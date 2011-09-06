@@ -18,22 +18,22 @@ describe Report do
   end
 
   describe "create report" do
-      before(:each) do
-        @valid = {
-          :malaria_type => "M" ,
-          :sex => "Female",
-          :age => 12,
-          :sender_id => @hc_user,
-          :place_id => @hc_user.place.id,
-        }
-      end
+    before(:each) do
+      @valid = {
+        :malaria_type => "M" ,
+        :sex => "Female",
+        :age => 12,
+        :sender_id => @hc_user,
+        :place_id => @hc_user.place.id
+      }
+    end
 
-      describe "valid attribute" do
-        it "should create a new report" do
+    describe "valid attribute" do
+      it "should create a new report" do
           report = HealthCenterReport.create! @valid
           report.should be_valid
         end
-        describe "build hierachy" do
+      describe "build hierachy" do
           it "should build the correct hierachy with health center " do
              report = HealthCenterReport.create! @valid
              report.village.should be_nil
@@ -49,9 +49,56 @@ describe Report do
              report.od.should eq @village.od
              report.province.should eq @village.province
           end
+        end
+    end
 
+    describe "invalid attribute" do
+      describe " malaria type" do
+        it "should require malaria_type in case no error" do
+          report = Report.new @valid.merge({:malaria_type => nil })
+          report.should_not be_valid
+        end
+
+        it "should require the correct type of malaria" do
+          ['A','B','c','d'].each do |elm|
+            report = Report.new @valid.merge({:malaria_type => elm })
+            report.should_not be_valid
+          end
+        end
+
+        it "should require sex in case no error" do
+          report = Report.new @valid.merge :sex => nil
+          report.should_not be_valid
+        end
+
+        it "should require the correct type of sex: Female or Male " do
+           ["M","F","female","male", "female"].each do |elm|
+             report = Report.new @valid.merge :sex => elm
+             report.should_not be_valid
+           end
+        end
+
+
+
+        it "should require age " do
+          report = Report.new @valid.merge :age =>nil
+          report.should_not be_valid
+        end
+
+        it "should be a valid number " do
+          report = Report.new @valid.merge :age => -1
+          report.should_not be_valid
+        end
+
+        it "should require sender id" do
+          report = Report.new @valid.merge :sender_id => nil
+          report.should_not be_valid
         end
       end
+      
+    end
+
+
 
 
 

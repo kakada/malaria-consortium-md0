@@ -292,10 +292,14 @@ describe User do
   describe "count user with place" do
     before(:each) do
        @village = Village.make
+       @other = Village.make
 
-       @v1 = User.make :user_name => "vuser1" , :phone_number => "85597888120", :place => @village
+       @v1 = User.make :user_name => "vuser1" , :phone_number => "85597888120" , :place => @village
        @v2 = User.make :user_name => "vuser2", :phone_number => "8559736634664", :place => @village, :status => false
        @v3 = User.make :user_name => "vuser3", :phone_number => "8559736634665", :place => @village
+
+
+       @v4 = User.make :user_name => "vuser4", :phone_number => "8559712536477", :place => @other
        
 
        @h1 = User.make :user_name => "huser" , :phone_number => "85597888121", :place => @village.health_center
@@ -307,9 +311,10 @@ describe User do
       
        @p1 = User.make :user_name => "ratha", :phone_number => "85597888124", :place => @village.province
        @p2 = User.make :user_name => "vibol" , :phone_number => "85597888125", :place => @village.province, :status => false
+
        @p3 = User.make :user_name => "rathana" , :phone_number => "85597888126", :place => @village.province
-       @p4 = User.make :user_name => "vicheka" , :phone_number => "85597880000", :place => @village.province, :status => false
        
+       @p4 = User.make :user_name => "vicheka" , :phone_number => "85597880000", :place => @other.province
 
     end
 
@@ -317,7 +322,7 @@ describe User do
       users = User.count_user
       
       users[0][:place].should eq Province
-      users[0][:count].should eq 2
+      users[0][:count].should eq 3
 
       users[1][:place].should eq OD
       users[1][:count].should eq 1
@@ -326,10 +331,12 @@ describe User do
       users[2][:count].should eq 2
 
       users[3][:place].should eq Village
-      users[3][:count].should eq 2
+      users[3][:count].should eq 3
     end
 
-    it "should return all place class with it number of user" do
+    
+
+    it "should return all place class with it number of user in that place and users located in the place" do
 
       users = User.count_user @village.province
 

@@ -15,7 +15,7 @@
         <% else %>
           <% user[:users].each do |subuser| %>
               <tr>
-                <td title="Phone number: <%= subuser.phone_number %>"><%= subuser.user_name %></td>
+                <td title="Phone number: <%= subuser.phone_number %>"><%= "#{subuser.user_name} #{subuser.phone_number} " %></td>
                 <td><%= check_box_tag 'users[]', subuser.id %></td>
               </tr>
           <% end %>

@@ -160,7 +160,7 @@ class User < ActiveRecord::Base
   def self.count_user place=nil
     users = []
     if place
-        users.push :place => place.class, :users => (User.activated.where :place_class => place.class.to_s)
+        users.push :place => place.class, :users => (User.activated.where(["place_class = ?  and place_id = ? ",place.class.to_s, place.id ]  ) )
 
         options = {}
         options[place.foreign_key] = place.id

@@ -12,7 +12,7 @@ development:
   database: malaria_dev
   pool: 5
   username: root
-  password: "" 
+  password: "iLab@instedd.org" 
   host: localhost
 
 # Warning: The database defined as "test" will be erased and
@@ -25,7 +25,7 @@ test:
   database: malaria_test
   pool: 5
   username: root
-  password: ""
+  password: "iLab@instedd.org"
   host: localhost
 
 production:
@@ -35,5 +35,5 @@ production:
   database: malaria_production
   pool: 5
   username: root
-  password: ""
+  password: "iLab@instedd.org"
   host: localhost

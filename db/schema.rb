@@ -10,7 +10,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110809084244) do
+ActiveRecord::Schema.define(:version => 20120507075905) do
+
+  create_table "alert_pfs", :force => true do |t|
+    t.text     "provinces"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "places", :force => true do |t|
     t.string   "name"

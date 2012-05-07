@@ -76,3 +76,7 @@ HealthCenterReport.blueprint do
   place { sender.place }
   village { Village.make :parent => sender.place }
 end
+
+AlertPf.blueprint do
+  
+end

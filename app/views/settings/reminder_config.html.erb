@@ -1,27 +1,30 @@
 <h2>Reminders</h2>
 
-<%= form_for "setting", :url=> update_reminder_config_path, :method =>"post", :html=>{:id=>"adminForm"}  do |form| %>
-
-Follow up alert after X days for Falciparum (P.f.) case reported.
-
-Enable reminder for provinces:
-
-<div style="width:240px; height: 160px; border: 1px solid #ccc; overflow: scroll">
-    <div style="width:200px;">
-      <%= check_box_tag "provinces[All]", "All", false, :id => :check_all -%>
-      <label for="check_all">All</label>
-    </div>
-    <% @provinces.each do |province| %>
-
-    <% check = false; %>
-    <div style="width:200px;">
-      <%= check_box_tag "provinces[#{province.id}]", province.id, check, :class => :chbox_item -%>
-      <label for="provinces_<%= province.id %>"><%= h province.name -%></label>
-    </div>
-  <% end %>
-</div>
-
 <ul class="no-style" >
+
+  <%= form_for "setting", :url=> update_reminder_config_path, :method =>"post", :html=>{:id=>"adminForm"}  do |form| %>
+
+  Follow up alert after <%= number_field_tag 'reminder_days', @reminder_days, :in => 1...30 %> days for Falciparum (P.f.) case reported.
+  <br />
+  Enable reminder for provinces:
+
+  <div style="width:240px; height: 160px; border: 1px solid #ccc; overflow: scroll">
+      <div style="width:200px;">
+        <% check = @provinces.size == @provinces_checked.size %>
+        <%= check_box_tag "provinces[All]", "", check, :id => :check_all -%>
+        <label for="check_all">All</label>
+      </div>
+      <% @provinces.each do |province| %>
+
+      <% check = @provinces_checked.include?(province.id.to_s) %>
+      <div style="width:200px;">
+        <%= check_box_tag "provinces[#{province.id}]", province.id, check, :class => :chbox_item -%>
+        <label for="provinces_<%= province.id %>"><%= h province.name -%></label>
+      </div>
+    <% end %>
+  </div>
+  <br />
+
   <li>
     <h3 class="separator" > Village reminder </h3>
     <ul  class="no-style"  >

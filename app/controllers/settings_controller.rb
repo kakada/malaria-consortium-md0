@@ -9,16 +9,11 @@ class SettingsController < ApplicationController
     @od_reminder = Setting[:od_reminder]
     @hc_reminder = Setting[:hc_reminder]
     @village_reminder = Setting[:village_reminder]
+    @reminder_days = Setting[:reminder_days]
 
+    @provinces_checked = AlertPf.last.provinces
     @provinces = Province.all
   end
-
-  def alert_config
-    @title = "Alert setting"
-    @provincial_alert = Setting[:provincial_alert]
-    @admin_alert = Setting[:admin_alert]
-    @national_alert = Setting[:national_alert]
-   end
 
   # POST /update_reminder_config
   def update_reminder_config
@@ -28,10 +23,24 @@ class SettingsController < ApplicationController
     Setting[:od_reminder] = params[:setting][:od_reminder]
     Setting[:hc_reminder] = params[:setting][:hc_reminder]
     Setting[:village_reminder] = params[:setting][:village_reminder]
-    
+    Setting[:reminder_days] = params[:reminder_days]
+
+    # save provinces into alert_pf
+    # escape select all {:all => ""}
+    alert_pf = AlertPf.last.nil?? AlertPf.new : AlertPf.last
+    alert_pf.provinces = params[:provinces].nil?? [] : params[:provinces].select { |k, v| v != ""}.values
+    alert_pf.save
+
     flash["msg-notice"] = "Settings have been saved successfully"
     redirect_to reminder_config_url
   end
+
+  def alert_config
+    @title = "Alert setting"
+    @provincial_alert = Setting[:provincial_alert]
+    @admin_alert = Setting[:admin_alert]
+    @national_alert = Setting[:national_alert]
+   end
 
    def update_alert_config
      Setting[:provincial_alert] = params[:setting][:provincial_alert]

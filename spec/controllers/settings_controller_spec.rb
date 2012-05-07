@@ -41,11 +41,21 @@ describe SettingsController do
       Setting[:od_reminder] = "0"
       Setting[:hc_reminder] = "1"
       Setting[:village_reminder] = "1"
+      Setting[:reminder_days] = 2
+
+      AlertPf.make(:provinces => [])
+      Province.make(:type => Province.name)
 
       sign_in User.make(:admin)
     end
 
-    it "should read admin_reminder, provicial_alert, national_alert" do
+    it "should has only one provincial" do
+      get :reminder_config
+
+      assigns[:provinces].length.should == 1
+    end
+
+    it "should read admin_reminder, provicial_reminder, national_reminder" do
       get :reminder_config
       assigns[:admin_reminder].should == "0"
       assigns[:national_reminder].should == "0"
@@ -53,6 +63,8 @@ describe SettingsController do
       assigns[:od_reminder].should == "0"
       assigns[:hc_reminder].should == "1"
       assigns[:village_reminder].should == "1"
+      assigns[:provinces_checked].size.should == 0
+      assigns[:provinces].size.should == 1
     end
 
     it "should render reminder_config" do
@@ -64,12 +76,16 @@ describe SettingsController do
   describe "update reminder config" do
     before(:each) do
       @attributes = {
-        :admin_reminder => 0,
-        :national_reminder => 0,
-        :provincial_reminder => 0,
-        :od_reminder => 0,
-        :hc_reminder => 1,
-        :village_reminder => 1
+        :setting => {
+          :admin_reminder => 0,
+          :national_reminder => 0,
+          :provincial_reminder => 0,
+          :od_reminder => 0,
+          :hc_reminder => 1,
+          :village_reminder => 1
+        },
+        :provinces => {:"1" => 1, :"2" => 2},
+        :reminder_days => 2
       }
 
       @admin_reminder = 0
@@ -78,13 +94,16 @@ describe SettingsController do
       @od_reminder = 0
       @hc_reminder = 1
       @village_reminder = 1
-
+      @provinces = {:"1" => 1, :"2" => 2}
+      @reminder_days = 2
+      
       Setting.stub("[]=").with(:admin_reminder, 0).and_return(@admin_reminder)
       Setting.stub("[]=").with(:national_reminder, 0).and_return(@national_reminder)
       Setting.stub("[]=").with(:provincial_reminder, 0).and_return(@provincial_reminder)
       Setting.stub("[]=").with(:od_reminder, 0).and_return(@od_reminder)
       Setting.stub("[]=").with(:hc_reminder, 1).and_return(@hc_reminder)
       Setting.stub("[]=").with(:village_reminder, 1).and_return(@village_reminder)
+      Setting.stub("[]=").with(:reminder_days, 2).and_return(@reminder_days)
     end
 
     it "should set the configuration properly" do
@@ -94,17 +113,18 @@ describe SettingsController do
       Setting.should_receive("[]=").with(:od_reminder, 0).and_return(@od_reminder)
       Setting.should_receive("[]=").with(:hc_reminder, 1).and_return(@hc_reminder)
       Setting.should_receive("[]=").with(:village_reminder, 1).and_return(@village_reminder)
+      Setting.should_receive("[]=").with(:reminder_days, 2).and_return(@reminder_days)
 
-      post :update_reminder_config, :setting => @attributes
+      post :update_reminder_config, :setting => @attributes[:setting], :reminder_days => @reminder_days, :provinces => @provinces
     end
 
     it "should have flash with msg-notice key" do
-      post :update_reminder_config, :setting => @attributes
+      post :update_reminder_config, :setting => @attributes[:setting], :reminder_days => @reminder_days, :provinces => @provinces
       flash["msg-notice"].should_not be_empty
     end
 
     it "should redirect to reminder_config" do
-      post :update_reminder_config, :setting => @attributes
+      post :update_reminder_config, :setting => @attributes[:setting], :reminder_days => @reminder_days, :provinces => @provinces
       response.should redirect_to :reminder_config
     end
 

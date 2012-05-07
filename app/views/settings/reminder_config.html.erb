@@ -1,0 +1,129 @@
+<h2>Reminders</h2>
+
+<%= form_for "setting", :url=> update_reminder_config_path, :method =>"post", :html=>{:id=>"adminForm"}  do |form| %>
+
+Follow up alert after X days for Falciparum (P.f.) case reported.
+
+Enable reminder for provinces:
+
+<div style="width:240px; height: 160px; border: 1px solid #ccc; overflow: scroll">
+    <div style="width:200px;">
+      <%= check_box_tag "provinces[All]", "All", false, :id => :check_all -%>
+      <label for="check_all">All</label>
+    </div>
+    <% @provinces.each do |province| %>
+
+    <% check = false; %>
+    <div style="width:200px;">
+      <%= check_box_tag "provinces[#{province.id}]", province.id, check, :class => :chbox_item -%>
+      <label for="provinces_<%= province.id %>"><%= h province.name -%></label>
+    </div>
+  <% end %>
+</div>
+
+<ul class="no-style" >
+  <li>
+    <h3 class="separator" > Village reminder </h3>
+    <ul  class="no-style"  >
+      <li>
+       <%= radio_button("setting", :village_reminder , 0, :checked => ['0', '', nil].include?(@village_reminder) ) %>
+        <label for="setting_village_reminder_0" > Disable </label>
+      </li>
+      <li>
+       <%= radio_button("setting", :village_reminder , 1, :checked => @village_reminder == "1"  ) %>
+       <label for="setting_village_reminder_1" > Reminder done whenever system sent the reminder to OD </label>
+      </li>
+    </ul>
+  </li>
+
+  <li>
+    <h3 class="separator" > Health center reminder </h3>
+    <ul  class="no-style"  >
+      <li>
+       <%= radio_button("setting", :hc_reminder , 0, :checked => ['0', '', nil].include?(@hc_reminder) ) %>
+        <label for="setting_hc_reminder_0" > Disable </label>
+      </li>
+      <li>
+       <%= radio_button("setting", :hc_reminder , 1, :checked => @hc_reminder == "1"  ) %>
+       <label for="setting_hc_reminder_1" > Reminder done whenever system sent the reminder to OD </label>
+      </li>
+    </ul>
+  </li>
+  
+  <li>
+    <h3 class="separator" > Operational District reminder </h3>
+    <ul  class="no-style"  >
+      <li>
+       <%= radio_button("setting", :od_reminder , 0, :checked => ['0', '', nil].include?(@od_reminder) ) %>
+        <label for="setting_od_reminder_0" > Disable </label>
+      </li>
+      <li>
+       <%= radio_button("setting", :od_reminder , 1, :checked => @od_reminder == "1"  ) %>
+       <label for="setting_od_reminder_1" > Reminder done whenever system sent the reminder to OD </label>
+      </li>
+    </ul>
+  </li>
+  
+  <li>
+    <h3 class="separator" > Provincial reminder </h3>
+    <ul  class="no-style"  >
+      <li>
+       <%= radio_button("setting", :provincial_reminder , 0, :checked => ['0', '', nil].include?(@provincial_reminder) ) %>
+        <label for="setting_provincial_reminder_0" > Disable </label>
+      </li>
+      <li>
+       <%= radio_button("setting", :provincial_reminder, 1, :checked => @provincial_reminder == "1"  ) %>
+       <label for="setting_provincial_reminder_1" > Reminder done whenever system sent the reminder to OD </label>
+      </li>
+    </ul>
+  </li>
+
+  <li>
+    <h3 class="separator" > National reminder </h3>
+    <ul  class="no-style"  >
+      <li>
+       <%= radio_button("setting", :national_reminder, 0, :checked => ['0', '', nil].include?(@national_reminder) ) %>
+       <label for="setting_national_reminder_0" > Disable </label>
+      </li>
+      <li>
+       <%= radio_button("setting", :national_reminder, 1, :checked => @national_reminder=="1" ) %>
+       <label for="setting_national_reminder_1" > Reminder done whenever system sent the reminder to OD </label>
+      </li>
+    </ul>
+  </li>
+
+  <li>
+    <h3 class="separator" > Administrator reminder </h3>
+    <ul  class="no-style"  >
+      <li>
+       <%= radio_button("setting", :admin_reminder, 0, :checked => ['0', '', nil].include?(@admin_reminder) ) %>
+       <label for="setting_admin_reminder_0" > Disable </label>
+      </li>
+      <li>
+       <%= radio_button("setting", :admin_reminder, 1, :checked => @admin_reminder=="1" ) %>
+       <label for="setting_admin_reminder_1" > Reminder done whenever system sent the reminder to OD </label>
+      </li>
+    </ul>
+  </li>
+  <li><h3 class="separator"></h3> </li>
+  <li >
+    <h3 style="text-align: left; width: 60%;" >
+    <%= form.submit :Update %>
+    </h3>
+  </li>
+
+
+</ul>
+<script type="text/javascript" >
+  $(function(){
+    $("#check_all").click(function(){
+      $(".chbox_item").attr("checked", this.checked);
+    });
+
+    $(".chbox_item").click(function(){
+      if(this.checked ==false)
+        $("#check_all").attr("checked", false) ;
+    });
+  });
+</script>
+<% end %>

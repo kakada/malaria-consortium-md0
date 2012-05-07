@@ -3,6 +3,8 @@ Local::Application.routes.draw do
   devise_for :users
 
   root :to => "home#index"
+  get "/reminder_config", :to => "settings#reminder_config"
+  post "/update_reminder_config", :to => "settings#update_reminder_config"
   get "/alert_config", :to =>"settings#alert_config"
   post "/update_alert_config", :to =>"settings#update_alert_config"
   get "/settings/templates", :to => "settings#template_config"

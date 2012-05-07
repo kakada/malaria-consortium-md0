@@ -12,3 +12,4 @@ config/nuntium.yml
 .DS_Store
 coverage/
 *gitignore
+vendor/*

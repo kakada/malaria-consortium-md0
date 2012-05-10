@@ -18,7 +18,7 @@ class AlertPfNotification < ActiveRecord::Base
 
     send_date = report.created_at.to_date + Setting[:reminder_days].to_i.days
     users.each do |user|
-      AlertPfNotification.create!(:user_id => user.id, :send_date => send_date, :status => "SEND", :report_id => report.id)
+      AlertPfNotification.create!(:user_id => user.id, :send_date => send_date, :status => STATUSES[:pending], :report_id => report.id)
     end
   end
 

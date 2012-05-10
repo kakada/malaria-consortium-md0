@@ -17,6 +17,7 @@ class Templates
     :invalid_village_code => {:params => %w(original_message), :label => 'invalid village code'},
     :non_existent_village => {:params => %w(original_message), :label => 'non existing village'},
     :too_long_village_report => {:params => %w(original_message), :label => 'invalid mobile patient'},
+    :reminder_message => {:params => %w(malaria_type phone_number village health_center), :label => "reminder message"}
   }
 
   def initialize(values = {})

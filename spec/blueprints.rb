@@ -80,3 +80,8 @@ end
 AlertPf.blueprint do
   
 end
+
+AlertPfNotification.blueprint do
+  user {User.make}
+  report {Report.make :malaria_type => "M"}
+end

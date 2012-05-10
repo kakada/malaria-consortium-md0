@@ -4,7 +4,7 @@ class AlertPfNotification < ActiveRecord::Base
 
   validates_presence_of :user, :report, :send_date, :status
 
-  STATUSES = {:send => "SEND", :sent => "SENT"}
+  STATUSES = {:pending => "PENDING", :sent => "SENT"}
 
   def self.add_reminder report
     users = []
@@ -22,19 +22,32 @@ class AlertPfNotification < ActiveRecord::Base
     end
   end
 
-  def self.deliver_to_user
-    nuntium = Nuntium.new_from_config()
-    
-    alerts = AlertPfNotification.where("send_date = '#{Date.today}' and status = '#{STATUSES[:send]}'")
+  def self.process
+    alerts = AlertPfNotification.where("send_date = '#{Date.today}' and status = '#{STATUSES[:pending]}'")
     alerts.each do |alert|
-      message = alert.user.message Setting[:reminder_message_template]
-      token = nuntium.send_ao message
-      # update token to alert for identified nuntium message id
-      alert.status = STATUSES[:sent]
-      alert.token = token
-      alert.save
-      Rails.logger.info "====== Send alert notification of #{alert} with body #{message} ======"
+      alert.deliver_to_user
     end
+  end
+
+  def deliver_to_user
+    message = self.user.message(self.translate_params(Setting[:reminder_message]))
+    nuntium = Nuntium.new_from_config
+    token = nuntium.send_ao message
+    # update token to alert for identified nuntium message id
+    self.status = STATUSES[:sent]
+    self.token = token
+    self.save
+    Rails.logger.info "====== Send alert notification of #{self} with body #{message} ======"
+  end
+
+  def translate_params message
+    template_values = {
+      :malaria_type => self.report.malaria_type,
+      :phone_number => self.user.phone_number,
+      :village => self.report.village.name,
+      :health_center => self.report.health_center.name
+    }
+    message.apply(template_values)
   end
 
 end

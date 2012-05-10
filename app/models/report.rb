@@ -226,6 +226,10 @@ class Report < ActiveRecord::Base
     messages
   end
 
+  def valid_pf_case?
+    not self.malaria_type.nil? and self.malaria_type.upcase == "F" and self.error_message.nil?
+  end
+
   private
 
   def complete_fields

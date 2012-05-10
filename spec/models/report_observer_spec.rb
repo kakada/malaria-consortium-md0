@@ -17,21 +17,17 @@ describe ReportObserver do
       end
 
       it "should enable for BB province" do
-        @alert_pf.provinces.first.should == "#{@province.id}"
+        @alert_pf.provinces.last.should == "#{@province.id}"
       end
 
       it "should be observing Report#create and do not add to alert reminder" do
-        @report = Report.make :province_id => @province.id, :malaria_type => "M", :error_message => nil
-        @obs = ReportObserver.instance
-        AlertPfNotification.should_receive(:add_reminder).with(@report).never
-        @obs.after_save @report
+        AlertPfNotification.should_receive(:add_reminder).with(anything()).never
+        @report = Report.create! :province_id => @province.id, :malaria_type => "M", :error_message => nil, :place_id => Place.make, :sex => "Male", :age => 30, :sender_id => User.make, :sender_address => "85569860012"
       end
 
       it 'should be observing Report#create' do
-        @report = Report.make :province_id => @province.id, :malaria_type => "F", :error_message => nil
-        @obs = ReportObserver.instance
-        AlertPfNotification.should_receive(:add_reminder).with(@report).once
-        @obs.after_save @report
+        AlertPfNotification.should_receive(:add_reminder).with(anything()).once
+        @report = Report.create! :province_id => @province.id, :malaria_type => "F", :error_message => nil, :place_id => Place.make, :sex => "Male", :age => 30, :sender_id => User.make, :sender_address => "85569860012"
       end
     end
   end

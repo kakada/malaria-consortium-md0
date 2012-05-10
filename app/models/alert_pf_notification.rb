@@ -1,0 +1,40 @@
+class AlertPfNotification < ActiveRecord::Base
+  belongs_to :user
+  belongs_to :report
+
+  validates_presence_of :user, :report, :send_date, :status
+
+  STATUSES = {:send => "SEND", :sent => "SENT"}
+
+  def self.add_reminder report
+    users = []
+    village = report.village
+    users |= village.users.activated if not Setting[:village_reminder].nil? and Setting[:village_reminder] == "1"
+    users |= village.health_center.users.activated if not Setting[:hc_reminder].nil? and Setting[:hc_reminder] == "1"
+    users |= village.health_center.od.users.activated if not Setting[:od_reminder].nil? and Setting[:od_reminder] == "1"
+    users |= village.health_center.od.province.users.activated if not Setting[:provincial_reminder].nil? and Setting[:provincial_reminder] == "1"
+    users |= village.health_center.od.province.country.users.activated if not Setting[:national_reminder].nil? and Setting[:national_reminder] == "1"
+    users |= User.get_admin_user if not Setting[:admin_reminder].nil? and Setting[:admin_reminder] == "1"
+
+    send_date = report.created_at.to_date + Setting[:reminder_days].to_i.days
+    users.each do |user|
+      AlertPfNotification.create!(:user_id => user.id, :send_date => send_date, :status => "SEND", :report_id => report.id)
+    end
+  end
+
+  def self.deliver_to_user
+    nuntium = Nuntium.new_from_config()
+    
+    alerts = AlertPfNotification.where("send_date = '#{Date.today}' and status = '#{STATUSES[:send]}'")
+    alerts.each do |alert|
+      message = alert.user.message Setting[:reminder_message_template]
+      token = nuntium.send_ao message
+      # update token to alert for identified nuntium message id
+      alert.status = STATUSES[:sent]
+      alert.token = token
+      alert.save
+      Rails.logger.info "====== Send alert notification of #{alert} with body #{message} ======"
+    end
+  end
+
+end

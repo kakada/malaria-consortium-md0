@@ -177,8 +177,9 @@ class User < ActiveRecord::Base
     users
   end
 
-
-
+  def self.get_admin_user
+    User.where :role => "admin"
+  end
 
   def admin?
     role == 'admin'

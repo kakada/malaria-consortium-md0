@@ -23,6 +23,7 @@ class AlertPfNotification < ActiveRecord::Base
   end
 
   def self.process
+    Rails.logger.info "====================== Alert Pf Notification process start: #{Time.new} ======================"
     alerts = AlertPfNotification.where("send_date = '#{Date.today}' and status = '#{STATUSES[:pending]}'")
     alerts.each do |alert|
       alert.deliver_to_user

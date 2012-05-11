@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd /home/kakada/work/malaria-consortium
+cd /var/www/malaria-consortium
 rake admin:send_alert_pf_notification

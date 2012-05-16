@@ -150,11 +150,12 @@ class User < ActiveRecord::Base
     else
       if(options[:type].present?)
          @users = User.where("place_class = :type", :type => options[:type])
-         @users = @users.includes(:place).order(options[:order]).all
+         @users = @users.includes(:place).order(options[:order])
       else
-         @users = User.includes(:place).order(options[:order]).all
+         @users = User.includes(:place).order(options[:order])
       end
     end
+    @users
   end
 
   def self.count_user place=nil

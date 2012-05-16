@@ -11,7 +11,7 @@ class SettingsController < ApplicationController
     @village_reminder = Setting[:village_reminder]
     @reminder_days = Setting[:reminder_days]
 
-    @provinces_checked = AlertPf.last.provinces
+    @provinces_checked = AlertPf.last.nil?? [] : AlertPf.last.provinces
     @provinces = Province.all
   end
 

@@ -8,7 +8,9 @@ class PlacesController < ApplicationController
     @query = params[:query]
     sort_params = sort_params(params)
     @revert = sort_params[:revert_dir]
-    @places = @places.paginate :page => get_page, :per_page => PerPage, :order => "#{sort_params[:field]} #{sort_params[:dir]} "
+
+    @places = Place.paginate :page => get_page, :per_page => PerPage, :order => "#{sort_params[:field]} #{sort_params[:dir]} "
+    @places.all
     render :file => "/places/_places.html.erb", :layout => false if request.xhr?
     
   end

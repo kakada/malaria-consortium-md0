@@ -46,7 +46,7 @@ group :development, :test do
   gem "webrat"
   gem "rspec-rails"
   gem "factory_girl_rails"
-  gem "machinist"
+  gem "machinist", "1.0.6"
   gem "faker"
   gem 'debugbar'
   gem "simplecov"

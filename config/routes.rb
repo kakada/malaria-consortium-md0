@@ -67,6 +67,8 @@ Local::Application.routes.draw do
 
   resources :thresholds
 
+  resources :alert_pf_notification, :only => [:index]
+
   match "/nuntium/receive_at" => "nuntium#receive_at"
 
   match ':controller(/:action(/:id(.:format)))'

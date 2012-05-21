@@ -2,7 +2,7 @@ require 'machinist/active_record'
 
 Sham.define do
   name { Faker::Name.name }
-  number8 { (1..8).map { ('1'..'9').to_a.rand }.join }
+  number8 { (1..8).map { ('1'..'9').to_a.sample }.join }
 end
 
 Place.blueprint do

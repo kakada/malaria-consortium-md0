@@ -1,4 +1,23 @@
-<h2>Reminders</h2>
+<% content_for :head do %>
+  <%= javascript_include_tag 'jquery.fancybox-1.3.4' %>
+  <%= stylesheet_link_tag "jquery.fancybox-1.3.4" %>
+  <script type="text/javascript" >
+    $(function(){
+        $(".reminder_log a").fancybox();
+    });
+  </script>
+  <style>
+    #fancybox-wrap {
+      max-height: 400px;
+      overflow: auto;
+    }
+  </style>
+<%  end %>
+
+<font style="font-size:18px;font-weight:bold;">Reminders</font>
+<span class="reminder_log">
+   (<%= link_to "history", alert_pf_notification_index_path %>)
+</span>
 
 <ul class="no-style" >
 

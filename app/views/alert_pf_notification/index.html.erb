@@ -1,0 +1,53 @@
+<div id="fancy-div-detail">
+<%= page_entries_info @alerts, :entry_name => 'reminder' %><br/><br/>
+<%= will_paginate @alerts %>
+
+<% if @alerts.any? %>
+  <table class="round full table-grid">
+    <thead>
+      <tr>
+        <th>Date sent</th>
+        <th>Receiver</th>
+        <th>Receiver place</th>
+        <th>Reminder text</th>
+      </tr>
+    </thead>
+    <% @alerts.each_with_index do |alert, i| %>
+      <tr class="<%= i.parity %>">
+        <td title="<%= alert.send_date %>"><%= alert.send_date %></td>
+        <td title="<%= alert.user.phone_number %>"><%= alert.user.phone_number %></td>
+        <% unless alert.user.place.nil? %>
+          <td title="<%= alert.user.place.description %>"><%= alert.user.place.description %></td>
+        <% else %>
+          <td title="nil">nil</td>
+        <% end %>
+        <td title="<%= alert.translate_params(Setting[:reminder_message]) %>"><%= alert.translate_params(Setting[:reminder_message]) %></td>
+      </tr>
+    <% end %>
+  </table>
+  <br/>
+
+  <%= will_paginate @alerts %>
+
+  <script type="text/javascript">
+    $(function() {
+      $("#fancy-div-detail > div.pagination > a ").click(function() {
+        url = this.href;
+        $.fancybox.showActivity();
+        $.ajax({
+                type	: "get",
+                cache	: false,
+                url	: url ,
+                success: function(content) {
+                        $.fancybox(content);
+                }
+        });
+        return false;
+      });
+    });
+  </script>
+  
+<% else %>
+  No reports.
+<% end %>
+</div>

@@ -33,7 +33,8 @@ class AlertPfNotification < ActiveRecord::Base
   end
 
   def deliver_to_user
-    message = self.user.message(self.translate_params(Setting[:reminder_message]))
+    template_message = Templates.get_reminder_template_message(self.user)
+    message = self.user.message(self.translate_params(template_message))
     nuntium = Nuntium.new_from_config
     token = nuntium.send_ao message
     # update token to alert for identified nuntium message id
@@ -42,11 +43,12 @@ class AlertPfNotification < ActiveRecord::Base
     self.save
     Rails.logger.info "====== Send alert notification of #{self} with body #{message} ======"
   end
-
+  
   def translate_params message
+    vmw_users = self.report.village.users.map { |u| u.phone_number }
     template_values = {
-      :malaria_type => self.report.malaria_type,
-      :phone_number => self.user.phone_number,
+      :original_message => self.report.text,
+      :phone_number => vmw_users.join("/"),
       :village => self.report.village.name,
       :health_center => self.report.health_center.name
     }

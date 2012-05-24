@@ -114,18 +114,17 @@ describe AlertPfNotification do
     before(:each) do
       @nuntium = mock("Nuntium")
       @nuntium_token = "f254ccfe-3197-9ff5-d6ee-3ef17aa68768"
-      Setting[:reminder_message] = "{malaria_type} {phone_number} {village} {health_center}"
+      @reminder_template_message = "{malaria_type} {phone_number} {village} {health_center}"
       @body = "M 85569860012 Orrussey Banteay Neang"
       @user1 = User.make :phone_number => "85569860012"
-#      @alert_pf = AlertPf.create! :provinces => []
-#      @report1 = Report.make :malaria_type => "M"
       @alert = AlertPfNotification.make :user_id => @user1.id, :status => "PENDING", :send_date => Date.today
 
       @message = {:to => "sms://85569860012", :body => "M 85569860012 Orrussey Banteay Neang"}
     end
 
     it "should deliver sms alert to user" do
-      @alert.should_receive(:translate_params).with(Setting[:reminder_message]).and_return(@body)
+      Templates.should_receive(:get_reminder_template_message).with(@alert.user).and_return(@reminder_template_message)
+      @alert.should_receive(:translate_params).with(@reminder_template_message).and_return(@body)
       Nuntium.should_receive(:new_from_config).and_return(@nuntium)
       @nuntium.should_receive(:send_ao).with(@message).once.and_return(@nuntium_token)
 
@@ -150,16 +149,18 @@ describe AlertPfNotification do
         :name_kh => "village_kh",
         :code => "v10010"
       })
+    
+      @message = "{original_message} {phone_number} {village} {health_center}"
 
       AlertPf.create! :provinces => []
-      @report = Report.make :malaria_type => "M", :health_center_id => @hc.id, :village_id => @village.id
-      @user = User.make :phone_number => "85569860012"
+      @user = User.make :phone_number => "85569860012", :place_id => @village.id
+      
+      @report = Report.make :malaria_type => "M", :text => "F22m", :health_center_id => @hc.id, :village_id => @village.id
       @alert = AlertPfNotification.create! :user_id => @user.id, :report_id => @report.id, :send_date => Date.today, :status => "SEND"
-      @message = "{malaria_type} {phone_number} {village} {health_center}"
     end
     
     it "should translate params in text to values" do
-      @alert.translate_params(@message).should == "M 85569860012 Orrussey Banteay Neang"
+      @alert.translate_params(@message).should == "F22m 85569860012 Orrussey Banteay Neang"
     end
   end
 end

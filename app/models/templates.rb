@@ -17,7 +17,8 @@ class Templates
     :invalid_village_code => {:params => %w(original_message), :label => 'invalid village code'},
     :non_existent_village => {:params => %w(original_message), :label => 'non existing village'},
     :too_long_village_report => {:params => %w(original_message), :label => 'invalid mobile patient'},
-    :reminder_message => {:params => %w(malaria_type phone_number village health_center), :label => "reminder message"}
+    :reminder_message_vmw => {:params => %w(original_message phone_number village health_center), :label => "reminder message to VMW"},
+    :reminder_message_hc => {:params => %w(original_message phone_number village health_center), :label => "reminder message to HC, OD, PHD, National and Admin"}
   }
 
   def initialize(values = {})
@@ -32,6 +33,10 @@ class Templates
       @settings << setting
     end
     setting
+  end
+  
+  def self.get_reminder_template_message user
+    (!user.place.nil? and user.place.type == Village.name)? Setting[:reminder_message_vmw] : Setting[:reminder_message_hc]
   end
 
   Keys.each do |key, value|
@@ -53,7 +58,7 @@ class Templates
       end
     )
   end
-
+  
   def save
     return false unless valid?
 

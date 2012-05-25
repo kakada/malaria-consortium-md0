@@ -21,7 +21,7 @@
         <% else %>
           <td title="nil">nil</td>
         <% end %>
-        <td title="<%= alert.translate_params(Setting[:reminder_message]) %>"><%= alert.translate_params(Setting[:reminder_message]) %></td>
+        <td title="<%= alert.message %>"><%= alert.message %></td>
       </tr>
     <% end %>
   </table>

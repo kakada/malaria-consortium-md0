@@ -23,6 +23,10 @@ class AlertPfNotification < ActiveRecord::Base
     end
   end
   
+  def self.remove_reminder report
+    destroy_all("report_id = #{report.id} and status = '#{STATUSES[:pending]}' and send_date >= '#{Date.today}'")
+  end
+  
   def self.process
     Rails.logger.info "====================== Alert Pf Notification process start: #{Time.new} ======================"
     alerts = AlertPfNotification.where("send_date = '#{Date.today}' and status = '#{STATUSES[:pending]}'")

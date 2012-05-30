@@ -87,7 +87,7 @@ describe AlertPfNotification do
       
       users = AlertPfNotification.get_responsible_users(@report)
       
-      # assert after add_reminder
+      # assert after get_responsible_users
       users.count.should == 1
     end
 
@@ -97,7 +97,7 @@ describe AlertPfNotification do
       @report = Report.make :malaria_type => "M", :text => "F22m", :village_id => @village.id
       users = AlertPfNotification.get_responsible_users(@report)
 
-      # assert after add_reminder
+      # assert after get_responsible_users
       users.count.should == 1
     end
 
@@ -107,7 +107,7 @@ describe AlertPfNotification do
       @report = Report.make :malaria_type => "M", :text => "F22m", :village_id => @village.id
       users = AlertPfNotification.get_responsible_users(@report)
 
-      # assert after add_reminder
+      # assert after get_responsible_users
       users.count.should == 1
     end
 
@@ -117,7 +117,7 @@ describe AlertPfNotification do
       @report = Report.make :malaria_type => "M", :text => "F22m", :village_id => @village.id
       users = AlertPfNotification.get_responsible_users(@report)
 
-      # assert after add_reminder
+      # assert after get_responsible_users
       users.count.should == 1
     end
 
@@ -127,7 +127,7 @@ describe AlertPfNotification do
       @report = Report.make :malaria_type => "M", :text => "F22m", :village_id => @village.id
       users = AlertPfNotification.get_responsible_users(@report)
       
-      # assert after add_reminder
+      # assert after get_responsible_users
       users.count.should == 1
     end
 
@@ -137,8 +137,37 @@ describe AlertPfNotification do
       @report = Report.make :malaria_type => "M", :text => "F22m", :village_id => @village.id
       users = AlertPfNotification.get_responsible_users(@report)
 
-      # assert after add_reminder
+      # assert after get_responsible_users
       users.count.should == 1
+    end
+  end
+  
+  describe ".remove_reminder" do
+    before(:each) do
+      @report1 = Report.make :text => "M12m"
+      @report2 = Report.make :text => "M13m"
+      @user1 = User.make :phone_number => "85569860012"
+      @alert1 = AlertPfNotification.make :report_id => @report1.id, :user_id => @user1.id, :status => "PENDING", :send_date => Date.today, :message => "F22m 85569860012, village, health_center"
+      @alert2 = AlertPfNotification.make :report_id => @report2.id, :user_id => @user1.id, :status => "PENDING", :send_date => Date.today, :message => "F22m 85569860012, village, health_center"
+    end
+    
+    it "should has two records of alert pf notification" do
+      AlertPfNotification.count.should == 2
+    end
+    
+    it "should first record is related to report 'M12m'" do
+      AlertPfNotification.first.report.id.should == @report1.id
+    end
+    
+    it "should last record is related to report 'M13m'" do
+      AlertPfNotification.last.report.id.should == @report2.id
+    end
+    
+    it "should remove all pending alert pf notification that related to report 'M12m'" do
+      AlertPfNotification.remove_reminder @report1
+      
+      # assert after remove reminder
+      AlertPfNotification.count.should == 1
     end
   end
 

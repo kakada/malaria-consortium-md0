@@ -26,3 +26,5 @@ As day-3 reporting model has proved to be an effective mechanism for reporting c
 * Ability to edit incoming SMS report.
 * Display D0 data  aggregation on the map with timeline filtering options View  places that have or not have report case.
 * Send blast messages
+* Reminder notification to VMW and HC after Falciparum case has been reported
+* Remove reminder notification to VMW and HC after Falciparum case report has been ignored

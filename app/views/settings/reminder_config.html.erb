@@ -23,7 +23,7 @@
 
   <%= form_for "setting", :url=> update_reminder_config_path, :method =>"post", :html=>{:id=>"adminForm"}  do |form| %>
 
-  Send follow up alert after <%= number_field_tag 'reminder_days', @reminder_days, :in => 1...30, :size => 1 %> days for Falciparum (P.f.) case reported.
+  Send follow up alert after <%= number_field_tag 'reminder_days', @reminder_days, :in => 1...30, :size => 1 %> days for Falciparum (P.f.) or Mixed (M) case reported.
   <br />
   Enable reminder for provinces:
 

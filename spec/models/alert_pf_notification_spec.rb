@@ -196,7 +196,19 @@ describe AlertPfNotification do
 
   describe "#translate_params" do
     before(:each) do
-      @hc = HealthCenter.create!({
+      @province = Province.create!({
+        :name => "BB",
+        :name_kh => "province_kh",
+        :code => "p10010"
+      })
+      
+      @od = @province.ods.create!({
+          :name=>"districtA",
+          :name_kh => "district_kh",
+          :code => "d10010"
+      })
+      
+      @hc = @od.health_centers.create!({
         :name => "Banteay Neang",
         :name_kh => "health_center_kh",
         :code => "h10010"

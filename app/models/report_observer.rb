@@ -3,7 +3,7 @@ class ReportObserver < ActiveRecord::Observer
 
   def after_save(report)
     # Enable provinces for alert pf notification
-    if report.valid_pf_case?
+    if report.valid_reminder_case?
       unless report.ignored
         unless AlertPf.last.nil?
           provinces = AlertPf.last.provinces

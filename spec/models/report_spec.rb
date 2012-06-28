@@ -140,7 +140,36 @@ describe Report do
     end
   end
 
-  describe "valid message" do  
+  describe "valid message" do
+    
+    describe "valid_reminder_case?" do
+      before(:each) do
+        @province = Province.create!({
+          :name => "BB",
+          :name_kh => "province_kh",
+          :code => "p10010"
+        })
+      end
+      
+      it "should return true when report is valid with malaria type Mixed" do
+        report = Report.create! :ignored => false, :province_id => @province.id, :malaria_type => "M", :error_message => nil, :place_id => Place.make, :sex => "Male", :age => 30, :sender_id => User.make, :sender_address => "85569860012"
+        
+        report.valid_reminder_case?.should == true
+      end
+      
+      it "should return true when report is valid with malaria type Faciparum" do
+        report = Report.create! :ignored => false, :province_id => @province.id, :malaria_type => "F", :error_message => nil, :place_id => Place.make, :sex => "Male", :age => 30, :sender_id => User.make, :sender_address => "85569860012"
+        
+        report.valid_reminder_case?.should == true
+      end
+      
+      it "should return false when report is valid malaria type case Vivax" do
+        report = Report.create! :ignored => false, :province_id => @province.id, :malaria_type => "V", :error_message => "invalid malaria type", :place_id => Place.make, :sex => "Male", :age => 30, :sender_id => User.make, :sender_address => "85569860012"
+        
+        report.valid_reminder_case?.should == false
+      end
+    end
+    
     it "should return human readable message with details" do
       User.should_receive(:find_by_phone_number).with("sms://8558190").and_return(@hc_user)
 
@@ -262,4 +291,5 @@ describe Report do
     reports = Report.duplicated_per_sender_per_day
     reports.all.should =~ [r5, r4, r3, r2, r1]
   end
+  
 end

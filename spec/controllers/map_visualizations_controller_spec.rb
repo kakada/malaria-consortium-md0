@@ -20,19 +20,30 @@ describe MapVisualizationsController do
   end
 
   describe "GET index with pagination " do
+    before(:each) do
+      @reports = []
+    end
+    
     it "should get paginated reports " do
-      MapVisualization.should_receive(:paginate_report).with(@attributes).and_return(:reports)
-
+      MapVisualization.should_receive(:paginate_report).with(@attributes).and_return(@reports)
+      @reports.should_receive(:all).and_return([])
+      
       get :index, @attributes
     end
 
     it "should set the id and reports " do
+      MapVisualization.should_receive(:paginate_report).with(@attributes).and_return(@reports)
+      @reports.should_receive(:all).and_return(@reports)
+    
       get :index , @attributes
       assigns[:place].should == @place
-      assigns[:reports].should == :reports
+      assigns[:reports].should == @reports
     end
 
     it "should render the page index and pagination without layouts" do
+      MapVisualization.should_receive(:paginate_report).with(@attributes).and_return(@reports)
+      @reports.should_receive(:all).and_return(@reports)
+    
       get :index , @attributes
       response.should render_template(:index)
       response.should_not render_template("layouts/application")

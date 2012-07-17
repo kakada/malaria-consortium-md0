@@ -24,7 +24,7 @@ class ReportParser
     @message = message.strip.gsub(/\s/, "").gsub(",", "")
     @scanner = StringScanner.new @message
 
-    malaria_type = @scanner.scan /[FVM]/i
+    malaria_type = @scanner.scan /[FVMN]/i
     generate_error :invalid_malaria_type unless malaria_type
 
     @scanner.scan /./ if errors?

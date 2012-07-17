@@ -34,5 +34,15 @@ describe ReportParser do
       @parser.report.sex.should == "Male"
       @parser.report.sender_id.should == @user.id
     end
+    
+    it "should support reports with malaria type 'N'" do
+      @parser.parse "N12M"
+      @parser.errors?().should == false
+      @parser.report.malaria_type.should == "N"
+      @parser.report.age.should == 12
+      @parser.report.sex.should == "Male"
+      @parser.report.sender_id.should == @user.id
+    end
+    
   end
 end

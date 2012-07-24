@@ -28,6 +28,52 @@ describe Report do
       }
     end
 
+    describe "validate malaria type" do
+      it "should create report with malaria type 'n/N'" do
+        @valid[:malaria_type] = 'n'
+        report = Report.create! @valid
+        report.should be_valid
+
+        @valid[:malaria_type] = 'N'
+        report = Report.create! @valid
+        report.should be_valid
+      end
+
+      it "should create report with malaria type 'f/F'" do
+        @valid[:malaria_type] = 'f'
+        report = Report.create! @valid
+        report.should be_valid
+
+        @valid[:malaria_type] = 'F'
+        report = Report.create! @valid
+        report.should be_valid
+      end
+
+      it "should create report with malaria type 'm/M'" do
+        @valid[:malaria_type] = 'm'
+        report = Report.create! @valid
+        report.should be_valid
+
+        @valid[:malaria_type] = 'M'
+        report = Report.create! @valid
+        report.should be_valid
+      end
+
+      it "should create report with malaria type 'v/V'" do
+        @valid[:malaria_type] = 'v'
+        report = Report.create! @valid
+        report.should be_valid
+
+        @valid[:malaria_type] = 'V'
+        report = Report.create! @valid
+        report.should be_valid
+      end
+    end
+
+    
+
+    
+
     describe "valid attribute" do
       it "should create a new report" do
           report = HealthCenterReport.create! @valid

@@ -4,7 +4,7 @@ require 'csv'
 class Report < ActiveRecord::Base
   validates_presence_of :malaria_type, :sex, :age, :sender_id, :place_id, :unless => :error?
   validates_numericality_of :age, :greater_than_or_equal_to => 0, :unless => :error?
-  validates_inclusion_of :malaria_type, :in => %w(F M V), :unless => :error?, :message => "Type should be in (F, M, V)"
+  validates_inclusion_of :malaria_type, :in => %w(F M V N), :unless => :error?, :message => "Type should be in (F, M, V N)"
   validates_inclusion_of :sex, :in => %w(Male Female), :unless => :error?
 
   belongs_to :sender, :class_name => "User"

@@ -6,11 +6,18 @@ class AlertPfNotification < ActiveRecord::Base
 
   STATUSES = {:pending => "PENDING", :sent => "SENT"}
 
+  def self.add_reminder_reports start_date, end_date
+    reports = Report.in_falciparum_or_mimix.not_ignored.between_dates(start_date, end_date)
+    reports.each do |report|
+      self.add_reminder report
+    end
+  end
+
   def self.add_reminder report
     users = self.get_responsible_users report
     self.create_notification users, report
   end
-  
+
   def self.create_notification users, report
     send_date = report.created_at.to_date + Setting[:reminder_days].to_i.days
     users.each do |user|

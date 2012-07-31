@@ -6,8 +6,7 @@ class ReportObserver < ActiveRecord::Observer
     if report.valid_reminder_case?
       unless report.ignored
         unless AlertPf.last.nil?
-          provinces = AlertPf.last.provinces
-          AlertPfNotification.add_reminder(report) if provinces.include?(report.province.id.to_s)
+          AlertPfNotification.add_reminder(report) if AlertPf.has_province? report.province.id.to_s
         end
       else
         AlertPfNotification.remove_reminder(report)

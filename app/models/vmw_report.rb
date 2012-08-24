@@ -12,7 +12,7 @@ class VMWReport < Report
       :malaria_type => malaria_type,
       :sex => sex,
       :age => age,
-      :day => day
+      :day => day,
       :village => village.name,
       :contact_number => sender.phone_number
     }

@@ -4,13 +4,13 @@ class Templates
   extend ActiveModel::Naming
 
   Keys = {
-    :single_village_case_template => {:params => %w(test_result malaria_type   sex age village contact_number), :label => 'individual case report from a village malaria worker'},
-    :single_hc_case_template => {:params => %w(test_result malaria_type sex age village contact_number health_center), :label => 'individual case report from a health center'},
+    :single_village_case_template => {:params => %w(test_result malaria_type sex age day village contact_number), :label => 'individual case report from a village malaria worker'},
+    :single_hc_case_template => {:params => %w(test_result malaria_type sex age day village contact_number health_center), :label => 'individual case report from a health center'},
     :aggregate_village_cases_template => {:params => %w(cases pv_cases pf_cases f_cases v_cases m_cases village), :label => 'aggregated cases report at village level'},
     :aggregate_hc_cases_template => {:params => %w(cases pv_cases pf_cases f_cases v_cases m_cases health_center), :label => 'aggregated cases report at health center level'},
-    :successful_health_center_report => {:params => %w(test_result malaria_type age sex village_code), :label => 'successful health center report message'},
-    :successful_mobile_village_report => {:params => %w(test_result malaria_type age sex mobile), :label => 'successful mobile village report message'},
-    :successful_non_mobile_village_report => {:params => %w(test_result malaria_type age sex mobile), :label => 'successful non mobile village report message'},
+    :successful_health_center_report => {:params => %w(test_result malaria_type age sex day village_code), :label => 'successful health center report message'},
+    :successful_mobile_village_report => {:params => %w(test_result malaria_type age sex day mobile), :label => 'successful mobile village report message'},
+    :successful_non_mobile_village_report => {:params => %w(test_result malaria_type age sex day mobile), :label => 'successful non mobile village report message'},
     :invalid_malaria_type => {:params => %w(original_message), :label => 'invalid malaria type message'},
     :invalid_age => {:params => %w(original_message), :label => 'invalid age message'},
     :invalid_sex => {:params => %w(original_message), :label => 'invalid sex message'},

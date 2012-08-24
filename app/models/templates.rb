@@ -14,6 +14,7 @@ class Templates
     :invalid_malaria_type => {:params => %w(original_message), :label => 'invalid malaria type message'},
     :invalid_age => {:params => %w(original_message), :label => 'invalid age message'},
     :invalid_sex => {:params => %w(original_message), :label => 'invalid sex message'},
+    :invalid_day => {:params => %w(original_message), :label => 'invalid day message'},
     :invalid_village_code => {:params => %w(original_message), :label => 'invalid village code'},
     :non_existent_village => {:params => %w(original_message), :label => 'non existing village'},
     :too_long_village_report => {:params => %w(original_message), :label => 'invalid mobile patient'},

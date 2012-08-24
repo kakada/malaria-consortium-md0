@@ -63,6 +63,7 @@ Report.blueprint do
   sender
   place { [Village, HealthCenter].sample.make }
   village
+  day { [0, 3, 28].sample }
 end
 
 VMWReport.blueprint do

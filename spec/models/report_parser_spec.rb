@@ -22,12 +22,20 @@ describe ReportParser do
       assert_parse_error 'F21J', :invalid_sex
     end
 
+    it "should return error message invalid day" do
+      assert_parse_error "F12M", :invalid_day
+    end
+
+    it "should return error message invalid day when day is not in {0, 3, 28}" do
+      assert_parse_error "F12M1", :invalid_day
+    end
+
     it "should return error message invalid malaria type when report is from hc" do
       assert_parse_error "d12m11111111", :invalid_malaria_type
     end
 
     it "should support reports with heading and trailing spaces and new lines" do
-      @parser.parse "    F2\n1M     "
+      @parser.parse "    F2\n1M0     "
       @parser.errors?().should == false
       @parser.report.malaria_type.should == "F"
       @parser.report.age.should == 21
@@ -36,7 +44,7 @@ describe ReportParser do
     end
     
     it "should support reports with malaria type 'N'" do
-      @parser.parse "N12M"
+      @parser.parse "N12M3"
       @parser.errors?().should == false
       @parser.report.malaria_type.should == "N"
       @parser.report.age.should == 12

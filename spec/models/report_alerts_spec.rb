@@ -157,7 +157,7 @@ describe Report do
     it "should be not be triggered when disabled" do
       Setting[:provincial_alert] = '0'
 
-      messages = Report.process :from => village_user.address, :body => 'F23F'
+      messages = Report.process :from => village_user.address, :body => 'F23F0'
       province_messages = messages.select{|msg| msg[:to] == province_user.address}
       province_messages.should be_empty
     end
@@ -165,7 +165,7 @@ describe Report do
     it "should be triggered when enabled" do
       Setting[:provincial_alert] = '1'
 
-      messages = Report.process :from => village_user.address, :body => 'F23F'
+      messages = Report.process :from => village_user.address, :body => 'F23F0'
       province_messages = messages.select{|msg| msg[:to] == province_user.address}
       province_messages.length.should eq(1)
     end
@@ -185,7 +185,7 @@ describe Report do
       it "should be not be triggered when disabled" do
         Setting[:provincial_alert] = '0'
 
-        messages = Report.process :from => village_user.address, :body => 'F23F'
+        messages = Report.process :from => village_user.address, :body => 'F23F0'
         province_messages = messages.select{|msg| msg[:to] == province_user.address}
         province_messages.should be_empty
       end
@@ -193,7 +193,7 @@ describe Report do
       it "should be triggered when enabled" do
         Setting[:provincial_alert] = '1'
 
-        messages = Report.process :from => village_user.address, :body => 'F23F'
+        messages = Report.process :from => village_user.address, :body => 'F23F0'
         province_messages = messages.select{|msg| msg[:to] == province_user.address}
         province_messages.length.should eq(1)
       end
@@ -205,7 +205,7 @@ describe Report do
       it "should be not be triggered when disabled" do
         Setting[:national_alert] = '0'
 
-        messages = Report.process :from => village_user.address, :body => 'F23F'
+        messages = Report.process :from => village_user.address, :body => 'F23F0'
         national_messages = messages.select{|msg| msg[:to] == national_user.address}
         national_messages.should be_empty
       end
@@ -213,7 +213,7 @@ describe Report do
       it "should be triggered when enabled" do
         Setting[:national_alert] = '1'
 
-        messages = Report.process :from => village_user.address, :body => 'F23F'
+        messages = Report.process :from => village_user.address, :body => 'F23F0'
         national_messages = messages.select{|msg| msg[:to] == national_user.address}
         national_messages.length.should eq(1)
       end
@@ -225,7 +225,7 @@ describe Report do
       it "should be not be triggered when disabled" do
         Setting[:admin_alert] = '0'
 
-        messages = Report.process :from => village_user.address, :body => 'F23F'
+        messages = Report.process :from => village_user.address, :body => 'F23F0'
         admin_messages = messages.select{|msg| msg[:to] == admin_user.address}
         admin_messages.should be_empty
       end
@@ -233,7 +233,7 @@ describe Report do
       it "should be triggered when enabled" do
         Setting[:admin_alert] = '1'
 
-        messages = Report.process :from => village_user.address, :body => 'F23F'
+        messages = Report.process :from => village_user.address, :body => 'F23F0'
         admin_messages = messages.select{|msg| msg[:to] == admin_user.address}
         admin_messages.length.should eq(1)
       end

@@ -35,11 +35,15 @@ class ReportParser
     sex = @scanner.scan /[FM]/i
     generate_error :invalid_sex unless sex
 
+    day = @scanner.scan /0|3|28/
+    generate_error :invalid_day unless day
+
     @scanner.scan /\D*/ if errors?
 
     @report.malaria_type = malaria_type
     @report.age = age
     @report.sex = self.class.format_sex sex if sex
+    @report.day = day.to_i
 
     self
   end
@@ -67,6 +71,10 @@ class ReportParser
 
   def self.invalid_sex original_message
     error_message_for :invalid_sex, original_message
+  end
+
+  def self.invalid_day original_message
+    error_message_for :invalid_day, original_message
   end
 
   def self.format_sex sex

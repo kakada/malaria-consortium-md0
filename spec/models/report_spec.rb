@@ -13,8 +13,8 @@ describe Report do
     @od_user1 = @od.users.make :phone_number => "8558192"
     @od_user2 = @od.users.make :phone_number => "8558193"
 
-    @valid_message = {:from => "sms://8558190", :body => "F123M12345678"}
-    @valid_vmw_message = {:from => "sms://8558191", :body => "F123M."}
+    @valid_message = {:from => "sms://8558190", :body => "F123M012345678"}
+    @valid_vmw_message = {:from => "sms://8558191", :body => "F123M0."}
   end
 
   describe "create report" do
@@ -24,55 +24,52 @@ describe Report do
         :sex => "Female",
         :age => 12,
         :sender_id => @hc_user,
-        :place_id => @hc_user.place.id
+        :place_id => @hc_user.place.id,
+        :day => 0
       }
     end
 
     describe "validate malaria type" do
       it "should create report with malaria type 'n/N'" do
-        @valid[:malaria_type] = 'n'
+        report = Report.make :malaria_type => "n"
         report = Report.create! @valid
         report.should be_valid
 
-        @valid[:malaria_type] = 'N'
+        report = Report.make :malaria_type => "N"
         report = Report.create! @valid
         report.should be_valid
       end
 
       it "should create report with malaria type 'f/F'" do
-        @valid[:malaria_type] = 'f'
+        report = Report.make :malaria_type => "f"
         report = Report.create! @valid
         report.should be_valid
 
-        @valid[:malaria_type] = 'F'
+        report = Report.make :malaria_type => "F"
         report = Report.create! @valid
         report.should be_valid
       end
 
       it "should create report with malaria type 'm/M'" do
-        @valid[:malaria_type] = 'm'
+        report = Report.make :malaria_type => "m"
         report = Report.create! @valid
         report.should be_valid
 
-        @valid[:malaria_type] = 'M'
+        report = Report.make :malaria_type => "M"
         report = Report.create! @valid
         report.should be_valid
       end
 
       it "should create report with malaria type 'v/V'" do
-        @valid[:malaria_type] = 'v'
+        report = Report.make :malaria_type => "v"
         report = Report.create! @valid
         report.should be_valid
 
-        @valid[:malaria_type] = 'V'
+        report = Report.make :malaria_type => "V"
         report = Report.create! @valid
         report.should be_valid
       end
     end
-
-    
-
-    
 
     describe "valid attribute" do
       it "should create a new report" do
@@ -141,17 +138,8 @@ describe Report do
           report.should_not be_valid
         end
       end
-      
     end
-
-
-
-
-
   end
-
-
-
 
   describe "invalid message" do
     def assert_response_error expected_response, orig_msg
@@ -198,19 +186,19 @@ describe Report do
       end
       
       it "should return true when report is valid with malaria type Mixed" do
-        report = Report.create! :ignored => false, :province_id => @province.id, :malaria_type => "M", :error_message => nil, :place_id => Place.make, :sex => "Male", :age => 30, :sender_id => User.make, :sender_address => "85569860012"
+        report = Report.make :malaria_type => "M", :error_message => nil
         
         report.valid_reminder_case?.should == true
       end
       
       it "should return true when report is valid with malaria type Faciparum" do
-        report = Report.create! :ignored => false, :province_id => @province.id, :malaria_type => "F", :error_message => nil, :place_id => Place.make, :sex => "Male", :age => 30, :sender_id => User.make, :sender_address => "85569860012"
+        report = Report.make :malaria_type => "F", :error_message => nil
         
         report.valid_reminder_case?.should == true
       end
       
       it "should return false when report is valid malaria type case Vivax" do
-        report = Report.create! :ignored => false, :province_id => @province.id, :malaria_type => "V", :error_message => "invalid malaria type", :place_id => Place.make, :sex => "Male", :age => 30, :sender_id => User.make, :sender_address => "85569860012"
+        report = Report.make :malaria_type => "V", :error_message => "invalid malaria type"
         
         report.valid_reminder_case?.should == false
       end
@@ -225,7 +213,7 @@ describe Report do
                                                  {:body => "alert2", :to => "sms://2"},
                                                  {:body => "alert3", :to => "sms://3"}])
 
-      @valid_message = {:from => "sms://8558190", :body => "F123M12345678"}
+      @valid_message = {:from => "sms://8558190", :body => "F123M012345678"}
       
       response = Report.process @valid_message
 
@@ -235,6 +223,7 @@ describe Report do
       report.village.should == @village
       report.sender.should == @hc_user
       report.place.should == @health_center
+      report.day.should == 0
 
       response.should =~ [
         {:to => @hc_user.phone_number.with_sms_protocol, :body => report.human_readable, :from => Report.from_app},
@@ -252,10 +241,6 @@ describe Report do
       
     end
 
-
-
-
-
     it "should return an array of hashes even if there's only one hash" do
       User.should_receive(:find_by_phone_number).with("sms://8558190").and_return(@hc_user)
       report = setup_successful_parser "successful report"
@@ -267,7 +252,7 @@ describe Report do
     end
 
     it "should upcase malaria type" do
-      report = Report.new :malaria_type => 'f', :age => 123, :sex => 'Male',
+      report = Report.make :malaria_type => 'f', :age => 123, :sex => 'Male',
         :village_id => @village.id, :sender_id => @hc_user.id, :place_id => @health_center.id
       report.save!
       report.malaria_type.should == 'F'
@@ -292,7 +277,7 @@ describe Report do
       parser.should_receive(:errors?).and_return(false)
 
       report = Report.new :malaria_type => 'F', :age => 123, :sex => 'Male',
-        :village_id => @village.id, :sender_id => @hc_user.id, :place_id => @health_center.id
+        :village_id => @village.id, :sender_id => @hc_user.id, :place_id => @health_center.id, :day => 0
 
       report.stub!(:human_readable).and_return success_message
 

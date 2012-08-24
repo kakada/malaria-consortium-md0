@@ -6,6 +6,7 @@ class HealthCenterReport < Report
                                                     :malaria_type => malaria_type,
                                                     :age => age,
                                                     :sex => sex,
+                                                    :day => day,
                                                     :village_code => village.nil? ? "" : village.code
   end
 
@@ -15,6 +16,7 @@ class HealthCenterReport < Report
       :malaria_type => malaria_type,
       :sex => sex,
       :age => age,
+      :day => day,
       :village => village.nil? ? "" : village.name,
       :contact_number => sender.phone_number,
       :health_center => sender.place.name

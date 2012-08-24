@@ -16,7 +16,6 @@ class String
     end
   end
 
-
   def strip_village_code
     if self =~ /^(\d{8})00$/
       $1

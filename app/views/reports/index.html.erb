@@ -29,6 +29,7 @@
           <th>Type</th>
           <th>Age</th>
           <th>Sex</th>
+          <th>Day</th>
           <th>Mobile?</th>
           <th>Reported at</th>
           <th>Health Center</th>
@@ -56,6 +57,7 @@
             <td><%= report.age %></td>
             <td><%= report.sex %></td>
           <% end %>
+          <td><%= report.day %></td>
           <td><%= report.mobile? ? 'Yes' : 'No' %></td>
           <td><%= report.type == 'HealthCenterReport' ? 'health center' : 'village' unless report.error? %></td>
           <td><%= report.health_center.try(:short_description) %></td>

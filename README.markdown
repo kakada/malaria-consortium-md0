@@ -28,3 +28,12 @@ As day-3 reporting model has proved to be an effective mechanism for reporting c
 * Send blast messages
 * Reminder notification to VMW and HC after Falciparum case has been reported
 * Remove reminder notification to VMW and HC after Falciparum case report has been ignored
+
+## Format Parser
+
+  * {Malaria_Type}{Age}{Gender}{Day}[Mobile_Patient]
+  * Malaria_Type must be: Facipharum(F), Mixed(M), Vivax(V), Negative(N)
+  * Age must be a digit number
+  * Gender must be: Male(M), Female(F)
+  * Day must be: 0, 3, 28
+  * Mobile_Patient: dot(.) for VMW and 99999999 for HC

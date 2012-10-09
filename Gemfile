@@ -50,5 +50,6 @@ group :development, :test do
   gem "faker"
   gem 'debugbar'
   gem "simplecov"
+  gem "debugger"
   #gem "query_reviewer", :git => "git://github.com/nesquena/query_reviewer.git"
 end

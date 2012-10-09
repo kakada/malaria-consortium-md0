@@ -47,7 +47,7 @@
           <td><%= report.sender_address.try(:without_protocol)  %></td>
           <td><%= report.text %></td>
           <% if report.error? %>
-            <td colspan="3" align="center"><nobr><span class="error_report"><%= report.error_message %></span>
+            <td colspan="4" align="center"><nobr><span class="error_report"><%= report.error_message %></span>
             <% if report.error? %>
               <%= link_to 'edit', edit_report_path(report, :next_url => request.url) %>
             <% end %>
@@ -56,8 +56,8 @@
             <td><%= report.malaria_type %></td>
             <td><%= report.age %></td>
             <td><%= report.sex %></td>
+            <td><%= report.day %></td>
           <% end %>
-          <td><%= report.day %></td>
           <td><%= report.mobile? ? 'Yes' : 'No' %></td>
           <td><%= report.type == 'HealthCenterReport' ? 'health center' : 'village' unless report.error? %></td>
           <td><%= report.health_center.try(:short_description) %></td>

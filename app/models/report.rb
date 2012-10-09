@@ -2,6 +2,7 @@
 require 'csv'
 
 class Report < ActiveRecord::Base
+  default_scope where(:disabled => false)
   scope :in_falciparum_or_mimix, :conditions => {:malaria_type => ["F", "M"]}
 
   validates_presence_of :malaria_type, :sex, :age, :sender_id, :day, :place_id, :unless => :error?

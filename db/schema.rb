@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120823033902) do
+ActiveRecord::Schema.define(:version => 20121009043242) do
 
   create_table "alert_pf_notifications", :force => true do |t|
     t.integer  "user_id"
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(:version => 20120823033902) do
     t.boolean  "ignored",          :default => false
     t.boolean  "trigger_to_od"
     t.integer  "day"
+    t.boolean  "disabled",         :default => false
   end
 
   add_index "reports", ["country_id", "error", "ignored"], :name => "index_reports_on_country_id_and_error_and_ignored"

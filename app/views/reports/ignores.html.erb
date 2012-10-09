@@ -1,0 +1,85 @@
+<% content_for :head do %>
+  <%= javascript_include_tag 'jquery.fancybox-1.3.4' %>
+  <%= stylesheet_link_tag "jquery.fancybox-1.3.4" %>
+  <script type="text/javascript" >
+    $(function(){
+        $(".generated_messages a").fancybox();
+        $(".user_messages a").fancybox();
+    });
+  </script>
+  <style>
+    #fancybox-wrap {
+      max-height: 400px;
+      overflow: auto;
+    }
+  </style>
+<%  end %>
+<% content_for :reports do %>
+  <%= page_entries_info @reports, :entry_name => 'message' %><br/><br/>
+  <% if @reports.any? %>
+    <%= form_tag("", :id => "report_form", :method => :delete) do %>
+      <%= render "pagination" %>
+      <table class="round full table-grid">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Date</th>
+            <th>Sender</th>
+            <th>Sender number</th>
+            <th>Text</th>
+            <th>Type</th>
+            <th>Age</th>
+            <th>Sex</th>
+            <th>Day</th>
+            <th>Mobile?</th>
+            <th>Reported at</th>
+            <th>Health Center</th>
+            <th>Village</th>
+            <th>Trigger</th>
+            <th></th>
+          </tr>
+        </thead>
+        <% @reports.each_with_index do |report, i| %>
+          <tr class="<%= i.parity %> <%= 'ignored' if report.ignored? %>">
+            <td><%= check_box_tag "ids[]", report.id %></td>
+            <td title="<%= report.created_at %>"><%= time_ago_in_words report.created_at %> ago</td>
+            <td class="user_messages">
+              <%= link_to report.sender.user_name, reports_user_path(:id => report.sender.id, :report_id => report.id) if report.sender %>
+            </td>
+            <td><%= report.sender_address.try(:without_protocol)  %></td>
+            <td><%= report.text %></td>
+            <% if report.error? %>
+              <td colspan="4" align="center"><nobr><span class="error_report"><%= report.error_message %></span>
+              <% if report.error? %>
+                <%= link_to 'edit', edit_report_path(report, :next_url => request.url) %>
+              <% end %>
+              </nobr></td>
+            <% else %>
+              <td><%= report.malaria_type %></td>
+              <td><%= report.age %></td>
+              <td><%= report.sex %></td>
+              <td><%= report.day %></td>
+            <% end %>
+            <td><%= report.mobile? ? 'Yes' : 'No' %></td>
+            <td><%= report.type == 'HealthCenterReport' ? 'health center' : 'village' unless report.error? %></td>
+            <td><%= report.health_center.try(:short_description) %></td>
+            <td><%= report.village.try(:short_description) %></td>
+            <td><%= report.trigger_to_od == true ? "Yes": "No"  %>  </td>
+
+            <td>
+              <span class="generated_messages"><%= link_to 'Messages', generated_messages_report_path(report) %></span> |
+              <% if report.ignored? %>
+                <%= link_to 'Stop ignoring', stop_ignoring_report_path(report, :next_url => request.url) %>
+              <% else %>
+                <%= link_to 'Ignore', ignore_report_path(report, :next_url => request.url) %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+      <br/>
+
+      <%= render "pagination" %>
+    <% end %>
+  <% end %>
+<% end %>

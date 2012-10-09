@@ -22,6 +22,7 @@ Local::Application.routes.draw do
   end
   resources :reports do
     collection do
+      get "list_ignore"
       get "error"
       get "last_error_per_sender_per_day"
       get "places_reporting_and_not_reporting"

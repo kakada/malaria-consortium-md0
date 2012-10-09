@@ -5,24 +5,35 @@ class ReportsController < ApplicationController
 
   def index
     paginated_reports :all_messages
+    render :index
+  end
+
+  def list_ignore
+    paginated_reports :ignored_messages do |reports|
+      reports.where(:ignored => true)
+    end
+    render :ignores
   end
 
   def error
     paginated_reports :error_messages do |reports|
       reports.where(:error => true)
     end
+    render :index
   end
 
   def last_error_per_sender_per_day
     paginated_reports :last_error_per_sender_per_day do |reports|
       reports.last_error_per_sender_per_day
     end
+    render :index
   end
 
   def duplicated
     paginated_reports :duplicated_messages do |reports|
       reports.duplicated_per_sender_per_day
     end
+    render :index
   end
 
   def edit
@@ -47,6 +58,18 @@ class ReportsController < ApplicationController
     else
       edit and render :edit
     end
+  end
+
+  def destroy
+    if params[:ids].present?
+      params[:ids].each do |id|
+        report = Report.find(id)
+        report.disabled = true
+        report.save false # escape validation
+      end
+    end
+
+    redirect_to list_ignore_reports_url
   end
 
   def ignore
@@ -109,6 +132,5 @@ class ReportsController < ApplicationController
     @reports = yield @reports if block_given?
     @reports = @reports.includes(:sender, :village, :health_center)
     @reports = @reports.paginate @pagination
-    render 'index'
   end
 end

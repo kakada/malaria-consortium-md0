@@ -5,6 +5,14 @@
     $(function(){
         $(".generated_messages a").fancybox();
         $(".user_messages a").fancybox();
+
+        $("#select_all").click(function(){
+          value = $("#select_all").attr("checked");
+          if(value)
+            $(".checkbox").attr("checked", true);
+          else
+            $(".checkbox").attr("checked", false);
+        });
     });
   </script>
   <style>
@@ -22,7 +30,7 @@
       <table class="round full table-grid">
         <thead>
           <tr>
-            <th></th>
+            <th><%= check_box_tag "select_all", "", false, :onclick => "selectAll()" %></th>
             <th>Date</th>
             <th>Sender</th>
             <th>Sender number</th>
@@ -41,7 +49,7 @@
         </thead>
         <% @reports.each_with_index do |report, i| %>
           <tr class="<%= i.parity %> <%= 'ignored' if report.ignored? %>">
-            <td><%= check_box_tag "ids[]", report.id %></td>
+            <td><%= check_box_tag "ids[]", report.id, false, :class => "checkbox" %></td>
             <td title="<%= report.created_at %>"><%= time_ago_in_words report.created_at %> ago</td>
             <td class="user_messages">
               <%= link_to report.sender.user_name, reports_user_path(:id => report.sender.id, :report_id => report.id) if report.sender %>

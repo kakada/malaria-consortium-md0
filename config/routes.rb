@@ -24,7 +24,7 @@ Local::Application.routes.draw do
   namespace :referal do
     root :to => "dashboards#index"
     resources :dashboards 
-    resources :providers
+    resources :users
   end
   
   resources :reports do

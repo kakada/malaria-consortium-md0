@@ -1,13 +1,4 @@
 module ApplicationHelper
-  
-  def referal_title
-		@referal_title ? "#{@referal_title}-#{referal_app}": referal_app		
-	end
-
-	def referal_app
-		@referal_app ? @referal_app : "Referal system"
-	end
-  
   def title
     pref = "Malaria Alert System"
     if !@title.nil?

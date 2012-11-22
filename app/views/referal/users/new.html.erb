@@ -1,0 +1,62 @@
+<% content_for :breadcrumb do %>
+  <%=breadcrumb [
+  		{ "User" => referal_users_path },
+  		{ "New" => nil  }
+  	] %>
+<% end %>
+<% 
+	url = @user.new_record? ? referal_users_path : referal_user_path(@user)
+%>
+<% content_for :sidebar_right do %>
+	<%=render_errors_for @user %>
+<%end %>
+
+<% form_for @user, :url => url do |form| %>
+  <%=tag_row do %>
+	<%= form.label :user_name %>
+	<%= form.text_field :user_name %>
+  <%end%>	
+
+<%=tag_row do %>
+	<%= form.label :email %>
+	<%= form.text_field :email %>
+  <%end%>	
+
+<%=tag_row do %>
+	<%= form.label :phone_number %>
+	<%= form.text_field :phone_number %>
+  <%end%>	
+
+
+<%=tag_row do %>
+	<%= form.label :password %>
+	<%= form.password_field :password %>
+  <%end%>	
+
+<%=tag_row do %>
+	<%= form.label :password_confirmation %>
+	<%= form.password_field :password_confirmation %>
+  <%end%>
+
+
+<%=tag_row do %>
+	<%= form.label :intended_place_code, "OD" %>
+	<%= form.text_field :intended_place_code, :"data-provide" =>"typeahead", 
+	:"data-source" => "#{OD.list}" %>
+  <%end%>	
+
+<%=tag_row do %>
+	<%= form.label :role %>
+	<%= form.select :role, User::Roles_Ref.map {|role| [role, role]}, { :include_blank => "Select role"} %>
+  <%end%>
+
+<%=tag_row do %>
+	<%= form.label :status %>
+	<%= form.select :status, User::Status.sort %>
+  <%end%>	  	
+
+<%=tag_row do %>
+	<%= form.label ""  %>
+	<%= form.submit "Save", :class => "btn btn-primary" %>
+  <%end%>  
+<%end%>

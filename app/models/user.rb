@@ -10,8 +10,8 @@ class User < ActiveRecord::Base
   ROLE_MC_NAT = "national"
   ROLE_MC_ADMIN = "admin"
   
-  ROLE_REF_PROVIDER = "provider"
-  ROLE_REF_HC = "health center"
+  ROLE_REF_PROVIDER = "Private Provider"
+  ROLE_REF_HC = "Health center"
   
   Roles = [ROLE_MC_DEFAULT, ROLE_MC_NAT , ROLE_MC_ADMIN ]
   Roles_Ref = [ROLE_REF_PROVIDER, ROLE_REF_HC]
@@ -26,12 +26,12 @@ class User < ActiveRecord::Base
       self.where :status => true
     end
     
-    def mc_users
-      default_scope where(["role != ? AND role != ? ", ROLE_REF_PROVIDER , ROLE_REF_HC ])
+    def md0_users
+      self.where(["role != ? AND role != ? ", ROLE_REF_PROVIDER , ROLE_REF_HC ])
     end
     
     def ref_users
-      self.where
+      self.where(["role = ? OR role = ? ", ROLE_REF_PROVIDER , ROLE_REF_HC ])
     end
     
     def deactivated
@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
 
   before_validation :try_fetch_place
 
-  validates_inclusion_of :role, :in => Roles, :allow_nil => true
+  validates_inclusion_of :role, :in => (Roles + Roles_Ref), :allow_nil => true
   validates_uniqueness_of :user_name, :allow_nil => true, :message => 'Belongs to another user'
   validates_uniqueness_of :phone_number, :allow_nil => true, :message => 'Belongs to another user', :if => :phone_number?
   validates_presence_of :phone_number,

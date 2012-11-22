@@ -282,6 +282,10 @@ input[type=text].error,  input[type=password].error{
 .even {
     background-color: #dadada;
 }
+.pagination li {
+  list-style-type: none;
+  display: inline;
+}
 .pagination{
     margin: 0 auto;
     margin-bottom: 10px;

@@ -1,0 +1,40 @@
+<%= content_for :breadcrumb do %>
+	<%= breadcrumb [
+			{"User" => nil}
+		] %>
+<%end %>
+<div class="row-fluid" >
+	<%= will_paginate @users %>
+</div>
+
+<div>
+	<table class="table"> 
+		<thead>
+			<tr>
+				<td> Name </td>
+				<td> Email </td>
+				<td> Phone </td>
+				<td> Role </td>
+				<td> Status </td>
+				<td> </td>
+			</tr>
+		</thead>
+
+		<tbody>
+			<% @users.each do |user| %>
+			  <tr>
+				<td> <%= user.user_name %> </td>
+				<td> <%= user.email %> </td>
+				<td> <%= user.phone_number %> </td>
+				<td> <%= user.role %> </td>
+				<td> <%= user.status %> </td>
+				<td> 
+					<%= link_to "Edit", edit_referal_user_path(user) %>
+					<%= link_to "Delete", referal_user_path(user), :method => :delete %>
+					
+				</td>
+			  </tr>
+			<% end %>
+		</tbody>
+	</table>
+</div>

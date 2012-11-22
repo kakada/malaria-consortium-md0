@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121009043242) do
+ActiveRecord::Schema.define(:version => 20121122034202) do
 
   create_table "alert_pf_notifications", :force => true do |t|
     t.integer  "user_id"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(:version => 20121009043242) do
     t.decimal  "lat",                      :precision => 11, :scale => 8
     t.decimal  "lng",                      :precision => 11, :scale => 8
     t.string   "hierarchy"
+    t.string   "abbr"
   end
 
   add_index "places", ["parent_id", "name"], :name => "index_places_on_parent_id_and_name"

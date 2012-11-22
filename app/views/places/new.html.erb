@@ -168,6 +168,11 @@
   </div>
 
   <div class="input  ">
+    <%= form.label :abbr, "Abbreviation" %>
+    <%= form.text_field :abbr %>
+  </div>
+
+  <div class="input  ">
     <%= form.label :code %>
     <%= form.text_field :code , :autocomplete => "off" %><div class="inline round" id="div_place_code" >Place code can not be blank</div>
   </div>

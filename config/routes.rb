@@ -20,6 +20,13 @@ Local::Application.routes.draw do
       get "pushpin"
     end
   end
+  
+  namespace :referal do
+    root :to => "dashboards#index"
+    resources :dashboards 
+    resources :providers
+  end
+  
   resources :reports do
     collection do
       get "list_ignore"

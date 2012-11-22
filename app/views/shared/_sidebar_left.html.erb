@@ -1,0 +1,9 @@
+
+<div class="span3">
+	<% if content_for? :sidebar_left %>
+	  <%= yield :sidebar_left %>
+	<% else %>
+	  <h1> Sidebar left </h1>
+	<% end%>
+	
+</div>

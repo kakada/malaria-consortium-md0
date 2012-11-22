@@ -14,6 +14,8 @@
       <% end %>
     <div class="search_box" style="float:right;" >
       <input type="text" id="place_search" name="place_search" class="search" value="<%= params[:query] %>" />
+      <%= select_tag "place_type", options_for_select(Place::Types.reverse, @type), :include_blank => "Select type", :id => "place_type_search"  %>
+      
       <script type="text/javascript" >
         $(function(){
           loadingMessage = "Retrieving places";
@@ -28,21 +30,30 @@
         }
         function placeSearch(){
           $("#place_search").keyup(function(){
-             var url = "<%= places_path() %>"
-             var text = this.value;
-             if(1){
-               loading(document.body, loadingMessage)
+             search();
+           });
+          
+          $("#place_type_search").change(function(){
+             search();
+          });
+           
+        }
+        
+        
+        function search(){
+              var text = $("#place_search").val();
+              var type = $("#place_type_search").val();
+              var url = "<%= places_path() %>"
+              loading(document.body, loadingMessage)
                $.ajax({
                  url: url,
-                 data: {query: text },
+                 data: {query: text, type: type },
                  type: "get",
                  success: function(responseText, status, response){
                    loading(document.body).hide();
                    $("#content_table").html(responseText)
                  }
                });
-             }
-           });
         }
       </script>
     </div>

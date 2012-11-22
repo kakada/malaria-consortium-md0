@@ -5,19 +5,40 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :password_length => 1..128
 
   attr_accessor :intended_place_code
+  
+  ROLE_MC_DEFAULT = "default"
+  ROLE_MC_NAT = "national"
+  ROLE_MC_ADMIN = "admin"
+  
+  ROLE_REF_PROVIDER = "provider"
+  ROLE_REF_HC = "health center"
+  
+  Roles = [ROLE_MC_DEFAULT, ROLE_MC_NAT , ROLE_MC_ADMIN ]
+  Roles_Ref = [ROLE_REF_PROVIDER, ROLE_REF_HC]
+  
+  Status = ["Deactive", "Active"]
+
+  
+  
 
   class << self
     def activated
       self.where :status => true
     end
+    
+    def mc_users
+      default_scope where(["role != ? AND role != ? ", ROLE_REF_PROVIDER , ROLE_REF_HC ])
+    end
+    
+    def ref_users
+      self.where
+    end
+    
     def deactivated
       self.where :status => false
     end
   end
-
-  Roles = ["default", "national", "admin" ]
-  Status = ["Deactive", "Active"]
-
+  
   belongs_to :place
   has_many :reports, :foreign_key => 'sender_id', :dependent => :destroy
 
@@ -39,6 +60,9 @@ class User < ActiveRecord::Base
   # Delegate country, province, etc., to place
   Place::Types.each { |type| delegate type.tableize.singularize, :to => :place }
 
+  #default_scope where(["role != ? AND role != ? ", ROLE_REF_PROVIDER , ROLE_REF_HC ])
+  
+  
   def write_places_csv source_file
     File.open(places_csv_file_name,"w+b") do |file|
       file.write(source_file.read)

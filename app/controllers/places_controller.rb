@@ -4,8 +4,10 @@ class PlacesController < ApplicationController
   def index
     @places = Place
 
-    @places = @places.search_for_autocomplete params[:query] if params[:query].present?
+    @places = @places.search_for_autocomplete(params) if(!params[:query].blank? || !params[:type].blank?)
+    
     @query = params[:query]
+    @type  = params[:type]
     sort_params = sort_params(params)
     @revert = sort_params[:revert_dir]
     

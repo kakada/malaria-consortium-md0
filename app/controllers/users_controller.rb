@@ -13,7 +13,7 @@ class UsersController < ApplicationController
     end
 
     @type  = params[:type]
-    @users = User.paginate_user :query => @query, :type => @type,
+    @users = User.md0_users.paginate_user :query => @query, :type => @type,
                                 :page => (@page || '1').to_i, :per_page => PerPage,
                                 :order => "#{sort_params[:field]} #{sort_params[:dir]} "
                               
@@ -39,7 +39,7 @@ class UsersController < ApplicationController
     attributes = params.slice :user_name, :email, :password, :phone_number, :role, :id, :intended_place_code, :status
    
     attributes[:password_confirmation] = attributes[:password]
-    attributes[:status] = User.from_status(attributes[:status])
+    #attributes[:status] = User.from_status(attributes[:status])
 
 
     @user = User.new attributes

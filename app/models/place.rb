@@ -53,6 +53,10 @@ class Place < ActiveRecord::Base
      cls
   end
 
+  def intended_place_code
+    "#{code} - #{name}"
+  end
+
   def parent_class
     self.class.parent_class
   end

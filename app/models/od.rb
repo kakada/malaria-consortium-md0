@@ -12,7 +12,7 @@ class OD < Place
   private
 
   def self.list
-    OD.all.map{|od| "#{od.code} - #{od.name}" }
+    OD.all.map{|od| od.intended_place_code}
   end
 
 

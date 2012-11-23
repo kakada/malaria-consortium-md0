@@ -21,7 +21,7 @@ module WillPaginate
       end
 
       def gap
-        tag(:li, "", :class => "gap")
+        "<li><span>...</span></li>"
       end
 
     end

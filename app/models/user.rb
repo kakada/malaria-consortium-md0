@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
   Roles = [ROLE_MC_DEFAULT, ROLE_MC_NAT , ROLE_MC_ADMIN ]
   Roles_Ref = [ROLE_REF_PROVIDER, ROLE_REF_HC]
   
-  Status = ["Deactive", "Active"]
+  Status = [["Deactive", 0 ], ["Active", 1]]
 
   
   
@@ -91,8 +91,10 @@ class User < ActiveRecord::Base
     phone_number.with_sms_protocol
   end
 
+
+
   def status_description
-    self.class::Status[self.status ? 1: 0 ]
+    self.class::Status[self.status ? 1: 0 ][0]
   end
 
   def self.from_status status
@@ -220,6 +222,12 @@ class User < ActiveRecord::Base
     state
   end
 
+  def intended_place_code
+      return @intended_place_code if !@intended_place_code.nil?
+      return self.place.intended_place_code if self.place
+      ""
+  end
+
   private
 
   def self.phone_numbers users
@@ -262,7 +270,7 @@ class User < ActiveRecord::Base
   def intended_place_code_must_exist
     errors.add(:intended_place_code, "Place doesn't exist") if self.intended_place_code.present? && (self.place_id.blank? )
   end
-
+  
   def email_required?
     phone_number.nil?
   end

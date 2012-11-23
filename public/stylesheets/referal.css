@@ -1,3 +1,7 @@
-.gap{
-  display: none;
+.c-hidden{
+    display: none;
+}
+.field-required{
+	padding: 3px 6px;
+	color: red;
 }

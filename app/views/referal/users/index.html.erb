@@ -4,7 +4,7 @@
 		] %>
 <%end %>
 <div class="row-fluid" >
-	<%= will_paginate @users %>
+	<%= will_paginate @users, :gap => "<li><span>...</span></li>".html_safe %>
 </div>
 
 <div>
@@ -15,6 +15,7 @@
 				<td> Email </td>
 				<td> Phone </td>
 				<td> Role </td>
+				<td> Place </td>
 				<td> Status </td>
 				<td> </td>
 			</tr>
@@ -27,11 +28,11 @@
 				<td> <%= user.email %> </td>
 				<td> <%= user.phone_number %> </td>
 				<td> <%= user.role %> </td>
-				<td> <%= user.status %> </td>
+				<td> <%= user.place.description %>
+				<td> <%= user.status_description %> </td>
 				<td> 
-					<%= link_to "Edit", edit_referal_user_path(user) %>
-					<%= link_to "Delete", referal_user_path(user), :method => :delete %>
-					
+					<%= link_to "Edit", edit_referal_user_path(user) %> |
+					<%= link_to "Delete", referal_user_path(user), :method => :delete, :confirm => "Are you sure to remove"%>
 				</td>
 			  </tr>
 			<% end %>

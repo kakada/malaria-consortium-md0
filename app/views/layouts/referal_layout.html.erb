@@ -6,6 +6,11 @@
   <%= stylesheet_link_tag "bootstrap" %>
   <%= stylesheet_link_tag "bootstrap-comp"  %>
   <%= stylesheet_link_tag "referal"  %>
+
+  
+  <%= javascript_include_tag :defaults %>
+  <%= csrf_meta_tag %>
+
   <style>
       body {
         padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
@@ -23,20 +28,32 @@
 
   <%= render "layouts/referal/top_menu" %>
 	
-
+  <% content_for :flash do %>
+    <% flash.each do |key, value| %>
+        <div class="<%="label-#{key}" %>" > <%= value %> </div>
+    <% end %>
+  <% end %>
     
   <div class="container">
       
       <% if content_for? :breadcrumb %>
     		<%= yield :breadcrumb %>
       <% end %>
+
+
       <div class="row-fluid">
 	    <%= render  "shared/sidebar_left" %>
 
         <% if content_for? :sidebar_right %>
-          <div class="span6"> <%= yield %> </div>
+          <div class="span6"> 
+            <%= yield :flash %>
+            <%= yield %> 
+          </div>
         <%else %>   
-      	  <div class="span9"> <%= yield %> </div>
+      	  <div class="span9"> 
+            <%= yield :flash %>
+            <%= yield %> 
+          </div>
         <% end %>
 
         <% if content_for? :sidebar_right %>
@@ -51,6 +68,7 @@
   <%= javascript_include_tag "application" %>
   <%= javascript_include_tag "bootstrap" %>
   <%= javascript_include_tag "bootstrap-comp" %>
+  <%=yield :js %>      
 
 </body>
 </html>

@@ -32,6 +32,14 @@ class User < ActiveRecord::Base
     User.selected_apps self.apps_mask
   end
   
+  def is_health_center_role?
+    self.role == ROLE_REF_HC
+  end
+  
+  def is_private_provider_role?
+    self.role == ROLE_REF_PROVIDER
+  end
+  
   def is_from_both?
     (self.apps_mask & 3) != 0
   end
@@ -145,18 +153,19 @@ class User < ActiveRecord::Base
   end
   
   #===============================================================
-  def send_message phone
+  def self.check_user phone
     sender = User.find_by_phone_number phone
     if sender.nil?
-      create_error_report message, 'unknown user'
-      return unknown_user
+       raise 'unknown user'
     end
 
 
     if !sender.can_report?
-      create_error_report message, 'access denied', sender
-      return user_should_belong_to_hc_or_village
+      raise 'can not report'
     end
+    
+    sender
+    
   end
   
   

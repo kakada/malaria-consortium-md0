@@ -23,7 +23,7 @@ class Report < ActiveRecord::Base
   before_save :complete_fields
 
   def self.process(message = {})
-    message = message.with_indifferent_access
+#    message = message.with_indifferent_access
     error, messages = decode message
 
     if messages.nil?
@@ -244,21 +244,22 @@ class Report < ActiveRecord::Base
     self.country = province.parent if province_id?
   end
 
-  def self.decode message
+  def self.decode sender, message
     
-    sender = User.find_by_phone_number message[:from]
-    if sender.nil?
-      create_error_report message, 'unknown user'
-      return unknown_user
-    end
+#    sender = User.find_by_phone_number message[:from]
+#    if sender.nil?
+#      create_error_report message, 'unknown user'
+#      return unknown_user
+#    end
+#
+#
+#    if !sender.can_report?
+#      create_error_report message, 'access denied', sender
+#      return user_should_belong_to_hc_or_village
+#    end
 
-
-    if !sender.can_report?
-      create_error_report message, 'access denied', sender
-      return user_should_belong_to_hc_or_village
-    end
-
-    parser = sender.report_parser
+    
+    parser = sender.place.report_parser(sender)
     parser.parse message[:body]
 
     report = parser.report

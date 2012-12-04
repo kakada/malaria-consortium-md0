@@ -5,7 +5,24 @@ class NuntiumController < ApplicationController
   around_filter :transact
 
   def receive_at
-    render :json => Report.process(params)
+    begin
+      sender = User.check_user params[:from]
+      if sender.is_from_md0?
+        render :json => Report.process(sender, params)
+        
+      elsif sender.is_from_referal?
+        if(sender.is_health_center_role?)
+            Reply.process(sender, params)
+        elsif sender.is_private_provider_role?
+            Clinic.process(sender, params)
+        end
+      end
+      
+    rescue Exception => e
+      # e.message
+    end
+    
+    
   end
 
   private

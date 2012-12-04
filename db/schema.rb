@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121122034202) do
+ActiveRecord::Schema.define(:version => 20121204040033) do
 
   create_table "alert_pf_notifications", :force => true do |t|
     t.integer  "user_id"
@@ -25,6 +25,25 @@ ActiveRecord::Schema.define(:version => 20121122034202) do
 
   create_table "alert_pfs", :force => true do |t|
     t.text     "provinces"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "clinics", :force => true do |t|
+    t.string   "od_name"
+    t.string   "book_number"
+    t.integer  "code_number"
+    t.string   "patient_phone"
+    t.string   "slip_code"
+    t.integer  "status"
+    t.boolean  "valid",           :default => true
+    t.string   "nuntium_token"
+    t.text     "message"
+    t.integer  "confirm_from_id"
+    t.integer  "sender_id"
+    t.integer  "place_id"
+    t.integer  "province_id"
+    t.integer  "country_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -45,6 +64,24 @@ ActiveRecord::Schema.define(:version => 20121122034202) do
 
   add_index "places", ["parent_id", "name"], :name => "index_places_on_parent_id_and_name"
   add_index "places", ["type"], :name => "index_places_on_type"
+
+  create_table "replies", :force => true do |t|
+    t.string   "od_name"
+    t.string   "book_number"
+    t.integer  "code_number"
+    t.string   "slip_code"
+    t.boolean  "valid",         :default => true
+    t.string   "nuntium_token"
+    t.text     "message"
+    t.integer  "clinic_id"
+    t.integer  "sender_id"
+    t.integer  "place_id"
+    t.integer  "od_id"
+    t.integer  "province_id"
+    t.integer  "country_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "reports", :force => true do |t|
     t.string   "malaria_type"
@@ -124,6 +161,7 @@ ActiveRecord::Schema.define(:version => 20121122034202) do
     t.integer  "country_id"
     t.integer  "village_id"
     t.boolean  "status",                                :default => true
+    t.integer  "apps_mask",                             :default => 1
   end
 
   add_index "users", ["country_id", "place_class"], :name => "index_users_on_country_id_and_place_class"

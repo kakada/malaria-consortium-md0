@@ -245,6 +245,7 @@ class Report < ActiveRecord::Base
   end
 
   def self.decode message
+    
     sender = User.find_by_phone_number message[:from]
     if sender.nil?
       create_error_report message, 'unknown user'

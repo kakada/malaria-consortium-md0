@@ -16,8 +16,49 @@ class User < ActiveRecord::Base
   Roles = [ROLE_MC_DEFAULT, ROLE_MC_NAT , ROLE_MC_ADMIN ]
   Roles_Ref = [ROLE_REF_PROVIDER, ROLE_REF_HC]
   
+  APP_REFERAL = "Referal"
+  APP_MDO = "MD0"
+  
+  APPS = [APP_MDO, APP_REFERAL]
+  
   Status = [["Deactive", 0 ], ["Active", 1]]
 
+  
+  def apps=(selected_apps)
+    self.apps_mask = (selected_apps & APPS).map{|app| 2**APPS.index(app) }.sum
+  end
+
+  def apps
+    User.selected_apps self.apps_mask
+  end
+  
+  def is_from_both?
+    (self.apps_mask & 3) != 0
+  end
+  
+  def is_from_referal?
+    (self.apps_mask & 2) != 0
+  end
+  
+  def is_from_md0?
+    (self.apps_mask & 1) != 0
+  end
+  
+  def self.selected_apps apps_mask
+    # 1 -> 1  -> 1  -> 1 APP_MD0
+    # 2-> 10  -> 01 -> 0 APP_MDO, 1 APP_REFERAL
+    # 3 -> 11 -> 11 -> 1 APP_MDO, 1 APP_REFERAL
+    bit_apps = apps_mask.to_s(2).reverse
+    selecteds = []
+    
+    bit_apps.size.times do |i| 
+      if bit_apps[i] == "1"
+        selecteds << APPS[i]
+      end
+    end
+    selecteds = [APP_MDO] if selecteds.empty?
+    selecteds
+  end
   
   
 
@@ -63,6 +104,8 @@ class User < ActiveRecord::Base
   #default_scope where(["role != ? AND role != ? ", ROLE_REF_PROVIDER , ROLE_REF_HC ])
   
   
+  
+  
   def write_places_csv source_file
     File.open(places_csv_file_name,"w+b") do |file|
       file.write(source_file.read)
@@ -80,7 +123,7 @@ class User < ActiveRecord::Base
   end
 
   def can_report?
-    place_id && self.status && (place.village? || place.health_center?)
+    place_id && self.status && (place.village? || place.health_center? || place.od?)
   end
 
   def report_parser
@@ -100,6 +143,24 @@ class User < ActiveRecord::Base
   def self.from_status status
      self::Status.find_index(status) == 0 ? false : true
   end
+  
+  #===============================================================
+  def send_message phone
+    sender = User.find_by_phone_number phone
+    if sender.nil?
+      create_error_report message, 'unknown user'
+      return unknown_user
+    end
+
+
+    if !sender.can_report?
+      create_error_report message, 'access denied', sender
+      return user_should_belong_to_hc_or_village
+    end
+  end
+  
+  
+  
 
   def message(body)
     {:to => address, :body => body}

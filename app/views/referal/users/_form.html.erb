@@ -59,6 +59,18 @@
 	<%= form.select :status, User::Status.sort %>
 <%end%>	  	
 
+
+<%=tag_row do %>
+  <%= form.label :apps_mask, "Application" %>
+  <% User::APPS.each do |app| %>
+    <%= tag_row  do%>
+      <%= check_box_tag "user[apps][]", app, @user.apps.include?(app), :class => "user_checkbox_app" %>
+      <%= app.humanize %>
+    <% end %>
+  <% end %>
+  <%= hidden_field_tag "user[apps][]", "" %>
+<% end %>
+
 <%=tag_row do %>
 	<%= form.label ""  %>
 	<%= form.submit "Save", :class => "btn btn-primary" %>
@@ -117,11 +129,12 @@
             errors.push("Password / Confirm password not matched ");
           }
       <% end %>
-
+        
+      /*  
       if(empty( $("#user_email").val())) {
         errors.push("Please enter Email");
       }
-
+      */
       if(empty( $("#user_phone_number").val())) {
         errors.push("Please enter Phone number");
       }
@@ -130,6 +143,7 @@
       if(index == 0){
         errors.push("Please select a role");
       }
+ 
 
       if(index== 1) {
         if($("#ref_od_input").val() == "")
@@ -140,6 +154,20 @@
         if($("#ref_hc_input").val == "" )
           errors.push("Please select a Health center");
       }
+      
+      checkboxs = $(".user_checkbox_app");
+      error = true;
+      for(var i=0; i< checkboxs.length; i++){
+         if(checkboxs.get(i).checked) {
+            error = false;
+            break;
+         }
+      }
+      
+      if(error){
+        errors.push("Please check at least one application");
+      }
+      
       return errors;
 
     }

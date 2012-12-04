@@ -81,8 +81,8 @@ class PlacesController < ApplicationController
   end
 
   def autocomplete
-    places = Place.search_for_autocomplete params[:query]
-    places = places.where(:type => params[:type]) if params[:type].present?
+    places = Place.search_for_autocomplete params
+#    places = places.where(:type => params[:type]) if params[:type].present?
     places = places.order(:code).all
     suggestions = places.map! { |x| "#{x.code} #{x.name} (#{x.class.to_s.underscore.humanize})" }
     render :json => {:query => params[:query], :suggestions => suggestions}

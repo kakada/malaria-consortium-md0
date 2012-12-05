@@ -6,12 +6,13 @@ class CreateClinicTable < ActiveRecord::Migration
       t.integer :code_number
       t.string  :patient_phone
       t.string  :slip_code
+      t.string  :health_center_code
       t.integer :status
-      t.boolean :valid, :default => true
-      
+      t.boolean :valid, :default => true    
       t.string  :nuntium_token
-      t.text       :message   
+      t.text    :message   
       
+      t.references :send_to_health_center
       t.references :confirm_from  
       t.references :sender
       t.references :place

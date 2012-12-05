@@ -35,10 +35,12 @@ ActiveRecord::Schema.define(:version => 20121204040033) do
     t.integer  "code_number"
     t.string   "patient_phone"
     t.string   "slip_code"
+    t.string   "health_center_code"
     t.integer  "status"
-    t.boolean  "valid",           :default => true
+    t.boolean  "valid",                    :default => true
     t.string   "nuntium_token"
     t.text     "message"
+    t.integer  "send_to_health_center_id"
     t.integer  "confirm_from_id"
     t.integer  "sender_id"
     t.integer  "place_id"

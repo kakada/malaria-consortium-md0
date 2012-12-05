@@ -5,6 +5,7 @@ class Clinic < ActiveRecord::Base
   has_many :replies
   belongs_to :confirm_from, :class_name => "HealthCenter"
   
+  belongs_to :send_to_health_center, :class_name => "HealthCenter"
   belongs_to :sender,  :class_name => "User"
   belongs_to :place
   belongs_to :od, :class_name => "OD"

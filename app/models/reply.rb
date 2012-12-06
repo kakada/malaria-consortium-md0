@@ -7,4 +7,9 @@ class Reply < ActiveRecord::Base
   belongs_to :od, :class_name => "OD"
   belongs_to :province, :class_name => "Province"
   belongs_to :country, :class_name => "Country"
+  
+  
+  def self.process sender, params
+    
+  end
 end

@@ -3,7 +3,11 @@ class VMWReport < Report
 
   def human_readable
     key = mobile ? :successful_mobile_village_report : :successful_non_mobile_village_report
-    Setting[key].apply :test_result => get_full_malaria_type, :malaria_type => malaria_type, :age => age, :sex => sex, :day => day
+    Setting[key].apply :test_result => get_full_malaria_type, 
+                       :malaria_type => malaria_type, 
+                       :age => age, 
+                       :sex => sex, 
+                       :day => day
   end
 
   def single_case_message

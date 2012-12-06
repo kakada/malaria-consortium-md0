@@ -1,14 +1,15 @@
 class HCReportParser < ReportParser
   V_MOBILE = "99999999"
+  attr_reader :report
 
-  def initialize reporter
-    super(reporter)
-    @report = HealthCenterReport.new
+  def initialize options
+    super(options) 
   end
 
-  def parse message
-    super(message)
-
+  def parse
+    super()
+    @report = HealthCenterReport.new(@options)
+    
     village_code = @scanner.scan /^(\d{8}|\d{10})$/
 
     generate_error :invalid_village_code and return if village_code.nil? || !@scanner.eos?

@@ -1,13 +1,13 @@
 class VMWReportParser < ReportParser
-
-  def initialize reporter
-    super(reporter)
-    @report = VMWReport.new :village => reporter.place
+  attr_reader :report
+  
+  def initialize options
+    super(options)
   end
 
-  def parse message
-    super(message)
-
+  def parse 
+    super()
+    @report = VMWReport.new(@options)
     if @scanner.eos?
       @report.mobile = false
     else
@@ -16,7 +16,6 @@ class VMWReportParser < ReportParser
         generate_error :too_long_vmw_report
         return
       end
-
       @report.mobile = true
     end
   end

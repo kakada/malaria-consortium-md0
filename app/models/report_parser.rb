@@ -1,28 +1,20 @@
 class ReportParser
 
-  attr_reader :report
+  attr_reader :options
   attr_reader :error
 
-  def initialize reporter
-    @reporter = reporter
-    @report = Report.new
-    @error = nil
+  def initialize options
+    @options =  options
   end
 
   def errors?
     not @error.nil?
   end
 
-  def parse message
-    @report.sender_id = @reporter.id
-    @report.sender_address = @reporter.phone_number
-    @report.place_id = @reporter.place.id
-    @report.text = message
-
-    @original_message = message
-    #F12
-    @message = message.strip.gsub(/\s/, "").gsub(",", "")
-    @scanner = StringScanner.new @message
+  def parse 
+    message = @options[:text] 
+    message = message.strip.gsub(/\s/, "").gsub(",", "")
+    @scanner = StringScanner.new message
 
     malaria_type = @scanner.scan /[FVMN]/i
     generate_error :invalid_malaria_type unless malaria_type
@@ -40,21 +32,19 @@ class ReportParser
 
     @scanner.scan /\D*/ if errors?
 
-    @report.malaria_type = malaria_type
-    @report.age = age
-    @report.sex = self.class.format_sex sex if sex
-    @report.day = day.to_i
+    @options[:malaria_type] = malaria_type
+    @options[:age] = age
+    @options[:sex] = self.class.format_sex sex if sex
+    @options[:day] = day.to_i
 
     self
   end
 
   def generate_error(symbol)
     return if errors?
-
-    @error  = self.class.send(symbol, @original_message)
-
-    @report.error = true
-    @report.error_message = symbol.to_s.gsub('_', ' ')
+    @error  = self.class.send(symbol, @options[:text])
+    @options[:error] = true
+    @options[:error_message] = symbol.to_s.gsub('_', ' ')
   end
 
   def self.error_message_for key, original_message

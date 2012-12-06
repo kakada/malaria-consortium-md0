@@ -22,12 +22,24 @@ class ReferalParser
     @msg_component
   end
   
+  def from_health_center?
+    @user.place.class.to_s == "HealthCenter"
+  end
+  
+  def from_od?
+    @user.place.to_s == "OD"
+  end
+  
   def parse_clinic message
-    create_scanner message
-    scan_phone_number
-    scan_slip_code
-    scan_health_center
-    @msg_component
+    begin
+      create_scanner message
+      scan_phone_number
+      scan_slip_code
+      scan_health_center
+      @msg_component
+    rescue
+      
+    end
   end
   
   def scan_phone_number

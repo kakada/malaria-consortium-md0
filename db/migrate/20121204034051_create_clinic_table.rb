@@ -10,7 +10,11 @@ class CreateClinicTable < ActiveRecord::Migration
       t.integer :status
       t.boolean :valid, :default => true    
       t.string  :nuntium_token
-      t.text    :message   
+      t.string  :text 
+      t.string  :sender_address
+      t.boolean :ignored, :default => false
+      t.boolean :error ,  :default =>  false
+      t.string  :error_message
       
       t.references :send_to_health_center
       t.references :confirm_from  

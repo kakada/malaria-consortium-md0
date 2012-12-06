@@ -7,7 +7,11 @@ class CreateReplyTable < ActiveRecord::Migration
       t.string     :slip_code
       t.boolean    :valid, :default => true
       t.string     :nuntium_token
-      t.text       :message
+      t.string  :sender_address
+      t.string       :text
+      t.boolean :ignored, :default => false
+      t.boolean :error ,  :default => false
+      t.string  :error_message
       
       t.references :clinic
       t.references :sender

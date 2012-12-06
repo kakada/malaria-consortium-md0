@@ -5,10 +5,11 @@ class NuntiumController < ApplicationController
   around_filter :transact
 
   def receive_at
+    
     begin
       sender = User.check_user params[:from]
       if sender.is_from_md0?
-        render :json => Report.process(sender, params)
+        render :json => Report.process(params)
       elsif sender.is_from_referal?
         begin
           if(sender.is_health_center_role?)

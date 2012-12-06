@@ -22,7 +22,7 @@ class Report < ActiveRecord::Base
   before_validation :upcase_strings
   before_save :complete_fields
 
-  def self.process(message = {})
+  def self.process message = {}
 #    message = message.with_indifferent_access
     error, messages = decode message
 
@@ -97,7 +97,6 @@ class Report < ActiveRecord::Base
 
   def generate_alerts
     alerts = []
-
     msg = single_case_message
 
     # Always notify the HC about the new case (TODO: what if it's already a HC report?)
@@ -243,8 +242,8 @@ class Report < ActiveRecord::Base
     self.province = od.parent if od_id?
     self.country = province.parent if province_id?
   end
-
-  def self.decode sender, message
+  
+  def self.decode message
     
 #    sender = User.find_by_phone_number message[:from]
 #    if sender.nil?
@@ -257,24 +256,46 @@ class Report < ActiveRecord::Base
 #      create_error_report message, 'access denied', sender
 #      return user_should_belong_to_hc_or_village
 #    end
-
+    proxy = MessageProxy.new message
+    proxy.check
+    params = proxy.parameterize()
     
-    parser = sender.place.report_parser(sender)
-    parser.parse message[:body]
+    if params[:error]
+       report = Report.new params
+       report.save(false) 
+       return params[:error_message] 
+    end
+    
+    p "-----------------------------params ----------------------------"
+    p params
+    
+    
+    parser = Report.create_parser params
+    parser.parse
 
     report = parser.report
-    report.nuntium_token = message[:guid]
     report.save!
 
     return parser.error if parser.errors?
 
     alerts = report.generate_alerts
-
-    reply = sender.message report.human_readable
+    p "-----------------------------report-----------------------------"
+    p report
+    p report.sender
+    p "-------------------------------------"
+    p report.sender.message(report.human_readable)
+    
+    
+    reply = report.sender.message(report.human_readable)
 
     [nil, alerts.push(reply)]
   end
-
+  
+  def self.create_parser params
+    return VMWReportParser.new(params) if(params[:sender].place.class.to_s == "Village")
+    return HCReportParser.new(params)  if(params[:sender].place.class.to_s == "HealthCenter") 
+  end
+  
   def self.create_error_report(message, error_message, sender = nil)
     options = { :sender_address => message[:from], 
                 :text => message[:body],

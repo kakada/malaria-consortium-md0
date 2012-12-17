@@ -6,6 +6,15 @@ class NuntiumController < ApplicationController
 
   def receive_at
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
     begin
       sender = User.check_user params[:from]
       if sender.is_from_md0?

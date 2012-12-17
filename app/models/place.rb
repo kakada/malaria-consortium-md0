@@ -106,9 +106,14 @@ class Place < ActiveRecord::Base
     end
     p
   end
+  
+  def acknowledgemente body
+    valid_users = users.select{|user| (user.status && user.is_from_referal?)}
+    valid_users.map{|user| user.message(body) }
+  end
 
   def create_alerts body, options = {}
-    users.reject{|user| (user == options[:except] or !user.status) }.map{|user| user.message(body) }
+    users.reject{|user| (user == options[:except] or !user.status or !user.is_from_md0?) }.map{|user| user.message(body) }
   end
 
   def reports

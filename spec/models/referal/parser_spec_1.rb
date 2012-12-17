@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ReferalParser do
+describe Referal::Parser do
   before(:each) do
     @od = OD.make :abbr => "KPS"
     @user = User.make :user_name => "bopha",  :phone_number => "85597888123", :place => @od
@@ -9,17 +9,17 @@ describe ReferalParser do
   
   it "should parse message from clinic" do 
     [
-      {  :msg => "0971234567KPS001001123456" , 
+      { :msg => "0971234567KPS001001123456" , 
         :result => {:phone_number=>"0971234567", :od_name=>"KPS", :code_number=>"001", :book_number => "001", :health_center_code => "123456" } 
       },
-      {  :msg => "012123456KPS001001000000" , 
+      { :msg => "012123456KPS001001000000" , 
         :result => {:phone_number=>"012123456",  :od_name=>"KPS", :code_number=>"001", :book_number => "001", :health_center_code => "000000" } 
       },
-      {  :msg => "0975555555KPS010100" , 
+      { :msg => "0975555555KPS010100" , 
         :result => {:phone_number=>"0975555555", :od_name=>"KPS", :code_number=>"100", :book_number => "010", :health_center_code => nil  } 
       },
     ].each do |item|
-      ref_parser = ReferalParser.new @user
+      ref_parser = Referal::Parser.new :body => item[:msg], :sender => @user
       components = ref_parser.parse_clinic(item[:msg])
       components.should eq item[:result]
     end

@@ -75,7 +75,7 @@ describe Report do
       it "should create a new report" do
           report = HealthCenterReport.create! @valid
           report.should be_valid
-        end
+      end
       describe "build hierachy" do
           it "should build the correct hierachy with health center " do
              report = HealthCenterReport.create! @valid
@@ -141,7 +141,7 @@ describe Report do
     end
   end
 
-  describe "invalid message" do
+  describe "Process invalid message" do
     def assert_response_error expected_response, orig_msg
       response = Report.process(orig_msg)
 
@@ -174,7 +174,7 @@ describe Report do
     end
   end
 
-  describe "valid message" do
+  describe "Process valid message" do
     
     describe "valid_reminder_case?" do
       before(:each) do
@@ -216,7 +216,6 @@ describe Report do
       @valid_message = {:from => "sms://8558190", :body => "F123M012345678"}
       
       response = Report.process @valid_message
-
       report.malaria_type.should == 'F'
       report.age.should == 123
       report.sex.should == 'Male'
@@ -224,21 +223,19 @@ describe Report do
       report.sender.should == @hc_user
       report.place.should == @health_center
       report.day.should == 0
+      
+      
 
       response.should =~ [
         {:to => @hc_user.phone_number.with_sms_protocol, :body => report.human_readable, :from => Report.from_app},
-        {:body => "alert1", :to => "sms://1", :from => Report.from_app},
-        {:body => "alert2", :to => "sms://2", :from => Report.from_app},
-        {:body => "alert3", :to => "sms://3", :from => Report.from_app}
+        {:to => "sms://1",:body => "alert1",  :from => Report.from_app},
+        {:to => "sms://2",:body => "alert2",  :from => Report.from_app},
+        {:to => "sms://3",:body => "alert3",  :from => Report.from_app}
       ]
 
       response.each do |reply|
         assert_nuntium_fields reply
       end
-    end
-    
-    it "should allow mobile village with 99999999 from healthcenter " do
-      
     end
 
     it "should return an array of hashes even if there's only one hash" do
@@ -271,18 +268,18 @@ describe Report do
     end
 
     def setup_successful_parser success_message
-      parser = {}
-      @hc_user.should_receive(:report_parser).and_return(parser)
-      parser.should_receive(:parse).with(@valid_message[:body]).and_return(parser)
-      parser.should_receive(:errors?).and_return(false)
-
+#      parser = {}
+#      @hc_user.should_receive(:report_parser).and_return(parser)
+#      parser.should_receive(:parse).with(@valid_message[:body]).and_return(parser)
+#      parser.should_receive(:errors?).and_return(false)
+#
       report = Report.new :malaria_type => 'F', :age => 123, :sex => 'Male',
         :village_id => @village.id, :sender_id => @hc_user.id, :place_id => @health_center.id, :day => 0
-
-      report.stub!(:human_readable).and_return success_message
-
-      parser.should_receive(:report).and_return(report)
-      report
+#
+#      report.stub!(:human_readable).and_return success_message
+#
+#      parser.should_receive(:report).and_return(report)
+#      report
     end
   end
 

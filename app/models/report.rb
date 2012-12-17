@@ -22,15 +22,63 @@ class Report < ActiveRecord::Base
   before_validation :upcase_strings
   before_save :complete_fields
 
-  def self.process message = {}
-#    message = message.with_indifferent_access
-    error, messages = decode message
-
-    if messages.nil?
-      [{ :from => from_app, :to => message[:from], :body => error }]
+  def self.process params
+    report = self.decode params
+    report.save!
+    report.generate_alerts
+  end
+ 
+  
+  def self.decode params
+    parser = Report.create_parser params
+    report = parser.parse
+    report
+  end
+  
+  
+  def generate_alerts
+    if(self.error)
+      error_alert
     else
-      messages.map { |msg| msg.merge :from => from_app }
+      valid_alerts
     end
+  end
+  
+  def valid_alerts
+    alerts = []
+    msg = single_case_message
+
+    # Always notify the HC about the new case (TODO: what if it's already a HC report?)
+    alerts += health_center.create_alerts(msg, :except => sender)
+    type = alert_triggered
+
+    case type
+    when :single
+      alerts += od.create_alerts msg
+    when :village
+      alerts += od.create_alerts village.aggregate_report(Time.last_week)
+    when :health_center
+      alerts += od.create_alerts health_center.aggregate_report(Time.last_week)
+    end
+
+    # if alert message if created for od then save then specify the report is being triggered to od
+    if !type.nil?
+      self.trigger_to_od =  true
+      save!
+    end
+    alerts
+  end
+  
+  def translate_message_for key
+    template_values = {
+       :error_message => self.text
+    }
+    Setting[key].apply(template_values)
+  end
+    
+  def error_alert
+    body = translate_message_for self.error_message
+    self.sender.message(body)
   end
 
   def self.at_place(place)
@@ -93,32 +141,6 @@ class Report < ActiveRecord::Base
 
   def self.from_app
     "malariad0://system"
-  end
-
-  def generate_alerts
-    alerts = []
-    msg = single_case_message
-
-    # Always notify the HC about the new case (TODO: what if it's already a HC report?)
-    alerts += health_center.create_alerts(msg, :except => sender)
-    type = alert_triggered
-
-    case type
-    when :single
-      alerts += od.create_alerts msg
-    when :village
-      alerts += od.create_alerts village.aggregate_report(Time.last_week)
-    when :health_center
-      alerts += od.create_alerts health_center.aggregate_report(Time.last_week)
-    end
-
-    # if alert message if created for od then save then specify the report is being triggered to od
-    if !type.nil?
-      self.trigger_to_od =  true
-      save!
-    end
-
-    alerts
   end
 
   def alert_triggered
@@ -243,53 +265,7 @@ class Report < ActiveRecord::Base
     self.country = province.parent if province_id?
   end
   
-  def self.decode message
-    
-#    sender = User.find_by_phone_number message[:from]
-#    if sender.nil?
-#      create_error_report message, 'unknown user'
-#      return unknown_user
-#    end
-#
-#
-#    if !sender.can_report?
-#      create_error_report message, 'access denied', sender
-#      return user_should_belong_to_hc_or_village
-#    end
-    proxy = MessageProxy.new message
-    proxy.check
-    params = proxy.parameterize()
-    
-    if params[:error]
-       report = Report.new params
-       report.save(false) 
-       return params[:error_message] 
-    end
-    
-    p "-----------------------------params ----------------------------"
-    p params
-    
-    
-    parser = Report.create_parser params
-    parser.parse
-
-    report = parser.report
-    report.save!
-
-    return parser.error if parser.errors?
-
-    alerts = report.generate_alerts
-    p "-----------------------------report-----------------------------"
-    p report
-    p report.sender
-    p "-------------------------------------"
-    p report.sender.message(report.human_readable)
-    
-    
-    reply = report.sender.message(report.human_readable)
-
-    [nil, alerts.push(reply)]
-  end
+  
   
   def self.create_parser params
     return VMWReportParser.new(params) if(params[:sender].place.class.to_s == "Village")

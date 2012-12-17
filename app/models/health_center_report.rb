@@ -2,8 +2,6 @@ class HealthCenterReport < Report
   default_scope where(:type => "HealthCenterReport")
 
   def human_readable
-    
-    
     Setting[:successful_health_center_report].apply :test_result => get_full_malaria_type,
                                                     :malaria_type => malaria_type,
                                                     :age => age,

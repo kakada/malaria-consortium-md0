@@ -68,8 +68,6 @@ class User < ActiveRecord::Base
     selecteds
   end
   
-  
-
   class << self
     def activated
       self.where :status => true
@@ -168,11 +166,8 @@ class User < ActiveRecord::Base
     
   end
   
-  
-  
-
   def message(body)
-    {:to => address, :body => body}
+    {:to => address, :body => body, :from => MessageProxy.app_name}
   end
 
 

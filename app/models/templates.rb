@@ -2,7 +2,12 @@ class Templates
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming
-
+  
+  Titlelizes = {
+    "0" => "MD0 template setting",
+    "16" => "Referal template setting"
+  }
+  
   Keys = {
     :single_village_case_template => {:params => %w(test_result malaria_type sex age day village contact_number), :label => 'individual case report from a village malaria worker'},
     :single_hc_case_template => {:params => %w(test_result malaria_type sex age day village contact_number health_center), :label => 'individual case report from a health center'},
@@ -19,7 +24,21 @@ class Templates
     :non_existent_village => {:params => %w(original_message), :label => 'non existing village'},
     :too_long_village_report => {:params => %w(original_message), :label => 'invalid mobile patient'},
     :reminder_message_vmw => {:params => %w(original_message phone_number village health_center), :label => "reminder message to VMW"},
-    :reminder_message_hc => {:params => %w(original_message phone_number village health_center), :label => "reminder message to HC, OD, PHD, National and Admin"}
+    :reminder_message_hc => {:params => %w(original_message phone_number village health_center), :label => "reminder message to HC, OD, PHD, National and Admin"},
+    
+    :referal_invalid_phone_number => {:params => %w(original_message), :label => "Invalid Phone number"},
+    :referal_invalid_book_number => {:params => %w(original_message), :label => "Invalid Book number"},
+    :referal_invalid_code_number => {:params => %w(original_message), :label => "Invalid Code number"},
+    :referal_invalid_od => {:params => %w(original_message), :label => "Invalid Od abbriviation"},
+    :referal_invalid_not_in_od => {:params => %w(original_message), :label => "Invalid user for od"},
+    :referal_invalid_health_center_format => {:params => %w(original_message), :label => "Invalid Health center format"},
+    :referal_invalid_health_center_code => {:params => %w(original_message), :label => "Invalid Health center code"},
+    
+    :referal_clinic_clinic => {:params => %w(phone_number slip_code book_number code_number health_center), :label => "Referal Private Provider acknowledgement"},
+    :referal_clinic_health_center => {:params => %w(phone_number slip_code book_number code_number health_center), :label => "Referal Private Provider to Health Center"},
+    
+    :referal_health_center_clinic => {:params => %w(slip_code book_number code_number), :label => "Referal Health Center to Private Provider"},
+    :referal_health_center_health_center => {:params => %w(slip_code book_number code_number), :label => "Referal Health Center acknowlegment"},
   }
 
   def initialize(values = {})

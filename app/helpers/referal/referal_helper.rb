@@ -11,7 +11,7 @@ module Referal
 	def breadcrumb_str options
 		items = []
 		char_sep = "&raquo;".html_safe
-		if(options.size)
+		if(options.size != 0)
 			items <<  content_tag(:li , :class => "active") do
 				link_to("Home", referal_root_path) + content_tag(:span, char_sep, :class => "divider")
 			end

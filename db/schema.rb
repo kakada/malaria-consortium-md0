@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121203092826) do
+ActiveRecord::Schema.define(:version => 20121204034051) do
 
   create_table "alert_pf_notifications", :force => true do |t|
     t.integer  "user_id"
@@ -45,6 +45,33 @@ ActiveRecord::Schema.define(:version => 20121203092826) do
 
   add_index "places", ["parent_id", "name"], :name => "index_places_on_parent_id_and_name"
   add_index "places", ["type"], :name => "index_places_on_type"
+
+  create_table "referal_reports", :force => true do |t|
+    t.string   "od_name"
+    t.string   "book_number"
+    t.string   "code_number"
+    t.string   "phone_number"
+    t.string   "slip_code"
+    t.string   "health_center_code"
+    t.integer  "status"
+    t.string   "nuntium_token"
+    t.string   "text"
+    t.string   "sender_address"
+    t.boolean  "ignored",                  :default => false
+    t.boolean  "error",                    :default => false
+    t.string   "error_message"
+    t.string   "type"
+    t.integer  "send_to_health_center_id"
+    t.integer  "confirm_from_id"
+    t.integer  "sender_id"
+    t.integer  "place_id"
+    t.integer  "od_id"
+    t.integer  "province_id"
+    t.integer  "country_id"
+    t.integer  "reply_to_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "reports", :force => true do |t|
     t.string   "malaria_type"

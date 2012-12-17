@@ -1,6 +1,6 @@
 <h2>Templates</h2>
 
-<%= form_for 'templates' do |f| -%>
+<%= form_for 'templates' do |f| %>
   <% if @templates.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@templates.errors.count, "error") %> prohibited you from updating the templates:</h2>
@@ -12,16 +12,23 @@
     </div>
   <% end %>
 
+  <% i=0 %>
   <% Templates::Keys.each do |key, value| %>
-    <p class="template_container">
-      <%= f.label key, "Template for #{value[:label]}" %><br/>
-      <%= f.text_area key, :size => '60x3' %><br />
-      <%= parameters_links key %>
-    </p>
+    <% if !Templates::Titlelizes["#{i}"].nil? %>
+      <h3> <%= Templates::Titlelizes["#{i}"]  %> </h3>
+    <% end %>
+      <p class="template_container">
+        <%=label_tag "#{value[:label]}" %>
+        <br/>
+        <%= f.text_area key, :size => '60x3' %>
+        <br />
+        <%= parameters_links key %>
+      </p>
+    </div> 
+    <% i =  i+1 %> 
   <% end %>
-
   <%= f.submit %>
-<% end -%>
+<% end %>
 
 <style>
   .template_container {

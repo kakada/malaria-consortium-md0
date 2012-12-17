@@ -28,7 +28,7 @@
 				<td> <%= user.email %> </td>
 				<td> <%= user.phone_number %> </td>
 				<td> <%= user.role %> </td>
-				<td> <%= user.place.description %>
+				<td> <%= user.place.nil? ? "" : user.place.description %>
 				<td> <%= user.status_description %> </td>
 				<td> 
 					<%= link_to "Edit", edit_referal_user_path(user) %> |

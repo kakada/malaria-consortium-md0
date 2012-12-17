@@ -2,6 +2,7 @@ class HealthCenter < Place
   alias_method :od, :parent
   delegate :province, :to => :od
   has_many :villages, :class_name => "Village", :foreign_key => "parent_id"
+  has_many :referal_reports, :class_name => "Referal::Report"
 
   def report_parser(user)
     HCReportParser.new user
@@ -22,6 +23,8 @@ class HealthCenter < Place
   def self.list
     HealthCenter.all.map{|hc| hc.intended_place_code }
   end
+  
+  
 
   def aggregate_report time
     counts = reports_since(time).group(:malaria_type).count

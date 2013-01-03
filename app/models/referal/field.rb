@@ -17,9 +17,14 @@ module Referal
       ["Min"],
       ["StartWith"]
     ]
+    FixField= ["phone_number", "od", "book_number", "code_number", "slip_code", "health_center"]
     
     before_save :fill_data    
    
+    def self.tags
+      name_list = self.all.map{|field| field.name}
+      return self::FixField + name_list
+    end
     
     def self.fields_set_exist(fields, pos)
       fields.each do |field|

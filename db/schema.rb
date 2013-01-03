@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130102101503) do
+ActiveRecord::Schema.define(:version => 20130103100134) do
 
   create_table "alert_pf_notifications", :force => true do |t|
     t.integer  "user_id"
@@ -62,6 +62,13 @@ ActiveRecord::Schema.define(:version => 20130102101503) do
     t.datetime "updated_at"
   end
 
+  create_table "referal_message_formats", :force => true do |t|
+    t.string   "format"
+    t.string   "sector"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "referal_reports", :force => true do |t|
     t.string   "od_name"
     t.string   "book_number"
@@ -87,6 +94,11 @@ ActiveRecord::Schema.define(:version => 20130102101503) do
     t.integer  "reply_to_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "field1"
+    t.string   "field2"
+    t.string   "field3"
+    t.string   "field4"
+    t.string   "field5"
   end
 
   create_table "reports", :force => true do |t|

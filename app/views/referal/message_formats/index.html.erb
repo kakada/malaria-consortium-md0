@@ -1,0 +1,109 @@
+<div class="span6" >
+    <h3> Private Provider </h3>
+
+    <div class="well" id="formats_clinic"></div>
+    <div> 
+      <% Referal::Field.tags.each do |field_tag| %>
+        <a href="#" class="parameter_link"  data-id="clinic" >{<%= field_tag %>}</a>
+      <% end %>
+    </div>
+ </div>
+
+ <div class="span6" >
+    <h3> Health Center </h3>
+    <div class="well" id="formats_hc"></div>
+    <div> 
+      <% Referal::Field.tags.each do |field_tag| %>
+        <a href="#" class="parameter_link"  data-id="hc" >{<%= field_tag %>}</a>
+      <% end %>
+    </div>
+    <style>
+      .remove-sign:hover{
+        background-color: #ddd;
+        background-image:url("../images/trash-icon.png");
+        background-position: right center;
+        background-repeat: no-repeat;
+      }
+      .remove-sign , .remove-sign:hover {
+        border-radius: 4px;
+        padding: 3px;
+        border: 1px solid #eee;
+        padding-right: 16px;
+        text-decoration: none;
+        cursor: pointer;
+        line-height: 2;
+        word-wrap: normal;
+      }
+      .separator-format{
+        padding: 0px 5px;
+        font-weight: bold;
+      }
+      
+    </style>
+  </div>
+
+    <% content_for :js do %>
+      <%= javascript_include_tag "jquery.fieldSelection" %>
+      <script >
+
+        function addItem($container, itemText ){
+          $formats = $container.find("." + removeSign() )
+          result = [];
+          for(var i=0; i< $formats.length; i++) {
+            text = $($formats.get(i)).text();
+            if( $.trim(text) == $.trim(itemText) ){
+              alert("Item exist");
+              return ;
+            }
+
+            result.push(wrapText(text));
+          }
+          if($.trim(itemText))
+            result.push(wrapText(itemText));
+          $container.html(result.join(separatorText()));
+        }
+
+        function removeItem($container, itemText ){
+          $formats = $container.find("." + removeSign() )
+          result = [];
+          for(var i=0; i< $formats.length; i++) {
+            text = $($formats.get(i)).text();
+            if( $.trim(text) != $.trim(itemText) ){
+              result.push(wrapText(text));
+            }       
+          } 
+          $container.html(result.join(separatorText()));
+        }
+
+        function removeSign(){
+          return "remove-sign" ;
+        }
+
+        function separatorText(){
+          return "<span class='separator-format'>.</span>";
+        }
+
+        function wrapText(text) {
+          return "<a class='" + removeSign() + "' >" +text + "</a>";
+        }
+
+        $("." + removeSign()).live("click", function(){
+          $this = $(this);
+          text = $this.text();
+          $container = $this.parent(); 
+          removeItem($container, text);
+          return false;
+        });
+
+        $(function(){
+          $('.parameter_link').click(function() {
+              var $this = $(this);
+
+              $container = $("#formats_" + $this.attr('data-id')); 
+              addItem($container, $this.text());
+              return false;
+          });
+
+        });
+      </script>
+    <% end %>

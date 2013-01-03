@@ -1,0 +1,7 @@
+<% content_for :breadcrumb do %>
+  <%=  breadcrumb [
+  		{ "Fields" => referal_fields_path },
+  		{ "New" => nil  }
+  	] %>
+<% end %>
+<%= render "form" %>

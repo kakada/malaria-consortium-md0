@@ -1,0 +1,18 @@
+<% content_for :breadcrumb do %>
+  <%=breadcrumb [
+  		{ "Fields" => referal_fields_path },
+  		{ "Edit - #{@field.name}" =>  edit_referal_field_path(@field)  },
+                { "Constraints" => nil}
+  	] %>
+<% end %>
+
+<% content_for :sidebar_right do %>
+  <div class="well" > <%= render :partial => "referal/fields/detail", :locals => { :field => @field} %> </div>
+<% end %>
+
+<div>
+  <%= render :partial => "list", :locals=> {:field => @field} %>
+</div>
+
+
+    

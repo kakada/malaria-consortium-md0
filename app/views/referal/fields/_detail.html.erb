@@ -1,0 +1,18 @@
+<h4> Field detail :</h4>
+<table class="table" >
+  <tr>
+    <th> Name </th>
+    <td> <%=  Referal::Field.columnize(field.position)  %> </td>
+  </tr>
+  <tr>
+    <th> Meaning </th>
+    <td> <%= field.meaning %>  </td>
+  </tr>
+  <tr>
+    <th > Template </th>
+    <td> <%= field.template %>  </td>
+  </tr>
+  <tr>
+    <td colspan="2"> <%= link_to "Add constraint", new_referal_field_constraint_path(field), :class => "btn btn-danger" %>  </td>
+  </tr>
+</table>

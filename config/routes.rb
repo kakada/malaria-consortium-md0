@@ -23,8 +23,18 @@ Local::Application.routes.draw do
   
   namespace :referal do
     root :to => "dashboards#index"
+    
+    post "fields/bulk",             :to => "fields#bulk_update"
+    post "fields/constraint",       :to => "fields#constraint"
+    delete "fields/rm_constraint",  :to => "fields#rm_constraint"
+    get  "constraints/view/",       :to => "constraints#view"
+    
     resources :dashboards 
     resources :users
+    resources :fields do
+      resources :constraints
+    end
+    
   end
   
   resources :reports do

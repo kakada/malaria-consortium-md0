@@ -8,13 +8,13 @@ class Referal::HCParser < Referal::Parser
       create_scanner
       scan_slip_code
     rescue 
-      
     end
     create_report
   end
   
   def create_report
     @report = Referal::HCReport.new @options
+    @report
   end
   
 end

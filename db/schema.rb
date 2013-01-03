@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121204034051) do
+ActiveRecord::Schema.define(:version => 20130102101503) do
 
   create_table "alert_pf_notifications", :force => true do |t|
     t.integer  "user_id"
@@ -45,6 +45,22 @@ ActiveRecord::Schema.define(:version => 20121204034051) do
 
   add_index "places", ["parent_id", "name"], :name => "index_places_on_parent_id_and_name"
   add_index "places", ["type"], :name => "index_places_on_type"
+
+  create_table "referal_constraints", :force => true do |t|
+    t.text     "validator"
+    t.integer  "field_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "referal_fields", :force => true do |t|
+    t.string   "name"
+    t.string   "meaning"
+    t.string   "template"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "referal_reports", :force => true do |t|
     t.string   "od_name"

@@ -47,8 +47,6 @@ class MessageProxy
     return process_report
   end
   
- 
-
   def process_report 
     if @params[:sender].is_from_both?
       reports = guess_type

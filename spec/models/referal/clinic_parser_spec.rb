@@ -28,7 +28,7 @@ describe Referal::ClinicParser do
       report.class.should               eq Referal::ClinicReport
       report.od_name.should             eq item[:result][:od_name]
       report.book_number.should         eq item[:result][:book_number]
-      report.code_number.should         eq  item[:result][:code_number]
+      report.code_number.should         eq item[:result][:code_number]
       report.phone_number.should        eq item[:result][:phone_number]
        
       report.health_center_code.should  eq item[:result][:health_center_code] 
@@ -36,13 +36,7 @@ describe Referal::ClinicParser do
       report.type.should                eq "Referal::ClinicReport"
 
       report.error.should               eq false
-      report.error_message.should       eq nil 
-
-
-      
-      
-      
-      
+      report.error_message.should       eq nil  
     end
   end
 end

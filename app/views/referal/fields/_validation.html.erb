@@ -1,0 +1,91 @@
+<h3> Validation </h3>
+<div class="full" >
+      <ul class="nav nav-tabs">
+        
+        <li class="active" >
+          <a href="#text" data-toggle="tab">Text</a>
+        </li>
+        
+        <li>
+          <a href="#number"  data-toggle="tab">Number</a>
+        </li>
+        
+      </ul>
+
+      <div class="tab-content">
+          <div class="tab-pane active" id="number"> 
+              <%= tag_row :class => "span5" do %>
+                  <h4> Specific validation </h4>
+                  <label> Equal to </label>
+                  <input type="text" name="equal" id="equal" />
+              <% end %> 
+                  
+                  
+              <%= tag_row :class => "span5"   do %>
+                  <h4> Min validation </h4>
+                  <label> Min </label>
+                  <input type="text" name="min" id="min" />
+              <% end %>     
+                  
+                  
+              <%= tag_row :class => "span5"  do %>
+                  <h4> Maximum validation </h4>
+                  <label> Max </label>
+                  <input type="text" name="max" id="max" />
+              <% end %> 
+                  
+                  
+              <%= tag_row :class => "span5"  do %>
+                <h4> Range validation </h4>
+                <div class="row-fluid">
+                  <%= tag_row :class=> "span4"  do %>
+                    <label> From  </label>
+                    <input type="text" name="from" id="from" style="width: 90px" />
+                  <%end%>
+                  <%= tag_row :class => "span6" do %>
+                    <label> To  </label>
+                    <input type="text" name="to" id="to"  style="width: 90px"  />
+                  <%end%>
+                </div>    
+              <% end %>
+                
+                
+              <%= tag_row :class => "span5"  do %>
+                  <h4> Not Equal validation </h4>
+                  <label> Not Equal to :  </label>
+                  <input type="text" name="not_equal" id="not_equal" />
+              <% end %>  
+            
+          </div>
+        
+          <div class="tab-pane" id="text"> 
+              <%= tag_row :class => "span5"  do %>
+                  <h4> Not Equal validation </h4>
+                  <label> Not Equal to :  </label>
+                  <input type="text" name="not_equal" id="not_equal" />
+              <% end %>
+                  
+                  
+              <%= tag_row :class => "span5"  do %>
+                  <h4> Length validation </h4>
+                  <label> Length :  </label>
+                  <input type="text" name="length" id="length" />
+              <% end %>       
+          </div>
+        
+        
+      </div>
+</div>
+<br />
+
+  
+    
+   
+    
+     
+
+   
+
+  
+    
+  

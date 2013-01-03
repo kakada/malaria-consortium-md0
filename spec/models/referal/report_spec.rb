@@ -17,6 +17,20 @@ describe Referal::Report do
     @valid_vmw_message = {:from => "sms://8558191", :body => "F123M0."}
   end
   
+  describe "create report" do
+    before(:each) do
+      @valid_report_attr = {
+        :book_number => "001",
+        :code_number => "100"
+      }
+    end
+    it "should have slip_code combined by code_number and book_number" do
+#      report = Referal::ClinicReport.create!(@valid_report_attr)
+#      p "----------------------------------------------------------------------"
+#      p report.slip_code
+    end
+  end
+  
   describe "create parser" do
     it "should create parser healthcenter parser" do
       parser = Referal::Report.create_parser(:sender => @hc_user)

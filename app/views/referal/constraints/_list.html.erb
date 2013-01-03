@@ -1,0 +1,24 @@
+ <% if(field.constraints(true).size > 0) %>
+  <div>
+    <table class="table "> 
+      <thead>
+          <tr >
+             <th> Validator </th>
+             <th > Action </th>
+          </tr> 
+      </thead>
+      <tbody>
+        <% field.constraints.each do |constraint| %>
+        <tr> 
+          <td> <%= constraint.validator.to_s  %>  </td>
+          <td width="50"> 
+            <%= link_to "Delete", referal_field_constraint_path(field, constraint), :method => :delete, :confirm => "Are you sure to delete" %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+   </div>  
+ <% else %>
+  No Constraint being defined
+ <% end %>

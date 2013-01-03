@@ -1,0 +1,13 @@
+<%= tag_row  do %>
+  <h4> Range validation </h4>
+  <div class="row-fluid">
+    <%= tag_row  do %>
+      <label> From  </label>
+      <input type="text" name="args[]" id="arg0" />
+    <%end%>
+    <%= tag_row do %>
+      <label> To  </label>
+      <input type="text" name="args[]" id="arg1" />
+    <%end%>
+  </div>    
+<% end %>

@@ -44,12 +44,19 @@ module Referal
     end
     
     def bulk_update
+      message = "Fields updated"
+      failed = false
       params[:referal_field].each do |id, position|
         field = Referal::Field.find id
         field.position = position
-        field.save
+        if !field.save
+          message = field.errors.full_messages.join("<br />")
+          flash[:error] = " Some fields could not be saved with error : <b >" + message + "</b>"
+          failed = true
+        end
       end
-      flash[:notice] = "Fields updated"
+      flash[:notice] = message if !failed
+      
       redirect_to referal_fields_path
     end
     

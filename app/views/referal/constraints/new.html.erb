@@ -12,7 +12,7 @@
 <% end %>
 
 <% content_for :sidebar_right do %>
- <div class="well" > <%= render :partial => "referal/fields/detail", :locals => { :field => @field} %> </div>
+ <div class="well" > <%= render :partial => "referal/fields/detail", :locals => { :field => @field, :button => false} %> </div>
 <% end %>
 
  <div class="well" style="padding: 10px; background: #fff;" >  

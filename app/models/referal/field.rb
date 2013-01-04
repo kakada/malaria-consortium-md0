@@ -1,9 +1,10 @@
 module Referal
   class Field < ActiveRecord::Base
     set_table_name "referal_fields"
-    has_many :constraints, :class_name => "Referal::Constraint"
-    validates :meaning , :template , :presence => true
-    validates :meaning, :uniqueness => true
+    has_many  :constraints, :class_name => "Referal::Constraint"
+    validates :meaning ,  :template , :presence => true
+    validates :meaning,   :uniqueness => true
+    validates :name,  :uniqueness => true
     
     FieldName = "Field"
     Constraint = [
@@ -17,13 +18,27 @@ module Referal
       ["Min"],
       ["StartWith"]
     ]
-    FixField= ["phone_number", "od", "book_number", "code_number", "slip_code", "health_center"]
+    FixFieldClinic  = ["phone_number", "od", "book_number", "code_number", "slip_code", "health_center"]
+    FixFieldHC      = ["phone_number", "od", "book_number", "code_number", "slip_code" ]
     
-    before_save :fill_data    
+    
+    before_validation :fill_data  
+    
+    def position_chosen
+       "Field already chosen"
+    end
+    
+    def self.tags_hc
+      self.tags FixFieldHC
+    end
+    
+    def self.tags_clinic
+       self.tags FixFieldClinic
+    end
    
-    def self.tags
+    def self.tags tag_fields
       name_list = self.all.map{|field| field.name}
-      return self::FixField + name_list
+      return tag_fields + name_list
     end
     
     def self.fields_set_exist(fields, pos)
@@ -41,7 +56,7 @@ module Referal
    
     
     def self.columnize i
-      self::FieldName + " #{i}"
+      self::FieldName + "#{i}"
     end
     
   end

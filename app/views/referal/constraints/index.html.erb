@@ -7,7 +7,7 @@
 <% end %>
 
 <% content_for :sidebar_right do %>
-  <div class="well" > <%= render :partial => "referal/fields/detail", :locals => { :field => @field} %> </div>
+  <div class="well" > <%= render :partial => "referal/fields/detail", :locals => { :field => @field, :button => true } %> </div>
 <% end %>
 
 <div>

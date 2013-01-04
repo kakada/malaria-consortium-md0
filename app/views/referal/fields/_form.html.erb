@@ -1,5 +1,7 @@
 <% url = @field.new_record? ? referal_fields_path(:name => @field.name ) : referal_field_path(@field) %>
- 
+
+<%= content_for :sidebar_right do %> &nbsp; <%end%>
+
 <%=render_errors_for @field %>
 
 <div class="span5" >

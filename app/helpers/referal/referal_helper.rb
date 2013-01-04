@@ -68,6 +68,22 @@ module Referal
       	"" 
       end  
     end
+    
+    def message_format format
+      result = []
+      format.split(Referal::MessageFormat::Separator).each do |item|
+        result << message_format_item(item)
+      end
+      result.join(message_format_separator).html_safe
+    end
+    
+    def message_format_separator
+      "<span class='separator-format'> #{Referal::MessageFormat::Separator}</span>"
+    end
+    
+    def message_format_item text
+      "<a class='remove-sign'> #{text} </a>";
+    end
 
   end
 end

@@ -12,7 +12,9 @@
     <th > Template </th>
     <td> <%= field.template %>  </td>
   </tr>
-  <tr>
-    <td colspan="2"> <%= link_to "Add constraint", new_referal_field_constraint_path(field), :class => "btn btn-danger" %>  </td>
-  </tr>
+  <% if !button.blank? %>
+    <tr>
+      <td colspan="2"> <%= link_to "Add constraint", new_referal_field_constraint_path(field), :class => "btn btn-danger" %>  </td>
+    </tr>
+  <% end %>
 </table>

@@ -29,6 +29,8 @@ Local::Application.routes.draw do
     delete "fields/rm_constraint",  :to => "fields#rm_constraint"
     get  "constraints/view/",       :to => "constraints#view"
     
+    post "message_formats/save" ,   :to => "message_formats#save"
+    
     resources :message_formats
     resources :dashboards 
     resources :users

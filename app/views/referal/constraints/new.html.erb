@@ -1,6 +1,6 @@
 <% content_for :breadcrumb do %>
   <%=breadcrumb [
-  		{ "Fields" => referal_fields_path },
+  		{ "Dynamic variables" => referal_fields_path },
   		{ "Edit - #{@field.name}" =>  edit_referal_field_path(@field)  },
                 { "Constraints" => referal_field_constraints_path(@field)},
                 { "New"  => nil }

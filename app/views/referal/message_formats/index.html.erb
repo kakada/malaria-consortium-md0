@@ -1,4 +1,7 @@
 <% content_for :sidebar_right do %>&nbsp;<%end%>
+<%= content_for :breadcrumb do %>
+ <%= breadcrumb [ {"Message Format" => nil} ] %>
+<%end %>
 <%= form_tag referal_message_formats_save_path, :method => "Post" do  %>
   <div>
     <div  >

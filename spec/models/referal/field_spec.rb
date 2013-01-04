@@ -39,6 +39,27 @@ describe Referal::Field do
       end
   end
   
+  describe "clean format" do
+    it "should clean message format stripping all non existing field" do
+       
+       f1 = Referal::Field.create! :position =>1 , :meaning => "m1", :template => "t1"
+       f2 = Referal::Field.create! :position =>2 , :meaning => "m2", :template => "t2"
+       
+       clinic = Referal::MessageFormat.create!  :format => "{Field1}.{Field3}"
+       hc =  Referal::MessageFormat.create!  :format => "{Field1}.{Field2}.{Field3}"
+       
+       f1.destroy
+       Referal::MessageFormat.first.format.should eq "{Field3}"
+       Referal::MessageFormat.last.format.should eq "{Field2}.{Field3}"
+       
+       f2.destroy
+       Referal::MessageFormat.first.format.should eq "{Field3}"
+       Referal::MessageFormat.last.format.should eq "{Field3}"
+      
+    end
+    
+  end
+  
   it "should return tags for specific tags with the fields exist" do
     Referal::Field.create! :position => 1 , :meaning => "Address", :template => "Address{original_message}"
     Referal::Field.create! :position => 2 , :meaning => "Tel", :template => "Address{original_message}"

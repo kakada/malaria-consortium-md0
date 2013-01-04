@@ -22,7 +22,23 @@ module Referal
     FixFieldHC      = ["phone_number", "od", "book_number", "code_number", "slip_code" ]
     
     
-    before_validation :fill_data  
+    before_validation :fill_data 
+    after_destroy :clean_validator
+    
+    def clean_validator
+      field = self.name;
+      
+      Referal::MessageFormat.all.each do |msg_format| 
+         tags = msg_format.format.split(Referal::MessageFormat::Separator)
+         result = []
+         tags.each do |tag|
+           result << tag  if tag != "{#{field}}"
+         end
+         msg_format.format = result.join(Referal::MessageFormat::Separator) 
+         msg_format.save
+      end
+      
+    end
     
     def position_chosen
        "Field already chosen"

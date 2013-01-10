@@ -79,11 +79,11 @@ describe Referal::Parser do
      it "should scan messages" do
       message_format = Referal::MessageFormat.create! :format => "{phone_number}.{code_number}.{Field1}.{Field2}", :sector => Referal::MessageFormat::TYPE_CLINIC
       
-      parser = Referal::ClinicParser.new({:text=>"09712345678.001.25.M"})
+      parser = Referal::ClinicParser.new({:text=>"0971234567.001.25.M"})
       parser.message_format = message_format 
       parser.scan_messages 
 
-      parser.options[:text].should eq "09712345678.001.25.M"
+      parser.options[:text].should eq "0971234567.001.25.M"
       parser.options[:phone_number].should eq "0971234567"
       parser.options[:code_number].should eq "001"
       parser.options[:field1].should eq "25"
@@ -92,7 +92,7 @@ describe Referal::Parser do
     
     it "should raise error with msg when text item is more than format item" do
       message_format = Referal::MessageFormat.create! :format => "{phone_number}.{code_number}.{Field1}.{Field2}.{Field3}.{Field4}", :sector => Referal::MessageFormat::TYPE_CLINIC
-      parser = Referal::ClinicParser.new({:text=>"09712345678.090.25.M"})
+      parser = Referal::ClinicParser.new({:text=>"0971234567.090.25.M"})
       expect{parser.scan_messages}.to raise_error(Exception, :field_mismatch_format.to_s) 
       parser.options[:phone_number].should eq "0971234567"
       parser.options[:code_number].should eq "090"
@@ -102,6 +102,26 @@ describe Referal::Parser do
     
   end
   
+  describe "scan slip_code" do
+    it "should scan od and return OD abbr" do
+      ref_parser = Referal::Parser.new @params.merge(:text => "KPS001100")
+      ref_parser.scan_slip_code "KPS001100"
+      ref_parser.options[:od_name].should eq "KPS"
+      ref_parser.options[:book_number].should eq "001"
+      ref_parser.options[:code_number].should eq "100"
+      ref_parser.options[:slip_code] = "KPS001100"
+    end
+    
+    it "should raise error" do
+      ref_parser = Referal::Parser.new @params.merge(:text => "KPS0011100")
+      expect{ref_parser.scan_slip_code "KPS00188100"}.to raise_error(Exception, "referal_invalid_code_number")
+      ref_parser.options[:od_name].should eq "KPS"
+      ref_parser.options[:book_number].should eq "001"
+      ref_parser.options[:error].should eq true
+      ref_parser.options[:error_message].should eq :referal_invalid_code_number
+    end
+    
+  end
   
   describe "scan od" do
     it "should scan od and return OD abbr" do
@@ -125,7 +145,7 @@ describe Referal::Parser do
     it "should scan book number" do
       ref_parser = Referal::Parser.new @params.merge(:text => "001xxx")
       ref_parser.scan_book_number "001"
-      ref_parser.options[:book_number].should eq "001"
+      ref_parser.options[:book_number].should eq "001"      
     end
     
     it "should raise exectpion with invalid book number" do

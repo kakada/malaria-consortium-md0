@@ -3,15 +3,6 @@ class Referal::HCParser < Referal::Parser
     super(options)
   end
   
-  def parse message_format
-    @message_format = message_format
-    begin
-      scan_messages
-    rescue 
-    end
-    create_report
-  end
-  
   def create_report
     @report = Referal::HCReport.new @options
     @report

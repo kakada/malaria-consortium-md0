@@ -18,8 +18,12 @@ class Referal::Parser
     StringScanner.new text
   end
   
-  def parse 
-    raise "Unable to parse. You need to define this method in sub class"
+  def parse
+    begin
+      scan_messages
+    rescue 
+    end
+    create_report
   end
   
   def create_report
@@ -30,10 +34,19 @@ class Referal::Parser
     raise "Unable to parse. You need to define this method in sub class"
   end
   
-  def scan_slip_code
-    scan_od
-    scan_book_number
-    scan_code_number  
+  def scan_slip_code text
+    scanner = create_scanner(text)
+    od_name =  scanner.scan(/^[a-zA-Z]+/i)
+    analyse_od_name(od_name)
+    
+    book_number = scanner.scan(/^\d{3}/)
+    analyse_book_number book_number
+    
+    code_number = scanner.scan(/^\d{3}$/)
+    analyse_code_number(code_number)
+    
+    @options[:slip_code] = od_name + book_number + code_number
+    
   end
   
   def from_health_center?
@@ -52,7 +65,7 @@ class Referal::Parser
   
   def scan_phone_number text
     scanner = create_scanner(text)
-    phone_number =  scanner.scan(/^\d{9,10}/)
+    phone_number =  scanner.scan(/^\d{9,10}$/)
     if phone_number.nil?
       raise_error :referal_invalid_phone_number
     else  
@@ -63,7 +76,11 @@ class Referal::Parser
   
   def scan_od text
     scanner = create_scanner(text)
-    od_name =  scanner.scan(/[a-zA-Z]+/i)
+    od_name =  scanner.scan(/^[a-zA-Z]+$/i)
+    analyse_od_name(od_name)
+  end
+  
+  def analyse_od_name od_name
     if od_name.nil?
       raise_error :referal_invalid_od 
     else
@@ -77,7 +94,11 @@ class Referal::Parser
   
   def scan_book_number text
     scanner = create_scanner(text)
-    book_number = scanner.scan(/^\d{3}/)
+    book_number = scanner.scan(/^\d{3}$/)
+    analyse_book_number book_number
+  end
+  
+  def analyse_book_number book_number
     if book_number.nil?
       raise_error :referal_invalid_book_number
     else
@@ -88,6 +109,10 @@ class Referal::Parser
   def scan_code_number text
     scanner = create_scanner(text)
     code_number = scanner.scan(/^\d{3}/)
+    analyse_code_number(code_number)
+  end
+  
+  def analyse_code_number code_number
     if(code_number.nil?)
       raise_error :referal_invalid_code_number
     else
@@ -152,6 +177,4 @@ class Referal::Parser
     end
     raise_error :field_mismatch_format if formats.size != texts.size
   end
-
-  
 end

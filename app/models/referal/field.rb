@@ -9,7 +9,7 @@ module Referal
     FieldName = "Field"
     Constraint = [
       ["Select a validation"],
-      ["Between" ],
+      ["Between"],
       ["Collection"], 
       ["DifferenceFrom"],
       ["EqualTo"],
@@ -37,7 +37,6 @@ module Referal
          msg_format.format = result.join(Referal::MessageFormat::Separator) 
          msg_format.save
       end
-      
     end
     
     def position_chosen

@@ -1,0 +1,42 @@
+<div class="well" style="background-color: #fff; margin-top: 10px;"> 
+  <h4> Parser status : 
+  
+  <% if  @message_parser.options[:error].nil? %>
+    <span class="label label-success "> success</span> 
+  <% else %>
+    <span class="label label-important"> error</span> 
+  <% end %>
+  
+  </h4>
+ <table >
+    <%@message_parser.options.each do |key, value| %>
+      <tr>
+        <td> 
+        <% 
+           
+            if key.to_s == "error" 
+               default = ( value == true) ? "label-warning" : "label-success"
+            else   
+              default = ""
+            end 
+        %>   
+        <span class="label <%= default  %> "><%= key %></span>   
+        <div style="padding-bottom: 6px; border-bottom: 1px solid #aaa;"> 
+          <%if(value.class.to_s == "User") %>
+            <%= "#{value.user_name} (#{value.phone_number})" %> 
+          <%else %>
+            <%= value %>
+          <%end%>
+        </div>
+        </td>
+      </tr>
+    <% end %>
+    
+      <tr>
+        <td>
+           
+        </td>
+      </tr>
+      
+  </table>
+</div>  

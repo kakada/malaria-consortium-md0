@@ -3,66 +3,49 @@ require 'spec_helper'
 describe Referal::HCParser do
   before(:each) do
     od = OD.make :abbr => "KPS"
-    @hc1 = HealthCenter.make :code => "123456"
-    @hc2 = HealthCenter.make :code => "000000"
     @user = User.make :user_name => "bopha",  :phone_number => "85597888123", :place => od
+    @params = { :text => "0971234567KPS001001123456", :sender => @user }
+    @hc = HealthCenter.make :code => "123456"
+    
+    max    =  Referal::ConstraintType::Validator.get_validator("Max", 90 )
+    min    =  Referal::ConstraintType::Validator.get_validator("Min", 10 )
+    
+    collection = Referal::ConstraintType::Validator.get_validator("Collection", "Female,Male" )
     
     
-    @fieldAge = Referal::Field.create! :position => 1 , :meaning => "Age", :template => "Age temp"
-    @fieldSex = Referal::Field.create! :position => 2 , :meaing  => "Sex", :template => "Sex temp"
+    # create 2 dynamic fields called Field1, Field2 dynamically
+    @fieldAge = Referal::Field.create! :position => 1, :meaning => "Age", :template => "Age" #Field1
+    @fieldSex = Referal::Field.create! :position => 2, :meaning => "Sex", :template => "Sex" #Field2
     
-    @fieldAge.constraints.build 
+    # create max constraint for Field1(age)
+    constraintAge = @fieldAge.constraints.build
+    constraintAge.validator = max
+    constraintAge.save
     
+    # create min constraint for Field1(age)
+    constraintAge = @fieldAge.constraints.build
+    constraintAge.validator = min
+    constraintAge.save
     
+    # create collection constraint for Field1(sex)
+    constraintCollection = @fieldSex.constraints.build
+    constraintCollection.validator = collection
+    constraintCollection.save
     
   end
   
-  it "should have error with message: user not in od " do
-    referal = Referal::HCParser.new :text => "HCF001001", :sender => @user
-    report = referal.parse
-    
-    report.text.should eq "HCF001001"
-    report.error.should eq true
-    report.error_message.should eq :referal_invalid_not_in_od
-    report.sender.should eq @user
-    
-  end
-  
-  
-  it "should have error with message: wrong format" do
-    referal = Referal::HCParser.new :text => "999001001", :sender => @user
-    report = referal.parse
-    
-    report.text.should eq "999001001"
-    report.error.should eq true
-    report.error_message.should eq :referal_invalid_od
-    report.sender.should eq @user
-  end
-  
-  
-  it "should parse message from health_center" do 
-    [
-      { :msg => "KPS001001" , 
-        :result => {:od_name=>"KPS", :code_number=>"001", :book_number => "001", :health_center_code => nil } 
-      },
-      { :msg => "KPS001001" , 
-        :result => {:od_name=>"KPS", :code_number=>"001", :book_number => "001", :health_center_code => nil } 
-      },
-      { :msg => "KPS010100" , 
-        :result => {:od_name=>"KPS", :code_number=>"100", :book_number => "010", :health_center_code => nil } 
-      },
-    ].each do |item|
-      options = { :text => item[:msg], :sender => @user }
-      ref_parser = Referal::HCParser.new options
-      report = ref_parser.parse
+  describe "parse" do
+     it "should parse message successfully" do
+       message_format = Referal::MessageFormat.create! :format => "{phone_number}.{slip_code}.{Field1}.{Field2}", :sector => Referal::MessageFormat::TYPE_HC
       
-      report.text.should          eq item[:msg]
-      report.error.should         eq false
-      report.error_message.should eq nil
+       parser = Referal::HCParser.new({:text=>"09712345678.KPS001100.25.Male", :sender => @user})
+       parser.message_format = message_format 
+       parser.parse
+
+#      p parser.options
+       parser.report.should be_kind_of Referal::HCReport
       
-      report.od_name.should eq item[:result][:od_name]
-      report.code_number.should eq item[:result][:code_number]
-      report.book_number.should eq item[:result][:book_number]   
-    end
+     end
   end
+  
 end

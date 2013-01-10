@@ -30,6 +30,7 @@ Local::Application.routes.draw do
     get  "constraints/view/",       :to => "constraints#view"
     
     post "message_formats/save" ,   :to => "message_formats#save"
+    get  "message_formats/test" ,   :to => "message_formats#test"
     
     resources :message_formats
     resources :dashboards 

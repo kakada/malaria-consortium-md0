@@ -1,13 +1,13 @@
 module Referal
   class MessageFormatsController < ReferalController
     def index
-      @clinic = Referal::MessageFormat.first
-      @hc     = Referal::MessageFormat.last
+      @clinic = Referal::MessageFormat.clinic
+      @hc     = Referal::MessageFormat.health_center
     end
     
     def save
-      @clinic = Referal::MessageFormat.first
-      @hc     = Referal::MessageFormat.last
+      @clinic = Referal::MessageFormat.clinic
+      @hc     = Referal::MessageFormat.health_center
       
       @clinic.format = params[:referal_message_format][:clinic]
       @hc.format = params[:referal_message_format][:hc]

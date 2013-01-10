@@ -3,10 +3,10 @@ class Referal::HCParser < Referal::Parser
     super(options)
   end
   
-  def parse
+  def parse message_format
+    @message_format = message_format
     begin
-      create_scanner
-      scan_slip_code
+      scan_messages
     rescue 
     end
     create_report
@@ -16,5 +16,13 @@ class Referal::HCParser < Referal::Parser
     @report = Referal::HCReport.new @options
     @report
   end
+  
+  def message_format
+    hc_format = Referal::MessageFormat.health_center
+    raise_error :undefined_format_for_health_center if hc_format.nil?
+    return hc_format
+  end
+
+    
   
 end

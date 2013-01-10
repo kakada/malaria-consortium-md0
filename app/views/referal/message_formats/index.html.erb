@@ -8,9 +8,16 @@
         <h3> Private Provider </h3>
         <div class="well format-container" id="formats_clinic" data-id="txt_clinic" ><%#=  message_format(@clinic.format) %></div>
         <div> 
-          <% Referal::Field.tags_clinic.each do |field_tag| %>
-            <a href="#" class="parameter_link"  data-id="clinic" >{<%= field_tag %>}</a>
+          <% Referal::Field::FixFieldClinic.each do |field_tag| %>
+            <a href="#" class="parameter_link"  data-id="clinic" ><%= Referal::MessageFormat.wrap_format  field_tag %></a>
           <% end %>
+          
+          <% Referal::Field.all.each do |field| %>
+            <a href="#" class="parameter_link" title="<%=field.meaning%>" data-id="clinic" ><%= Referal::MessageFormat.wrap_format(field.name)%></a>
+          <% end %>
+            
+            
+            
         </div>
         <textarea  class="textarea-data" id="txt_clinic"  data-id="formats_clinic" name="referal_message_format[clinic]" ><%=@clinic.format %></textarea>
     </div>
@@ -19,8 +26,11 @@
         <h3> Health Center </h3>
         <div class="well format-container"  id="formats_hc" data-id="txt_hc" ><%#=  message_format(@hc.format) %></div>
         <div> 
-          <% Referal::Field.tags_hc.each do |field_tag| %>
-            <a href="#" class="parameter_link"  data-id="hc" >{<%= field_tag %>}</a>
+          <% Referal::Field::FixFieldHC.each do |field_tag| %>
+            <a href="#" class="parameter_link"  data-id="hc" ><%=  Referal::MessageFormat.wrap_format field_tag %></a>
+          <% end %>
+          <% Referal::Field.all.each do |field| %>
+            <a href="#" class="parameter_link" title="<%=field.meaning%>" data-id="hc" ><%= Referal::MessageFormat.wrap_format field.name %></a>
           <% end %>
         </div>
         <textarea class="textarea-data" id="txt_hc" data-id="formats_hc" name="referal_message_format[hc]" ><%=@hc.format %></textarea>

@@ -19,7 +19,7 @@ module Referal
       end
 
       def validate value, field
-        @value   = value
+        @value   = value.to_f
         @field   = field
         @errors     << translate_error if(@value < @min)
         @errors.size == 0 ? true : false

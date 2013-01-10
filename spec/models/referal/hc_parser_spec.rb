@@ -5,8 +5,16 @@ describe Referal::HCParser do
     od = OD.make :abbr => "KPS"
     @hc1 = HealthCenter.make :code => "123456"
     @hc2 = HealthCenter.make :code => "000000"
-    
     @user = User.make :user_name => "bopha",  :phone_number => "85597888123", :place => od
+    
+    
+    @fieldAge = Referal::Field.create! :position => 1 , :meaning => "Age", :template => "Age temp"
+    @fieldSex = Referal::Field.create! :position => 2 , :meaing  => "Sex", :template => "Sex temp"
+    
+    @fieldAge.constraints.build 
+    
+    
+    
   end
   
   it "should have error with message: user not in od " do

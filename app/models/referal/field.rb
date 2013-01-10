@@ -69,7 +69,6 @@ module Referal
     def fill_data
       self.name = Referal::Field.columnize(self.position)
     end
-   
     
     def self.columnize i
       self::FieldName + "#{i}"

@@ -22,6 +22,7 @@ module Referal
     def test
       @message_parser = self.get_parser
       @message_parser.parse
+      p @message_parser.options
       render :test, :layout => false
     end
     

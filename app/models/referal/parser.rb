@@ -35,6 +35,7 @@ class Referal::Parser
   end
   
   def scan_slip_code text
+    
     scanner = create_scanner(text)
     od_name =  scanner.scan(/^[a-zA-Z]+/i)
     analyse_od_name(od_name)
@@ -84,11 +85,14 @@ class Referal::Parser
     if od_name.nil?
       raise_error :referal_invalid_od 
     else
-      if @options[:sender].place.abbr != od_name
-        raise_error :referal_invalid_not_in_od
-      else
+        begin
+          if(@options[:sender].place.abbr != od_name)
+            raise_error :referal_invalid_not_in_od
+          end
+        rescue
+           raise_error :referal_invalid_not_in_od
+        end
         @options[:od_name] = od_name 
-      end
     end
   end
   
@@ -170,7 +174,7 @@ class Referal::Parser
     texts   = @options[:text].split(Referal::MessageFormat::Separator)
            
     formats.each_with_index do |format, index|
-      validator_name = Referal::MessageFormat.raw_format(format)
+      validator_name = Referal::MessageFormat.raw_format(format.strip)
       text = texts[index]
       raise_error :field_mismatch_format if text.nil?
       scan_dynamic_format text, validator_name

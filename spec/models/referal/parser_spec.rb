@@ -68,7 +68,7 @@ describe Referal::Parser do
             expect{ parser.scan_dynamic_format("F2", "Field2") }.to raise_error(Exception, "Field2")
         end
         
-        it "should raise exception when value does not have valid value in collection(F,M)" do
+        it "should raise exception when value does not have valid value \in collection(F,M)" do
             parser = Referal::Parser.new({})
             expect{ parser.scan_dynamic_format("K", "Field2") }.to raise_error(Exception, "Field2")
         end
@@ -113,12 +113,18 @@ describe Referal::Parser do
     end
     
     it "should raise error" do
-      ref_parser = Referal::Parser.new @params.merge(:text => "KPS0011100")
-      expect{ref_parser.scan_slip_code "KPS00188100"}.to raise_error(Exception, "referal_invalid_code_number")
+      ref_parser = Referal::Parser.new @params.merge(:text => "KPS00")
+      expect{ref_parser.scan_slip_code "KPS00"}.to raise_error(Exception, "referal_invalid_book_number")
+      ref_parser.options[:od_name].should eq "KPS"
+      ref_parser.options[:error].should eq true
+      ref_parser.options[:error_message].should eq :referal_invalid_book_number
+    end
+    
+    it "should raise error" do
+      ref_parser = Referal::Parser.new @params.merge(:text => "KPS0011106")
+      expect{ref_parser.scan_slip_code "KPS0011106"}.to raise_error(Exception, "referal_invalid_code_number")
       ref_parser.options[:od_name].should eq "KPS"
       ref_parser.options[:book_number].should eq "001"
-      ref_parser.options[:error].should eq true
-      ref_parser.options[:error_message].should eq :referal_invalid_code_number
     end
     
   end

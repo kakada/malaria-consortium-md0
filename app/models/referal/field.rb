@@ -73,5 +73,9 @@ module Referal
       self::FieldName + "#{i}"
     end
     
+    def show_constraint
+      self.constraints.map{|constraint| constraint.validator.to_s}.join(" - ")
+    end
+    
   end
 end

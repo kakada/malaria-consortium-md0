@@ -4,7 +4,7 @@ module Referal
     attr_accessor :collection
     
     def message
-        "{field}: {value} should be between [{collection}]"
+        "{field}: {value} should be in collection ({collection})"
       end
 
       def template
@@ -22,7 +22,18 @@ module Referal
       def validate value, field
         @value      = value.to_s
         @field      = field
-        @errors     << translate_error if(! @collection.include? @value)
+        found = false
+        @collection.split(",").each do |condition|
+          
+          condition_reg_str = Regexp.escape(condition)
+          condition_reg = Regexp.new(condition_reg_str, true) 
+          if(condition_reg.match(@value))
+            found = true
+            break
+          end
+        end
+        
+        @errors     << translate_error if !found
         @errors.size == 0 ? true : false
       end
       

@@ -1,18 +1,16 @@
 <%= content_for :breadcrumb do %>
  <%= breadcrumb [ {"Dynamic Variables" => nil} ] %>
 <%end %>
-<%=content_for :sidebar_right  do %> 
- &nbsp;
-<%end%>
 
 <%= form_tag referal_fields_bulk_path, :method => :post  do |form|   %>
   <div>
 	<table class="table"> 
 		<thead>
 			<tr >
-				<th> Name </th>
+				<th> Field Name </th>
 				<th> Meaning </th>
 				<th> Template </th>
+                                <th> Constraints</th>
                                 <th > 
                                   Order /
                                   <input type="image" src="/images/save.png" />    
@@ -26,15 +24,14 @@
 
 		<tbody>
 			<% 5.times do |i| %>
-			  <tr>
+                          <%  field =  Referal::Field.fields_set_exist(@fields, i+1)  %>
+                          <tr >
                                 <td style="color: gray;" > <%= Referal::Field.columnize(i+1) %> </td>
-                                <%
-                                  field =  Referal::Field.fields_set_exist(@fields, i+1)
-                                  
-                                %>
+                                
                                 <% if field %>
-                                  <td> <%= field.meaning %> </td>
+                                  <td > <%= field.meaning %> </td>
                                   <td title="<%= field.template %>"> <%= truncate(field.template, :length => 50) %>  </td>
+                                  <td> <%=link_to field.show_constraint, referal_field_constraints_path(field) %></td>
                                   <td align="right"> 
                                         <%= Referal::Field::FieldName %> 
                                         <%= text_field_tag   "referal_field[#{field.id}]", field.position, :class => :position %> 
@@ -46,6 +43,7 @@
                                       <%= link_to "Delete", referal_field_path(field), :method => :delete, :confirm => "Are you sure to remove"%>
                                   </td>
                                 <% else %>
+                                  <td>  </td>
                                   <td>  </td>
                                   <td>  </td>
                                   <td>  </td>

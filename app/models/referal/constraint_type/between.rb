@@ -21,9 +21,9 @@ module Referal
           end
 
           def validate value, field      
-            @value   = value.to_f
+            @value   = value
             @field   = field
-            @errors     << translate_error if(@value > @to || @value < @from)
+            @errors     << translate_error if(@value.to_f > @to.to_f || @value.to_f < @from.to_f)
             @errors.size == 0 ? true : false
           end
 

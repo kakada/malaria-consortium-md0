@@ -22,7 +22,7 @@ Local::Application.routes.draw do
   end
   
   namespace :referal do
-    root :to => "dashboards#index"
+    root :to => "users#index"
     
     post "fields/bulk",             :to => "fields#bulk_update"
     post "fields/constraint",       :to => "fields#constraint"

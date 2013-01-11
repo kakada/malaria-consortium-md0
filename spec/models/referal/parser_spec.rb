@@ -68,7 +68,7 @@ describe Referal::Parser do
             expect{ parser.scan_dynamic_format("F2", "Field2") }.to raise_error(Exception, "Field2")
         end
         
-        it "should raise exception when value does not have valid value \in collection(F,M)" do
+        it "should raise exception when value does not have valid value in collection(F,M)" do
             parser = Referal::Parser.new({})
             expect{ parser.scan_dynamic_format("K", "Field2") }.to raise_error(Exception, "Field2")
         end

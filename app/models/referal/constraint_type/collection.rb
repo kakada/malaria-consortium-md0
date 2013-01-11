@@ -26,7 +26,7 @@ module Referal
         @collection.split(",").each do |condition|
           
           condition_reg_str = Regexp.escape(condition)
-          condition_reg = Regexp.new(condition_reg_str, true) 
+          condition_reg = Regexp.new("^" + condition_reg_str + "$", true) 
           if(condition_reg.match(@value))
             found = true
             break

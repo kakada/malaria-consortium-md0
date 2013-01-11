@@ -9,7 +9,8 @@ module Referal
     
     
     def self.raw_format str
-      str[1, str.size-2]
+      format = str.strip
+      format[1, format.size-2]
     end
     
     def self.wrap_format str

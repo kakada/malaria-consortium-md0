@@ -22,6 +22,12 @@ describe Referal::ConstraintType::Collection do
     collectionValidator.errors[0].should eq "Item: ddd should be in collection (aaa,bbb,ddd )" 
   end
   
+  it "should validate string  dddd in (aaa,bbb,ddd ) with error because it does not match ^ddd& " do
+    collectionValidator = Referal::ConstraintType::Collection.new "aaa,bbb,ddd " 
+    collectionValidator.validate('dddd', "item").should eq false
+    collectionValidator.errors[0].should eq "Item: dddd should be in collection (aaa,bbb,ddd )" 
+  end
+  
   it "should validate string 'aaa' in collection (ccc, bbb, ddd) with error" do
     collectionValidator = Referal::ConstraintType::Collection.new "ccc, bbb, ddd"
     collectionValidator.validate( 'aaa', "item").should eq false

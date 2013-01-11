@@ -154,8 +154,7 @@ class Referal::Parser
        field.constraints.each do|constraint|
         
          validator = constraint.validator
-         valid = validator.validate(text, validator_name)
-         
+         valid = validator.validate(text, validator_name)        
          if !valid
            raise_error validator_name
          else
@@ -174,8 +173,9 @@ class Referal::Parser
     texts   = @options[:text].split(Referal::MessageFormat::Separator)
            
     formats.each_with_index do |format, index|
-      validator_name = Referal::MessageFormat.raw_format(format.strip)
+      validator_name = Referal::MessageFormat.raw_format(format)
       text = texts[index]
+      
       raise_error :field_mismatch_format if text.nil?
       scan_dynamic_format text, validator_name
     end

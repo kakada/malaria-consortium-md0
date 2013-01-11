@@ -32,6 +32,7 @@ module Referal
          tags = msg_format.format.split(Referal::MessageFormat::Separator)
          result = []
          tags.each do |tag|
+           tag = tag.strip
            result << tag  if tag != "{#{field}}"
          end
          msg_format.format = result.join(Referal::MessageFormat::Separator) 

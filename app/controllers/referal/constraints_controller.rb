@@ -33,8 +33,7 @@ module Referal
       validator = @constraint.validator
       @constraint.delete
       flash[:notice] = "Constraint: <b>" + validator.to_s  + " </b> For: <b>" + @field.name + " </b> has been removed"
-      redirect_to referal_field_constraints_path(@field)
-      
+      redirect_to referal_field_constraints_path(@field)   
     end
     
     def edit

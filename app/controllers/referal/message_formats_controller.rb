@@ -22,7 +22,6 @@ module Referal
     def test
       @message_parser = self.get_parser
       @message_parser.parse
-      p @message_parser.options
       render :test, :layout => false
     end
     
@@ -42,7 +41,6 @@ module Referal
          message_parser.message_format = Referal::MessageFormat.health_center
       end
       message_parser
-      
     end
   end
 end

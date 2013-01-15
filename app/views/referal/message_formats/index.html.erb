@@ -81,13 +81,13 @@
 
 
 <style>
-    .remove-sign:hover{
+    .remove_sign:hover{
       background-color: #ddd;
       background-image:url("../images/trash-icon.png");
       background-position: right center;
       background-repeat: no-repeat;
     }
-    .remove-sign , .remove-sign:hover {
+    .remove_sign , .remove_sign:hover {
       border-radius: 4px;
       padding: 3px;
       border: 1px solid #eee;
@@ -157,7 +157,7 @@
     }
 
     function removeSign(){
-      return "remove-sign" ;
+      return "remove_sign" ;
     }
 
     function separatorText(){
@@ -192,7 +192,8 @@
     }
     
     function liveRemoveLink(){
-      $("." + removeSign()).live("click", function(){
+      removeCls = "." + removeSign();
+      $("body").delegate(removeCls,"click", function(){
         $this = $(this);
         text = $this.text();
         $container = $this.parent(); 
@@ -240,9 +241,10 @@
 
     $(function(){
       parameterLink();
-      liveRemoveLink();
+      
       loadFromTextToDiv("txt_clinic");
       loadFromTextToDiv("txt_hc");
+      liveRemoveLink();
       testLink();
       tooltip();
       

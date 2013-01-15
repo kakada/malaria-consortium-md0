@@ -23,6 +23,8 @@ Local::Application.routes.draw do
   
   namespace :referal do
     root :to => "users#index"
+    get "templates/configs/" , :to => "templates#configs"
+    post "templates/update_configs/" , :to => "templates#update_configs"
     
     post "fields/bulk",             :to => "fields#bulk_update"
     post "fields/constraint",       :to => "fields#constraint"

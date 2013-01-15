@@ -150,7 +150,7 @@ class Referal::Parser
        scan_text_by_validator_name text, validator_name
      else
        field = Referal::Field.find_by_name validator_name
-       raise_error "invalid_validator" if field.nil?
+       raise_error "referal_invalid_validator" if field.nil?
        field.constraints.each do|constraint|
         
          validator = constraint.validator
@@ -176,9 +176,9 @@ class Referal::Parser
       validator_name = Referal::MessageFormat.raw_format(format)
       text = texts[index]
       
-      raise_error :field_mismatch_format if text.nil?
+      raise_error :referal_field_mismatch_format if text.nil?
       scan_dynamic_format text, validator_name
     end
-    raise_error :field_mismatch_format if formats.size != texts.size
+    raise_error :referal_field_mismatch_format if formats.size != texts.size
   end
 end

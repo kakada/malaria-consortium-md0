@@ -41,7 +41,7 @@ describe Referal::Parser do
 
         it "should raise exception :invalid_validator for field that does not exist " do
             parser = Referal::Parser.new({})
-            expect{ parser.scan_dynamic_format(30, "Fieldx") }.to raise_error(Exception, "invalid_validator")
+            expect{ parser.scan_dynamic_format(30, "Fieldx") }.to raise_error(Exception, "referal_invalid_validator")
         end
 
         it "should raise exception when value is not valid " do
@@ -60,7 +60,7 @@ describe Referal::Parser do
 
         it "should raise exception :invalid_validator for field that does not exist " do
             parser = Referal::Parser.new({})
-            expect{ parser.scan_dynamic_format(30, "Fieldx") }.to raise_error(Exception, "invalid_validator")
+            expect{ parser.scan_dynamic_format(30, "Fieldx") }.to raise_error(Exception, "referal_invalid_validator")
         end
 
         it "should raise exception when value does not have valid length" do
@@ -93,7 +93,7 @@ describe Referal::Parser do
     it "should raise error with msg when text item is more than format item" do
       message_format = Referal::MessageFormat.create! :format => "{phone_number}.{code_number}.{Field1}.{Field2}.{Field3}.{Field4}", :sector => Referal::MessageFormat::TYPE_CLINIC
       parser = Referal::ClinicParser.new({:text=>"0971234567.090.25.M"})
-      expect{parser.scan_messages}.to raise_error(Exception, :field_mismatch_format.to_s) 
+      expect{parser.scan_messages}.to raise_error(Exception, :referal_field_mismatch_format.to_s) 
       parser.options[:phone_number].should eq "0971234567"
       parser.options[:code_number].should eq "090"
       parser.options[:field1].should eq "25"

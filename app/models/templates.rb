@@ -25,7 +25,8 @@ class Templates
     :too_long_village_report => {:params => %w(original_message), :label => 'invalid mobile patient'},
     :reminder_message_vmw => {:params => %w(original_message phone_number village health_center), :label => "reminder message to VMW"},
     :reminder_message_hc => {:params => %w(original_message phone_number village health_center), :label => "reminder message to HC, OD, PHD, National and Admin"},
-    
+  }
+  KeyReferals = {
     :referal_invalid_phone_number => {:params => %w(original_message), :label => "Invalid Phone number"},
     :referal_invalid_book_number => {:params => %w(original_message), :label => "Invalid Book number"},
     :referal_invalid_code_number => {:params => %w(original_message), :label => "Invalid Code number"},
@@ -39,7 +40,10 @@ class Templates
     
     :referal_health_center_clinic => {:params => %w(slip_code book_number code_number), :label => "Referal Health Center to Private Provider"},
     :referal_health_center_health_center => {:params => %w(slip_code book_number code_number), :label => "Referal Health Center acknowlegment"},
-  }
+    :referal_field_mismatch_format => {:params => %w(original_messag message_format), :label => "Referal Parser items mismatched"},
+    :referal_invalid_validator => {:params => %w(original_messag message_format), :label => "Referal Parser Not found"},
+  }  
+
 
   def initialize(values = {})
     @settings = Setting.all

@@ -13,7 +13,4 @@ class Referal::HCParser < Referal::Parser
     raise_error :undefined_format_for_health_center if hc_format.nil?
     return hc_format
   end
-
-    
-  
 end

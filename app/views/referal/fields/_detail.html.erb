@@ -14,7 +14,9 @@
   </tr>
   <% if !button.blank? %>
     <tr>
-      <td colspan="2"> <%= link_to "Add constraint", new_referal_field_constraint_path(field), :class => "btn btn-danger" %>  </td>
+      <td colspan="2"> 
+        <%= register_bar("Add constraint", new_referal_field_constraint_path(field)) %>
+      </td>
     </tr>
   <% end %>
 </table>

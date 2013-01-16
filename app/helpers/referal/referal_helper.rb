@@ -37,8 +37,8 @@ module Referal
 		content_tag(:ul, breadcrumb_str(options), :class => "breadcrumb")
 	end
   
-  def register_bar label, url
-    content_tag :div, :class => "register_bar" do
+  def register_bar label, url, options={}
+    content_tag :div, options do
       link_to "<i class='icon-user  icon-plus' ></i>#{label}".html_safe, url, :class => "btn"
     end
   end

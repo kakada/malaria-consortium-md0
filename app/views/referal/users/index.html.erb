@@ -3,6 +3,12 @@
 			{"User" => nil}
 		] %>
 <%end %>
+
+<% content_for :top do  %>
+   <%= register_bar(" Register User", new_referal_user_path) %>
+<% end %>
+
+
 <div class="row-fluid" >
 	<%= will_paginate @users, :gap => "<li><span>...</span></li>".html_safe %>
 </div>

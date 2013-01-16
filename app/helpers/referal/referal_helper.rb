@@ -36,6 +36,12 @@ module Referal
 	def breadcrumb options
 		content_tag(:ul, breadcrumb_str(options), :class => "breadcrumb")
 	end
+  
+  def register_bar label, url
+    content_tag :div, :class => "register_bar" do
+      link_to "<i class='icon-user  icon-plus' ></i>#{label}".html_safe, url, :class => "btn"
+    end
+  end
 
 	def tag_row(options ={}, &block)
       options = self.merge_options(options, :class, "div-row")

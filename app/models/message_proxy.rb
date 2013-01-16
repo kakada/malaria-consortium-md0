@@ -95,7 +95,7 @@ class MessageProxy
   end
   
   def self.reply_error error_message, to
-    [{ :from => self.app_name, :to => to, :body => error_message }]
+    [{ :from => Referal.app_name, :to => to, :body => error_message }]
   end
   
   def self.app_name

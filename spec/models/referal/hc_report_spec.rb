@@ -28,7 +28,7 @@ describe Referal::HCReport do
   end
   
   it "should return valid report" do
-    Setting[:referal_health_center_clinic] = "A msg from HC: {health_center} with Slip: {slip_code}"
+    Setting[:referal_health_center_clinic]        = "A msg from HC: {health_center} with Slip: {slip_code}"
     Setting[:referal_health_center_health_center] = "Your msg has been send to {od} with Slip: {slip_code} Original message: {original_message}"
     
     hc_report = Referal::HCReport.create! :place         => @hc1 ,

@@ -5,7 +5,7 @@ module Referal
 	end
 
 	def referal_app
-		@referal_app ? @referal_app : "Referal system"
+		@referal_app ? @referal_app : "Referral system"
 	end
 
 	def breadcrumb_str options

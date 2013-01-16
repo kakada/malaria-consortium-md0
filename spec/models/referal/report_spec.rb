@@ -3,7 +3,7 @@ require "spec_helper"
 describe Referal::Report do
   before(:each) do
     @province = Province.make
-    @od = @province.ods.make :code => "001122", :name => "Battambong"
+    @od = @province.ods.make :code => "001122", :name => "Battambong", :abbr => "BTB"
     @health_center = @od.health_centers.make
     @village = @health_center.villages.make :code => '12345678'
     @health_center.villages.make :code => '87654321'
@@ -21,14 +21,16 @@ describe Referal::Report do
     before(:each) do
       @valid_report_attr = {
         :book_number => "001",
-        :code_number => "100"
+        :code_number => "100",
+        :od_name     => "SRM"
       }
     end
-    it "should have slip_code combined by code_number and book_number" do
-#      report = Referal::ClinicReport.create!(@valid_report_attr)
-#      p "----------------------------------------------------------------------"
-#      p report.slip_code
+    
+    it "should have slip_code combined by od_name, code_number and book_number" do
+      report = Referal::ClinicReport.create!(@valid_report_attr)
+      report.slip_code.should eq "SRM001100"
     end
+    
   end
   
   describe "create parser" do
@@ -41,16 +43,40 @@ describe Referal::Report do
       parser = Referal::Report.create_parser(:sender => @od_user1)
       parser.class.should eq Referal::ClinicParser
     end
+  end
+  
+  
+  describe "template from key" do
+    before(:each) do
+      Setting[:Field1] = "this is a field"
+      Setting[:Field2] = "xxx"
+      Referal::Field.create!(:position => 1, :meaning => "Sex", :template => "Invalid format for sex{original_message}" )
+    end
     
+    it "should return template from the field table" do
+       template = Referal::Report.template_from_key("Field1")
+       template.should eq "Invalid format for sex{original_message}"
+    end
+    
+    it "should return template from Setting" do
+       template = Referal::Report.template_from_key("Field2")
+       template.should eq "xxx"
+    end
+    
+    it "should return empty template when not existing in 5 fields and setting template" do
+       template = Referal::Report.template_from_key("no_existed")
+       template.should eq ""
+    end
   end
   
   describe "translate message for a key template" do
     it "should translate correctly" do
-      report = Referal::Report.new  :phone_number => "012123456",
-                                    :place => @od,
-                                    :slip_code        => "001001" ,
+      report = Referal::Report.new  :phone_number     => "012123456",
+                                    :place            => @od,
+                                    :slip_code        => "BTB001001" ,
                                     :book_number      => "001",
                                     :code_number      => "001",
+                                    :od_name          => "BTB",
                                     :text => "xxx xxx xxx"
       
       Setting[:error_x] = "Place: {place} with code_number: {code_number} book_number: {book_number} with original: {original_message}"

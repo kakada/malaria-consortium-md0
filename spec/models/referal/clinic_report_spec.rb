@@ -44,7 +44,7 @@ describe Referal::ClinicReport do
        {:to=>"sms://8558190", :body=>"You receive a patient 012123456 from 123456 BatDamBong (Od) with 001001", :from => MessageProxy.app_name},
        {:to=>"sms://8558191", :body=>"You receive a patient 012123456 from 123456 BatDamBong (Od) with 001001", :from => MessageProxy.app_name}, 
        {:to=>"sms://8558195", :body=>"You have sent patient 012123456 to 12345678 hc1 (Health Center) with 001001", :from => MessageProxy.app_name} 
-       ]
+     ]
     end
     
     it "should send to all users in all health centers under the od" do

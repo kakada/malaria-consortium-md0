@@ -18,7 +18,7 @@ module Referal
     
     
     def fill_in_data
-      self.slip_code = "#{self.book_number}#{self.code_number}"
+      self.slip_code = "#{self.od_name}#{self.book_number}#{self.code_number}"
     end
     
     # return an Array of hashes or a Hash
@@ -51,12 +51,28 @@ module Referal
         :original_message => text
       }
       
+      template = Referal::Report.template_from_key(key)
+      
       template_values[:health_center] = self.send_to_health_center.description if send_to_health_center
       template_values[:health_center] = self.place.description if self.class == Referal::HCReport
       
       template_values[:od] = self.place.description if self.class == Referal::ClinicReport
       template_values[:od] = self.place.od.description if self.class == Referal::HCReport
-      Setting[key].apply(template_values)
+      template.apply(template_values)
+    end
+    
+    def self.template_from_key key
+      template = nil
+      5.times.each do |i|
+         if(key == Referal::Field.columnize(i+1))
+           field = Referal::Field.find_by_name(key)
+           template = field.template if !field.nil?
+           break
+         end
+      end
+      # if template not found then get from the template settings
+      template = Setting[key] if template.nil?
+      template
     end
     
     # abstract the report to raise exception

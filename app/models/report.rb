@@ -35,6 +35,14 @@ class Report < ActiveRecord::Base
     report
   end
   
+  def parse_quality
+    formats = ["malaria_type", "age", "sex", "day"]
+    quality = 0
+    formats.each do |item|
+      quality = quality+1  if !self.send(item).nil? 
+    end
+    (100*quality) / formats.count
+  end
   
   def generate_alerts
     if(self.error)

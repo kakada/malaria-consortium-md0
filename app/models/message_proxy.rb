@@ -24,14 +24,12 @@ class MessageProxy
     end
  end 
  
- def generate_error
-    options = parameterize #help rspec test. because proxy.stub!(:params) does not work with @params
-    
-    if !options[:sender]
+ def generate_error options
+    if !options[:sender] 
         # decide errors for MD0 and Referal
         save_mdo_error
         save_referal_error
-    else
+    else #  md0 has higher precedence 
         if options[:sender].is_from_md0?
           save_mdo_error
         elsif options[:sender].is_from_referal?
@@ -43,14 +41,13 @@ class MessageProxy
  
  def check 
     analyse_number
-    return generate_error if @params[:error]
+    return generate_error(@params) if @params[:error]
     return process_report
   end
   
   def process_report 
     if @params[:sender].is_from_both?
-      reports = guess_type
-      report = reports[0]
+      report = guess_type @params
       report.save!
       report.generate_alerts
     elsif @params[:sender].is_from_md0?
@@ -60,28 +57,24 @@ class MessageProxy
     end
   end
   
-  def guess_type
-    md0_report     =  Report::decode(@params)
-    referal_report =  Referal::Report::decode(@params)
-    
-    if(md0_report.error && referal_report.error)
-      
-      if(md0_report.error && md0_report.error_message != "invalid_malaria_type")
-        return [md0_report] 
-      end
-      
-      if(referal_report.error  )
-          if(@params[:sender].is_private_provider_role?  && referal_report.error_message !="phone_number")
-            return [referal_report]
-          elsif( @params[:sender].is_health_center_role?  &&  referal_report.error_message  !="referal_invalid_od" && referal_report.error_message !="referal_invalid_not_in_od"  )
-            return [referal_report]
-          end  
-      end
-      return [md0_report, referal_report]
+  def guess_type options
+    if options[:sender].is_private_provider_role?
+       referal_report =  Referal::Report::decode options
+       return referal_report
+    elsif options[:sender].is_village_role?  
+       md0_report     =  Report::decode options
+       return md0_report
     else
-      return [md0_report]       if !md0_report.error
-      return [referal_report]   if !referal_report.error
-    end 
+      #pass option to the decode by value
+      referal_report =  Referal::Report::decode options.dup
+      return referal_report if !referal_report.error
+      
+      md0_report     =  Report::decode options.dup
+      return md0_report if !md0_report.error     
+      
+      return referal_report   if(referal_report.parse_quality > md0_report.parse_quality) 
+      return md0_report
+    end
   end
   
   def save_referal_error
@@ -95,7 +88,7 @@ class MessageProxy
   end
   
   def self.reply_error error_message, to
-    [{ :from => Referal.app_name, :to => to, :body => error_message }]
+    [{ :from => self.app_name, :to => to, :body => error_message }]
   end
   
   def self.app_name
@@ -109,9 +102,4 @@ class MessageProxy
   def self.access_denied
     "Access denied: this user can not do any report"
   end
-  
-  def parameterize 
-    @params
-  end
-  
 end

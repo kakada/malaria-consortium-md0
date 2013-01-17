@@ -32,12 +32,16 @@ class User < ActiveRecord::Base
     User.selected_apps self.apps_mask
   end
   
+  def is_village_role?
+    self.place.class.to_s == "Village"
+  end
+  
   def is_health_center_role?
-    self.role == ROLE_REF_HC
+    self.place.class.to_s == "HealthCenter"
   end
   
   def is_private_provider_role?
-    self.role == ROLE_REF_PROVIDER
+    self.place.class.to_s == "OD"
   end
   
   def is_from_both?

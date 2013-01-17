@@ -7,11 +7,13 @@ describe MessageProxy do
     @village = @health_center.villages.make :code => '12345678'
     @health_center.villages.make :code => '87654321'
 
-    @hc_user = @health_center.users.make :phone_number => "8558190"
-    @hc_user_disable = @health_center.users.make :phone_number => "8558199", :status => false
+    @hc_user = @health_center.users.make :phone_number => "8558190", :apps => [User::APP_MDO, User::APP_REFERAL]
+    @hc_user_disable_both = @health_center.users.make :phone_number => "8558199", :status => false, :apps => [User::APP_MDO, User::APP_REFERAL]
+    @hc_user_disable_referal = @health_center.users.make :phone_number => "85581910", :status => false, :apps => [User::APP_REFERAL]
+    
     @vmw_user = @village.users.make :phone_number => "8558191"
-    @od_user1 = @od.users.make :phone_number => "8558192"
-    @od_user2 = @od.users.make :phone_number => "8558193"
+    @od_user_both = @od.users.make :phone_number => "8558192",  :status => true, :apps => [User::APP_MDO, User::APP_REFERAL], :role => User::ROLE_REF_PROVIDER
+    @od_user_ref  = @od.users.make :phone_number => "8558193",  :status => true, :apps => [User::APP_REFERAL ], :role => User::ROLE_REF_PROVIDER
 
     @valid_message = {:from => "sms://8558190", :body => "F123M012345678"}
     @valid_vmw_message = {:from => "sms://8558191", :body => "F123M0."}
@@ -67,7 +69,7 @@ describe MessageProxy do
   end
 
   describe "Generate error " do
-    it "should save report to MD0 and Referal when no sender was found" do
+    it "should save error report to MD0 and Referal when no sender was found" do
       options = { :sender => nil, 
                   :error => true ,
                   :to => "9087726", 
@@ -77,24 +79,26 @@ describe MessageProxy do
       }
       proxy = MessageProxy.new({})
      
-      proxy.stub!(:parameterize).and_return(options)
+      #proxy.stub!(:parameterize).and_return(options)
      
       md0       = Report.count
       referal   = Referal::Report.count
           
-      message = proxy.generate_error
+      message = proxy.generate_error options
       
       Report.count.should eq(md0+1)
       Referal::Report.count.should eq(referal+1)
+      
       message.should eq([ { :from => MessageProxy.app_name, 
                             :body => MessageProxy.unknown_user, 
                             :to => options[:sender_address] } ] )
     end
+        
     
-    it "should save report to MD0 for user from MD0 app" do
+    it "should save error report to MD0 for user from MD0 app " do
       
-      options = { :sender => @hc_user_disable, 
-                  :place  => @hc_user_disable.place,
+      options = { :sender => @hc_user_disable_both, 
+                  :place  => @hc_user_disable_both.place,
                   :error  => true ,
                   :to     => "9087726", 
                   :sender_address => "9087726",
@@ -103,20 +107,21 @@ describe MessageProxy do
       }
       proxy = MessageProxy.new({})
      
-      proxy.stub!(:parameterize).and_return(options)
+      #proxy.stub!(:parameterize).and_return(options)
      
       md0       = Report.count
-      message = proxy.generate_error
+      message = proxy.generate_error options    
+      
       Report.count.should eq(md0+1)
       message.should eq([ { :from => MessageProxy.app_name, 
                             :body => MessageProxy.access_denied, 
                             :to => options[:sender_address] } ] )
     end
     
-    it "should save report to Referal report for user from Referal app" do
+    it "should save error report to Referal report only if user from Referal app" do
       
-      options = { :sender => @hc_user_disable, 
-                  :place  => @hc_user_disable.place,
+      options = { :sender => @hc_user_disable_referal, 
+                  :place  => @hc_user_disable_referal.place,
                   :error  => true ,
                   :to     => "9087726", 
                   :sender_address => "9087726",
@@ -125,21 +130,123 @@ describe MessageProxy do
       }
       proxy = MessageProxy.new({})
      
-      proxy.stub!(:parameterize).and_return(options)
+      #proxy.stub!(:parameterize).and_return(options)
      
-      md0       = Report.count
-      message = proxy.generate_error
-      Report.count.should eq(md0+1)
+      count       = Referal::Report.count
+      message = proxy.generate_error options
+      
+      
+      
+      Referal::Report.count.should eq(count+1)
       message.should eq([ { :from => MessageProxy.app_name, 
                             :body => MessageProxy.access_denied, 
                             :to => options[:sender_address] } ] )
     end
-    
-    
-    
-    
   end
   
   
-  
+  describe "guess_type message for user from both ref and md0 app" do
+    before(:each) do
+       @format_message_clinic = Referal::MessageFormat.create :format => "{phone_number}.{code_number}.{book_number}", :sector => Referal::MessageFormat::TYPE_CLINIC
+       @format_message_hc = Referal::MessageFormat.create :format => "{phone_number}.{code_number}.{book_number}", :sector => Referal::MessageFormat::TYPE_HC
+    end
+    
+    it "should return referal clinic report for od user" do
+      options = { :text => "097123456.xxx", 
+                  :sender_address => @od_user_both.phone_number, 
+                  :sender => @od_user_both, 
+                  :place => @od_user_both.place 
+      }
+      proxy = MessageProxy.new({})
+      #proxy.stub!(:parameterize).and_return(options)
+      report = proxy.guess_type options
+      report.should be_kind_of Referal::ClinicReport
+    end
+    
+    it "should return md0 report for user from village" do
+      options = { :text => "097123456.001.002", 
+                  :sender_address => @vmw_user.phone_number,
+                  :sender => @vmw_user, 
+                  :place => @vmw_user.place
+      }
+      proxy = MessageProxy.new({})
+      #proxy.stub!(:parameterize).and_return(options)
+      report = proxy.guess_type options
+      report.should be_kind_of VMWReport
+    end
+    
+    describe "report from both app" do
+      it "should return referal hc report since Referal::HCParse parse the message successfully" do
+        options = { :text => "097123456.001.002", 
+                    :sender_address => @hc_user.phone_number, 
+                    :sender => @hc_user, 
+                    :place => @hc_user.place
+        }
+        proxy = MessageProxy.new({})
+        #proxy.stub!(:parameterize).and_return(options)
+        report = proxy.guess_type options
+        report.should be_kind_of Referal::HCReport
+      end
+      
+      it "should return md0 hc report since parse the md0 format message successfully" do
+        options = { :text => "V28F3.", # malaria_type(F|V|M)Age(\d{3})Sex(F|M)day(0|28|30)VillageCode(\d{8}|\d{10}
+                    :sender_address => @hc_user.phone_number, 
+                    :sender => @hc_user, 
+                    :place => @hc_user.place
+        }
+        proxy = MessageProxy.new({})
+        #proxy.stub!(:parameterize).and_return(options)
+        report = proxy.guess_type options
+        report.should be_kind_of HealthCenterReport
+      end
+      
+      it "should return md0 report " do
+        options = { :text => "V12", # malaria_type(F|V|M)Age(\d{3})Sex(F|M)day(0|28|30)VillageCode(\d{8}|\d{10}
+                    :sender_address => @hc_user.phone_number, 
+                    :sender => @hc_user, 
+                    :place => @hc_user.place
+        }
+        proxy = MessageProxy.new({})
+        #proxy.stub!(:parameterize).and_return(options)
+        report = proxy.guess_type options
+        report.should be_kind_of HealthCenterReport
+      end
+      
+      it "should return referal report since it can parse referal" do
+        options = { :text => "098123456.fake.fake", # malaria_type(F|V|M)Age(\d{3})Sex(F|M)day(0|28|30)VillageCode(\d{8}|\d{10}
+                    :sender_address => @hc_user.phone_number, 
+                    :sender => @hc_user, 
+                    :place => @hc_user.place
+        }
+        proxy = MessageProxy.new({})
+        report = proxy.guess_type options
+        report.should be_kind_of Referal::HCReport
+      end
+      
+      it "should return md0 report since it can parse md0" do
+        options = { :text => "Fxxx", # malaria_type(F|V|M)Age(\d{3})Sex(F|M)day(0|28|30)VillageCode(\d{8}|\d{10}
+                    :sender_address => @hc_user.phone_number, 
+                    :sender => @hc_user, 
+                    :place => @hc_user.place
+        }
+        proxy = MessageProxy.new({})
+        report = proxy.guess_type options
+        report.should be_kind_of HealthCenterReport
+      end
+      
+      it "should return md0 report since non of md0 and referral were able to pass" do
+        options = { :text => "09123456", # malaria_type(F|V|M)Age(\d{3})Sex(F|M)day(0|28|30)VillageCode(\d{8}|\d{10}
+                    :sender_address => @hc_user.phone_number, 
+                    :sender => @hc_user, 
+                    :place => @hc_user.place
+        }
+        proxy = MessageProxy.new({})
+        report = proxy.guess_type options
+        report.should be_kind_of HealthCenterReport
+      end
+      
+      
+    end
+    
+  end  
 end

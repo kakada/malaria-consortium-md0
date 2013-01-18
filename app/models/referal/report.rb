@@ -36,7 +36,7 @@ module Referal
     end
     
     def parse_quality
-       message_format = self.type == "Referal::ClinicReport" ? Referal::MessageFormat.clinic : Referal::MessageFormat.health_center
+       message_format = (self.type == "Referal::ClinicReport") ? Referal::MessageFormat.clinic : Referal::MessageFormat.health_center
        formats = message_format.format.split(Referal::MessageFormat::Separator)
        quality = 0 
        formats.each do |item|

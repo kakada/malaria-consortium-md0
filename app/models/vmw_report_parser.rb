@@ -5,11 +5,11 @@ class VMWReportParser < ReportParser
   end
   
   def scan_patient
-    if @scanner.eos?
+    if self.scanner.eos?
       @options[:mobile] = false
     else
-      is_mobile_patient = @scanner.scan /\./
-      if is_mobile_patient.nil? || !@scanner.eos?
+      is_mobile_patient = self.scanner.scan /\./
+      if is_mobile_patient.nil? || !self.scanner.eos?
         raise_error :too_long_vmw_report
       end
       @options[:mobile] = true

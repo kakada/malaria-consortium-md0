@@ -1,45 +1,38 @@
 require 'spec_helper'
-
 describe VMWReportParser do
-  include ParserHelpers
-
-  before(:each) do
-    @village = Village.make
-    @parser = VMWReportParser.new User.new :place => @village
+  describe "scan patient" do
+    it "should find as mobile patient" do
+      parser = VMWReportParser.new(:text => "F12M")
+      scanner = StringScanner.new "."
+      parser.stub!(:scanner).and_return(scanner)
+      parser.scan_patient
+      parser.options[:mobile].should eq true
+    end
+    
+    it "should find as mobile patient" do
+      parser = VMWReportParser.new(:text => "F12M")
+      scanner = StringScanner.new ""
+      parser.stub!(:scanner).and_return(scanner)
+      parser.scan_patient
+      parser.options[:mobile].should eq false
+    end
+    
+    it "should raise exception :too_long_vmw_report" do
+        parser = VMWReportParser.new(:text => "x12M")
+        scanner = StringScanner.new "xxxxxx"
+        parser.stub!(:scanner).and_return(scanner)
+        expect{parser.scan_patient}.to raise_error(Exception, "too_long_vmw_report")
+        parser.options[:error].should eq true
+        parser.options[:error_message].should eq :too_long_vmw_report
+    end 
   end
-
-  describe "too long vmw report" do
-    it "should return error when report is longer than format" do
-      assert_parse_error "F123M0..", :too_long_vmw_report
+  
+  describe "parse" do
+    it "should parse message and created report" do
+      parser = VMWReportParser.new(:text => "F12M3.")
+      report = parser.parse
+      parser.options.should eq :text=>"F12M3.", :malaria_type=>"F", :age=>"12", :sex=>"M", :day=>3, :mobile=>true
+      parser.report.should be_kind_of VMWReport
     end
-
-    it "should return error when report is longer than format" do
-      assert_parse_error "F123M3.D", :too_long_vmw_report
-    end
-
-    it "should return error when report is longer than format" do
-      assert_parse_error "F123M2811111111", :too_long_vmw_report
-    end
-
-    it "should return error when report is longer than format" do
-      assert_parse_error "F123M0M", :too_long_vmw_report
-    end
-  end
-
-  it "should support a trailing period, which indicates the report corresponds to a mobile patient" do
-    @parser.parse "f123m0."
-    @parser.errors?().should == false
-    @parser.report.malaria_type.should == "f"
-    @parser.report.age.should == 123
-    @parser.report.sex.should == "Male"
-    @parser.report.day.should == 0
-    @parser.report.mobile == true
-  end
-
-  it "should add field :is_mobile_patient set as false if there's no trailing period" do
-    @parser.parse "F123M3"
-    @parser.errors?().should == false
-    @parser.report.day.should == 3
-    @parser.report.mobile.should == false
   end
 end

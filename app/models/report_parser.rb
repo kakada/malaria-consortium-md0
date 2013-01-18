@@ -28,12 +28,17 @@ class ReportParser
     scan_day
   end
   
+  def scanner
+    @scanner
+  end
+  
   def parse
     raise "Unable to parse. You need to override this method in sub class in MD0"
   end
   
   def scan_malaria_type
-    malaria_type = @scanner.scan /[FVMN]/i
+    malaria_type = self.scanner.scan /[FVMN]/i
+    
     if malaria_type.nil?
       raise_error :invalid_malaria_type
     else  
@@ -43,7 +48,7 @@ class ReportParser
   end
   
   def scan_age
-    age = @scanner.scan /\d+/
+    age = self.scanner.scan /\d+{1,3}/
     if age.nil?
       raise_error :invalid_age
     else
@@ -52,7 +57,7 @@ class ReportParser
   end
   
   def scan_sex
-    sex = @scanner.scan /[FM]/i
+    sex = self.scanner.scan /[FM]/i
     if(sex.nil?)
       raise_error :invalid_sex
     else  
@@ -62,7 +67,7 @@ class ReportParser
   end
   
   def scan_day
-     day = @scanner.scan /0|3|28/
+     day = self.scanner.scan /0|3|28/
      if day.nil?
        raise_error :invalid_day
      else
@@ -74,34 +79,7 @@ class ReportParser
   def raise_error message
     @options[:error] = true
     @options[:error_message] = message
-    raise message
+    raise message.to_s
   end
-
-#  def parse 
-#    message = @options[:text] 
-#    message = message.strip.gsub(/\s/, "").gsub(",", "")
-#    @scanner = StringScanner.new message
-#
-#    malaria_type = @scanner.scan /[FVMN]/i
-#    generate_error :invalid_malaria_type unless malaria_type
-#
-#    @scanner.scan /./ if error?
-#
-#    age = @scanner.scan /\d+/
-#    generate_error :invalid_age unless age
-#
-#    sex = @scanner.scan /[FM]/i
-#    generate_error :invalid_sex unless sex
-#
-#    day = @scanner.scan /0|3|28/
-#    generate_error :invalid_day unless day
-#
-#    @scanner.scan /\D*/ if error?
-#
-#    @options[:malaria_type] = malaria_type
-#    @options[:age] = age
-#    @options[:sex] = self.class.format_sex sex if sex
-#    @options[:day] = day.to_i
-#    self
-#  end
+  
 end

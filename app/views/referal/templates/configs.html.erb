@@ -1,11 +1,11 @@
 <h2>Templates</h2>
 <style>
-  .row-fluid div[class*="span"] {
+  .row div[class*="span"] {
         margin-left : 0px;
    }
 </style>
 <%= form_tag referal_templates_update_configs_path, :method => "post" do %>
-  <div class="row-fluid">
+  <div class="row" style="margin-left: 20px;" >
   <% Templates::KeyReferals.each do |key, value|  %>
     <div class="span4" style="background: #fff;margin-bottom: 20px;" >
           <b><%=label_tag "#{value[:label]}" %> </b>

@@ -6,8 +6,8 @@ class HCReportParser < ReportParser
   end
 
   def scan_village
-    village_code = @scanner.scan /^(\d{8}|\d{10})$/
-    if village_code.nil? || !@scanner.eos?
+    village_code = self.scanner.scan /^(\d{8}|\d{10})$/
+    if village_code.nil? || !self.scanner.eos?
       raise_error :invalid_village_code
     end 
     

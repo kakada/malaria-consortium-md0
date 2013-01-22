@@ -22,9 +22,13 @@ class Report < ActiveRecord::Base
   before_validation :upcase_strings
   before_save :complete_fields
 
+  def self.readable_sex sex
+     sex.downcase == "m" ? "Male" : "Female"
+  end
+  
   def self.process params
     report = self.decode params
-    report.save!
+    report.save(:validate => false)
     report.generate_alerts
   end
  
@@ -50,31 +54,6 @@ class Report < ActiveRecord::Base
     else
       valid_alerts
     end
-  end
-  
-  def valid_alerts
-    alerts = []
-    msg = single_case_message
-
-    # Always notify the HC about the new case (TODO: what if it's already a HC report?)
-    alerts += health_center.create_alerts(msg, :except => sender)
-    type = alert_triggered
-
-    case type
-    when :single
-      alerts += od.create_alerts msg
-    when :village
-      alerts += od.create_alerts village.aggregate_report(Time.last_week)
-    when :health_center
-      alerts += od.create_alerts health_center.aggregate_report(Time.last_week)
-    end
-
-    # if alert message if created for od then save then specify the report is being triggered to od
-    if !type.nil?
-      self.trigger_to_od =  true
-      save!
-    end
-    alerts
   end
   
   def translate_message_for key
@@ -150,25 +129,6 @@ class Report < ActiveRecord::Base
   def self.from_app
     "malariad0://system"
   end
-
-  def alert_triggered
-
-    if village
-      village_threshold = Threshold.find_for village
-      return :village  if (village_threshold && village.reports_reached_threshold(village_threshold))
-    end
-
-    hc_threshold = Threshold.find_for health_center
-    if hc_threshold
-      return :health_center if health_center.reports_reached_threshold hc_threshold
-    end
-
-    if village_threshold.nil? && hc_threshold.nil?
-      return :single
-    end
-    return nil
-  end
-  
 
   def self.report_cases options
 
@@ -267,7 +227,16 @@ class Report < ActiveRecord::Base
 
   def complete_fields
     self.malaria_type = self.malaria_type.nil? ? nil : self.malaria_type.upcase
-    self.health_center = !village_id.nil? ? village.parent : (place.class.to_s == "HealthCenter" ? place: nil)
+    
+    if self.class == VMWReport
+      self.village = self.place
+      self.health_center = self.place.parent
+    elsif self.class == HealthCenterReport
+      self.health_center = self.place
+    end
+    
+    #self.health_center = !village_id.nil? ? village.parent : (place.class.to_s == "HealthCenter" ? place: nil)
+    
     self.od = health_center.parent if health_center_id?
     self.province = od.parent if od_id?
     self.country = province.parent if province_id?

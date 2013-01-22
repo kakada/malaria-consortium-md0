@@ -22,9 +22,9 @@ module Referal
     end
     
     # return an Array of hashes or a Hash
-    def self.parse params   
+    def self.process params   
       report = Referal::Report.decode(params)
-      report.save!
+      report.save(:validate => false)
       report.generate_alerts
     end
     

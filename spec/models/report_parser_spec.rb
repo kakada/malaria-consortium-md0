@@ -55,7 +55,7 @@ describe ReportParser do
         scanner = StringScanner.new sex
         parser.stub!(:scanner).and_return(scanner)
         parser.scan_sex
-        parser.options[:sex].should eq sex
+        parser.options[:sex].should eq Report.readable_sex(sex)
       end
     end
     it "should raise exception invalid_sex" do
@@ -93,7 +93,7 @@ describe ReportParser do
     it "should return correct data" do
       parser = ReportParser.new :text => "M12F3"
       parser.scan
-      parser.options.should eq :text=>"M12F3", :malaria_type=>"M", :age=>"12", :sex=>"F", :day=>3
+      parser.options.should eq :text=>"M12F3", :malaria_type=>"M", :age=>"12", :sex=>"Female", :day=>3
     end
   end
   

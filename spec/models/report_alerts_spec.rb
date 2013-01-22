@@ -93,7 +93,10 @@ describe Report do
 
     alerts = report.generate_alerts
     alerts.should =~ [
-      {:to => od_user.phone_number.with_sms_protocol, :body => "#{report.get_full_malaria_type} #{report.malaria_type} #{report.sex} #{report.age} #{report.village.name} #{report.sender.phone_number}"}
+      { :to => od_user.phone_number.with_sms_protocol , 
+        :body => "#{report.get_full_malaria_type} #{report.malaria_type} #{report.sex} #{report.age} #{report.village.name} #{report.sender.phone_number}", 
+        :from=>"malariad0://system" , 
+      }
     ]
   end
 
@@ -104,7 +107,9 @@ describe Report do
 
     alerts = report.generate_alerts
     alerts.should =~ [
-      {:to => od_user.phone_number.with_sms_protocol, :body => "#{report.get_full_malaria_type} #{report.malaria_type} #{report.sex} #{report.age} #{report.village.name} #{report.place.name} #{report.sender.phone_number}"}
+      { :to => od_user.phone_number.with_sms_protocol, 
+        :from=>"malariad0://system" ,
+        :body => "#{report.get_full_malaria_type} #{report.malaria_type} #{report.sex} #{report.age} #{report.village.name} #{report.place.name} #{report.sender.phone_number}"}
     ]
   end
 
@@ -114,14 +119,22 @@ describe Report do
     Threshold.create! :place => village, :place_class => Village.name, :value => 2
     Setting[:aggregate_village_cases_template] = '{cases} ({f_cases}, {v_cases}) {village}'
 
+    
+    
     VMWReport.make(:village => village, :malaria_type => 'V').generate_alerts.should =~ []
 
     VMWReport.make(:village => village, :malaria_type => 'F').generate_alerts.should =~ [
-      {:to => od_user.phone_number.with_sms_protocol, :body => "2 (1, 1) #{village.name}"}
+      { :to => od_user.phone_number.with_sms_protocol, 
+        :body => "2 (1, 1) #{village.name}",
+        :from=>"malariad0://system"
+      }
     ]
 
     VMWReport.make(:village => village, :malaria_type => 'F').generate_alerts.should =~ [
-      {:to => od_user.phone_number.with_sms_protocol, :body => "3 (2, 1) #{village.name}"}
+      {:to => od_user.phone_number.with_sms_protocol, 
+       :body => "3 (2, 1) #{village.name}",
+       :from=>"malariad0://system"
+     }
     ]
   end
 
@@ -134,14 +147,26 @@ describe Report do
     VMWReport.make(:village => village, :malaria_type => 'V').generate_alerts.should =~ []
 
     VMWReport.make(:village => village, :malaria_type => 'F').generate_alerts.should =~ [
-      {:to => od_user.phone_number.with_sms_protocol, :body => "2 (1, 1, 1, 0, 1) #{village.parent.name}"}
+      {
+        :to => od_user.phone_number.with_sms_protocol, 
+        :body => "2 (1, 1, 1, 0, 1) #{village.parent.name}",
+        :from=>"malariad0://system"
+        
+     }
     ]
      VMWReport.make(:village => village, :malaria_type => 'M').generate_alerts.should =~ [
-      {:to => od_user.phone_number.with_sms_protocol, :body => "3 (2, 1, 1, 1, 1) #{village.parent.name}"}
+      {:to => od_user.phone_number.with_sms_protocol, 
+       :body => "3 (2, 1, 1, 1, 1) #{village.parent.name}",
+       :from=>"malariad0://system"
+      }
     ]
      
     VMWReport.make(:village => village, :malaria_type => 'F').generate_alerts.should =~ [
-      {:to => od_user.phone_number.with_sms_protocol, :body => "4 (3, 1, 2, 1, 1) #{village.parent.name}"}
+      {
+        :to => od_user.phone_number.with_sms_protocol, 
+        :body => "4 (3, 1, 2, 1, 1) #{village.parent.name}",
+        :from=>"malariad0://system"
+      }
     ]
   end
 
@@ -157,7 +182,11 @@ describe Report do
     it "should be not be triggered when disabled" do
       Setting[:provincial_alert] = '0'
 
-      messages = Report.process :from => village_user.address, :body => 'F23F0'
+      messages = Report.process :sender => village_user, :text => 'F23F0', :place => village
+      
+      Setting[:successful_non_mobile_village_report] = "Succesfully report : {malaria_type} {age} {sex} {day}"
+      Setting[:successful_mobile_village_report] = "Succesfully report : {malaria_type} {age} {sex} {day}"
+      
       province_messages = messages.select{|msg| msg[:to] == province_user.address}
       province_messages.should be_empty
     end

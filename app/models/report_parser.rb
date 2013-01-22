@@ -61,7 +61,7 @@ class ReportParser
     if(sex.nil?)
       raise_error :invalid_sex
     else  
-      @options[:sex] = sex
+      @options[:sex] = Report.readable_sex(sex)
     end
     sex
   end

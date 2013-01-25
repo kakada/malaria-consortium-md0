@@ -26,7 +26,7 @@
   <% end %>
 </div>  
 
-<div class="row-fluid">
+<div class="row-fluid ">
   <% if !@report.nil? %>
     <h3> Report</h3>
     <% @report.attributes.each do |name, value|  %>
@@ -44,7 +44,7 @@
   
     
 
-    
+<div class="row-fluid well">    
 <h3> Test </h3>
 
 <%= form_tag referal_reports_test_path do %>
@@ -69,3 +69,4 @@
   <%end %>
 
 <% end %>
+</div>    

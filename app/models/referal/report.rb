@@ -52,10 +52,12 @@ module Referal
     def parse_quality
        message_format = (self.type == "Referal::ClinicReport") ? Referal::MessageFormat.clinic : Referal::MessageFormat.health_center
        formats = message_format.format.split(Referal::MessageFormat::Separator)
+
+       
        quality = 0 
        formats.each do |item|
          field = Referal::MessageFormat.raw_format(item)
-         quality = quality+1  if !self.send(field).nil?     
+         quality = quality+1  if !self.send(field.downcase).nil?     
        end
        return (100*quality) / formats.count
     end

@@ -42,7 +42,7 @@ describe HCReportParser do
       parser = HCReportParser.new(:text => "F12M012345678")
       parser.parse
       parser.options.should eq :text=>"F12M012345678", :malaria_type=>"F", 
-                               :age=>"12", :sex=>"M", :day=>0, :village=>@village
+                               :age=>"12", :sex=>"Male", :day=>0, :village=>@village
       parser.report.should be_kind_of HealthCenterReport                       
     end
   end

@@ -1,0 +1,71 @@
+<% content_for :breadcrumb do %>
+  <%=  breadcrumb [
+  		{ "Report" => referal_reports_path},
+                { "Test" => nil}
+  	] %>
+<% end %>
+
+<div class="row-fluid">
+  <% if !@messages.nil? && @messages.size %>
+    <h3> Messages </h3>
+    <table class="table">
+      <tr>
+        <td>To</td>
+        <td>Body</td>
+        <td>From</td>
+      </tr>
+    
+      <% @messages.each do |message| %>
+        <tr>
+          <td><%= message[:to] %> </td>
+          <td><%= message[:body] %></td>
+          <td><%= message[:from] %></td>
+        </tr>
+      <%end %>
+     </table>  
+  <% end %>
+</div>  
+
+<div class="row-fluid">
+  <% if !@report.nil? %>
+    <h3> Report</h3>
+    <% @report.attributes.each do |name, value|  %>
+        <div class="span4">
+          <span class="label label-info"><%= name %> </span> 
+          <span> : </span>
+          <% if !value.blank? %>
+            <span class="badge badge-important "><%= value %> </span> 
+          <% end %>
+        </div>
+        
+    <% end %>
+  <%end%>
+</div>  
+  
+    
+
+    
+<h3> Test </h3>
+
+<%= form_tag referal_reports_test_path do %>
+
+  <%= tag_row do %>
+    <%=  label_tag  "from" %>
+    <%=  text_field_tag "from", @from %>
+  <%end%>
+
+  <%= tag_row do %>
+    <%=  label_tag  "body" %>
+    <%=  text_field_tag "body", @body %>
+  <%end%>
+
+  <%= tag_row do %>
+    <%=  label_tag  "guid" %>
+    <%=  text_field_tag "guid", @guid %>
+  <%end%>
+
+  <%= tag_row do %>
+    <input type="submit" class="btn btn-danger" value="Test" name="sumbit" />
+  <%end %>
+
+<% end %>

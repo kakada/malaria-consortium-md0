@@ -19,18 +19,6 @@ describe User do
     User.count.should == 0
   end
 
-  it "should not be able to report unless she's in a health center or village" do
-    [User.make, User.make(:in_od), User.make(:in_province)].each do |u|
-      u.can_report?().should be_false
-    end
-  end
-
-  it "should be able to report if she's in a health center or village" do
-    [User.make(:in_village), User.make(:in_health_center)].each do |u|
-      u.can_report?().should be_true
-    end
-  end
-
   it "should provide the correct parser" do
     parser = User.make(:in_health_center).report_parser
     parser.class.should == HCReportParser
@@ -55,7 +43,50 @@ describe User do
     User.count.should == 2
   end
 
-
+  describe "can_report?" do
+     it "should return false if user status inactive can not report" do
+       user = User.make :status => User::STATUS_DEACTIVE
+       user.can_report?.should eq false
+     end
+     
+     it "should return false if user have no place can not report" do
+       user = User.make :status => User::STATUS_ACTIVE
+       user.can_report?.should eq false
+     end
+     
+     it "should return false if user only from Mdo APP but report for clinic" do
+       user = User.make :status => User::STATUS_ACTIVE, :apps => [User::APP_MDO], :place => OD.make
+       user.can_report?.should eq false
+     end
+     
+     it "should return false if user only from Referral APP but report from village " do
+       user = User.make :status => User::STATUS_ACTIVE, :apps => [User::APP_REFERAL], :place => Village.make
+       user.can_report?.should eq false
+     end
+     
+     it "should return true for user from md0+referral from village, healthcenter, od" do
+       [ User.make(:status => User::STATUS_ACTIVE, :apps => [User::APP_REFERAL, User::APP_MDO], :place => HealthCenter.make),
+         User.make(:status => User::STATUS_ACTIVE, :apps => [User::APP_REFERAL, User::APP_MDO], :place => OD.make),
+         User.make(:status => User::STATUS_ACTIVE, :apps => [User::APP_MDO,User::APP_REFERAL],  :place => Village.make),
+       ].each do |user|
+          user.can_report?.should eq true
+       end
+     end
+     
+     it "should return true " do
+       [ User.make(:status => User::STATUS_ACTIVE, :apps => [User::APP_REFERAL], :place => HealthCenter.make),
+         User.make(:status => User::STATUS_ACTIVE, :apps => [User::APP_REFERAL], :place => OD.make),
+         User.make(:status => User::STATUS_ACTIVE, :apps => [User::APP_MDO], :place => HealthCenter.make),
+         User.make(:status => User::STATUS_ACTIVE, :apps => [User::APP_MDO], :place => Village.make)
+       ].each do |user|
+       
+       user.can_report?.should eq true
+     end
+         
+       
+     end
+    
+  end
 
   describe "intended place code" do
     it "should try to find place by code before saving if intended place code is not nil" do
@@ -462,7 +493,84 @@ describe User do
       user.place_class.should == "OD"
 
     end
-
     
+    
+    describe ".apps refered in [APP_MDO, APP_REFERAL]" do
+       
+       it "should set_app_mask for both" do
+          user = User.new :apps => [User::APP_REFERAL, User::APP_MDO]
+          user.apps_mask.should eq 3
+       end
+       it "should set_app_mask for second element" do
+          user = User.new :apps => [User::APP_MDO]
+          user.apps_mask.should eq 1
+       end
+       
+       it "should set_app_mask for second element" do
+          user = User.new :apps => [User::APP_REFERAL]
+          user.apps_mask.should eq 2
+       end
+    end
+    
+    describe "#selected_app" do
+      it "should use apps_mask and return User apps [APP_MDO, APP_REFERAL] " do
+        User.selected_apps(3).should eq [User::APP_MDO, User::APP_REFERAL]
+      end
+      it "should use apps_mask and return User apps [APP_MDO, APP_REFERAL] " do
+        User.selected_apps(2).should eq [User::APP_REFERAL]
+      end
+      
+      it "should use apps_mask and return User apps [APP_MDO, APP_REFERAL] " do
+        User.selected_apps(1).should eq [User::APP_MDO]
+      end
+    end
+    
+    
+    describe "is_from_both?" do
+      it "should return true for user from both app" do
+        user = User.new :apps =>[User::APP_MDO, User::APP_REFERAL]
+        user.is_from_both?.should eq true
+      end
+      
+      it "should return false if user is not from both" do
+        [ User.new(:apps =>[User::APP_MDO]),
+         User.new(:apps =>[User::APP_REFERAL])
+         ].each do |user|
+           user.is_from_both?.should eq false
+         end
+      end
+    end
+    
+    describe "is_form_md0?" do
+      it "should return true if user from md0" do
+        [ User.new(:apps =>[User::APP_MDO, User::APP_REFERAL]),
+          User.new(:apps =>[User::APP_MDO])
+        ].each do |user|
+             user.is_from_md0?.should eq true
+        end
+      end
+      
+      it "should return false if user not from md0" do
+         user = User.new(:apps =>[User::APP_REFERAL])
+         user.is_from_md0?.should eq false
+      end
+    end
+    
+    describe "is_form_referral?" do
+      it "should return true if user from referral" do
+        [ User.new(:apps =>[User::APP_MDO, User::APP_REFERAL]),
+          User.new(:apps =>[User::APP_REFERAL])
+        ].each do |user|
+          user.is_from_referal?.should eq true
+        end
+      end
+      
+      it "should return false if user not from referral" do
+         user = User.new(:apps =>[User::APP_MDO])
+         user.is_from_referal?.should eq false
+      end
+      
+    end
+        
   end
 end

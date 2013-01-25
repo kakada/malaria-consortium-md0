@@ -69,7 +69,7 @@ describe MessageProxy do
   end
 
   describe "Generate error " do
-    it "should save error report to MD0 and Referal when no sender was found" do
+    it "should not save any report when no error with sender not found" do
       options = { :sender => nil, 
                   :error => true ,
                   :to => "9087726", 
@@ -86,8 +86,8 @@ describe MessageProxy do
           
       message = proxy.generate_error options
       
-      Report.count.should eq(md0+1)
-      Referal::Report.count.should eq(referal+1)
+      Report.count.should eq(md0)
+      Referal::Report.count.should eq(referal)
       
       message.should eq([ { :from => MessageProxy.app_name, 
                             :body => MessageProxy.unknown_user, 
@@ -95,7 +95,7 @@ describe MessageProxy do
     end
         
     
-    it "should save error report to MD0 for user from MD0 app " do
+    it "should save error report to MD0 for user from MD0 app" do
       
       options = { :sender => @hc_user_disable_both, 
                   :place  => @hc_user_disable_both.place,
@@ -132,8 +132,8 @@ describe MessageProxy do
      
       #proxy.stub!(:parameterize).and_return(options)
      
-      count       = Referal::Report.count
-      message = proxy.generate_error options
+      count     = Referal::Report.count
+      message   = proxy.generate_error options
       
       
       

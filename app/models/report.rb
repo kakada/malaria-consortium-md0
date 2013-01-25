@@ -29,7 +29,7 @@ class Report < ActiveRecord::Base
   def self.process params
     report = self.decode params
     report.save(:validate => false)
-    report.generate_alerts
+    report
   end
  
   

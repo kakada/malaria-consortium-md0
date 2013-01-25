@@ -3,6 +3,7 @@ class Referal::ClinicReport < Referal::Report
   
   # return an Array of hashes
   def valid_alerts
+    
     alerts = []
     alert_hcs = []
 

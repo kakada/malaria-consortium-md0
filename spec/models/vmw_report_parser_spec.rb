@@ -31,7 +31,7 @@ describe VMWReportParser do
     it "should parse message and created report" do
       parser = VMWReportParser.new(:text => "F12M3.")
       report = parser.parse
-      parser.options.should eq :text=>"F12M3.", :malaria_type=>"F", :age=>"12", :sex=>"M", :day=>3, :mobile=>true
+      parser.options.should eq :text=>"F12M3.", :malaria_type=>"F", :age=>"12", :sex=>"Male", :day=>3, :mobile=>true
       parser.report.should be_kind_of VMWReport
     end
   end

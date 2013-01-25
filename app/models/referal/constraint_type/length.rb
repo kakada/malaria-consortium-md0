@@ -19,10 +19,11 @@ module Referal
       @errors  = [] 
     end
     
-    def validate value, field      
-      @value   = value.to_i
+    def validate value, field   
+      @value   = value
       @field   = field
-      @errors << translate_error if(@value.to_s.size != @length)
+      
+      @errors << translate_error if(@value.to_s.size != @length.to_i)
       @errors.size == 0 ? true : false
     end
     

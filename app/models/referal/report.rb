@@ -25,7 +25,20 @@ module Referal
     def self.process params   
       report = Referal::Report.decode(params)
       report.save(:validate => false)
-      report.generate_alerts
+      report
+    end
+    
+    def self.health_centers
+      where(["type = :type", {:type => "Referal::HCReport"}])
+    end
+    
+    def self.clinics
+      where(["type = :type", {:type => "Referal::ClinicReport"}])
+    end
+    
+    def type
+       return "Clinic" if self.class.to_s.include? "Clinic"
+       return "HC"
     end
     
     #return Report object
@@ -34,6 +47,7 @@ module Referal
       report = parser.parse
       report
     end
+    
     
     def parse_quality
        message_format = (self.type == "Referal::ClinicReport") ? Referal::MessageFormat.clinic : Referal::MessageFormat.health_center
@@ -85,7 +99,8 @@ module Referal
       # if template not found then get from the template settings
       template = Setting[key] if template.nil?
       template
-    end
+    end   
+    
     
     # abstract the report to raise exception
     def valid_alerts

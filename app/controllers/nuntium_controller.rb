@@ -5,35 +5,10 @@ class NuntiumController < ApplicationController
   around_filter :transact
 
   def receive_at
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    begin
-      sender = User.check_user params[:from]
-      if sender.is_from_md0?
-        render :json => Report.process(params)
-      elsif sender.is_from_referal?
-        begin
-          if(sender.is_health_center_role?)
-              Reply.process(sender, params)
-          elsif sender.is_private_provider_role?
-              Clinic.process(sender, params)
-          end
-        rescue Exception => e
-          
-        end
-      end
-      
-    rescue Exception => e
-      # e.message
-    end
+    options = params.slice(:from, :body, :guid)
+    message_proxy = MessageProxy.new options
+    report = message_proxy.process
+    report.generate_alerts
   end
 
   private

@@ -1,0 +1,71 @@
+<% content_for :breadcrumb do %>
+  <%=  breadcrumb [
+  		{ "Report" => nil}
+  	] %>
+<% end %>
+
+<h3> List of Referral report </h3>
+
+<div class="row-fluid">
+  <div class="span8"><%= will_paginate @reports, :gap => "<li><span>...</span></li>".html_safe %></div>  
+  <div class="span4" style="text-align: right;">
+    <%= form_tag referal_reports_path, :method => "get" do %>
+      <%= select_tag :type, options_for_select([
+                                                [ "All", ""], 
+                                                [ "Clinic", "ClinicReport"],
+                                                [ "HealthCenter", "HealthCenterReport"]
+                                              ], params[:type]), :id => "referal_report_type"   %> 
+    <% end %>
+  </div>
+</div>
+
+<table class="table">
+  
+  <tr>
+    <th>SlipCode</td>
+    <th>From</td>
+    <th>Text</td>
+    <th>Ignored</td>
+    <th>Error</td>
+    <% 5.times.each do |i| %>
+    <th class="dym_field">
+         <%  
+           field = Referal::Field.find_by_position(i+1)
+         %>
+         <%= field.nil? ? Referal::Field.columnize(i+1) : field.meaning %>
+       </th>
+    <% end %>
+    
+    <th>Action</th>
+   </tr>
+   <% @reports.each do |report| %>
+      <tr>
+          <td><%= report.slip_code %></td>
+          <td><%= report.type %> </td>
+          <td title="<%= report.text %>"><%= truncate(report.text, :length => 20) %> </td>
+          <td><%= report.ignored ? "Yes": "No" %> </td>
+          <td title="<%=report.error_message%>"><%= truncate(report.error_message,:length => 20) %> </td>
+
+          <% 5.times.each do |i| %>
+            <td class="dym_field">
+                <%= report.send("field#{i+1}")  %>
+            </td>
+          <% end %>
+            <td> </td>  
+        </tr>
+    <% end %>
+    
+  
+</table>
+<%= content_for :js do %>
+<script> 
+  function changeReportType(){
+    $("#referal_report_type").change(function(){
+       this.form.submit();
+    });
+  }
+  $(function(){
+    changeReportType();
+  });
+</script>
+<% end %>

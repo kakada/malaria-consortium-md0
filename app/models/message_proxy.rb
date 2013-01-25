@@ -1,14 +1,17 @@
 class MessageProxy 
  attr_accessor :params
+ attr_accessor :report
   
  def initialize options
     @params = { :sender_address => options[:from] ,
                 :text           => options[:body]  ,
                 :nuntium_token  => options[:guid] }
+    @report = nil          
  end   
  
  def analyse_number
     sender = User.find_by_phone_number @params[:sender_address]  
+    
     if sender.nil?
        @params[:error] = true
        @params[:error_message] = MessageProxy.unknown_user
@@ -25,21 +28,23 @@ class MessageProxy
  end 
  
  def generate_error options
+
+    
     if !options[:sender] 
-        # decide errors for MD0 and Referal
-        save_mdo_error
-        save_referal_error
+        # no sender dont_store any report
+        #save_mdo_error
+        #save_referal_error
     else #  md0 has higher precedence 
         if options[:sender].is_from_md0?
-          save_mdo_error
+           save_mdo_error
         elsif options[:sender].is_from_referal?
-          save_referal_error
+           save_referal_error
         end
     end
     MessageProxy.reply_error options[:error_message] , options[:sender_address]
  end
  
- def check 
+ def process 
     analyse_number
     return generate_error(@params) if @params[:error]
     return process_report
@@ -47,14 +52,14 @@ class MessageProxy
   
   def process_report 
     if @params[:sender].is_from_both?
-      report = guess_type @params
-      report.save!
-      report.generate_alerts
+      @report = guess_type @params
+      @report.save!
     elsif @params[:sender].is_from_md0?
-      Report::process(@params)
+      @report = Report::process(@params)
     elsif @params[:sender].is_from_referal?
-      Referal::Report.process(@params)
+      @report = Referal::Report.process(@params)
     end
+    @report.generate_alerts
   end
   
   def guess_type options
@@ -78,13 +83,14 @@ class MessageProxy
   end
   
   def save_referal_error
-    report = Referal::Report.new @params
-    report.save(:validate => false) 
+    @report = Referal::Report.new @params
+    @report.save(:validate => false) 
+    
   end
   
   def save_mdo_error
-    report = Report.new @params
-    report.save(:validate => false) 
+    @report = Report.new @params
+    @report.save(:validate => false) 
   end
   
   def self.reply_error error_message, to

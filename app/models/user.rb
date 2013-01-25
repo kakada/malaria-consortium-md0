@@ -21,15 +21,37 @@ class User < ActiveRecord::Base
   
   APPS = [APP_MDO, APP_REFERAL]
   
-  Status = [["Deactive", 0 ], ["Active", 1]]
+  STATUS_DEACTIVE = 0
+  STATUS_ACTIVE = 1
+  
+  
+  Status = [[ "Deactive" , STATUS_DEACTIVE ], ["Active", STATUS_ACTIVE]]
 
   
   def apps=(selected_apps)
-    self.apps_mask = (selected_apps & APPS).map{|app| 2**APPS.index(app) }.sum
+    # mark (APPS && selected_apps)  != (selected_apps && APPS)
+    self.apps_mask = ( APPS && selected_apps  ).map{|app| 2**APPS.index(app) }.sum
   end
+  
 
   def apps
     User.selected_apps self.apps_mask
+  end
+  
+  def self.selected_apps apps_mask
+    # 1 -> 1  -> 1  -> 1 APP_MD0
+    # 2-> 10  -> 10 -> 1 APP_REFERAL, 0 APP_MDO
+    # 3 -> 11 -> 11 -> 1 APP_REFERAL, 1 APP_MDO, 
+    bit_apps = apps_mask.to_s(2).reverse
+    selecteds = []
+    
+    bit_apps.size.times do |i| 
+      if bit_apps[i] == "1"
+        selecteds << APPS[i]
+      end
+    end
+    selecteds = [APP_MDO] if selecteds.empty?
+    selecteds
   end
   
   def is_village_role?
@@ -45,31 +67,18 @@ class User < ActiveRecord::Base
   end
   
   def is_from_both?
-    (self.apps_mask & 3) != 0
+    # unless all of them are present
+    return (self.apps_mask & 3) == 3
   end
   
   def is_from_referal?
-    (self.apps_mask & 2) != 0
+    #al least present once
+    return (self.apps_mask & 2) != 0
   end
   
   def is_from_md0?
-    (self.apps_mask & 1) != 0
-  end
-  
-  def self.selected_apps apps_mask
-    # 1 -> 1  -> 1  -> 1 APP_MD0
-    # 2-> 10  -> 01 -> 0 APP_MDO, 1 APP_REFERAL
-    # 3 -> 11 -> 11 -> 1 APP_MDO, 1 APP_REFERAL
-    bit_apps = apps_mask.to_s(2).reverse
-    selecteds = []
-    
-    bit_apps.size.times do |i| 
-      if bit_apps[i] == "1"
-        selecteds << APPS[i]
-      end
-    end
-    selecteds = [APP_MDO] if selecteds.empty?
-    selecteds
+    #al least present once
+    return (self.apps_mask & 1) != 0
   end
   
   class << self
@@ -133,7 +142,23 @@ class User < ActiveRecord::Base
   end
 
   def can_report?
-    place_id && self.status && (place.village? || place.health_center? || place.od?)
+    if place && self.status
+      
+      if self.is_from_both?
+         return place.village? || place.health_center? || place.od?
+      end
+      
+      if self.is_from_md0?
+         return place.village? || place.health_center?
+      end  
+      
+      if self.is_from_referal?  
+         return place.health_center? || place.od?
+      end
+      return false
+    end
+    
+    return false
   end
 
   def report_parser

@@ -1,0 +1,13 @@
+user    :   referral_system
+pwd     :   dev c0der
+
+app     : Referral
+pwd     : dev c0der
+url     : http://110.74.204.121:3030
+
+
+channel :
+
+name   : referral_channel
+app    : Referral
+pwd    : dev c0der

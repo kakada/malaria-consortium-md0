@@ -34,7 +34,7 @@ Local::Application.routes.draw do
     post "message_formats/save" ,   :to => "message_formats#save"
     get  "message_formats/test" ,   :to => "message_formats#test"
     
-    match "reports/test",  :to => "reports#test"
+    match "reports/simulate",  :to => "reports#simulate"
     
     resources :reports
     resources :message_formats

@@ -19,7 +19,7 @@ module Referal
     end
     
     
-    def test
+    def simulate
       @from = params[:from]
       @body = params[:body]
       @guid = params[:guid]

@@ -39,6 +39,11 @@
   <% end %>
     
   <div class="container">
+      <div class="row-fluid"> 
+            <% if content_for? :breadcrumb %>
+                  <%= yield :breadcrumb %>
+            <% end %>
+      </div>
 
       <div class="row-fluid">
         <%
@@ -50,9 +55,7 @@
 	<%= render  "shared/sidebar_left" %>
         <div class="span<%=span%>" style="min-height: 300px;"> 
           
-          <% if content_for? :breadcrumb %>
-    		<%= yield :breadcrumb %>
-          <% end %>
+          
           
           <%= yield :flash %>
           

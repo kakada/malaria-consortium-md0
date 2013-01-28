@@ -29,7 +29,7 @@
 
   <%= render "layouts/referal/top_menu" %>
 	
-  <% content_for :flash do %>
+  <%= content_for :flash do %>
     <% flash.each do |key, value| %>
         <div class="alert alert-success alert-<%="#{key}" %>" > 
           <button type="button" class="close" data-dismiss="alert">&times;</button>

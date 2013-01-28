@@ -29,8 +29,10 @@ class User < ActiveRecord::Base
 
   
   def apps=(selected_apps)
+    filter = ( APPS && selected_apps  )
+    filter =  filter.select{|item| !item.blank?}
     # mark (APPS && selected_apps)  != (selected_apps && APPS)
-    self.apps_mask = ( APPS && selected_apps  ).map{|app| 2**APPS.index(app) }.sum
+    self.apps_mask = filter.map{|app| 2**APPS.index(app) }.sum
   end
   
 

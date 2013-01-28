@@ -36,7 +36,7 @@
   </table>
 </div>
 <script type="text/javascript">
-$("#fancy-div-detail > div.pagination > a ").live("click",function(){
+$(document.body).delegate("#fancy-div-detail > div.pagination > a ","click",function(){
   url = this.href;
   $.fancybox.showActivity();
   $.ajax({
@@ -44,7 +44,7 @@ $("#fancy-div-detail > div.pagination > a ").live("click",function(){
           cache	: false,
           url	: url ,
           success: function(content) {
-                  $.fancybox(content);
+            $.fancybox(content);
           }
   });
   return false;

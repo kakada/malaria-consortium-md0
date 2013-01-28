@@ -29,8 +29,10 @@ module Referal
         @messages = message_proxy.process
         @messages = [@messages] if @messages.class != Array
         @report   = message_proxy.report 
-        @report.ignored =true
-        @report.save
+        if(@report)
+          @report.ignored =true
+          @report.save
+        end
       end
     end
   end

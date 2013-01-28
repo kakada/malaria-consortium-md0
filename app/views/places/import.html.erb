@@ -29,7 +29,7 @@
 			}
 	    });
 	});
-        $(".confirm_import").live("click", function(){
+        $(document.body).delegate(".confirm_import", "click", function(){
             loading(null, "Importing data to server ...");
             $("#form_import").submit();
             return false;

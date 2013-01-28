@@ -30,7 +30,7 @@
 			}
 	    });
 
-            $("#confirm_import").live("click", function(){
+            $(document.body).delegate("#confirm_import","click", function(){
               loading(document.body, "Importing user to the system");
             });
 

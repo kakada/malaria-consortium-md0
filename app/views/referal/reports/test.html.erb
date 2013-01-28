@@ -7,7 +7,7 @@
 
 <div class="row-fluid">
   <% if !@messages.nil? && @messages.size %>
-    <h3> Messages </h3>
+    <h3> SMS(s) sent </h3>
     <table class="table">
       <tr>
         <td>To</td>
@@ -28,7 +28,7 @@
 
 <div class="row-fluid ">
   <% if !@report.nil? %>
-    <h3> Report</h3>
+    <h3> Report Generated</h3>
     <% @report.attributes.each do |name, value|  %>
         <div class="span4">
           <span class="label label-info"><%= name %> </span> 
@@ -45,7 +45,7 @@
     
 
 <div class="row-fluid well">    
-<h3> Test </h3>
+<h3> Simulate </h3>
 
 <%= form_tag referal_reports_test_path do %>
 

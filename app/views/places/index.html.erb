@@ -24,7 +24,7 @@
            $('.search').watermark('Place Code, Place Name , Place Name KH');
         })
         function delegatePaginationItem(){
-          $("div.pagination a").live("click",function(){
+          $(document.body).delegate("div.pagination a","click",function(){
             loading(false, loadingMessage);
           });
         }

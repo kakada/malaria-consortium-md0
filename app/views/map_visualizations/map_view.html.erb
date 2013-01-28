@@ -43,7 +43,7 @@
 
      function buildBCElement(){
        var bcElement = $(".bcElement");
-       bcElement.live("click",function(){
+       $(document.body).delegate(bcElement,"click",function(){
          getPushPins(this.rel);
          return false;
        })

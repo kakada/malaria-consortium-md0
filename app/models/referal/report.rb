@@ -16,9 +16,14 @@ module Referal
     
     before_save :fill_in_data
     
+    REPORT_STATUS_CONFIRMED = 1
+    
+    
     
     def fill_in_data
-      self.slip_code = "#{self.od_name}#{self.book_number}#{self.code_number}"
+      if self.slip_code.nil?
+        self.slip_code = "#{self.od_name}#{self.book_number}#{self.code_number}"
+      end
     end
     
     # return an Array of hashes or a Hash

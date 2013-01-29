@@ -31,6 +31,8 @@ describe Referal::HCReport do
     Setting[:referal_health_center_clinic]        = "A msg from HC: {health_center} with Slip: {slip_code}"
     Setting[:referal_health_center_health_center] = "Your msg has been send to {od} with Slip: {slip_code} Original message: {original_message}"
     
+    Referal::ClinicReport.create! :slip_code => "100100"
+    
     hc_report = Referal::HCReport.create! :place         => @hc1 ,
                                           :sender        => @hc_user21 ,
                                           :slip_code     => "100100",
@@ -46,5 +48,27 @@ describe Referal::HCReport do
       ]
                                     
   end
-
+  
+  describe "create" do
+    it "should raise error when clinic slip_code does not exist" do
+      hc_report = Referal::HCReport.new :slip_code => "KPS001001"
+      count = Referal::HCReport.count
+      
+      expect{hc_report.save}.to raise_error(Exception, "slip_code does not exist in clinic report")
+      Referal::HCReport.count.should eq count
+    end
+    
+    it "should save hc report when there is a clinic slip_code " do
+      hc_report = Referal::HCReport.new :slip_code => "KPS001001"
+      Referal::ClinicReport.create! :slip_code => "KPS001001"
+      
+      count = Referal::HCReport.count
+      hc_report.save.should eq true
+      
+      Referal::HCReport.count.should eq count+1
+      
+      clinic_report = Referal::ClinicReport.find_by_slip_code "KPS001001"
+      clinic_report.status.should eq Referal::Report::REPORT_STATUS_CONFIRMED
+    end
+  end
 end

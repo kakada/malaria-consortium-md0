@@ -34,8 +34,7 @@ class Referal::Parser
     raise "Unable to parse. You need to define this method in sub class"
   end
   
-  def scan_slip_code text
-    
+  def scan_slip_code text    
     scanner = create_scanner(text)
     od_name =  scanner.scan(/^[a-zA-Z]+/i)
     analyse_od_name(od_name)

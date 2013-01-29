@@ -38,14 +38,35 @@ describe Referal::HCParser do
      it "should parse message successfully" do
        message_format = Referal::MessageFormat.create! :format => "{phone_number}.{slip_code}.{Field1}.{Field2}", :sector => Referal::MessageFormat::TYPE_HC
       
+       Referal::ClinicReport.create!(:slip_code => "KPS001100")
+      
        parser = Referal::HCParser.new({:text=>"09712345678.KPS001100.25.Male", :sender => @user})
        parser.message_format = message_format 
        parser.parse
-
-#      p parser.options
        parser.report.should be_kind_of Referal::HCReport
       
      end
+  end
+  
+  describe "scan_slip_code" do
+    it "should raise referal_slip_code_not_exist" do
+      message_format = Referal::MessageFormat.create! :format => "{phone_number}.{slip_code}.{Field1}", 
+                                                      :sector => Referal::MessageFormat::TYPE_HC
+      parser = Referal::HCParser.new({:text=>"09712345678.KPS001100", :sender => @user})
+      expect{parser.scan_slip_code("KPS001100")}.to raise_error(Exception, "referal_slip_code_not_exist" ) 
+    end
+    
+    it "should not raise any exception for slip_code that was sent by clinic" do
+      
+      message_format = Referal::MessageFormat.create! :format => "{phone_number}.{slip_code}.{Field1}", 
+                                                      :sector => Referal::MessageFormat::TYPE_HC
+                                                    
+      Referal::ClinicReport.create! :slip_code => "KPS001100"                                              
+      parser = Referal::HCParser.new({:text=>"09712345678.KPS001100", :sender => @user})
+      parser.scan_slip_code("KPS001100")
+      parser.options[:slip_code].should eq "KPS001100"
+    end
+    
   end
   
 end

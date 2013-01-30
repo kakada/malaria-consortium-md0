@@ -6,11 +6,12 @@ class Referral::HCReport < Referral::Report
   
   def update_clinic_report
     if self.slip_code
-      report_clinic = Referral::ClinicReport.find_by_slip_code self.slip_code
-      raise "slip_code does not exist in clinic report" if report_clinic.nil?
-      
-      report_clinic.status = Referral::Report::REPORT_STATUS_CONFIRMED
-      report_clinic.save
+      report_clinic = Referral::ClinicReport.not_ignored.find_by_slip_code self.slip_code
+      if !report_clinic.nil?
+        report_clinic.status = Referral::Report::REPORT_STATUS_CONFIRMED
+        report_clinic.confirm_from = self.sender
+        report_clinic.save
+      end  
     end
   end
   

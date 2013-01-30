@@ -50,16 +50,16 @@ describe Referral::HCReport do
   end
   
   describe "create" do
-    it "should raise error when clinic slip_code does not exist" do
-      hc_report = Referral::HCReport.new :slip_code => "KPS001001"
-      count = Referral::HCReport.count
-      
-      expect{hc_report.save}.to raise_error(Exception, "slip_code does not exist in clinic report")
-      Referral::HCReport.count.should eq count
-    end
+#    it "should raise error when clinic slip_code does not exist" do
+#      hc_report = Referral::HCReport.new :slip_code => "KPS001001"
+#      count = Referral::HCReport.count
+#      
+#      expect{hc_report.save}.to raise_error(Exception, "slip_code does not exist in clinic report")
+#      Referral::HCReport.count.should eq count
+#    end
     
     it "should save hc report when there is a clinic slip_code " do
-      hc_report = Referral::HCReport.new :slip_code => "KPS001001"
+      hc_report = Referral::HCReport.new :slip_code => "KPS001001", :sender => @hc_user22
       Referral::ClinicReport.create! :slip_code => "KPS001001"
       
       count = Referral::HCReport.count
@@ -69,6 +69,7 @@ describe Referral::HCReport do
       
       clinic_report = Referral::ClinicReport.find_by_slip_code "KPS001001"
       clinic_report.status.should eq Referral::Report::REPORT_STATUS_CONFIRMED
+      clinic_report.confirm_from.should eq @hc_user22
     end
   end
 end

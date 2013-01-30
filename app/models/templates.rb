@@ -41,7 +41,8 @@ class Templates
     :referral_health_center_clinic => {:params => %w(slip_code book_number code_number), :label => "Referral Health Center to Private Provider"},
     :referral_health_center_health_center => {:params => %w(slip_code book_number code_number), :label => "Referral Health Center acknowlegment"},
     :referral_field_mismatch_format => {:params => %w(original_messag message_format), :label => "Referral Parser items mismatched"},
-    :referral_invalid_validator => {:params => %w(original_messag message_format), :label => "Referral Parser Not found"},
+    :referral_invalid_validator => {:params => %w(original_messag message_format), :label => "Validator Not found"},
+    :referral_slip_code_not_exist => {:params => %w(original_messag message_format), :label => "No slip code found from Clinic"},
   }  
 
 

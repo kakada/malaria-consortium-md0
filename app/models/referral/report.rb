@@ -2,7 +2,7 @@ module Referral
   class Report < ActiveRecord::Base
     set_table_name "referral_reports"
     belongs_to :send_to_health_center, :class_name => "HealthCenter"
-    belongs_to :confirm_from, :class_name => "HealthCenter"
+    belongs_to :confirm_from, :class_name => "User"
     
     belongs_to :sender,  :class_name => "User"
     belongs_to :place
@@ -18,7 +18,13 @@ module Referral
     
     REPORT_STATUS_CONFIRMED = 1
     
+    def self.not_ignored
+      where(:ignored => false )
+    end
     
+    def self.ignored
+      where(:ignored => true )
+    end
     
     def fill_in_data
       if self.slip_code.nil?

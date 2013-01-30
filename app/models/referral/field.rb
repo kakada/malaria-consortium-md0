@@ -29,14 +29,16 @@ module Referral
       field = self.name;
       
       Referral::MessageFormat.all.each do |msg_format| 
-         tags = msg_format.format.split(Referral::MessageFormat::Separator)
-         result = []
-         tags.each do |tag|
-           tag = tag.strip
-           result << tag  if tag != "{#{field}}"
-         end
-         msg_format.format = result.join(Referral::MessageFormat::Separator) 
-         msg_format.save
+         if msg_format.format
+            tags = msg_format.format.split(Referral::MessageFormat::Separator)
+            result = []
+            tags.each do |tag|
+              tag = tag.strip
+              result << tag  if tag != "{#{field}}"
+            end
+            msg_format.format = result.join(Referral::MessageFormat::Separator) 
+            msg_format.save
+         end   
       end
     end
     

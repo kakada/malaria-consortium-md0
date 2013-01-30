@@ -34,6 +34,26 @@ describe Referral::HCParser do
     
   end
   
+  describe "analyse od name" do
+    it "should raise exception if od is nil" do
+        parser = Referral::HCParser.new({})
+        expect{parser.analyse_od_name(nil)}.to raise_error(Exception, "referral_invalid_od" )
+    end
+     
+    it "should exception if od abbr does not exist" do
+        parser = Referral::HCParser.new({})
+        expect{parser.analyse_od_name("xxxod")}.to raise_error(Exception, "referral_invalid_od" )
+    end
+    
+    it "should store od_name if od abbr existed" do
+      od = OD.make :abbr => "SAMP"
+      parser = Referral::HCParser.new({})
+      parser.analyse_od_name("SAMP")
+      parser.options[:od_name].should eq "SAMP"
+    end
+    
+  end
+  
   describe "parse" do
      it "should parse message successfully" do
        message_format = Referral::MessageFormat.create! :format => "{phone_number}.{slip_code}.{Field1}.{Field2}", :sector => Referral::MessageFormat::TYPE_HC

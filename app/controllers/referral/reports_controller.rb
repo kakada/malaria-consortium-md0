@@ -4,6 +4,7 @@ module Referral
       page = (params[:page] || '1').to_i
       
       @reports = Referral::Report
+      
       if(!params[:type].blank? )
          if params[:type] == "ClinicReport"
            @reports = ClinicReport
@@ -13,6 +14,12 @@ module Referral
       else
         @reports = Referral::Report
       end 
+      
+      if(params[:ignored].blank?)
+        @reports = @reports.not_ignored
+      else
+        @reports = @reports.ignored
+      end
       
       @reports =@reports.paginate :page => page, :per_page => PerPage
       
@@ -29,11 +36,27 @@ module Referral
         @messages = message_proxy.process
         @messages = [@messages] if @messages.class != Array
         @report   = message_proxy.report 
-        if(@report)
-          @report.ignored =true
-          @report.save
-        end
+        
+#        if(@report)
+#          @report.ignored =true
+#          @report.save
+#        end
       end
+    end
+    
+    
+    def toggle
+      begin
+        report = Referral::Report.find(params[:id])
+        report.ignored = ! report.ignored
+        report.save
+        msg = "Report has been ignored"
+      rescue
+        msg = "Failed to ignored. Try it again"
+      end
+      flash[:notice] = msg
+      redirect_to referral_reports_path(:type =>params[:type])
+      
     end
   end
 end

@@ -46,7 +46,6 @@ class Referral::Parser
     analyse_code_number(code_number)
     
     @options[:slip_code] = od_name + book_number + code_number
-    
   end
   
   def from_health_center?
@@ -79,7 +78,7 @@ class Referral::Parser
     od_name =  scanner.scan(/^[a-zA-Z]+$/i)
     analyse_od_name(od_name)
   end
-  
+ 
   def analyse_od_name od_name
     if od_name.nil?
       raise_error :referral_invalid_od 
@@ -91,9 +90,10 @@ class Referral::Parser
         rescue
            raise_error :referral_invalid_not_in_od
         end
+        
         @options[:od_name] = od_name 
     end
-  end
+   end
   
   def scan_book_number text
     scanner = create_scanner(text)

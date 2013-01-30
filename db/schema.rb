@@ -46,14 +46,14 @@ ActiveRecord::Schema.define(:version => 20130103100134) do
   add_index "places", ["parent_id", "name"], :name => "index_places_on_parent_id_and_name"
   add_index "places", ["type"], :name => "index_places_on_type"
 
-  create_table "referal_constraints", :force => true do |t|
+  create_table "referral_constraints", :force => true do |t|
     t.text     "validator"
     t.integer  "field_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "referal_fields", :force => true do |t|
+  create_table "referral_fields", :force => true do |t|
     t.string   "name"
     t.string   "meaning"
     t.string   "template"
@@ -62,14 +62,14 @@ ActiveRecord::Schema.define(:version => 20130103100134) do
     t.datetime "updated_at"
   end
 
-  create_table "referal_message_formats", :force => true do |t|
+  create_table "referral_message_formats", :force => true do |t|
     t.string   "format"
     t.string   "sector"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "referal_reports", :force => true do |t|
+  create_table "referral_reports", :force => true do |t|
     t.string   "od_name"
     t.string   "book_number"
     t.string   "code_number"

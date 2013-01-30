@@ -1,7 +1,0 @@
-<% content_for :breadcrumb do %>
-  <%=breadcrumb [
-  		{ "User" => referal_users_path },
-  		{ "Edit - #{@user.user_name}" => nil  }
-  	] %>
-<% end %>
-<%= render "form" %>

@@ -1,0 +1,7 @@
+<% content_for :breadcrumb do %>
+  <%=breadcrumb [
+  		{ "Dynamic Variables" => referral_fields_path },
+  		{ "Edit - #{@field.name}" => nil  }
+  	] %>
+<% end %>
+<%= render "form" %>

@@ -1,0 +1,49 @@
+<%= content_for :breadcrumb do %>
+	<%= breadcrumb [
+			{"User" => nil}
+		] %>
+<%end %>
+
+<% content_for :top do  %>
+  <%tag_row :class => "register_bar" do %>
+   <%= register_bar(" Register User", new_referral_user_path) %>
+  <% end %>
+<% end %>
+
+
+<div class="row-fluid" >
+	<%= will_paginate @users, :gap => "<li><span>...</span></li>".html_safe %>
+</div>
+
+<div>
+	<table class="table"> 
+		<thead>
+			<tr>
+				<td> Name </td>
+				<td> Email </td>
+				<td> Phone </td>
+				<td> Role </td>
+				<td> Place </td>
+				<td> Status </td>
+				<td> </td>
+			</tr>
+		</thead>
+
+		<tbody>
+			<% @users.each do |user| %>
+			  <tr>
+				<td> <%= user.user_name %> </td>
+				<td> <%= user.email %> </td>
+				<td> <%= user.phone_number %> </td>
+				<td> <%= user.role %> </td>
+				<td> <%= user.place.nil? ? "" : user.place.description %>
+				<td> <%= user.status_description %> </td>
+				<td> 
+					<%= link_to "Edit", edit_referral_user_path(user) %> |
+					<%= link_to "Delete", referral_user_path(user), :method => :delete, :confirm => "Are you sure to remove"%>
+				</td>
+			  </tr>
+			<% end %>
+		</tbody>
+	</table>
+</div>

@@ -16,7 +16,7 @@ end
 Province.blueprint do
 end
 
-Referal::Field.blueprint do
+Referral::Field.blueprint do
   position{[1,2,3,4,5]}
 end
 

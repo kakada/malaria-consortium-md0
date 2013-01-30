@@ -1,13 +1,13 @@
-user    :   referral_system
+user    :   referral
 pwd     :   dev c0der
 
-app     : Referral
-pwd     : dev c0der
-url     : http://110.74.204.121:3030
+app     : referral
+pwd     : 123456
+url     : http://110.74.204.121:3000/nuntium/receive_at
 
 
 channel :
 
-name   : referral_channel
-app    : Referral
-pwd    : dev c0der
+name   : referral
+app    : referral
+pwd    : 123456

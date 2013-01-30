@@ -1,6 +1,6 @@
 class CreateConstraintTable < ActiveRecord::Migration
   def self.up
-    create_table :referal_constraints do |t|
+    create_table :referral_constraints do |t|
       t.text       :validator
       t.references :field
       t.timestamps
@@ -8,6 +8,6 @@ class CreateConstraintTable < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :referal_constraints
+    drop_table :referral_constraints
   end
 end

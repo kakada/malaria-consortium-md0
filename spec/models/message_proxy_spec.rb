@@ -9,7 +9,7 @@ describe MessageProxy do
 
     @hc_user = @health_center.users.make :phone_number => "8558190", :apps => [User::APP_MDO, User::APP_REFERAL]
     @hc_user_disable_both = @health_center.users.make :phone_number => "8558199", :status => false, :apps => [User::APP_MDO, User::APP_REFERAL]
-    @hc_user_disable_referal = @health_center.users.make :phone_number => "85581910", :status => false, :apps => [User::APP_REFERAL]
+    @hc_user_disable_referral = @health_center.users.make :phone_number => "85581910", :status => false, :apps => [User::APP_REFERAL]
     
     @vmw_user = @village.users.make :phone_number => "8558191"
     @od_user_both = @od.users.make :phone_number => "8558192",  :status => true, :apps => [User::APP_MDO, User::APP_REFERAL], :role => User::ROLE_REF_PROVIDER
@@ -82,12 +82,12 @@ describe MessageProxy do
       #proxy.stub!(:parameterize).and_return(options)
      
       md0       = Report.count
-      referal   = Referal::Report.count
+      referral   = Referral::Report.count
           
       message = proxy.generate_error options
       
       Report.count.should eq(md0)
-      Referal::Report.count.should eq(referal)
+      Referral::Report.count.should eq(referral)
       
       message.should eq([ { :from => MessageProxy.app_name, 
                             :body => MessageProxy.unknown_user, 
@@ -118,10 +118,10 @@ describe MessageProxy do
                             :to => options[:sender_address] } ] )
     end
     
-    it "should save error report to Referal report only if user from Referal app" do
+    it "should save error report to Referral report only if user from Referral app" do
       
-      options = { :sender => @hc_user_disable_referal, 
-                  :place  => @hc_user_disable_referal.place,
+      options = { :sender => @hc_user_disable_referral, 
+                  :place  => @hc_user_disable_referral.place,
                   :error  => true ,
                   :to     => "9087726", 
                   :sender_address => "9087726",
@@ -132,12 +132,12 @@ describe MessageProxy do
      
       #proxy.stub!(:parameterize).and_return(options)
      
-      count     = Referal::Report.count
+      count     = Referral::Report.count
       message   = proxy.generate_error options
       
       
       
-      Referal::Report.count.should eq(count+1)
+      Referral::Report.count.should eq(count+1)
       message.should eq([ { :from => MessageProxy.app_name, 
                             :body => MessageProxy.access_denied, 
                             :to => options[:sender_address] } ] )
@@ -147,11 +147,11 @@ describe MessageProxy do
   
   describe "guess_type message for user from both ref and md0 app" do
     before(:each) do
-       @format_message_clinic = Referal::MessageFormat.create :format => "{phone_number}.{code_number}.{book_number}", :sector => Referal::MessageFormat::TYPE_CLINIC
-       @format_message_hc = Referal::MessageFormat.create :format => "{phone_number}.{code_number}.{book_number}", :sector => Referal::MessageFormat::TYPE_HC
+       @format_message_clinic = Referral::MessageFormat.create :format => "{phone_number}.{code_number}.{book_number}", :sector => Referral::MessageFormat::TYPE_CLINIC
+       @format_message_hc = Referral::MessageFormat.create :format => "{phone_number}.{code_number}.{book_number}", :sector => Referral::MessageFormat::TYPE_HC
     end
     
-    it "should return referal clinic report for od user" do
+    it "should return referral clinic report for od user" do
       options = { :text => "097123456.xxx", 
                   :sender_address => @od_user_both.phone_number, 
                   :sender => @od_user_both, 
@@ -160,7 +160,7 @@ describe MessageProxy do
       proxy = MessageProxy.new({})
       #proxy.stub!(:parameterize).and_return(options)
       report = proxy.guess_type options
-      report.should be_kind_of Referal::ClinicReport
+      report.should be_kind_of Referral::ClinicReport
     end
     
     it "should return md0 report for user from village" do
@@ -176,7 +176,7 @@ describe MessageProxy do
     end
     
     describe "report from both app" do
-      it "should return referal hc report since Referal::HCParse parse the message successfully" do
+      it "should return referral hc report since Referral::HCParse parse the message successfully" do
         options = { :text => "097123456.001.002", 
                     :sender_address => @hc_user.phone_number, 
                     :sender => @hc_user, 
@@ -185,7 +185,7 @@ describe MessageProxy do
         proxy = MessageProxy.new({})
         #proxy.stub!(:parameterize).and_return(options)
         report = proxy.guess_type options
-        report.should be_kind_of Referal::HCReport
+        report.should be_kind_of Referral::HCReport
       end
       
       it "should return md0 hc report since parse the md0 format message successfully" do
@@ -212,7 +212,7 @@ describe MessageProxy do
         report.should be_kind_of HealthCenterReport
       end
       
-      it "should return referal report since it can parse referal" do
+      it "should return referral report since it can parse referral" do
         options = { :text => "098123456.fake.fake", # malaria_type(F|V|M)Age(\d{3})Sex(F|M)day(0|28|30)VillageCode(\d{8}|\d{10}
                     :sender_address => @hc_user.phone_number, 
                     :sender => @hc_user, 
@@ -220,7 +220,7 @@ describe MessageProxy do
         }
         proxy = MessageProxy.new({})
         report = proxy.guess_type options
-        report.should be_kind_of Referal::HCReport
+        report.should be_kind_of Referral::HCReport
       end
       
       it "should return md0 report since it can parse md0" do

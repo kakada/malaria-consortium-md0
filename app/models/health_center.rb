@@ -2,7 +2,7 @@ class HealthCenter < Place
   alias_method :od, :parent
   delegate :province, :to => :od
   has_many :villages, :class_name => "Village", :foreign_key => "parent_id"
-  has_many :referal_reports, :class_name => "Referal::Report"
+  has_many :referral_reports, :class_name => "Referral::Report"
 
   def report_parser(user)
     HCReportParser.new user

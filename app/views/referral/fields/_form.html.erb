@@ -1,0 +1,57 @@
+<% url = @field.new_record? ? referral_fields_path(:name => @field.name ) : referral_field_path(@field) %>
+
+<%= content_for :sidebar_right do %> &nbsp; <%end%>
+
+<%=render_errors_for @field %>
+
+<div class="span5" >
+    <h3> Field Form </h3>
+    <% form_for @field, :url => url, :id=> :form_field do |form| %>
+      <%=tag_row do %>
+            <%= form.label :name %>
+            <%= form.text_field :name, :readonly => true %>
+      <%end%>
+      <%= tag_row do %>
+        <%= form.hidden_field :position, :readonly => true %>
+      <%end %>
+
+      <%=tag_row do %>
+              <%= form.label :meaning %>
+              <%= form.text_field :meaning %>
+        <%end%>	
+
+      <%=tag_row do %>
+              <%= form.label :template %>
+              <%= form.text_area :template, :size => "120x5", :style => "width: 300px; height: 90px;" %>
+        <div>
+        Parameter:  <a href="#" id="parameter_link" >{original_message}</a>
+        </div>
+      <%end%>
+    
+      <%=tag_row do %>
+            <%= form.submit "Save", :class => "btn btn-primary" %>
+      <%end%>  
+    
+    <%end%>
+</div>
+
+
+
+<% content_for :js do %>
+  <%= javascript_include_tag "jquery.fieldSelection" %>
+  <script >
+    
+    $(function(){
+        
+        $('#parameter_link').click(function() {
+          var $this = $(this);
+          var $input = $('#referral_field_template');
+          $input.replaceSelection($this.text());
+          return false;
+        });
+        
+        
+        
+    });
+  </script>
+<% end %>

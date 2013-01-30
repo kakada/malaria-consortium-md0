@@ -33,12 +33,12 @@ class MessageProxy
     if !options[:sender] 
         # no sender dont_store any report
         #save_mdo_error
-        #save_referal_error
+        #save_referral_error
     else #  md0 has higher precedence 
         if options[:sender].is_from_md0?
            save_mdo_error
-        elsif options[:sender].is_from_referal?
-           save_referal_error
+        elsif options[:sender].is_from_referral?
+           save_referral_error
         end
     end
     MessageProxy.reply_error options[:error_message] , options[:sender_address]
@@ -56,34 +56,34 @@ class MessageProxy
       @report.save!
     elsif @params[:sender].is_from_md0?
       @report = Report::process(@params)
-    elsif @params[:sender].is_from_referal?
-      @report = Referal::Report.process(@params)
+    elsif @params[:sender].is_from_referral?
+      @report = Referral::Report.process(@params)
     end
     @report.generate_alerts
   end
   
   def guess_type options
     if options[:sender].is_private_provider_role?
-       referal_report =  Referal::Report::decode options
-       return referal_report
+       referral_report =  Referral::Report::decode options
+       return referral_report
     elsif options[:sender].is_village_role?  
        md0_report     =  Report::decode options
        return md0_report
     else
       #pass option to the decode by value
-      referal_report =  Referal::Report::decode options.dup
-      return referal_report if !referal_report.error
+      referral_report =  Referral::Report::decode options.dup
+      return referral_report if !referral_report.error
       
       md0_report     =  Report::decode options.dup
       return md0_report if !md0_report.error     
       
-      return referal_report   if(referal_report.parse_quality > md0_report.parse_quality) 
+      return referral_report   if(referral_report.parse_quality > md0_report.parse_quality) 
       return md0_report
     end
   end
   
-  def save_referal_error
-    @report = Referal::Report.new @params
+  def save_referral_error
+    @report = Referral::Report.new @params
     @report.save(:validate => false) 
     
   end

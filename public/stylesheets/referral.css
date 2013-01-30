@@ -1,0 +1,22 @@
+.c-hidden{
+    display: none;
+}
+.field-required{
+	padding: 3px 6px;
+	color: red;
+}
+.position{
+    width: 30px;
+}
+#parameter_link, .parameter_link{
+    font-size: 12px;
+    font-style: italic;
+    color: gray;
+}
+.register_bar {
+    text-align: right;
+    padding-bottom: 10px;
+}
+.dym_field{
+    background: #eee;
+}

@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
   Roles = [ROLE_MC_DEFAULT, ROLE_MC_NAT , ROLE_MC_ADMIN ]
   Roles_Ref = [ROLE_REF_PROVIDER, ROLE_REF_HC]
   
-  APP_REFERAL = "Referal"
+  APP_REFERAL = "Referral"
   APP_MDO = "MD0"
   
   APPS = [APP_MDO, APP_REFERAL]
@@ -73,7 +73,7 @@ class User < ActiveRecord::Base
     return (self.apps_mask & 3) == 3
   end
   
-  def is_from_referal?
+  def is_from_referral?
     #al least present once
     return (self.apps_mask & 2) != 0
   end
@@ -154,7 +154,7 @@ class User < ActiveRecord::Base
          return place.village? || place.health_center?
       end  
       
-      if self.is_from_referal?  
+      if self.is_from_referral?  
          return place.health_center? || place.od?
       end
       return false

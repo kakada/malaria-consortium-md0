@@ -561,13 +561,13 @@ describe User do
         [ User.new(:apps =>[User::APP_MDO, User::APP_REFERAL]),
           User.new(:apps =>[User::APP_REFERAL])
         ].each do |user|
-          user.is_from_referal?.should eq true
+          user.is_from_referral?.should eq true
         end
       end
       
       it "should return false if user not from referral" do
          user = User.new(:apps =>[User::APP_MDO])
-         user.is_from_referal?.should eq false
+         user.is_from_referral?.should eq false
       end
       
     end

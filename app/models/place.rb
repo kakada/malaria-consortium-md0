@@ -108,7 +108,7 @@ class Place < ActiveRecord::Base
   end
   
   def acknowledgemente body
-    valid_users = users.select{|user| (user.status && user.is_from_referal?)}
+    valid_users = users.select{|user| (user.status && user.is_from_referral?)}
     valid_users.map{|user| user.message(body) }
   end
 

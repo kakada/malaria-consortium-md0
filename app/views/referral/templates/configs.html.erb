@@ -1,0 +1,36 @@
+<h2>Templates</h2>
+<style>
+  .row div[class*="span"] {
+        margin-left : 0px;
+   }
+</style>
+<%= form_tag referral_templates_update_configs_path, :method => "post" do %>
+  <div class="row" style="margin-left: 20px;" >
+  <% Templates::KeyReferrals.each do |key, value|  %>
+    <div class="span4" style="background: #fff;margin-bottom: 20px;" >
+          <b><%=label_tag "#{value[:label]}" %> </b>
+          <%= text_area_tag "templates[#{key}]", Setting[key],:id => "#{key}",  :style=> "width:90%;height: 60px;" %>
+          <% value[:params].each do |item| %>
+            <a href="#" class="parameter_link" data-id="<%=key%>" >{<%= item %>}</a>
+          <% end %>
+          <br />
+     </div>
+    <% end %>
+   </div>
+   <input type="submit" value=" Save " class="btn btn-danger" />
+<% end %>
+
+<% content_for :js do %>
+<%= javascript_include_tag "jquery.fieldSelection" %>
+  <script type="text/javascript">
+    $(function() {
+        $('.parameter_link').click(function() {
+            var $this = $(this);
+            var $input = $('#' + $this.attr("data-id"));
+            $input.replaceSelection($this.text());
+            return false;
+        });
+    });
+  </script>
+<% end %>
+

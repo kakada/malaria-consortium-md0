@@ -43,23 +43,27 @@
            ignore_link = "Ignore"
            ignored = "No"
         end
+        
+        
+        txt_class = report.error ? "txt_error" : ""
+       
       %>
       <tr>
-          <td><%= report.slip_code %></td>
-          <td><%= report.type %> </td>
-          <td title="<%= report.text %>"><%= truncate(report.text, :length => 20) %> </td>
-          <td><%= ignored  %> </td>
-          <td><%= report.confirm_from ? report.confirm_from.user_name : "" %> </td>
-          <td title="<%=report.error_message%>"><%= truncate(report.error_message,:length => 20) %> </td>
+        <td class="<%= txt_class %>" ><%= report.slip_code %></td>
+          <td class="<%= txt_class %>"  ><%= report.type %> </td>
+          <td class="<%= txt_class %>"  title="<%= report.text %>"><%= truncate(report.text, :length => 20) %> </td>
+          <td class="<%= txt_class %>"  ><%= ignored  %> </td>
+          <td class="<%= txt_class %>"  ><%= report.confirm_from ? report.confirm_from.user_name : "" %> </td>
+          <td class="<%= txt_class %>"  title="<%=report.error_message%>"><%= report.error ? "Yes" : "No"%> </td>
           <% 5.times.each do |i| %>
-            <td class="dym_field">
+            <td class="dym_field <%= txt_class %>">
                 <%= report.send("field#{i+1}")  %>
             </td>
           <% end %>
             <td> 
               <%= link_to "Edit"  , edit_referral_report_path(report) %> |
-              <%= link_to "Delete", referral_report_path(report), :method => :delete, :confirm => "Are you sure to remove"%> |
-              <%= link_to ignore_link, referral_reports_toggle_path( :id => report, :type => params[:type]) %>
+              <%= link_to "Delete", referral_report_path({:id => report}.merge(params.slice(:type,:ignored))), :method => :delete, :confirm => "Are you sure to remove"%> |
+              <%= link_to ignore_link, referral_reports_toggle_path({:id => report}.merge(params.slice(:type, :ignored))) %>
             </td> 
         </tr>
     <% end %>

@@ -4,25 +4,8 @@
   	] %>
 <% end %>
 
-
-    <ul class="nav nav-tabs">
-      <%
-       tab_items = [
-         {:text => "Report",  :url => referral_reports_path() , :class => (params[:ignored].blank? ? "active" : "") },
-         {:text => "Ignored", :url => referral_reports_path(:ignored => true), :class =>(params[:ignored].blank? ? "" : "active")  },
-       ]
- 
-       tab_items.each do |tab|
-         klass =  params[:attr].nil? ? "" : "active"
-       %>
-        <li class="<%=tab[:class] %>" > <%= link_to tab[:text], tab[:url] %></li>
-      <%
-       end
-      %>
-    </ul>
-
-    <%= render "all_reports" %>
-
+<%= render "nav_report" %>
+<%= render "all_reports" %>
     
 
 <%= content_for :js do %>

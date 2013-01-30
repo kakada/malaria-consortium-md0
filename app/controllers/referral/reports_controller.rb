@@ -52,11 +52,21 @@ module Referral
         report.save
         msg = "Report has been ignored"
       rescue
-        msg = "Failed to ignored. Try it again"
+        msg = "Failed to ignore report. Try it again"
       end
       flash[:notice] = msg
-      redirect_to referral_reports_path(:type =>params[:type])
-      
+      redirect_to referral_reports_path(params.slice(:type, :ignored))
+    end
+    
+    def destroy
+      begin
+        report = Referral::Report.find(params[:id])
+        report.destroy
+        flash[:notice] = "Report has been deleted"
+      rescue
+        flash[:error] = "Failed to delete report. Try it again"
+      end
+      redirect_to referral_reports_path(params.slice(:type, :ignored))
     end
   end
 end

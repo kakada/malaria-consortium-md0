@@ -1,0 +1,15 @@
+<ul class="nav nav-tabs">
+  <%
+    tab_items = [
+      {:text => "Report",  :url => referral_reports_path() , :class => ( (params[:ignored].blank? && params[:action] =="index") ? "active" : "") },
+      {:text => "Ignored", :url => referral_reports_path(:ignored => true), :class =>(params[:ignored].blank? ? "" : "active")  },
+      {:text => "Simulate", :url => referral_reports_simulate_path(), :class=>( params[:action] == "simulate" ? "active": "" ) }
+    ]
+
+    tab_items.each do |tab|
+    %>
+    <li class="<%=tab[:class] %>" > <%= link_to tab[:text], tab[:url] %></li>
+  <%
+    end
+  %>
+</ul>

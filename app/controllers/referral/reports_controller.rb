@@ -25,6 +25,22 @@ module Referral
       
     end
     
+    def edit 
+      @report = Referral::Report.find params[:id]
+    end
+    
+    def update
+      @report = Referral::Report.find(params[:id])
+      attr_key   = ActiveModel::Naming.singular(@report)
+      attrs = params[attr_key]
+      if @report.update_attributes(attrs)
+        flash[:notice] = "Report has been updated"
+        redirect_to referral_reports_path
+      else
+        flash.now[:notice] = "Report failed to update"
+        render :edit
+      end
+    end
     
     def simulate
       @from = params[:from]
@@ -37,11 +53,17 @@ module Referral
         @messages = [@messages] if @messages.class != Array
         @report   = message_proxy.report 
         
-#        if(@report)
-#          @report.ignored =true
-#          @report.save
-#        end
+        if(@report)
+          @report.ignored =true
+          @report.save
+        end
       end
+    end
+    
+    def duplicated
+      page = (params[:page] || '1').to_i
+      @reports = Referral::Report.duplicated_per_sender
+      @reports =@reports.paginate :page => page, :per_page => PerPage
     end
     
     
@@ -55,7 +77,7 @@ module Referral
         msg = "Failed to ignore report. Try it again"
       end
       flash[:notice] = msg
-      redirect_to referral_reports_path(params.slice(:type, :ignored))
+      redirect_to referral_reports_path(params.slice(:type, :ignored, :t))
     end
     
     def destroy
@@ -66,7 +88,7 @@ module Referral
       rescue
         flash[:error] = "Failed to delete report. Try it again"
       end
-      redirect_to referral_reports_path(params.slice(:type, :ignored))
+      redirect_to referral_reports_path(params.slice(:type, :ignored, :t))
     end
   end
 end

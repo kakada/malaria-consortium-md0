@@ -1,0 +1,11 @@
+<% content_for :breadcrumb do %>
+  <%=  breadcrumb [
+  		{ "Report" => nil}
+  	] %>
+<% end %>
+
+<%= render "nav_report" %>
+
+<%= list_header "Duplicated reports", @reports %>
+
+<%= render "reports" %>

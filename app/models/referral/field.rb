@@ -76,6 +76,11 @@ module Referral
       self::FieldName + "#{i}"
     end
     
+    def self.label i
+       field = find_by_position(i)
+       field.nil? ? columnize(i) : columnize(i)+ " ( #{field.meaning})"
+    end
+    
     def show_constraint
       self.constraints.map{|constraint| constraint.validator.to_s}.join(" - ")
     end

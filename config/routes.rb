@@ -35,6 +35,7 @@ Local::Application.routes.draw do
     get  "message_formats/test" ,   :to => "message_formats#test"
     
     match "reports/simulate",  :to => "reports#simulate"
+    match "reports/duplicated",  :to => "reports#duplicated"
     match "reports/toggle",    :to => "reports#toggle"
     
     resources :reports

@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  PerPage = 20
+  PerPage = 2
 
   #from rails2
   helper :all

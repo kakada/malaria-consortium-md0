@@ -115,5 +115,52 @@ describe Referral::Report do
     end
   end
   
+  describe "duplicated_per_sender" do
+    it "should return duplicated report" do
+      v1 = Village.make
+      v2 = Village.make
+      
+      sender1 = User.make :place => v1
+      sender2 = User.make :place => v2
+
+      
+      r1 = Referral::Report.create!(:slip_code => "KPC001001", :sender => sender1)
+      r2 = Referral::Report.create!(:slip_code => "KPC001002", :sender => sender1)
+      r3 = Referral::Report.create!(:slip_code => "KPC001003", :sender => sender1)
+      
+      r4 = Referral::Report.create!(:slip_code => "KPC001001", :sender => sender1, :ignored => true)
+      
+      r5 = Referral::Report.create!(:slip_code => "KPC001002", :sender => sender1)
+      r6 = Referral::Report.create!(:slip_code => "KPC001001", :sender => sender1)
+      
+      r7  = Referral::Report.create!(:slip_code => "KPC001001", :sender => sender2)
+      r8  = Referral::Report.create!(:slip_code => "KPC001002", :sender => sender2)
+      r9  = Referral::Report.create!(:slip_code => "KPC001003", :sender => sender2)
+      r10 = Referral::Report.create!(:slip_code => "KPC001004", :sender => sender2)
+      r11 = Referral::Report.create!(:slip_code => "KPC001005", :sender => sender2)
+      r12 = Referral::Report.create!(:slip_code => "KPC001006", :sender => sender2)
+      
+      r13 = Referral::Report.create!(:slip_code => "KPC001007", :sender => sender2)
+      r14 = Referral::Report.create!(:slip_code => "KPC001007", :sender => sender1)
+      
+      r15 = Referral::Report.create!(:slip_code => "KPC001008", :sender => sender2)
+      r16 = Referral::Report.create!(:slip_code => "KPC001008", :sender => sender2)
+      r17 = Referral::Report.create!(:slip_code => "KPC001008", :sender => sender2)
+      
+      r18 = Referral::Report.create!(:slip_code => "KPC001009", :sender => sender2, :ignored => true)
+      r18 = Referral::Report.create!(:slip_code => "KPC001009", :sender => sender2, :ignored => true)
+      r18 = Referral::Report.create!(:slip_code => "KPC001009", :sender => sender2, :ignored => true )
+      
+      reports = Referral::Report.duplicated_per_sender
+      
+      duplicates = [ r17, r16, r15, r6, r5, r2, r1]
+        
+      reports.each_with_index do |report, index|
+        report.should  eq duplicates[index] 
+      end
+      
+    end
+  end
+  
   
 end

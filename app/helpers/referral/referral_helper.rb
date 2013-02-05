@@ -90,6 +90,23 @@ module Referral
     def message_format_item text
       "<a class='remove-sign'> #{text} </a>";
     end
+    
+    def list_header title, records
+       content_tag :div,:class => "row-fluid" do
+         
+          content_title = content_tag :div, :class => "span4" do
+            content_tag(:h3, title)
+          end
+
+          content_paginate = content_tag :div, :class => "paginate span8" do
+            will_paginate records, :gap => "<li><span>...</span></li>"
+          end
+          
+          (content_title + content_paginate)  
+        
+       end
+    end
 
   end
+
 end

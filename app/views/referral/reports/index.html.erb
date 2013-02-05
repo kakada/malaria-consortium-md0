@@ -5,7 +5,28 @@
 <% end %>
 
 <%= render "nav_report" %>
-<%= render "all_reports" %>
+
+<style>
+  form {
+    margin: 0px;
+  }
+</style>
+
+
+<%= list_header("List of Referral report ", @reports) %>
+ 
+<div class="row-fluid">
+    <%= form_tag referral_reports_path(params), :method => "get" do %>
+      <%= hidden_field_tag :ignored, params[:ignored] %>
+      <%= select_tag :type, options_for_select([
+                                                [ "All", ""], 
+                                                [ "Clinic", "ClinicReport"],
+                                                [ "HealthCenter", "HealthCenterReport"]
+                                              ], params[:type]), :id => "referral_report_type"   %> 
+    <% end %>
+</div>
+
+<%= render "reports" %>
     
 
 <%= content_for :js do %>

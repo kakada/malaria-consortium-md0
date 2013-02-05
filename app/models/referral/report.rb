@@ -18,6 +18,9 @@ module Referral
     
     REPORT_STATUS_CONFIRMED = 1
     
+    REPORT_STATUS = [["Not confirmed", 0], ["Confirmed", 1]]
+    REPORT_IGNORED = [["Not ignored", 0], ["Ignored", 1]]
+    
     def self.not_ignored
       where(:ignored => false )
     end
@@ -129,6 +132,19 @@ module Referral
     def error_alert
       body = translate_message_for self.error_message
       self.sender.message(body)
+    end
+    
+    def self.duplicated_per_sender
+      subquery = Report.
+        select('distinct r1.id').
+        from('referral_reports r1, referral_reports r2').
+        where('r1.sender_id = r2.sender_id').
+        where('r1.slip_code = r2.slip_code').
+        where("r1.id <> r2.id").
+        where("r1.ignored != 1 AND r2.ignored !=1").
+        order("r1.id DESC").to_sql
+
+      where("referral_reports.id IN (#{subquery})").order("referral_reports.id DESC")
     end
     
   end

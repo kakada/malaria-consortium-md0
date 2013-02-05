@@ -44,7 +44,7 @@
             </td>
           <% end %>
             <td> 
-              <%= link_to "Edit"  , edit_referral_report_path(report) %> |
+              <%= link_to "Edit"  , edit_referral_report_path(report, :t => params[:t]) %> |
               <%= link_to "Delete", referral_report_path({:id => report}.merge(params.slice(:type,:ignored, :t))), :method => :delete, :confirm => "Are you sure to remove"%> |
               <%= link_to ignore_link, referral_reports_toggle_path({:id => report}.merge(params.slice(:type, :ignored, :t))) %>
             </td> 

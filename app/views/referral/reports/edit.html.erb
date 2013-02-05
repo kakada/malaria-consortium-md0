@@ -4,7 +4,7 @@
                 { "Edit" => nil}
   	] %>
 <% end %>
-<% url = referral_report_path(@report)  %>
+<% url = referral_report_path(@report, :t => params[:t])  %>
 <%=render_errors_for @report %>
 <%= form_for(@report, :url => url) do |form| %>
   <%=tag_row do %>

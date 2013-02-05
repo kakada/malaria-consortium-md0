@@ -35,7 +35,7 @@ module Referral
       attrs = params[attr_key]
       if @report.update_attributes(attrs)
         flash[:notice] = "Report has been updated"
-        redirect_to referral_reports_path
+        redirect_to referral_reports_path(:t => params[:t])
       else
         flash.now[:notice] = "Report failed to update"
         render :edit

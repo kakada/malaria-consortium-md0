@@ -7,7 +7,9 @@ class NuntiumController < ApplicationController
   def receive_at
     options = params.slice(:from, :body, :guid)
     message_proxy = MessageProxy.new options
-    message_proxy.process
+    alerts = message_proxy.process
+    
+    render :json => alerts
   end
 
   private

@@ -35,3 +35,11 @@
 .paginate {
  text-align: right;   
 }
+.clear-layout{
+    clear:both;
+    margin-bottom: 5px;
+}
+.highlight{
+    background: #C6D880;
+    font-weight: normal;
+}

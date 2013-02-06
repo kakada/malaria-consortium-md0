@@ -22,6 +22,15 @@ module Referral
       
     end
     
+    def search
+      page = (params[:page] || '1').to_i
+      @reports = Referral::Report.not_ignored
+      @reports =@reports.paginate :page => page, :per_page => PerPage
+      if(!params[:query].blank?)
+        @reports = @reports.query(params[:query])
+      end
+    end
+    
     def edit 
       @report = Referral::Report.find params[:id]
     end

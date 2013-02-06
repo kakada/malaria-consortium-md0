@@ -1,0 +1,45 @@
+<% content_for :breadcrumb do %>
+  <%=  breadcrumb [
+  		{ "Report" => nil}
+  	] %>
+<% end %>
+
+<%= render "nav_report" %>
+
+<style>
+  form {
+    margin: 0px;
+  }
+</style>
+
+
+<%= list_header("List of Referral report ", @reports) %>
+ 
+<div class="row-fluid" style="float:right;">
+    <%= form_tag referral_reports_search_path(), :method => "get", :class =>"form-search" do %>
+      <%= hidden_field_tag :t,   params[:t] %>
+      <%= tag_row :class => "input-append input-block-level" do %>
+        <%= text_field_tag :query, params[:query], :class =>"span5 search-query", :placeholder =>"Type to search"  %>
+        <button type="submit" class="btn">Search</button>
+      <%end%>
+       
+    <% end %>
+</div>
+<div class="clear-layout"></div>
+
+
+<%= render "reports" %>
+    
+
+<%= content_for :js do %>
+  <script> 
+    function changeReportType(){
+      $("#referral_report_type").change(function(){
+        this.form.submit();
+      });
+    }
+    $(function(){
+      changeReportType();
+    });
+  </script>
+<% end %>

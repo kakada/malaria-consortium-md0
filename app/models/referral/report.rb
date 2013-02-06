@@ -37,6 +37,10 @@ module Referral
       where(:error => false)
     end
     
+    def self.query term
+      where(["text LIKE :q ", {:q => "%#{term.strip()}%"}])
+    end
+    
     
     def fill_in_data
       if self.slip_code.nil?

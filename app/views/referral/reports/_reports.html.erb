@@ -32,15 +32,16 @@
        
       %>
       <tr>
-        <td class="<%= txt_class %>" ><%= report.slip_code %></td>
-          <td class="<%= txt_class %>"  ><%= report.type %> </td>
-          <td class="<%= txt_class %>"  title="<%= report.text %>"><%= truncate(report.text, :length => 20) %> </td>
+          <td class="<%= txt_class %>"  > <%= highlight(report.slip_code, params[:query]) %> </td>
+          <td class="<%= txt_class %>"  > <%= report.type %> </td>
+          <td class="<%= txt_class %>"  title="<%= report.text %>"> <%= highlight(truncate(report.text, :length => 20), params[:query]) %> </td>
           <td class="<%= txt_class %>"  ><%= ignored  %> </td>
           <td class="<%= txt_class %>"  ><%= report.confirm_from ? report.confirm_from.user_name : "" %> </td>
-          <td class="<%= txt_class %>"  title="<%=report.error_message%>"><%= report.error ? "Yes" : "No"%> </td>
+          <td class="<%= txt_class %>"  title="<%=report.error_message%>"> <%= report.error ? "Yes" : "No"%> </td>
           <% 5.times.each do |i| %>
             <td class="dym_field <%= txt_class %>">
-                <%= report.send("field#{i+1}")  %>
+                <% text = report.send("field#{i+1}") || ""  %>
+                <%= highlight( text , params[:query])  %>
             </td>
           <% end %>
             <td> 

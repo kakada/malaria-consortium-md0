@@ -4,9 +4,11 @@
       {:text => "Report",  :url => referral_reports_path(:t => "reports") , :class => ( (params[:t].blank? || params[:t] == "reports") ? "active" : "") },
       {:text => "Ignored", :url => referral_reports_path(:ignored => true, :t => "ignored" ), :class =>(params[:t] == "ignored" ? "active" : "" )  },
       {:text => "Error", :url => referral_reports_path(:error => true, :t => "error" ), :class =>(params[:t] == "error" ? "active" : "" )  },
-      
       {:text => "Duplicate", :url => referral_reports_duplicated_path(:t => "duplicated" ),  :class=>( params[:t] == "duplicated" ? "active": "" ) },
-      {:text => "Simulate", :url => referral_reports_simulate_path(:t => "simulate" ), :class=>( params[:t] == "simulate" ? "active": "" ) }
+      {:text => "Simulate", :url => referral_reports_simulate_path(:t => "simulate" ), :class=>( params[:t] == "simulate" ? "active": "" ) },
+      {:text => "Search", :url => referral_reports_search_path(:t => "search" ),  :class=>( params[:t] == "search" ? "active": "" ) },
+      
+    
     ]
 
     tab_items.each do |tab|

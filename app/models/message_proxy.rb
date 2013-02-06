@@ -2,14 +2,19 @@ class MessageProxy
  attr_accessor :params
  attr_accessor :report
   
+ def without_sms_protocol number
+    number.sub("sms://", "")
+ end
+  
  def initialize options
-    @params = { :sender_address => options[:from] ,
+    @params = { :sender_address => without_sms_protocol(options[:from]) ,
                 :text           => options[:body]  ,
                 :nuntium_token  => options[:guid] }
     @report = nil          
  end   
  
  def analyse_number
+    p @params
     sender = User.find_by_phone_number @params[:sender_address]  
     
     if sender.nil?

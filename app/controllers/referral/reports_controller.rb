@@ -15,11 +15,8 @@ module Referral
         @reports = Referral::Report
       end 
       
-      if(params[:ignored].blank?)
-        @reports = @reports.not_ignored
-      else
-        @reports = @reports.ignored
-      end
+      @reports = params[:ignored].blank? ? @reports.not_ignored : @reports.ignored
+      @reports = params[:error].blank?   ? @reports.no_error : @reports.error
       
       @reports =@reports.paginate :page => page, :per_page => PerPage
       

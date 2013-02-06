@@ -29,6 +29,15 @@ module Referral
       where(:ignored => true )
     end
     
+    def self.error
+      where(:error => true)
+    end
+    
+    def self.no_error
+      where(:error => false)
+    end
+    
+    
     def fill_in_data
       if self.slip_code.nil?
         self.slip_code = "#{self.od_name}#{self.book_number}#{self.code_number}"

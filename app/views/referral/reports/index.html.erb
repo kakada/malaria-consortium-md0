@@ -18,6 +18,8 @@
 <div class="row-fluid">
     <%= form_tag referral_reports_path(params), :method => "get" do %>
       <%= hidden_field_tag :ignored, params[:ignored] %>
+      <%= hidden_field_tag :error,   params[:error] %>
+      <%= hidden_field_tag :t,   params[:t] %>
       <%= select_tag :type, options_for_select([
                                                 [ "All", ""], 
                                                 [ "Clinic", "ClinicReport"],

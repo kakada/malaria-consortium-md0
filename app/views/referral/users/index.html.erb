@@ -11,21 +11,20 @@
 <% end %>
 
 
-<div class="row-fluid" >
-	<%= will_paginate @users, :gap => "<li><span>...</span></li>".html_safe %>
-</div>
+
+<%= list_header "List of user", @users %>
 
 <div>
 	<table class="table"> 
 		<thead>
 			<tr>
-				<td> Name </td>
-				<td> Email </td>
-				<td> Phone </td>
-				<td> Role </td>
-				<td> Place </td>
-				<td> Status </td>
-				<td> </td>
+				<th> Name </th>
+				<th> Email </th>
+				<th> Phone </th>
+				<th> Role </th>
+				<th> Place </th>
+				<th> Status </th>
+				<th width="100"> Action</th>
 			</tr>
 		</thead>
 

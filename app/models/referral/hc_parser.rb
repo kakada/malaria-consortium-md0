@@ -25,7 +25,7 @@ class Referral::HCParser < Referral::Parser
   
   def scan_slip_code(slip_code)
     super(slip_code)
-    self.analyse_slip_code(slip_code)
+    analyse_slip_code(slip_code)
   end
   
   def message_format

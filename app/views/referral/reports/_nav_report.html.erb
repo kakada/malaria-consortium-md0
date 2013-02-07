@@ -7,13 +7,13 @@
   <%
     tab_items = [
       {:text => "Report",  :url => referral_reports_path() , :class => ( params[:action] == "index" ? "active" : "") },
+      {:text => "Valid",  :url => referral_reports_valid_path() , :class => ( params[:action] == "valid" ? "active" : "") },
+      
       {:text => "Ignored", :url => referral_reports_ignored_path(), :class =>( params[:action] == "ignored" ? "active" : "" )  },
       {:text => "Error",   :url => referral_reports_error_path(), :class =>( params[:action] == "error" ? "active" : "" )  },
       {:text => "Duplicate", :url => referral_reports_duplicated_path(),  :class=>( params[:action] == "duplicated" ? "active": "" ) },
       {:text => "Search", :url => referral_reports_search_path(),  :class=>( params[:action] == "search" ? "active": "" ) },
       {:text => "Simulate", :url => referral_reports_simulate_path(), :class=>( params[:action] == "simulate" ? "active": "" ) },
-      
-      
     
     ]
 

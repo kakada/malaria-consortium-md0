@@ -19,6 +19,13 @@ module Referral
       end
     end
     
+    def valid
+      report_type 
+      @reports = @reports.no_error.not_ignored
+      @reports = @reports.paginate :page => @page, :per_page => PerPage
+    end
+      
+      
     def index
       report_type 
       @reports =@reports.paginate :page => @page, :per_page => PerPage
@@ -98,14 +105,14 @@ module Referral
     def toggle
       begin
         report = Referral::Report.find(params[:id])
-        report.ignored = ! report.ignored
-        report.save
+        report.ignored = !report.ignored
+        report.save!
         msg = "Report has been ignored"
-      rescue
+      rescue 
         msg = "Failed to ignore report. Try it again"
       end
       flash[:notice] = msg
-      redirect_to referral_reports_path(params.slice(:type))
+      redirect_to request.env["HTTP_REFERER"]
     end
     
     def destroy

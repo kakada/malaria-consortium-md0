@@ -34,7 +34,7 @@ class Referral::Parser
     raise "Unable to parse. You need to define this method in sub class"
   end
   
-  def scan_slip_code text    
+  def scan_slip_code text  
     scanner = create_scanner(text)
     od_name =  scanner.scan(/^[a-zA-Z]+/i)
     analyse_od_name(od_name)
@@ -44,8 +44,7 @@ class Referral::Parser
     
     code_number = scanner.scan(/^\d{3}$/)
     analyse_code_number(code_number)
-    
-    @options[:slip_code] = od_name + book_number + code_number
+    @options[:slip_code] = od_name + book_number + code_number   
   end
   
   def from_health_center?

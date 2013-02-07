@@ -1,0 +1,13 @@
+<% content_for :breadcrumb do %>
+  <%=  breadcrumb [
+  		{ "Report" => referral_reports_path},
+                { "Valid" => nil }
+  	] %>
+<% end %>
+
+<%= render "nav_report" %>
+
+<%= list_header("List of valid reports", @reports) %>
+ 
+<%= render "filter_form" %>
+<%= render "reports" %>

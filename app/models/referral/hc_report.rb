@@ -19,10 +19,10 @@ class Referral::HCReport < Referral::Report
     alerts = []
     body = translate_message_for(:referral_health_center_clinic)
     
-    #if self.slip_code.blank?
-    #  report = Referral::ClinicReport.find_by_slip_code self.slip_code
-    #  alerts << report.sender.message(body)
-    #end
+    if self.slip_code.blank?
+      report = Referral::ClinicReport.no_error.not_ignored.find_by_slip_code self.slip_code
+      alerts << report.sender.message(body)
+    end
     
     
     alerts += self.place.od.acknowledgemente(body)

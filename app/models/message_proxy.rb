@@ -3,12 +3,17 @@ class MessageProxy
  attr_accessor :report
   
  def without_sms_protocol number
-    number.sub("sms://", "")
+    number.sub("sms://", "") if number
+ end
+ 
+ def text_strip body
+   body = body.strip if !body.nil?
+   body
  end
   
  def initialize options
     @params = { :sender_address => without_sms_protocol(options[:from]) ,
-                :text           => options[:body].strip  ,
+                :text           => text_strip(options[:body])  ,
                 :nuntium_token  => options[:guid] }
     @report = nil          
  end   

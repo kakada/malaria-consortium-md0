@@ -151,9 +151,8 @@ class Referral::Parser
        field = Referral::Field.find_by_name validator_name
        raise_error "referral_invalid_validator" if field.nil?
        field.constraints.each do|constraint|
-        
          validator = constraint.validator
-         valid = validator.validate(text, validator_name)        
+         valid = validator.validate(text, validator_name)   
          if !valid
            raise_error validator_name
          else
@@ -168,6 +167,7 @@ class Referral::Parser
   end
   
   def scan_messages
+    
     formats = message_format.format.split(Referral::MessageFormat::Separator)
     texts   = @options[:text].split(Referral::MessageFormat::Separator)
            

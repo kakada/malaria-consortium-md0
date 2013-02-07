@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
 
   before_filter :authenticate_user!
   before_filter :set_cambodia_time_zone
+  before_filter :load_path
 
   def get_page(param_key = :page)
     (params[param_key].presence || '1').to_i
@@ -25,6 +26,12 @@ class ApplicationController < ActionController::Base
     end
     sort_dir = sort_dir.first[0]
     {:field => sort, :dir =>sort_dir, :revert_dir => revert}
+  end
+    
+  def load_path
+    Dir["app/models/referral/constraint_type/*.rb"].each do |path|
+      require_dependency path
+    end
   end
 
   private

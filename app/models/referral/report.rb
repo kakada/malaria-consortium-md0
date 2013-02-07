@@ -152,7 +152,7 @@ module Referral
         select('distinct r1.id').
         from('referral_reports r1, referral_reports r2').
         where('r1.sender_id = r2.sender_id').
-        where('r1.slip_code = r2.slip_code').
+        where('r1.text = r2.text').
         where("r1.id <> r2.id").
         where("r1.ignored != 1 AND r2.ignored !=1").
         order("r1.id DESC").to_sql

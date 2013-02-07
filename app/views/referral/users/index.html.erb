@@ -4,7 +4,7 @@
 		] %>
 <%end %>
 
-<% content_for :top do  %>
+<%=content_for :top do  %>
   <%tag_row :class => "register_bar" do %>
    <%= register_bar(" Register User", new_referral_user_path) %>
   <% end %>

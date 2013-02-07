@@ -1,7 +1,7 @@
 <% url = @user.new_record? ? referral_users_path : referral_user_path(@user) %>
 <%=render_errors_for @user %>
 
-<% form_for @user, :url => url, :id=> :form_user do |form| %>
+<%=form_for @user, :url => url, :id=> :form_user do |form| %>
   <%=tag_row do %>
 	<%= form.label :user_name %>
 	<%= form.text_field :user_name %>

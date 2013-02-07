@@ -14,7 +14,7 @@
          <%= field.nil? ? Referral::Field.columnize(i+1) : field.meaning %>
        </th>
     <% end %>
-    
+    <th>Date</td>
     <th width="150">Action</th>
    </tr>
    <% @reports.each do |report| %>
@@ -44,11 +44,12 @@
                 <%= highlight( text , params[:query])  %>
             </td>
           <% end %>
-            <td> 
-              <%= link_to "Edit"  , edit_referral_report_path(report, :t => params[:t]) %> |
-              <%= link_to "Delete", referral_report_path({:id => report}.merge(params.slice(:type,:ignored, :t))), :method => :delete, :confirm => "Are you sure to remove"%> |
-              <%= link_to ignore_link, referral_reports_toggle_path({:id => report}.merge(params.slice(:type, :ignored, :t))) %>
-            </td> 
+          <td><%=distance_of_time_in_words_to_now report.created_at%></td>  
+          <td> 
+            <%= link_to "Edit"  , edit_referral_report_path(report) %> |
+            <%= link_to "Delete", referral_report_path(report), :method => :delete, :confirm => "Are you sure to remove"%> |
+            <%= link_to ignore_link, referral_reports_toggle_path() %>
+          </td> 
         </tr>
     <% end %>
 </table>

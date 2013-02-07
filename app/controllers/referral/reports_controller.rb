@@ -1,10 +1,13 @@
 module Referral 
   class ReportsController < ReferralController
-    def index
-      page = (params[:page] || '1').to_i
-      
-      @reports = Referral::Report
-      
+    
+    before_filter :set_default_page
+    
+    def set_default_page
+      @page = (params[:page] || '1').to_i
+    end
+    
+    def report_type
       if(!params[:type].blank? )
          if params[:type] == "ClinicReport"
            @reports = ClinicReport
@@ -13,25 +16,45 @@ module Referral
          end
       else
         @reports = Referral::Report
-      end 
-      
-      @reports = params[:ignored].blank? ? @reports.not_ignored : @reports.ignored
-      @reports = params[:error].blank?   ? @reports.no_error : @reports.error
-      
-      @reports =@reports.paginate :page => page, :per_page => PerPage
-      
-    end
-    
-    def search
-      page = (params[:page] || '1').to_i
-      @reports = Referral::Report.not_ignored
-      @reports =@reports.paginate :page => page, :per_page => PerPage
-      if(!params[:query].blank?)
-        @reports = @reports.query(params[:query])
       end
     end
     
+    def index
+      report_type 
+      @reports =@reports.paginate :page => @page, :per_page => PerPage
+    end
+    
+    def error
+      report_type 
+      @reports = @reports.error
+      @reports =@reports.paginate :page => @page, :per_page => PerPage
+    end
+    
+    def ignored
+      report_type 
+      @reports = @reports.ignored
+      @reports =@reports.paginate :page => @page, :per_page => PerPage
+    end
+    
+    def search
+      @reports = Referral::Report.not_ignored
+      
+      if(!params[:before].blank?)
+        @reports = @reports.since(params[:before])
+      end
+      
+      if(!params[:query].blank?)
+        @reports = @reports.query(params[:query])
+      end
+      
+      
+      
+      @reports =@reports.paginate :page => @page, :per_page => PerPage
+    end
+    
     def edit 
+      url = request.env["HTTP_REFERER"]
+      session[:from_uri] = url
       @report = Referral::Report.find params[:id]
     end
     
@@ -41,7 +64,7 @@ module Referral
       attrs = params[attr_key]
       if @report.update_attributes(attrs)
         flash[:notice] = "Report has been updated"
-        redirect_to referral_reports_path(:t => params[:t])
+        redirect_to session[:from_uri]
       else
         flash.now[:notice] = "Report failed to update"
         render :edit
@@ -67,9 +90,8 @@ module Referral
     end
     
     def duplicated
-      page = (params[:page] || '1').to_i
       @reports = Referral::Report.duplicated_per_sender
-      @reports =@reports.paginate :page => page, :per_page => PerPage
+      @reports =@reports.paginate :page => @page, :per_page => PerPage
     end
     
     
@@ -83,7 +105,7 @@ module Referral
         msg = "Failed to ignore report. Try it again"
       end
       flash[:notice] = msg
-      redirect_to referral_reports_path(params.slice(:type, :ignored, :t))
+      redirect_to referral_reports_path(params.slice(:type))
     end
     
     def destroy
@@ -94,7 +116,9 @@ module Referral
       rescue
         flash[:error] = "Failed to delete report. Try it again"
       end
-      redirect_to referral_reports_path(params.slice(:type, :ignored, :t))
+      
+      url = request.env["HTTP_REFERER"]
+      redirect_to url
     end
   end
 end

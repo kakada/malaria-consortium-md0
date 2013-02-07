@@ -1,0 +1,23 @@
+<div class="row-fluid">
+    
+    <%= form_tag "", :method => "get" do %>
+      <%= select_tag :type, options_for_select([
+                                                [ "All", ""], 
+                                                [ "Clinic", "ClinicReport"],
+                                                [ "HealthCenter", "HealthCenterReport"]
+                                              ], params[:type]), :id => "referral_report_type"   %> 
+    <% end %>
+</div>
+
+<%= content_for :js do %>
+  <script> 
+    function changeReportType(){
+      $("#referral_report_type").change(function(){
+        this.form.submit();
+      });
+    }
+    $(function(){
+      changeReportType();
+    });
+  </script>
+<% end %>

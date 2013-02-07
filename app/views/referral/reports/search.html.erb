@@ -5,41 +5,37 @@
 <% end %>
 
 <%= render "nav_report" %>
-
-<style>
-  form {
-    margin: 0px;
-  }
-</style>
-
-
-<%= list_header("List of Referral report ", @reports) %>
+<%= list_header("List of Search report ", @reports) %>
  
-<div class="row-fluid" style="float:right;">
+<div class="row-fluid" >
+  <div class="well">
     <%= form_tag referral_reports_search_path(), :method => "get", :class =>"form-search" do %>
-      <%= hidden_field_tag :t,   params[:t] %>
-      <%= tag_row :class => "input-append input-block-level" do %>
-        <%= text_field_tag :query, params[:query], :class =>"span5 search-query", :placeholder =>"Type to search"  %>
+  
+     <%=tag_row :class => "span3", :style=>"text-align:right;" do%>
+      <label>Report since: </label>
+      <div data-date-format="yyyy-mm-dd" data-date="<%=params[:before]%>" id="dp3" class="input-append date datepicker">
+            <input type="text" value="<%=params[:before]%>" name="before" size="12" class="span8">
+            <span class="add-on"><i class="icon-calendar"></i></span>
+      </div>
+     <%end %>
+  
+  
+  
+      <%= tag_row :class => "input-append input-block-level span3" do %>
+        <%= text_field_tag :query, params[:query], :class =>"search-query", :placeholder =>"Type to search"  %>
         <button type="submit" class="btn">Search</button>
       <%end%>
        
     <% end %>
+  </div>
 </div>
 <div class="clear-layout"></div>
 
-
 <%= render "reports" %>
-    
-
 <%= content_for :js do %>
-  <script> 
-    function changeReportType(){
-      $("#referral_report_type").change(function(){
-        this.form.submit();
-      });
-    }
+  <script>
     $(function(){
-      changeReportType();
+      $('.datepicker').datepicker()
     });
   </script>
-<% end %>
+<% end %>    

@@ -1,12 +1,13 @@
 <% content_for :breadcrumb do %>
   <%=  breadcrumb [
-  		{ "Report" => nil}
+  		{ "Report" => referral_reports_path},
+                { "Error" => nil }
   	] %>
 <% end %>
 
 <%= render "nav_report" %>
 
-<%= list_header("List of Referral report ", @reports) %>
+<%= list_header("List of Error reports", @reports) %>
  
 <%= render "filter_form" %>
 <%= render "reports" %>

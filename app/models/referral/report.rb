@@ -157,7 +157,12 @@ module Referral
         where("r1.ignored != 1 AND r2.ignored !=1").
         order("r1.id DESC").to_sql
 
-      where("referral_reports.id IN (#{subquery})").order("referral_reports.id DESC")
+      where("( referral_reports.id IN (#{subquery}) ) ").order("referral_reports.id DESC")
+    end
+    
+    def self.since str_date
+      date = DateTime.parse(str_date)
+      where(["referral_reports.created_at >= :date", :date => date ])
     end
     
   end

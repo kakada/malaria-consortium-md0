@@ -22,7 +22,7 @@
   
   
   
-      <%= tag_row :class => "input-append input-block-level span3" do %>
+      <%= tag_row :class => "input-append input-block-level span3" , :style=>"padding-top:5px;" do %>
         <%= text_field_tag :query, params[:query], :class =>"search-query", :placeholder =>"Type to search"  %>
         <button type="submit" class="btn">Search</button>
       <%end%>

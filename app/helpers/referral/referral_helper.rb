@@ -7,6 +7,23 @@ module Referral
 	def referral_app
 		@referral_app ? @referral_app : "Referral system"
 	end
+  
+  def current_url url, options = {}, format="csv"
+     url_components = url.split("?")
+     uri = url_components[0]
+     url_params = []
+  
+     if url_components.size >1
+        url_params << url_components[1]
+     end 
+     
+     options.each do |key, value|
+         url_params << URI::escape(key)+ "=" + URI::escape(value)
+     end
+     query_string = url_params.join("&")
+     return uri + "." + format if query_string.blank?
+     return uri + "." + format + "?" + query_string
+  end
 
 	def breadcrumb_str options
 		items = []

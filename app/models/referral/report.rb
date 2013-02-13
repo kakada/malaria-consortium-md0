@@ -1,3 +1,6 @@
+# encoding: UTF-8
+require "csv"
+
 module Referral
   class Report < ActiveRecord::Base
     set_table_name "referral_reports"
@@ -163,6 +166,36 @@ module Referral
     def self.since str_date
       date = DateTime.parse(str_date)
       where(["referral_reports.created_at >= :date", :date => date ])
+    end
+    
+    def self.as_csv
+       CSV.generate do |csv|
+        colunm_names = ["Slip code", "From", "Text", "Ignored?", "Confirmed?", "Error?"]
+        5.times.each do |i| 
+          colunm_names << Referral::Field.label(i+1) 
+        end
+        colunm_names << "Date"
+        
+        csv << colunm_names
+        
+        all.each do |report|
+          row  = [ report.slip_code,
+                   report.type,
+                   report.text,
+                   report.ignored ? "Yes" : "No",
+                   report.confirm_from ? report.confirm_from.user_name : "",
+                   report.error ?  "Yes" : "No" ,
+          ]
+           
+          5.times.each do |i|
+            row << (report.send("field#{i+1}") || "")
+          end  
+          
+          row << report.created_at         
+          csv << row   
+        end
+ 
+      end
     end
     
   end

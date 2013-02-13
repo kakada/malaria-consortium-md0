@@ -22,5 +22,13 @@ class Referral::ClinicReport < Referral::Report
     alerts << self.sender.message(body)
     alerts
   end
+  
+  def self.confirmed
+    where "confirm_from_id IS NOT NULL"
+  end
+  
+  def self.not_confirmed
+    where "confirm_from_id IS NULL"
+  end
 end
 

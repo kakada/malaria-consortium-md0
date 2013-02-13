@@ -1,0 +1,12 @@
+<% content_for :breadcrumb do %>
+  <%=  breadcrumb [
+  		{ "Report" => referral_reports_path},
+                { "Confirmed reports" => nil }
+  	] %>
+<% end %>
+
+<%= render "nav_report" %>
+
+<%= list_header("List of Confirmed reports", @reports) %>
+
+<%= render "reports" %>

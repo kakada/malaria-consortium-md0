@@ -42,6 +42,9 @@ Local::Application.routes.draw do
     match "reports/valid",    :to => "reports#valid"
     match "reports/toggle",    :to => "reports#toggle"
     match "reports/search",    :to => "reports#search"
+    match "reports/confirmed",    :to => "reports#confirmed"
+    match "reports/not_confirmed",    :to => "reports#not_confirmed"
+    
     
     resources :reports
     resources :message_formats

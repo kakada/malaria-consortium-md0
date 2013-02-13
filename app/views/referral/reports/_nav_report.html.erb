@@ -12,6 +12,11 @@
       {:text => "Ignored", :url => referral_reports_ignored_path(), :class =>( params[:action] == "ignored" ? "active" : "" )  },
       {:text => "Error",   :url => referral_reports_error_path(), :class =>( params[:action] == "error" ? "active" : "" )  },
       {:text => "Duplicate", :url => referral_reports_duplicated_path(),  :class=>( params[:action] == "duplicated" ? "active": "" ) },
+      
+      {:text => "Confirmed",   :url => referral_reports_confirmed_path(), :class =>( params[:action] == "confirmed" ? "active" : "" )  },
+      {:text => "Not Confirmed", :url => referral_reports_not_confirmed_path(),  :class=>( params[:action] == "not_confirmed" ? "active": "" ) },
+      
+    
       {:text => "Search", :url => referral_reports_search_path(),  :class=>( params[:action] == "search" ? "active": "" ) },
       {:text => "Simulate", :url => referral_reports_simulate_path(), :class=>( params[:action] == "simulate" ? "active": "" ) },
     

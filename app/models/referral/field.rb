@@ -25,6 +25,7 @@ module Referral
     before_validation :fill_data 
     after_destroy :clean_validator
     
+    
     def clean_validator
       field = self.name;
       
@@ -77,8 +78,10 @@ module Referral
     end
     
     def self.label i
-       field = find_by_position(i)
-       field.nil? ? columnize(i) : columnize(i)+ " ( #{field.meaning})"
+      all.each do |field|
+        return field.meaning if field.position == i
+      end
+      return columnize(i)
     end
     
     def show_constraint

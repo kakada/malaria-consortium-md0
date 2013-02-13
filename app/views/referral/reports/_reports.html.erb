@@ -1,3 +1,7 @@
+<div style="text-align: right;">
+  <%=link_to '<i class="icon-book"></i> Export'.html_safe, current_url(request.fullpath), :class => "btn" %>
+</div>
+<br />
 <table class="table">
   <tr>
     <th>SlipCode</td>
@@ -7,12 +11,7 @@
     <th>Confirm</td>
     <th>Error</td>
     <% 5.times.each do |i| %>
-    <th class="dym_field">
-         <%  
-           field = Referral::Field.find_by_position(i+1)
-         %>
-         <%= field.nil? ? Referral::Field.columnize(i+1) : field.meaning %>
-       </th>
+      <th class="dym_field"><%=  Referral::Field.label(i+1) %></th>
     <% end %>
     <th>Date</td>
     <th width="150">Action</th>

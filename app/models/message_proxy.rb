@@ -19,7 +19,6 @@ class MessageProxy
  end   
  
  def analyse_number
-    p @params
     sender = User.find_by_phone_number @params[:sender_address]  
     
     if sender.nil?

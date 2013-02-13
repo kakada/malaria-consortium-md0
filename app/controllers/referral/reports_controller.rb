@@ -16,35 +16,52 @@ module Referral
          end
       else
         @reports = Referral::Report
-      end
+      end 
     end
     
     def valid
       report_type 
-      @reports = @reports.no_error.not_ignored
-      @reports = @reports.paginate :page => @page, :per_page => PerPage
-    end
+      @reports = @reports.includes(:confirm_from).no_error.not_ignored
       
+      respond_to do |format|
+        format.html { @reports = @reports.paginate :page => @page, :per_page => PerPage }
+        format.csv  { render :text => @reports.as_csv}
+        format.json { render :json => @reports }
+      end
+    end
       
     def index
       report_type 
-      @reports =@reports.paginate :page => @page, :per_page => PerPage
+      @reports = @reports.includes(:confirm_from)
+      respond_to do |format|
+        format.html { @reports = @reports.paginate :page => @page, :per_page => PerPage}
+        format.csv  { render :json => @reports.as_csv }
+        format.json { render :json => @reports }
+      end
     end
     
     def error
       report_type 
-      @reports = @reports.error
-      @reports =@reports.paginate :page => @page, :per_page => PerPage
+      @reports = @reports.includes(:confirm_from).error
+      respond_to do |format|
+        format.html { @reports =@reports.paginate :page => @page, :per_page => PerPage}
+        format.csv  { render :text => @reports.as_csv}
+        format.json { render :json => @reports }
+      end
     end
     
     def ignored
       report_type 
-      @reports = @reports.ignored
-      @reports =@reports.paginate :page => @page, :per_page => PerPage
+      @reports = @reports.includes(:confirm_from).ignored
+      respond_to do |format|
+        format.html { @reports =@reports.paginate :page => @page, :per_page => PerPage}
+        format.csv  { render :text => @reports.as_csv}
+        format.json { render :json => @reports }
+      end
     end
     
     def search
-      @reports = Referral::Report.not_ignored
+      @reports = Referral::Report.includes(:confirm_from).not_ignored
       
       if(!params[:before].blank?)
         @reports = @reports.since(params[:before])
@@ -54,9 +71,40 @@ module Referral
         @reports = @reports.query(params[:query])
       end
       
+      respond_to do |format|
+        format.html { @reports = @reports.paginate :page => @page, :per_page => PerPage}
+        format.csv  { render :text => @reports.as_csv}
+        format.json { render :json => @reports }
+      end
+    end
+    
+    def confirmed
+      @reports = Referral::ClinicReport.includes(:confirm_from).confirmed
+      respond_to do |format|
+        format.html { @reports =@reports.paginate :page => @page, :per_page => PerPage}
+        format.csv  { render :text => @reports.as_csv}
+        format.json { render :json => @reports }
+      end
       
+    end
+    
+    def not_confirmed
+      @reports = Referral::ClinicReport.includes(:confirm_from).not_confirmed
+      respond_to do |format|
+        format.html { @reports =@reports.paginate :page => @page, :per_page => PerPage}
+        format.csv  { render :text => @reports.as_csv}
+        format.json { render :json => @reports }
+      end
       
-      @reports =@reports.paginate :page => @page, :per_page => PerPage
+    end
+    
+    def duplicated
+      @reports = Referral::Report.includes(:confirm_from).duplicated_per_sender
+      respond_to do |format|
+        format.html { @reports = @reports.paginate :page => @page, :per_page => PerPage}
+        format.csv  { render :text => @reports.as_csv}
+        format.json { render :json => @reports }
+      end
     end
     
     def edit 
@@ -95,12 +143,6 @@ module Referral
         end
       end
     end
-    
-    def duplicated
-      @reports = Referral::Report.duplicated_per_sender
-      @reports =@reports.paginate :page => @page, :per_page => PerPage
-    end
-    
     
     def toggle
       begin

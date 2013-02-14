@@ -13,10 +13,13 @@ class Referral::ClinicReport < Referral::Report
        alert_hcs << self.send_to_health_center
     end
     
+    body = translate_message_for(:referral_clinic_health_center)
     alert_hcs.each do |hc|
-      body = translate_message_for(:referral_clinic_health_center)
       alerts += hc.acknowledgemente(body)
     end
+    
+    body = translate_message_for(:referral_clinic_facilitator)
+    alerts += self.place.acknowledge_facilitator(body)
     
     body = translate_message_for(:referral_clinic_clinic)
     alerts << self.sender.message(body)

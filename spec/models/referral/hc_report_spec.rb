@@ -31,7 +31,12 @@ describe Referral::HCReport do
     Setting[:referral_health_center_clinic]        = "A msg from HC: {health_center} with Slip: {slip_code}"
     Setting[:referral_health_center_health_center] = "Your msg has been send to {od} with Slip: {slip_code} Original message: {original_message}"
     
-    Referral::ClinicReport.create! :slip_code => "100100"
+    Referral::ClinicReport.create! :slip_code     => "100100", 
+                                   :sender        => @od_user1,
+                                   :code_number   => "100",
+                                   :book_number   => "100"
+                                 
+    
     
     hc_report = Referral::HCReport.create! :place         => @hc1 ,
                                           :sender        => @hc_user21 ,
@@ -41,9 +46,8 @@ describe Referral::HCReport do
                                           :text          => "xxx-xxx"
     messages = hc_report.valid_alerts 
     
-    messages.should eq [
+    messages.should =~ [
       {:to=>"sms://8558195", :body=>"A msg from HC: 12345678 hc1 (Health Center) with Slip: 100100", :from => MessageProxy.app_name}, 
-      {:to=>"sms://8558197", :body=>"A msg from HC: 12345678 hc1 (Health Center) with Slip: 100100", :from => MessageProxy.app_name}, 
       {:to=>"sms://8558180", :body=>"Your msg has been send to 123456 BatDamBong (Od) with Slip: 100100 Original message: xxx-xxx", :from => MessageProxy.app_name}
       ]
                                     

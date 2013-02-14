@@ -37,6 +37,7 @@ class Templates
     
     :referral_clinic_clinic => {:params => %w(phone_number slip_code book_number code_number health_center), :label => "Referral Private Provider acknowledgement"},
     :referral_clinic_health_center => {:params => %w(phone_number slip_code book_number code_number health_center), :label => "Referral Private Provider to Health Center"},
+    :referral_clinic_facilitator => {:params => %w(phone_number slip_code book_number code_number health_center), :label => "Referral Private Provider to Facilitator"},
     
     :referral_health_center_clinic => {:params => %w(slip_code book_number code_number), :label => "Referral Health Center to Private Provider"},
     :referral_health_center_health_center => {:params => %w(slip_code book_number code_number), :label => "Referral Health Center acknowlegment"},

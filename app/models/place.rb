@@ -111,6 +111,11 @@ class Place < ActiveRecord::Base
     valid_users = users.select{|user| (user.status && user.is_from_referral?)}
     valid_users.map{|user| user.message(body) }
   end
+  
+  def acknowledge_facilitator(body)
+    valid_users = users.select{|user| (user.status && user.is_from_referral? && user.role == User::ROLE_REF_FACILITATOR)}
+    valid_users.map{|user| user.message(body) }
+  end
 
   def create_alerts body, options = {}
     users.reject{|user| (user == options[:except] or !user.status or !user.is_from_md0?) }.map{|user| user.message(body) }

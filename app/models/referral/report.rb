@@ -183,7 +183,7 @@ module Referral
                    report.type,
                    report.text,
                    report.ignored ? "Yes" : "No",
-                   report.confirm_from ? report.confirm_from.user_name : "",
+                   report.confirm_from ? report.confirm_from.phone_number + "(#{report.confirm_from.user_name})" : "",
                    report.error ?  "Yes" : "No" ,
           ]
            

@@ -35,7 +35,7 @@
           <td class="<%= txt_class %>"  > <%= report.type %> </td>
           <td class="<%= txt_class %>"  title="<%= report.text %>"> <%= highlight(truncate(report.text, :length => 80), params[:query]) %> </td>
           <td class="<%= txt_class %>"  ><%= ignored  %> </td>
-          <td class="<%= txt_class %>"  ><%= report.confirm_from ? report.confirm_from.user_name : "" %> </td>
+          <td class="<%= txt_class %>"  ><%= report.confirm_from ? report.confirm_from.phone_number + "(#{report.confirm_from.user_name})" : "" %> </td>
           <td class="<%= txt_class %>"  title="<%=report.error_message%>"> <%= report.error ? "Yes" : "No"%> </td>
           <% 5.times.each do |i| %>
             <td class="dym_field <%= txt_class %>">

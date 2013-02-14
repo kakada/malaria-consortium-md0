@@ -80,18 +80,21 @@
       $("#ref_hc, #ref_od").hide();
     }
 
-    function handleEvent(){
+    function handleEvent() {
       $("#user_role").change(function(){
-        hide();
-        if(this.selectedIndex ==1 )
-           $("#ref_od").show()
+        showPlace();
+      });
+    }
 
-        else if(this.selectedIndex == 2)
+    function showPlace(){
+      hide();
+      var role = $("#user_role").get(0);
+      if(role.selectedIndex ==1 || role.selectedIndex == 2 )
+           $("#ref_od").show();
+
+      else if(role.selectedIndex == 3)
           $("#ref_hc").show();
-
-    });
-
-
+    }
       
     $("form.edit_user, form.new_user").submit(function(){
          errors = validate();
@@ -102,15 +105,15 @@
 
          var index = $("#user_role").get(0).selectedIndex;
          
-         if(index == 1){
+         if(index == 1 || index == 2){
            $("#ref_hc").remove();
          }
          
-         else if( index == 2){
+         else if( index == 3){
            $("#ref_od").remove();
          }         
-      });  
-    }
+    });  
+   
     
     function validate(){
       var errors = []
@@ -143,12 +146,12 @@
       }
  
 
-      if(index== 1) {
+      if( index== 1 && index== 2 ) {
         if($("#ref_od_input").val() == "")
           errors.push("Please select an OD ");
       }
 
-      else if(index == 2) {
+      else if(index == 3) {
         if($("#ref_hc_input").val == "" )
           errors.push("Please select a Health center");
       }
@@ -165,9 +168,7 @@
       if(error){
         errors.push("Please check at least one application");
       }
-      
       return errors;
-
     }
     
     function empty(str){
@@ -178,7 +179,9 @@
     
 
     $(function(){
+      showPlace();
       handleEvent();
+      
     });
   </script>
 <% end %>

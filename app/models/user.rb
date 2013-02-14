@@ -12,9 +12,10 @@ class User < ActiveRecord::Base
   
   ROLE_REF_PROVIDER = "Private Provider"
   ROLE_REF_HC = "Health center"
+  ROLE_REF_FACILITATOR = "Facilitator"
   
   Roles = [ROLE_MC_DEFAULT, ROLE_MC_NAT , ROLE_MC_ADMIN ]
-  Roles_Ref = [ROLE_REF_PROVIDER, ROLE_REF_HC]
+  Roles_Ref = [ROLE_REF_PROVIDER, ROLE_REF_FACILITATOR, ROLE_REF_HC]
   
   APP_REFERAL = "Referral"
   APP_MDO = "MD0"
@@ -93,7 +94,7 @@ class User < ActiveRecord::Base
     end
     
     def ref_users
-      self.where(["role = ? OR role = ? ", ROLE_REF_PROVIDER , ROLE_REF_HC ])
+      self.where(["role = ? OR role = ? OR role = ?", ROLE_REF_PROVIDER , ROLE_REF_HC, ROLE_REF_FACILITATOR ])
     end
     
     def deactivated

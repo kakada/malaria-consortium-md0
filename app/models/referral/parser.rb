@@ -122,7 +122,8 @@ class Referral::Parser
     end
   end
   
-  def scan_health_center text
+  def scan_health_center hc_code
+    text = hc_code.strip
     if(!text.empty?)
       scanner = create_scanner(text)
       health_center_code = scanner.scan(/^\d{6}/)

@@ -195,6 +195,5 @@ describe Referral::Parser do
       ref_parser = Referral::Parser.new @params.merge(:text => "123455")
       expect{ref_parser.scan_health_center "123455" }.to raise_error(Exception, :referral_invalid_health_center_code.to_s)
     end
-
   end
 end

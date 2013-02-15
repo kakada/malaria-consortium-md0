@@ -135,6 +135,7 @@ class Referral::Parser
           raise_error :referral_invalid_health_center_code
         else
           @options[:health_center_code] = health_center_code
+          @options[:send_to_health_center] = hc
         end   
       end
     else

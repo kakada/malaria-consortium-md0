@@ -196,4 +196,22 @@ describe Referral::Parser do
       expect{ref_parser.scan_health_center "123455" }.to raise_error(Exception, :referral_invalid_health_center_code.to_s)
     end
   end
+  
+  describe "split_term" do
+    it "should return 5-element array " do
+       Referral::Parser.split_term("..a.b.", ".").should eq ["", "", "a", "b", ""]
+    end
+    
+    it "should return an element array " do
+       Referral::Parser.split_term("", ".").should eq [""]
+    end
+    
+    it "should return 2 empty string" do
+       Referral::Parser.split_term(".", ".").should eq ["",""]
+    end
+    
+    it "should return 2 empty string" do
+       Referral::Parser.split_term("a.b", ".").should eq ["a","b"]
+    end
+  end
 end

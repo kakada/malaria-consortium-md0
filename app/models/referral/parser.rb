@@ -169,7 +169,7 @@ class Referral::Parser
   def scan_messages
     
     formats = message_format.format.split(Referral::MessageFormat::Separator)
-    texts   = @options[:text].split(Referral::MessageFormat::Separator)
+    texts   = Referral::Parser.split_term( @options[:text], Referral::MessageFormat::Separator)
            
     formats.each_with_index do |format, index|
       validator_name = Referral::MessageFormat.raw_format(format)
@@ -180,4 +180,24 @@ class Referral::Parser
     end
     raise_error :referral_field_mismatch_format if formats.size != texts.size
   end
+  
+  def self.split_term(text, separator)
+    result = []
+    content = ""
+    text.each_char do |c|
+      if(c == separator )
+         result << content 
+         content = ""
+      else
+         content = content + c
+      end
+    end
+    if text[text.size-1] == separator
+      result << "" 
+    else
+      result << content
+    end
+    result
+  end
+  
 end

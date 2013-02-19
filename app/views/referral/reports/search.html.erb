@@ -12,10 +12,18 @@
   <div class="well">
     <%= form_tag referral_reports_search_path(), :method => "get", :class =>"form-search" do %>
     
-    <%=tag_row :class=>"span6", :style=>"text-align:right;"  do%>
-      <label>Report since: </label>
-      <div data-date-format="yyyy-mm-dd" data-date="<%=params[:before]%>" id="dp3" class="input-append date datepicker">
-            <input type="text" value="<%=params[:before]%>" name="before" size="12" class="span8">
+    <%=tag_row :class=>"span3", :style=>"text-align:right;"  do%>
+      <label>From: </label>
+      <div data-date-format="yyyy-mm-dd" data-date="<%=params[:from]%>" id="dp3" class="input-append date datepicker">
+            <input type="text" value="<%=params[:from]%>" name="from" size="12" class="span8">
+            <span class="add-on"><i class="icon-calendar"></i></span>
+      </div>
+     <%end %>
+     
+     <%=tag_row :class=>"span3", :style=>"text-align:right;"  do%>
+      <label>To: </label>
+      <div data-date-format="yyyy-mm-dd" data-date="<%=params[:to]%>" id="dp3" class="input-append date datepicker">
+            <input type="text" value="<%=params[:to]%>" name="to" size="12" class="span8">
             <span class="add-on"><i class="icon-calendar"></i></span>
       </div>
      <%end %>

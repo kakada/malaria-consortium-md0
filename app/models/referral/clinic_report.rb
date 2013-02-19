@@ -8,7 +8,7 @@ class Referral::ClinicReport < Referral::Report
     alert_hcs = []
 
     if self.send_to_health_center.nil?
-       alert_hcs = self.place.health_centers
+       alert_hcs = self.place.od.health_centers
     else
        alert_hcs << self.send_to_health_center
     end
@@ -19,7 +19,7 @@ class Referral::ClinicReport < Referral::Report
     end
     
     body = translate_message_for(:referral_clinic_facilitator)
-    alerts += self.place.acknowledge_facilitator(body)
+    alerts += self.place.od.acknowledge_facilitator(body)
     
     body = translate_message_for(:referral_clinic_clinic)
     alerts << self.sender.message(body)

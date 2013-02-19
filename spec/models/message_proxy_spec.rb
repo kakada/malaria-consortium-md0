@@ -12,8 +12,8 @@ describe MessageProxy do
     @hc_user_disable_referral = @health_center.users.make :phone_number => "85581910", :status => false, :apps => [User::APP_REFERAL]
     
     @vmw_user = @village.users.make :phone_number => "8558191"
-    @od_user_both = @od.users.make :phone_number => "8558192",  :status => true, :apps => [User::APP_MDO, User::APP_REFERAL], :role => User::ROLE_REF_PROVIDER
-    @od_user_ref  = @od.users.make :phone_number => "8558193",  :status => true, :apps => [User::APP_REFERAL ], :role => User::ROLE_REF_PROVIDER
+    @village_user_both = @village.users.make :phone_number => "8558192",  :status => true, :apps => [User::APP_MDO, User::APP_REFERAL], :role => User::ROLE_REF_PROVIDER
+    @village_user_ref  = @village.users.make :phone_number => "8558193",  :status => true, :apps => [User::APP_REFERAL ], :role => User::ROLE_REF_PROVIDER
 
     @valid_message = {:from => "sms://8558190", :body => "F123M012345678"}
     @valid_vmw_message = {:from => "sms://8558191", :body => "F123M0."}
@@ -149,13 +149,14 @@ describe MessageProxy do
     before(:each) do
        @format_message_clinic = Referral::MessageFormat.create :format => "{phone_number}.{code_number}.{book_number}", :sector => Referral::MessageFormat::TYPE_CLINIC
        @format_message_hc = Referral::MessageFormat.create :format => "{phone_number}.{code_number}.{book_number}", :sector => Referral::MessageFormat::TYPE_HC
+       
     end
     
-    it "should return referral clinic report for od user" do
+    it "should return referral clinic report for user" do
       options = { :text => "097123456.xxx", 
-                  :sender_address => @od_user_both.phone_number, 
-                  :sender => @od_user_both, 
-                  :place => @od_user_both.place 
+                  :sender_address => @village_user_both.phone_number, 
+                  :sender => @village_user_both, 
+                  :place => @village_user_both.place 
       }
       proxy = MessageProxy.new({})
       #proxy.stub!(:parameterize).and_return(options)
@@ -164,7 +165,7 @@ describe MessageProxy do
     end
     
     it "should return md0 report for user from village" do
-      options = { :text => "097123456.001.002", 
+      options = { :text => "V12M28" , ## malaria_type(F|V|M)Age(\d{3})Sex(F|M)day(0|28|30)VillageCode(\d{8}|\d{10}
                   :sender_address => @vmw_user.phone_number,
                   :sender => @vmw_user, 
                   :place => @vmw_user.place

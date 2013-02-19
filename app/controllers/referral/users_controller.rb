@@ -34,7 +34,7 @@ module Referral
   	end
 
     def new
-    	@user = User.new
+    	@user = User.new(:apps => [User::APP_REFERAL])
     end
 
     def create

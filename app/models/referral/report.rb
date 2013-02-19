@@ -94,7 +94,7 @@ module Referral
     
     # return Parser object
     def self.create_parser params
-      return ClinicParser.new(params) if(params[:sender].place.class == OD )
+      return ClinicParser.new(params) if(params[:sender].place.class == Village )
       return HCParser.new(params)  if(params[:sender].place.class == HealthCenter ) 
     end
     
@@ -111,11 +111,11 @@ module Referral
       
       template = Referral::Report.template_from_key(key)
       
-      template_values[:health_center] = self.send_to_health_center.description if send_to_health_center
-      template_values[:health_center] = self.place.description if self.class == Referral::HCReport
+      template_values[:health_center] = self.send_to_health_center.intended_place_code if send_to_health_center
+      template_values[:health_center] = self.place.intended_place_code if self.class == Referral::HCReport
       
-      template_values[:od] = self.place.description if self.class == Referral::ClinicReport
-      template_values[:od] = self.place.od.description if self.class == Referral::HCReport
+      template_values[:od] = self.place.intended_place_code if self.class == Referral::ClinicReport
+      template_values[:od] = self.place.od.intended_place_code if self.class == Referral::HCReport
       template.apply(template_values)
     end
     
@@ -166,6 +166,18 @@ module Referral
     def self.since str_date
       date = DateTime.parse(str_date)
       where(["referral_reports.created_at >= :date", :date => date ])
+    end
+    
+    def self.between from_str, to_str
+      if from_str
+        from = DateTime.parse(from_str)
+        where(["referral_reports.created_at >= :from ", :from => from ])
+      end
+      if to_str
+        to = DateTime.parse(to_str)
+        where(["referral_reports.created_at <= :to", :to => to ])
+      end
+      
     end
     
     def self.as_csv

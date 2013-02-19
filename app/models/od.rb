@@ -11,11 +11,6 @@ class OD < Place
 
   private
 
-  def self.list
-    OD.all.map{|od| od.intended_place_code}
-  end
-
-
   def national_and_admin_alerts(body)
     roles = []
     roles << 'national' if Setting[:national_alert] != "0"

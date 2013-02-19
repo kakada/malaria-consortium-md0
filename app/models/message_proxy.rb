@@ -72,13 +72,6 @@ class MessageProxy
   end
   
   def guess_type options
-    if options[:sender].is_private_provider_role?
-       referral_report =  Referral::Report::decode options
-       return referral_report
-    elsif options[:sender].is_village_role?  
-       md0_report     =  Report::decode options
-       return md0_report
-    else
       #pass option to the decode by value
       referral_report =  Referral::Report::decode options.dup
       return referral_report if !referral_report.error
@@ -88,7 +81,6 @@ class MessageProxy
       
       return referral_report   if(referral_report.parse_quality > md0_report.parse_quality) 
       return md0_report
-    end
   end
   
   def save_referral_error

@@ -27,23 +27,25 @@ class Templates
     :reminder_message_hc => {:params => %w(original_message phone_number village health_center), :label => "reminder message to HC, OD, PHD, National and Admin"},
   }
   KeyReferrals = {
+    
+    :referral_clinic_clinic => {:params => %w(phone_number slip_code book_number code_number health_center), :label => "Private Provider acknowledgement"},
+    :referral_clinic_health_center => {:params => %w(phone_number slip_code book_number code_number health_center), :label => "Private Provider to Health Center"},   
+    :referral_clinic_facilitator => {:params => %w(phone_number slip_code book_number code_number health_center), :label => "Private Provider to Facilitator"},
+    
+    :referral_health_center_clinic => {:params => %w(slip_code book_number code_number), :label => "Health Center to Private Provider"},
+    :referral_health_center_health_center => {:params => %w(slip_code book_number code_number), :label => "Health Center acknowlegment"},
+    
     :referral_invalid_phone_number => {:params => %w(original_message), :label => "Invalid Phone number"},
-    :referral_invalid_book_number => {:params => %w(original_message), :label => "Invalid Book number"},
-    :referral_invalid_code_number => {:params => %w(original_message), :label => "Invalid Code number"},
+    :referral_invalid_book_number  => {:params => %w(original_message), :label => "Invalid Book number"},
+    :referral_invalid_code_number  => {:params => %w(original_message), :label => "Invalid Code number"},
     :referral_invalid_od => {:params => %w(original_message), :label => "Invalid Od abbriviation"},
     :referral_invalid_not_in_od => {:params => %w(original_message), :label => "Invalid user for od"},
     :referral_invalid_health_center_format => {:params => %w(original_message), :label => "Invalid Health center format"},
     :referral_invalid_health_center_code => {:params => %w(original_message), :label => "Invalid Health center code"},
-    
-    :referral_clinic_clinic => {:params => %w(phone_number slip_code book_number code_number health_center), :label => "Referral Private Provider acknowledgement"},
-    :referral_clinic_health_center => {:params => %w(phone_number slip_code book_number code_number health_center), :label => "Referral Private Provider to Health Center"},
-    :referral_clinic_facilitator => {:params => %w(phone_number slip_code book_number code_number health_center), :label => "Referral Private Provider to Facilitator"},
-    
-    :referral_health_center_clinic => {:params => %w(slip_code book_number code_number), :label => "Referral Health Center to Private Provider"},
-    :referral_health_center_health_center => {:params => %w(slip_code book_number code_number), :label => "Referral Health Center acknowlegment"},
-    :referral_field_mismatch_format => {:params => %w(original_messag message_format), :label => "Referral Parser items mismatched"},
+    :referral_field_mismatch_format => {:params => %w(original_messag message_format), :label => "Parser items mismatched"},
     :referral_invalid_validator => {:params => %w(original_messag message_format), :label => "Validator Not found"},
     :referral_slip_code_not_exist => {:params => %w(original_messag message_format), :label => "No slip code found from Clinic"},
+    
   }  
 
 

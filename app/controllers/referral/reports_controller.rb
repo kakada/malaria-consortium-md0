@@ -63,9 +63,8 @@ module Referral
     def search
       @reports = Referral::Report.includes(:confirm_from).not_ignored
       
-      if(!params[:before].blank?)
-        @reports = @reports.since(params[:before])
-      end
+      @reports = @reports.between(params[:from], params[:to])
+     
       
       if(!params[:query].blank?)
         @reports = @reports.query(params[:query])

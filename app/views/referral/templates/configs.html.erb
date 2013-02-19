@@ -1,24 +1,37 @@
-<h2>Templates</h2>
 <style>
   .row div[class*="span"] {
         margin-left : 0px;
    }
 </style>
+<%
+  title = {
+    0 => "Private provider Template",
+    3 => "HealthCenter Template",
+    5 => "Error Template"
+  }
+  i = 0 
+%>
+
 <%= form_tag referral_templates_update_configs_path, :method => "post" do %>
-  <div class="row" style="margin-left: 20px;" >
-  <% Templates::KeyReferrals.each do |key, value|  %>
-    <div class="span4" style="background: #fff;margin-bottom: 20px;" >
-          <b><%=label_tag "#{value[:label]}" %> </b>
-          <%= text_area_tag "templates[#{key}]", Setting[key],:id => "#{key}",  :style=> "width:90%;height: 60px;" %>
-          <% value[:params].each do |item| %>
-            <a href="#" class="parameter_link" data-id="<%=key%>" >{<%= item %>}</a>
-          <% end %>
-          <br />
-     </div>
-    <% end %>
-   </div>
+  
+     <%Templates::KeyReferrals.each do |key, value|  %>
+      <% if i==0 || i==3 || i==5 %>
+        <h3 class="row-fluid htitle "> <%= title[i] %> </h3>
+      <%end%>
+      
+      <div style="background: #fff;padding:10px;" >
+            <b><%=label_tag "#{value[:label]}" %> </b>
+            <%= text_area_tag "templates[#{key}]", Setting[key],:id => "#{key}",  :style=> "width:90%;height: 60px;" %>
+            <div>
+              <% value[:params].each do |item| %>
+                <a href="#" class="parameter_link" data-id="<%=key%>" >{<%= item %>}</a>
+              <% end %>
+            </div>  
+      </div>
+      <% i= i+1 %>  
+    <% end %> 
    <input type="submit" value=" Save " class="btn btn-danger" />
-<% end %>
+<%end %>
 
 <% content_for :js do %>
 <%= javascript_include_tag "jquery.fieldSelection" %>

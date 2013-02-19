@@ -16,6 +16,10 @@ class Place < ActiveRecord::Base
   before_validation :set_parent_from_intended_parent_code, :if => lambda { @intended_parent_code }
   validate :intended_parent_code_must_exist, :if => lambda { @intended_parent_code && !parent }
 
+  def self.list
+    all.map{|place| place.intended_place_code }
+  end
+  
   def self.find_by_code(code)
     return nil if code.blank?
     pieces = code.strip.split(/\s/, 2)

@@ -20,12 +20,6 @@ class HealthCenter < Place
     count_reports_since(Time.last_week) >= threshold.value
   end
   
-  def self.list
-    HealthCenter.all.map{|hc| hc.intended_place_code }
-  end
-  
-  
-
   def aggregate_report time
     counts = reports_since(time).group(:malaria_type).count
     f = counts["F"].nil? ? 0 : counts["F"]

@@ -40,7 +40,7 @@ describe Referral::Report do
     end
     
     it "should create clinic parser" do
-      parser = Referral::Report.create_parser(:sender => @od_user1)
+      parser = Referral::Report.create_parser(:sender => @vmw_user)
       parser.class.should eq Referral::ClinicParser
     end
   end

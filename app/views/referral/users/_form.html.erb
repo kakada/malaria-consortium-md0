@@ -37,20 +37,29 @@
   
 </div>
   <%
-    od_hide = @user.role == User::ROLE_REF_PROVIDER ? "" : "c-hidden"
+    clinic_hide = @user.role == User::ROLE_REF_PROVIDER ? "" : "c-hidden"
     hc_hide = @user.role == User::ROLE_REF_HC ? "" : "c-hidden"
+    facilitator_hide = @user.role == User::ROLE_REF_FACILITATOR ? "" : "c-hidden"
   %>
-  <%=tag_row :id => "ref_od", :class=> "#{od_hide}" do %>
-          <%= form.label :intended_place_code, "OD" %>
+  <%=tag_row :id => "ref_clinic", :class=> "#{clinic_hide}" do %>
+          <%= form.label :intended_place_code, "Village" %>
           <%= form.text_field :intended_place_code, :"data-provide" =>"typeahead", 
-          :"data-source" => "#{OD.list}", :autocomplete => "off", :id => "ref_od_input" %>
-    <%end%>	
+          :"data-source" => "#{Village.list}", :autocomplete => "off", :id => "ref_clinic_input" %>
+  <%end%>	
 
   <%=tag_row :id=>"ref_hc", :class => "#{hc_hide}" do %>
           <%= form.label :intended_place_code, "Health Center" %>
           <%= form.text_field :intended_place_code, :"data-provide" =>"typeahead", 
           :"data-source" => "#{HealthCenter.list}", :autocomplete => "off", :id => "ref_hc_input" %>
-    <%end%>
+  <%end%>
+
+  <%=tag_row :id=>"ref_facilitator", :class => "#{facilitator_hide}" do %>
+          <%= form.label :intended_place_code, "OD" %>
+          <%= form.text_field :intended_place_code, :"data-provide" =>"typeahead", 
+          :"data-source" => "#{OD.list}", :autocomplete => "off", :id => "ref_facilitator_input" %>
+  <%end%>
+
+
 
 <%=tag_row do %>
 	<%= form.label :status %>
@@ -77,7 +86,7 @@
 <% content_for :js do %>
   <script >
     function hide(){
-      $("#ref_hc, #ref_od").hide();
+      $("#ref_hc, #ref_clinic, #ref_facilitator").hide();
     }
 
     function handleEvent() {
@@ -89,8 +98,10 @@
     function showPlace(){
       hide();
       var role = $("#user_role").get(0);
-      if(role.selectedIndex ==1 || role.selectedIndex == 2 )
-           $("#ref_od").show();
+      if(role.selectedIndex ==1)
+           $("#ref_clinic").show();
+      else if(role.selectedIndex ==2)
+           $("#ref_facilitator").show();   
 
       else if(role.selectedIndex == 3)
           $("#ref_hc").show();
@@ -105,12 +116,19 @@
 
          var index = $("#user_role").get(0).selectedIndex;
          
-         if(index == 1 || index == 2){
-           $("#ref_hc").remove();
-         }
          
+         if(index == 1 ){
+           $("#ref_hc").remove();
+           $("#ref_facilitator").remove();
+         }
+         if(index == 2){
+           $("#ref_hc").remove();
+           $("#ref_clinic").remove();
+         }
+ 
          else if( index == 3){
-           $("#ref_od").remove();
+           $("#ref_clinic").remove();
+           $("#ref_facilitator").remove();
          }         
     });  
    
@@ -122,20 +140,11 @@
         errors.push("Please enter User name");
       }
       <% if @user.new_record? %>
-          if(empty ($("#user_password").val()) || empty($("#user_password_confirmation").val()) ) {
-            errors.push("Please enter Password / Confirm password");
-          }
-
           if($("#user_password").val() != $("#user_password_confirmation").val() ){
             errors.push("Password / Confirm password not matched ");
           }
       <% end %>
         
-      /*  
-      if(empty( $("#user_email").val())) {
-        errors.push("Please enter Email");
-      }
-      */
       if(empty( $("#user_phone_number").val())) {
         errors.push("Please enter Phone number");
       }
@@ -147,8 +156,12 @@
  
 
       if( index== 1 && index== 2 ) {
-        if($("#ref_od_input").val() == "")
-          errors.push("Please select an OD ");
+        if($("#ref_clinic_input").val() == "")
+          errors.push("Please select a Village");
+      }
+      if( index== 2 ) {
+        if($("#ref_facilitator_input").val() == "")
+          errors.push("Please select an OD");
       }
 
       else if(index == 3) {

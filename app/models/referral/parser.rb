@@ -83,7 +83,7 @@ class Referral::Parser
       raise_error :referral_invalid_od 
     else
         begin
-          if(@options[:sender].place.abbr.downcase() != od_name.downcase())
+          if(@options[:sender].place.od.abbr.downcase() != od_name.downcase())
             raise_error :referral_invalid_not_in_od
           end
         rescue

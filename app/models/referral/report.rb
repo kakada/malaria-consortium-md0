@@ -169,15 +169,22 @@ module Referral
     end
     
     def self.between from_str, to_str
-      if from_str
-        from = DateTime.parse(from_str)
-        where(["referral_reports.created_at >= :from ", :from => from ])
-      end
-      if to_str
-        to = DateTime.parse(to_str)
-        where(["referral_reports.created_at <= :to", :to => to ])
+      
+      begin
+        from = Time.parse(from_str).at_beginning_of_day
+        to   = Time.parse(to_str).at_beginning_of_day
+      rescue    
       end
       
+      if(from && to)
+        where(["referral_reports.created_at BETWEEN :from AND :to ", :from => from, :to => to])
+      elsif from
+        where(["referral_reports.created_at >= :from ", :from => from ])
+      elsif to
+        where(["referral_reports.created_at <= :to ", :to => to])
+      end
+      where("1=1")
+
     end
     
     def self.as_csv

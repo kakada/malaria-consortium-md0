@@ -64,7 +64,6 @@ module Referral
       @reports = Referral::Report.includes(:confirm_from).not_ignored
       
       @reports = @reports.between(params[:from], params[:to])
-     
       
       if(!params[:query].blank?)
         @reports = @reports.query(params[:query])

@@ -43,7 +43,7 @@
                 <%= highlight( text , params[:query])  %>
             </td>
           <% end %>
-          <td><%=distance_of_time_in_words_to_now report.created_at%></td>  
+          <td title="<%=report.created_at %>"><%=distance_of_time_in_words_to_now report.created_at%></td>  
           <td> 
             <%= link_to "Edit"  , edit_referral_report_path(report) %> |
             <%= link_to "Delete", referral_report_path(report), :method => :delete, :confirm => "Are you sure to remove"%> |

@@ -35,16 +35,46 @@ class Templates
     :referral_health_center_clinic => {:params => %w(slip_code book_number code_number), :label => "Health Center to Private Provider"},
     :referral_health_center_health_center => {:params => %w(slip_code book_number code_number), :label => "Health Center acknowlegment"},
     
-    :referral_invalid_phone_number => {:params => %w(original_message), :label => "Invalid Phone number"},
-    :referral_invalid_book_number  => {:params => %w(original_message), :label => "Invalid Book number"},
-    :referral_invalid_code_number  => {:params => %w(original_message), :label => "Invalid Code number"},
-    :referral_invalid_od => {:params => %w(original_message), :label => "Invalid Od abbriviation"},
-    :referral_invalid_not_in_od => {:params => %w(original_message), :label => "Invalid user for od"},
-    :referral_invalid_health_center_format => {:params => %w(original_message), :label => "Invalid Health center format"},
-    :referral_invalid_health_center_code => {:params => %w(original_message), :label => "Invalid Health center code"},
-    :referral_field_mismatch_format => {:params => %w(original_messag message_format), :label => "Parser items mismatched"},
-    :referral_invalid_validator => {:params => %w(original_messag message_format), :label => "Validator Not found"},
-    :referral_slip_code_not_exist => {:params => %w(original_messag message_format), :label => "No slip code found from Clinic"},
+    :referral_invalid_phone_number => {
+                  :params => %w(original_message), 
+                  :label => "Invalid Phone number", 
+                  :hint =>"Phone number must be 9 or 10 digit. Ex: 012345678"},
+    :referral_invalid_book_number  => {
+                  :params => %w(original_message), 
+                  :label => "Invalid Book number",
+                  :hint => "Book number must be 3 digit. Ex: 012" },
+    :referral_invalid_code_number  => {
+                  :params => %w(original_message), 
+                  :label => "Invalid Code number",
+                  :hint => "Code number must be 3 digit. Ex: 012"},
+    :referral_invalid_od => {
+                  :params => %w(original_message), 
+                  :label => "Invalid Od abbriviation",
+                  :hint => "OD abbreviation is incorrect. Please verify the abbreviation of the OD"},
+    :referral_invalid_not_in_od => {
+                  :params => %w(original_message), 
+                  :label => "Invalid user for od",
+                  :hint => "User sent the message was not located in the OD. He must be registed in the OD"},
+    :referral_invalid_health_center_format => {
+                  :params => %w(original_message), 
+                  :label => "Invalid Health center format",
+                  :hint => "Health center code must be 6 digits. Ex: 010203"},
+    :referral_invalid_health_center_code => {
+                  :params => %w(original_message), 
+                  :label => "Invalid Health center code",
+                  :hint => "Health center code does not exist. Please check the health center code"},
+    :referral_field_mismatch_format => {
+                  :params => %w(original_messag message_format), 
+                  :label => "Parser items mismatched",
+                  :hint => "Referral items supplied in the message is not matched to items in the message format"},
+    :referral_invalid_validator => {
+      :params => %w(original_messag message_format), 
+      :label => "Validator Not found",
+      :hint => "Validator used in message format is not found"},
+    :referral_slip_code_not_exist => {
+      :params => %w(original_messag message_format), 
+      :label => "No slip code found from Clinic",
+      :hint => "Slip code that health center sent is not found as a valid slip code in clinic"},
     
   }  
 

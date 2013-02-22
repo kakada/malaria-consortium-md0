@@ -20,7 +20,10 @@
       <%end%>
       
       <div style="background: #fff;padding:10px;" >
-            <b><%=label_tag "#{value[:label]}" %> </b>
+            <b><%=label_tag "", "#{value[:label]}", :style=> "display:inline;" %> </b>
+            <% if !value[:hint].nil?  %>
+            : <span style="font-size: 90%;">(<%= value[:hint] %>)</span>
+            <% end %>
             <%= text_area_tag "templates[#{key}]", Setting[key],:id => "#{key}",  :style=> "width:90%;height: 60px;" %>
             <div>
               <% value[:params].each do |item| %>

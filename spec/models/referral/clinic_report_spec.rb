@@ -27,7 +27,7 @@ describe Referral::ClinicReport do
     @od_fac_disabled = @od.users.make :phone_number => "85581901", :apps => [User::APP_REFERAL], :status => false, :role => User::ROLE_REF_FACILITATOR
     @od_fac_disabled = @od.users.make :phone_number => "85581902", :apps => [User::APP_REFERAL], :status => true,  :role => User::ROLE_REF_FACILITATOR
     
-    @v1 = @hc1.villages.make :name =>"v1", :code => "10101010"
+    @v1 = @hc1.villages.make :name =>"ToulSomRoungVillage", :code => "10101010"
     @v_user1 = @v1.users.make :phone_number => "85590909090", :apps => [User::APP_REFERAL], :status => true
     
     @od_user2 = @od.users.make :phone_number => "8558196"
@@ -54,41 +54,36 @@ describe Referral::ClinicReport do
 
      messages.should =~     
       [
-        {:to=>"sms://8558190", :body=>"You receive a patient 012123456 from 10101010 v1 (Village) with 001001", :from=>"malariad0://system"}, 
-        {:to=>"sms://8558191", :body=>"You receive a patient 012123456 from 10101010 v1 (Village) with 001001", :from=>"malariad0://system"}, 
+        {:to=>"sms://8558190", :body=>"You receive a patient 012123456 from 10101010 ToulSomRoungVillage (Village) with 001001", :from=>"malariad0://system"}, 
+        {:to=>"sms://8558191", :body=>"You receive a patient 012123456 from 10101010 ToulSomRoungVillage (Village) with 001001", :from=>"malariad0://system"}, 
         {:to=>"sms://85581900", :body=>"Patient has been refered to 12345678 - hc1 with 001001", :from=>"malariad0://system"}, 
         {:to=>"sms://85581902", :body=>"Patient has been refered to 12345678 - hc1 with 001001", :from=>"malariad0://system"}, 
         {:to=>"sms://85590909090", :body=>"You have sent patient 012123456 to 12345678 - hc1 with 001001", :from=>"malariad0://system"}
         ]
     end
     
-    it "should send to all users in all health centers under the od" do
+    it "should send to all users in all health centers under the od, all facilitator under od and himself" do
       Setting[:referral_clinic_health_center] = "You receive a patient {phone_number} from {place} with {slip_code}"
       Setting[:referral_clinic_clinic]        = "You have sent patient {phone_number} with {slip_code}"
       Setting[:referral_clinic_facilitator]   = "Patient has been refered to {health_center} with {slip_code}" 
       
       report = Referral::ClinicReport.create! :phone_number          => "012123456",
-                                            :place                 => @od ,
+                                            :place                 => @v1 ,
                                             :send_to_health_center => nil ,
-                                            :sender                => @od_user1 ,
+                                            :sender                => @v_user1 ,
                                             :slip_code             => "001001" ,
                                             :book_number           => "001",
                                             :code_number           => "001",
                                             :text                  => "xxx xxx xxx"
       messages = report.valid_alerts
       
-      messages.should =~ [
-          {:to=>"sms://8558190", :body=>"You receive a patient 012123456 from 123456 BatDamBong (Od) with 001001", :from => MessageProxy.app_name}, 
-          {:to=>"sms://8558191", :body=>"You receive a patient 012123456 from 123456 BatDamBong (Od) with 001001", :from => MessageProxy.app_name}, 
-          {:to=>"sms://8558180", :body=>"You receive a patient 012123456 from 123456 BatDamBong (Od) with 001001", :from => MessageProxy.app_name}, 
-          {:to=>"sms://8558181", :body=>"You receive a patient 012123456 from 123456 BatDamBong (Od) with 001001", :from => MessageProxy.app_name}, 
-          {:to=>"sms://8558195", :body=>"You have sent patient 012123456 with 001001", :from => MessageProxy.app_name},
-          {:to=>"sms://85581900", :body=>"Patient has been refered to ?? with 001001", :from=>MessageProxy.app_name},
-          {:to=>"sms://85581902", :body=>"Patient has been refered to ?? with 001001", :from=>MessageProxy.app_name}
-        ]
+      messages.should =~ [{:to=>"sms://8558190", :body=>"You receive a patient 012123456 from 10101010 ToulSomRoungVillage (Village) with 001001", :from=>"malariad0://system"}, 
+        {:to=>"sms://8558191", :body=>"You receive a patient 012123456 from 10101010 ToulSomRoungVillage (Village) with 001001", :from=>"malariad0://system"}, 
+        {:to=>"sms://8558180", :body=>"You receive a patient 012123456 from 10101010 ToulSomRoungVillage (Village) with 001001", :from=>"malariad0://system"}, 
+        {:to=>"sms://8558181", :body=>"You receive a patient 012123456 from 10101010 ToulSomRoungVillage (Village) with 001001", :from=>"malariad0://system"}, 
+        {:to=>"sms://85581900", :body=>"Patient has been refered to ?? with 001001", :from=>"malariad0://system"}, 
+        {:to=>"sms://85581902", :body=>"Patient has been refered to ?? with 001001", :from=>"malariad0://system"}, 
+        {:to=>"sms://85590909090", :body=>"You have sent patient 012123456 with 001001", :from=>"malariad0://system"}]
     end
-    
-    
-    
   end
 end

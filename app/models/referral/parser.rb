@@ -122,8 +122,7 @@ class Referral::Parser
     end
   end
   
-  def scan_health_center hc_code
-    text = hc_code.strip
+  def scan_health_center text
     if(!text.empty?)
       scanner = create_scanner(text)
       health_center_code = scanner.scan(/^\d{6}/)
@@ -177,7 +176,7 @@ class Referral::Parser
       text = texts[index]
       
       raise_error :referral_field_mismatch_format if text.nil?
-      scan_dynamic_format text, validator_name
+      scan_dynamic_format text.strip, validator_name
     end
     raise_error :referral_field_mismatch_format if formats.size != texts.size
   end

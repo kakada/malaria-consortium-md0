@@ -22,7 +22,7 @@ Local::Application.routes.draw do
   end
   
   namespace :referral do
-    root :to => "users#index"
+    root :to => "reports#index"
     get "templates/configs/" , :to => "templates#configs"
     post "templates/update_configs/" , :to => "templates#update_configs"
     

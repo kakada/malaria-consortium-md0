@@ -161,16 +161,4 @@ describe Referral::Report do
       
     end
   end
-  
-  describe "between" do
-    it "should return result between date" do
-      Referral::ClinicReport.make
-      Referral::ClinicReport.make
-      Referral::ClinicReport.make
-      Referral::ClinicReport.make
-      
-    end
-  end
-  
-  
 end

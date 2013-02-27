@@ -102,6 +102,36 @@ describe Referral::Parser do
     
   end
   
+  describe "scan_phone_number" do
+    describe "valid phone_number" do
+      it "should accept empty and 0 phonenumber" do
+        
+        ["","0"].each do |phone_number|
+           ref_parser = Referral::Parser.new({})
+           ref_parser.scan_phone_number(phone_number).should eq phone_number
+           ref_parser.options[:phone_number].should eq phone_number
+        end
+      end
+      
+      it "should accept only 9,10 digit-phone number " do
+         ["012123456", "0971234567"].each do |phone_number|
+           ref_parser = Referral::Parser.new({})
+           ref_parser.scan_phone_number(phone_number).should eq phone_number
+           ref_parser.options[:phone_number].should eq phone_number
+         end
+      end
+    end
+    
+    describe "invalid phone_number" do
+      it "should accept only empty, 0 , and 9-10 character phone_number only" do
+        ["01112345", "016222"].each do |number|
+          ref_parser = Referral::Parser.new({})
+          expect{ ref_parser.scan_phone_number(number)}.to raise_error(Exception, "referral_invalid_phone_number")
+        end
+      end
+    end
+  end
+  
   describe "scan slip_code" do
     it "should scan od and return OD abbr" do
       ref_parser = Referral::Parser.new @params.merge(:text => "KPS001100")

@@ -62,6 +62,12 @@ class Referral::Parser
   end
   
   def scan_phone_number text
+    
+    if(text == "" || text =="0")
+        @options[:phone_number] = text
+        return text
+    end
+    
     scanner = create_scanner(text)
     phone_number =  scanner.scan(/^\d{9,10}$/)
     if phone_number.nil?

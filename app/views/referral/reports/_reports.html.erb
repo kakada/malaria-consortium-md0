@@ -14,7 +14,7 @@
       <th class="dym_field"><%=  Referral::Field.label(i+1) %></th>
     <% end %>
     <th>Date</td>
-    <th width="150">Action</th>
+    <th width="170">Action</th>
    </tr>
    <% @reports.each do |report| %>
       <%
@@ -45,7 +45,9 @@
           <% end %>
           <td title="<%=report.created_at %>"><%=distance_of_time_in_words_to_now report.created_at%></td>  
           <td> 
-            <%= link_to "Edit"  , edit_referral_report_path(report) %> |
+            <% if report.error %>
+              <%= link_to "Rectify"  , edit_referral_report_path(report) %> |
+            <%  end %>
             <%= link_to "Delete", referral_report_path(report), :method => :delete, :confirm => "Are you sure to remove"%> |
             <%= link_to ignore_link, referral_reports_toggle_path(:id => report) %>
           </td> 

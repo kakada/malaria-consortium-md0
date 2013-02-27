@@ -17,6 +17,7 @@
                 {:label => "Format Message", :url => referral_message_formats_path, :controller => "message_formats" },
                 {:label => "Message Templates", :url => referral_templates_configs_path, :controller => "templates" },
                 {:label => "MD0", :url => root_path, :controller => "" },
+                {:label  => "Sign out", :url => destroy_user_session_path , :controller => "" }
               ].each do |item|
                 cls = (item[:controller] == controller_name) ? "active" : ""
               %>

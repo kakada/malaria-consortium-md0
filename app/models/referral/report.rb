@@ -96,6 +96,7 @@ module Referral
     def self.create_parser params
       return ClinicParser.new(params) if(params[:sender].place.class == Village )
       return HCParser.new(params)  if(params[:sender].place.class == HealthCenter ) 
+      
     end
     
     # return a String containing translated messsage
@@ -212,6 +213,14 @@ module Referral
           csv << row   
         end
  
+      end
+    end
+    
+    def error_message_translate
+      if error
+        translate_message_for(error_message) 
+      else
+        ""
       end
     end
     

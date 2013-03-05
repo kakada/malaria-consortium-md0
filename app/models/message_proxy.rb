@@ -12,7 +12,7 @@ class MessageProxy
  end
   
  def initialize options
-    @params = { :sender_address => without_sms_protocol(options[:from]) ,
+    @params = { :sender_address => without_sms_protocol(text_strip(options[:from])) ,
                 :text           => text_strip(options[:body])  ,
                 :nuntium_token  => options[:guid] }
     @report = nil          

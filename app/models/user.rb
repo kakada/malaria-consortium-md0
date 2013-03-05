@@ -148,7 +148,7 @@ class User < ActiveRecord::Base
     if place && self.status
       
       if self.is_from_both?
-         return place.village? || place.health_center? || place.od?
+         return place.village? || place.health_center? 
       end
       
       if self.is_from_md0?
@@ -156,7 +156,7 @@ class User < ActiveRecord::Base
       end  
       
       if self.is_from_referral?  
-         return place.health_center? || place.od?
+         return place.village? || place.health_center?
       end
       return false
     end

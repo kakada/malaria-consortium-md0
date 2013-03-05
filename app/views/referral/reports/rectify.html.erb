@@ -1,0 +1,58 @@
+<% content_for :breadcrumb do %>
+  <%=  breadcrumb [
+  		{ "Report" => referral_reports_path},
+                { "Rectify" => nil}
+  	] %>
+<% end %>
+
+<%=render_errors_for @report %>
+
+<div class="row-fluid" >
+
+  <div class="well span4" >    
+      <h4> Rectify Message </h4>
+      <% if !@error.blank? %>
+        <div class="alert alert-error"><%=@error%></div>
+      <% end %>
+
+      <%= form_tag referral_reports_apply_path(:id => @report.id) do %>
+
+        <%= tag_row do %>
+          <%=  label_tag  "from" %>
+          <%=  text_field_tag "from", @from , :style=> "width: 96%;" %>
+        <%end%>
+
+        <%= tag_row do %>
+          <%=  label_tag  "body" %>
+          <%=  text_field_tag "body", @body , :style=> "width: 96%;" %>
+        <%end%>
+
+        <%= tag_row do %>
+          <input type="submit" class="btn btn-danger" value="Rectify" name="sumbit" />
+        <%end %>
+      <% end %>
+  </div>
+
+  <div class="span8"> 
+    <h4> Current report </h4>
+    
+      
+      
+      
+        <%
+        ["book_number","code_number", "error", "error_message_translate", "field1","field2",
+                  "field3","field4","field5","health_center_code","od_name","phone_number",
+                  "reply_to","sender_address","sender","slip_code","text","od_name"].each do |field|
+        %>
+         <div class="row-fluid">
+          <div class="span4" >  <%= field  %> </div>
+          <div class="span8" > 
+            <% output =  @report.send(field); %>
+            <%= output.blank? ? "-" : output %>
+          </div>
+         </div> 
+
+        <% end %>
+    </div>  
+  </div>
+</div>

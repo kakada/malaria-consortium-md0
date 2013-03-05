@@ -34,6 +34,9 @@ Local::Application.routes.draw do
     post "message_formats/save" ,   :to => "message_formats#save"
     get  "message_formats/test" ,   :to => "message_formats#test"
     
+    get "reports/rectify",        :to => "reports#rectify"
+    post "reports/apply",         :to => "reports#apply"
+    
     match "reports/simulate",  :to => "reports#simulate"
     match "reports/duplicated",  :to => "reports#duplicated"
     match "reports/ignored",  :to => "reports#ignored"

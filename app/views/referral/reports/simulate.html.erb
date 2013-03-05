@@ -73,25 +73,28 @@
 
     <div >
       <% if !@report.nil? %>
-        <h4> Report Generated: 
+        
+        <h4> Report Generated:  <%= @report.class %>
           <% cls =  @report.error ? "label-warning" : "label-success" %>
           <span class="label <%=cls%>">
             <%= @report.error ? "Error" : "Success" %>
           </span>
         </h4>
-      <table class="table-grid table" > 
-          <tr> 
-            <th style="text-align: left;"> Field </th>
-            <th style="text-align: left;" > Value </th>
-          </tr>
+        <table class="table-grid table" > 
+            <tr> 
+              <th style="text-align: left;"> Field </th>
+              <th style="text-align: left;" > Value </th>
+            </tr>
 
-        <% @report.attributes.each do |name, value|  %>
-          <tr > 
-            <td> <%= name %> </td>
-            <td> : <%= value %> </td>
-          </tr>
-        <% end %>
-        </table> 
+          <% @report.attributes.each do |name, value|  %>
+            <tr > 
+              <td> <%= name %> </td>
+              <td> : 
+                   <%=  (@report.class != Report && name == "error_message")? @report.error_message_translate : value  %>
+              </td>
+            </tr>
+          <% end %>
+          </table> 
 
       <% else %>  
       <%end%>

@@ -124,6 +124,47 @@ module Referral
       end
     end
     
+    def rectify
+      @report = Referral::Report.find params[:id]
+      @from = @report.sender_address
+      @body = @report.text
+    end
+    
+    def apply
+      @report = Referral::Report.find params[:id]
+      @error = ""
+      @from   = params[:from]
+      @body   = params[:body]   
+      
+      message_proxy = MessageProxy.new(:from => @from, :body => @body, :guid => "")
+      message_proxy.analyse_number
+      if message_proxy.params[:error]
+          @error = message_proxy.generate_error(message_proxy.params)
+      else
+        if !message_proxy.params[:sender].is_from_referral?
+          @error = "Not register in referral system"
+        else
+           rectify_report = Referral::Report::decode message_proxy.params.dup
+           if(rectify_report.error)
+             @error = rectify_report.translate_message_for(rectify_report.error_message)
+           else
+             ["book_number","code_number", "error", "error_message", "field1","field2",
+              "field3","field4","field5","health_center_code","od_name","place","phone_number",
+              "reply_to","sender_address","sender","slip_code","text","od"].each do |field|
+                 @report.send( "#{field}=", rectify_report.send(field) )
+              end
+              @report.save
+           end
+        end
+      end
+      if(!@error.blank?)
+          render :rectify
+      else  
+        flash["notice"] = "Report <b> #{@report.text} </b>has been rectified"
+        redirect_to referral_reports_path
+      end
+    end
+    
     def simulate
       @from = params[:from]
       @body = params[:body]

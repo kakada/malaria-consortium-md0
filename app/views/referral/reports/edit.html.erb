@@ -12,10 +12,6 @@
     <%= form.text_field :slip_code %>
   <%end%>
 
-  <%=tag_row do %>
-    <%= form.label :status %>
-    <%= form.select :status, Referral::Report::REPORT_STATUS %>
-  <%end%>
 
   <%=tag_row do %>
     <%= form.label :ignored %>

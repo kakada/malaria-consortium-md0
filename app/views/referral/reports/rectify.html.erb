@@ -12,7 +12,9 @@
   <div class="well span4" >    
       <h4> Rectify Message </h4>
       <% if !@error.blank? %>
-        <div class="alert alert-error"><%=@error%></div>
+        <div class="alert alert-error">
+          <%=   @error.class == Array  ? @error[0][:body] : @error  %>
+        </div>
       <% end %>
 
       <%= form_tag referral_reports_apply_path(:id => @report.id) do %>

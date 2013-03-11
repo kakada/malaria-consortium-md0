@@ -59,14 +59,13 @@ describe User do
        user.can_report?.should eq false
      end
      
-     it "should return false if user only from Referral APP but report from village " do
-       user = User.make :status => User::STATUS_ACTIVE, :apps => [User::APP_REFERAL], :place => Village.make
+     it "should return false if user only from Referral APP but report from OD " do
+       user = User.make :status => User::STATUS_ACTIVE, :apps => [User::APP_REFERAL], :place => OD.make
        user.can_report?.should eq false
      end
      
      it "should return true for user from md0+referral from village, healthcenter, od" do
        [ User.make(:status => User::STATUS_ACTIVE, :apps => [User::APP_REFERAL, User::APP_MDO], :place => HealthCenter.make),
-         User.make(:status => User::STATUS_ACTIVE, :apps => [User::APP_REFERAL, User::APP_MDO], :place => OD.make),
          User.make(:status => User::STATUS_ACTIVE, :apps => [User::APP_MDO,User::APP_REFERAL],  :place => Village.make),
        ].each do |user|
           user.can_report?.should eq true
@@ -75,7 +74,6 @@ describe User do
      
      it "should return true " do
        [ User.make(:status => User::STATUS_ACTIVE, :apps => [User::APP_REFERAL], :place => HealthCenter.make),
-         User.make(:status => User::STATUS_ACTIVE, :apps => [User::APP_REFERAL], :place => OD.make),
          User.make(:status => User::STATUS_ACTIVE, :apps => [User::APP_MDO], :place => HealthCenter.make),
          User.make(:status => User::STATUS_ACTIVE, :apps => [User::APP_MDO], :place => Village.make)
        ].each do |user|

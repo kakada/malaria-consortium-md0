@@ -172,8 +172,7 @@ class Referral::Parser
     self.send("scan_#{validator_name}", text)
   end
   
-  def scan_messages
-    
+  def scan_messages    
     formats = message_format.format.split(Referral::MessageFormat::Separator)
     texts   = Referral::Parser.split_term( @options[:text], Referral::MessageFormat::Separator)
            

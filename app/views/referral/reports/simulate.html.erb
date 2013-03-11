@@ -90,7 +90,7 @@
             <tr > 
               <td> <%= name %> </td>
               <td> : 
-                   <%=  (@report.class != Report && name == "error_message")? @report.error_message_translate : value  %>
+                   <%=  ( (@report.class == Referral::HCReport || @report.class == Referral::ClinicReport) && name == "error_message") ? @report.error_message_translate : value  %>
               </td>
             </tr>
           <% end %>

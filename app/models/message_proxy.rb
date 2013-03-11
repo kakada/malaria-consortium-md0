@@ -77,10 +77,38 @@ class MessageProxy
       return referral_report if !referral_report.error
       
       md0_report     =  Report::decode options.dup
-      return md0_report if !md0_report.error     
+      return md0_report if !md0_report.error   
+      ref_quality = referral_report.parse_quality
+      md0_quality = md0_report.parse_quality 
+      if(ref_quality > md0_quality)
+         return referral_report  
+      elsif ref_quality == md0_quality
+         return referral_report if field_matched(referral_report)
+         return md0_report
+      else
+        return md0_report
+      end
+       
       
-      return referral_report   if(referral_report.parse_quality > md0_report.parse_quality) 
-      return md0_report
+  end
+  
+  
+  def field_matched(referral_report)
+    if(referral_report.class == Referral::HCReport)
+        message_format = Referral::MessageFormat.health_center     
+    else referral_report.class == Referral::ClinicReport  
+        message_format = Referral::MessageFormat.clinic
+    end
+    
+    formats = message_format.format.split(Referral::MessageFormat::Separator)
+    texts   = Referral::Parser.split_term( referral_report.text, Referral::MessageFormat::Separator)
+    if (formats.size == texts.size)
+      return true
+    elsif (formats.size > texts.size) && (texts.size >= 2)
+      return true
+    else
+      return false
+    end
   end
   
   def save_referral_error

@@ -66,7 +66,7 @@ describe Referral::HCReport do
     
     it "should save hc report when there is a clinic slip_code " do
       hc_report = Referral::HCReport.new :slip_code => "KPS001001", :sender => @hc_user22
-      Referral::ClinicReport.create! :slip_code => "KPS001001"
+      clinic_report = Referral::ClinicReport.create! :slip_code => "KPS001001"
       
       count = Referral::HCReport.count
       hc_report.save.should eq true
@@ -75,7 +75,7 @@ describe Referral::HCReport do
       
       clinic_report = Referral::ClinicReport.find_by_slip_code "KPS001001"
       clinic_report.status.should eq Referral::Report::REPORT_STATUS_CONFIRMED
-      clinic_report.confirm_from.should eq @hc_user22
+      clinic_report.confirm_from.should eq hc_report
     end
   end
 end

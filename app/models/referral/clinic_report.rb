@@ -3,10 +3,15 @@ class Referral::ClinicReport < Referral::Report
   
   # return an Array of hashes
   def valid_alerts
-    
+    alerts = self.send_others
+    body = translate_message_for(:referral_clinic_clinic)
+    alerts << self.sender.message(body)
+    alerts
+  end
+  
+  def send_others
     alerts = []
     alert_hcs = []
-
     if self.send_to_health_center.nil?
        alert_hcs = self.place.od.health_centers
     else
@@ -20,9 +25,6 @@ class Referral::ClinicReport < Referral::Report
     
     body = translate_message_for(:referral_clinic_facilitator)
     alerts += self.place.od.acknowledge_facilitator(body)
-    
-    body = translate_message_for(:referral_clinic_clinic)
-    alerts << self.sender.message(body)
     alerts
   end
   

@@ -2,56 +2,99 @@
   <%=link_to '<i class="icon-book"></i> Export'.html_safe, current_url(request.fullpath), :class => "btn" %>
 </div>
 <br />
-<table class="table">
-  <tr>
-    <th>SlipCode</td>
-    <th>From</td>
-    <th>Text</td>
-    <th>Ignored</td>
-    <th>Confirm</td>
-    <th>Error</td>
-    <% 5.times.each do |i| %>
-      <th class="dym_field"><%=  Referral::Field.label(i+1) %></th>
-    <% end %>
-    <th>Date</td>
-    <th width="205">Action</th>
-   </tr>
-   <% @reports.each do |report| %>
-      <%
-        if report.ignored
-           ignore_link = "Unignore"
-           ignored = "Yes"
-        else
-           ignore_link = "Ignore"
-           ignored = "No"
-        end
+<%= form_tag referral_report_delate_all_path do %>
+  <table class="table">
+    <tr>
+      <th style="text-align: center;" >
+        <input type="button" class="btn btn-danger" value="Remove" id="submit_delete" /> </a> <br />
+        <input type="checkbox" id="report_toggle" />
+        <input type="hidden" value="-1" name="referral_report[]" />
         
-        
-        txt_class = report.error ? "txt_error" : ""
-       
-      %>
-      <tr>
-          <td class="<%= txt_class %>"  > <%= highlight(report.slip_code, params[:query]) %> </td>
-          <td class="<%= txt_class %>"  > <%= report.type %> </td>
-          <td class="<%= txt_class %>"  title="<%= report.text %>"> <%= highlight(truncate(report.text, :length => 80), params[:query]) %> </td>
-          <td class="<%= txt_class %>"  ><%= ignored  %> </td>
-          <td class="<%= txt_class %>"  ><%= report.confirm_from ? report.confirm_from.phone_number + "(#{report.confirm_from.user_name})" : "" %> </td>
-          <td class="<%= txt_class %>"  title="<%=report.error_message_translate%>"> <%= report.error ? "Yes" : "No"%> </td>
-          <% 5.times.each do |i| %>
-            <td class="dym_field <%= txt_class %>">
-                <% text = report.send("field#{i+1}") || ""  %>
-                <%= highlight( text , params[:query])  %>
+      </th>
+      <th>SlipCode</td>
+      <th>From</td>
+      <th>Text</td>
+      <th>Ignored</td>
+      <th>Confirm</td>
+      <th>Error</td>
+      <% 5.times.each do |i| %>
+        <th class="dym_field"><%=  Referral::Field.label(i+1) %></th>
+      <% end %>
+      <th>Date</td>
+      <th width="205">Action</th>
+    </tr>
+    <% @reports.each do |report| %>
+        <%
+          if report.ignored
+            ignore_link = "Unignore"
+            ignored = "Yes"
+          else
+            ignore_link = "Ignore"
+            ignored = "No"
+          end
+
+
+          txt_class = report.error ? "txt_error" : ""
+
+        %>
+        <tr>
+            <td style="text-align: center;"> <input type="checkbox" class="report-items" name="referral_report[]" value="<%= report.id %>" /> </td>
+            <td class="<%= txt_class %>"  > <%= highlight(report.slip_code, params[:query]) %> </td>
+            <td class="<%= txt_class %>"  > <%= report.type %> </td>
+            <td class="<%= txt_class %>"  title="<%= report.text %>"> <%= highlight(truncate(report.text, :length => 80), params[:query]) %> </td>
+            <td class="<%= txt_class %>"  ><%= ignored  %> </td>
+            <td class="<%= txt_class %>"  >
+                <% if report.confirm_from %>
+              <span title="<%= "#{report.confirm_from.sender.phone_number} - #{report.confirm_from.place.description}"  %>" > Yes </span>
+                <% else %>
+
+                <% end %>
+
             </td>
-          <% end %>
-          <td title="<%=report.created_at %>"><%=distance_of_time_in_words_to_now report.created_at%></td>  
-          <td> 
-            <% if report.error %>
-              <%= link_to "Rectify" , referral_reports_rectify_path(:id => report.id) %> |
-            <%  end %>
-            <%= link_to "Delete", referral_report_path(report), :method => :delete, :confirm => "Are you sure to remove"%> |
-            <%= link_to "Edit" , edit_referral_report_path(report) %> | 
-            <%= link_to ignore_link, referral_reports_toggle_path(:id => report) %>
-          </td> 
-        </tr>
-    <% end %>
-</table>
+            <td class="<%= txt_class %>"  title="<%=report.error_message_translate%>"> <%= report.error ? "Yes" : "No"%> </td>
+            <% 5.times.each do |i| %>
+              <td class="dym_field <%= txt_class %>">
+                  <% text = report.send("field#{i+1}") || ""  %>
+                  <%= highlight( text , params[:query])  %>
+              </td>
+            <% end %>
+            <td title="<%=report.created_at %>"><%=distance_of_time_in_words_to_now report.created_at%></td>  
+            <td> 
+              <% if report.error %>
+                <%= link_to "Rectify" , referral_reports_rectify_path(:id => report.id) %> |
+              <%  end %>
+              <%= link_to "Delete", referral_report_path(report), :method => :delete, :confirm => "Are you sure to remove"%> |
+              <%= link_to "Edit" , edit_referral_report_path(report) %> | 
+              <%= link_to ignore_link, referral_reports_toggle_path(:id => report) %>
+            </td> 
+          </tr>
+      <% end %>
+  </table>
+<% end %>
+<script>
+  function toggle(){
+    $("#report_toggle").click(function(){
+      console.log("current", this.checked);
+      $cboxs = $(".report-items");
+      for(var i=0; i < $cboxs.length; i++) {
+        cb = $cboxs.get(i);
+        cb.checked = this.checked;
+      }
+      
+    });
+  }
+  
+  function submitDelete(){
+    $("#submit_delete").click(function(){
+      if(confirm("Are you sure to remove all selected reports")) {
+        this.form.submit();
+      }
+    });
+  }
+  
+  $(function(){
+    toggle();
+    submitDelete();
+  });
+  
+</script>

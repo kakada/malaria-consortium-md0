@@ -3,9 +3,16 @@ require 'spec_helper'
 describe Referral::Parser do
   before(:each) do
     od = OD.make :abbr => "KPS"
-    user = User.make :user_name => "bopha",  :phone_number => "85597888123", :place => od
+    @hc_hc = od.health_centers.make
+    @village_clinic = @hc_hc.villages.make
+    
+    user          = User.make :user_name => "bopha",  :phone_number => "85597888123", :place => od
+    @user_clinic  = User.make  :place => @village_clinic, :phone_number => "855111111"
+    @user_hc      = User.make  :place => @hc_hc, :phone_number => "855222222" 
+    
     @params = { :text => "0971234567KPS001001123456", :sender => user }
     @hc = HealthCenter.make :code => "123456"
+    
     
     between    =  Referral::ConstraintType::Validator.get_validator("Between", *[10,80] )
     length     =  Referral::ConstraintType::Validator.get_validator("Length", 1 )
@@ -28,7 +35,6 @@ describe Referral::Parser do
   end
   
   describe "scan dynamic format" do
-    
     describe "with one constraint"  do
         it "should parse dynamic format" do
             #Referral::MessageFormat.create! :format => "{phone_number}.{code_number}.{Field1}.{Field2}"
@@ -76,29 +82,48 @@ describe Referral::Parser do
   end
   
   describe "scan_messages" do
-     it "should scan messages" do
-      message_format = Referral::MessageFormat.create! :format => "{phone_number}.{code_number}.{Field1}.{Field2}", :sector => Referral::MessageFormat::TYPE_CLINIC
-      
-      parser = Referral::ClinicParser.new({:text=>"0971234567.001.25.M"})
-      parser.message_format = message_format 
-      parser.scan_messages 
+    describe "Clinic Message" do
+      it "should scan messages clinic" do
+        message_format = Referral::MessageFormat.create! :format => "{phone_number}.{code_number}.{Field1}.{Field2}", :sector => Referral::MessageFormat::TYPE_CLINIC
 
-      parser.options[:text].should eq "0971234567.001.25.M"
-      parser.options[:phone_number].should eq "0971234567"
-      parser.options[:code_number].should eq "001"
-      parser.options[:field1].should eq "25"
-      parser.options[:field2].should eq "M"
+        parser = Referral::ClinicParser.new({:text=>"0971234567.001.25.M"})
+        parser.message_format = message_format 
+        parser.scan_messages 
+
+        parser.options[:text].should eq "0971234567.001.25.M"
+        parser.options[:phone_number].should eq "0971234567"
+        parser.options[:code_number].should eq "001"
+        parser.options[:field1].should eq "25"
+        parser.options[:field2].should eq "M"
+      end
+
+      it "should raise error with msg when text item is more than format item" do
+        message_format = Referral::MessageFormat.create! :format => "{phone_number}.{code_number}.{Field1}.{Field2}.{Field3}.{Field4}", :sector => Referral::MessageFormat::TYPE_CLINIC
+        parser = Referral::ClinicParser.new({:text=>"0971234567.090.25.M"})
+        expect{parser.scan_messages}.to raise_error(Exception, :referral_field_mismatch_format.to_s) 
+        parser.options[:phone_number].should eq "0971234567"
+        parser.options[:code_number].should eq "090"
+        parser.options[:field1].should eq "25"
+        parser.options[:field2].should eq "M"
+      end
+    end
+    describe "HealthCenter Message" do
+      it "should scan message health_center " do
+        message_format = Referral::MessageFormat.create! :format => "{slip_code}", :sector => Referral::MessageFormat::TYPE_HC
+        
+        Referral::ClinicReport.create! :slip_code => "KPS001001"  
+        parser = Referral::HCParser.new({:text=>"KPS001001", :sender => @user_hc})
+        parser.message_format = message_format 
+        parser.scan_messages 
+
+        parser.options[:sender].should eq @user_hc
+        parser.options[:slip_code].should eq "KPS001001"
+        parser.options[:book_number].should eq "001"
+        parser.options[:code_number].should eq "001"
+        parser.options[:od_name].should eq "KPS" 
+      end
     end
     
-    it "should raise error with msg when text item is more than format item" do
-      message_format = Referral::MessageFormat.create! :format => "{phone_number}.{code_number}.{Field1}.{Field2}.{Field3}.{Field4}", :sector => Referral::MessageFormat::TYPE_CLINIC
-      parser = Referral::ClinicParser.new({:text=>"0971234567.090.25.M"})
-      expect{parser.scan_messages}.to raise_error(Exception, :referral_field_mismatch_format.to_s) 
-      parser.options[:phone_number].should eq "0971234567"
-      parser.options[:code_number].should eq "090"
-      parser.options[:field1].should eq "25"
-      parser.options[:field2].should eq "M"
-    end
     
   end
   

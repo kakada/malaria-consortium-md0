@@ -144,16 +144,12 @@ module Referral
         if !message_proxy.params[:sender].is_from_referral?
           @error = "Not register in referral system"
         else
-           rectify_report = Referral::Report::decode message_proxy.params.dup
-           if(rectify_report.error)
-             @error = rectify_report.translate_message_for(rectify_report.error_message)
+           @rectify_report = Referral::Report::decode message_proxy.params.dup
+           if(@rectify_report.error)
+             @error = @rectify_report.translate_message_for(@rectify_report.error_message)
            else
-             ["book_number","code_number", "error", "error_message", "field1","field2",
-              "field3","field4","field5","health_center_code","od_name","place","phone_number",
-              "reply_to","sender_address","sender","slip_code","text","od"].each do |field|
-                 @report.send( "#{field}=", rectify_report.send(field) )
-              end
-              @report.save
+              _store_rectified_report
+              _send_alert_to_other  
            end
         end
       end
@@ -208,5 +204,36 @@ module Referral
       url = request.env["HTTP_REFERER"]
       redirect_to url
     end
+    
+    def delete_all
+      reports = Referral::Report.where(["id in (:reports)", :reports => params[:referral_report]]);
+      count = 0
+      reports.each do |report|
+         if report.destroy
+            count = count +1
+         end
+      end
+      flash[:notice] = "#{count} reports have been removed";
+      redirect_to request.env["HTTP_REFERER"]
+    end
+    
+    
+    private
+    
+    def _store_rectified_report
+      ["book_number","code_number", "error", "error_message", "field1","field2",
+       "field3","field4","field5","health_center_code","od_name","place","phone_number",
+       "reply_to","sender_address","sender","slip_code","text","od"].each do |field|
+                 @report.send( "#{field}=", @rectify_report.send(field) )
+       end
+       @report.save
+    end
+    
+    def _send_alert_to_other
+      nuntium = Nuntium.new_from_config()
+      nuntium.send_ao @report.send_others
+    end
+      
+    
   end
 end

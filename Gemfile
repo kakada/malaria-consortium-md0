@@ -39,6 +39,10 @@ gem 'rake', '0.8.7'
 # group :development, :test do
 #   gem 'webrat'
 # end
+
+gem "capistrano"
+gem "rvm-capistrano"
+
 gem 'will_paginate', :git => 'git://github.com/mislav/will_paginate.git', :branch => 'rails3'
 gem 'jquery-rails'
 gem 'nuntium_api', '>=0.11', :require => 'nuntium'

@@ -25,5 +25,4 @@ class CustomMessage
     messages = users.map{|user| user.message(@sms)}
     @nuntium.send_ao messages
   end
-
 end

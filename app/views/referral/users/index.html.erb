@@ -6,7 +6,10 @@
 
 <%=content_for :top do  %>
   <%=tag_row :class => "register_bar" do %>
-   <%= register_bar(" Register User", new_referral_user_path) %>
+   <%= register_bar do %>
+      <%= register_btn(" MD0 User", referral_users_search_path) %>
+      <%= register_btn(" Register User", new_referral_user_path) %>
+   <% end %> 
   <% end %>
 <% end %>
 

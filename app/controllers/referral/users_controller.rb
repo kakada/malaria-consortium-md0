@@ -17,6 +17,19 @@ module Referral
 	    @users = @users.paginate_user :query => @query, :type => @type,:page => (@page || '1').to_i, :per_page => PerPage
 	                                
   	end
+    
+    def search
+      @title = "Search for user: #{params[:query]}"; 
+	    @page = get_page
+
+	    if params[:query].present?
+	      @query = params[:query].strip
+	    end
+      
+      @users = User.md0_users
+	    @users = @users.paginate_user :query => @query, :type => @type,:page => (@page || '1').to_i, :per_page => PerPage
+    end
+    
 
   	def edit
   		@user = User.find params[:id]
@@ -25,8 +38,8 @@ module Referral
   	def update
   		@user = User.find params[:id]
   		if @user.update_params params[:user]
-		  flash["notice"] = "Successfully Updated"
-	      redirect_to referral_users_path
+        flash.now["notice"] = "Successfully Updated"
+	      render :edit
   		else
   		  flash["error"] = "Failed to update"
 	      render :edit

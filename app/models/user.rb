@@ -90,11 +90,11 @@ class User < ActiveRecord::Base
     end
     
     def md0_users
-      self.where(["role != ? AND role != ? ", ROLE_REF_PROVIDER , ROLE_REF_HC ])
+      self.where("apps_mask = 1 OR apps_mask = 3  ")
     end
     
     def ref_users
-      self.where(["role = ? OR role = ? OR role = ?", ROLE_REF_PROVIDER , ROLE_REF_HC, ROLE_REF_FACILITATOR ])
+      self.where("apps_mask = 2 OR apps_mask = 3  ")
     end
     
     def deactivated

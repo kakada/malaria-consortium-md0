@@ -54,10 +54,20 @@ module Referral
 		content_tag(:ul, breadcrumb_str(options), :class => "breadcrumb")
 	end
   
-  def register_bar label, url, options={}
+  def register_bar label="", url="", options={}
     content_tag :div, options do
-      link_to "<i class='icon-user  icon-plus' ></i>#{label}".html_safe, url, :class => "btn"
+      if block_given?
+        yield
+      else
+        register_btn label, url
+      end
+      
     end
+  end
+  
+  def register_btn label, url, options={}
+     options[:class] = options[:class].nil? ? "btn" : "btn #{options[:class]}"
+     link_to "<i class='icon-user  icon-plus' ></i>#{label}".html_safe, url, options
   end
 
 	def tag_row(options ={}, &block)

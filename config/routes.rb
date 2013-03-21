@@ -50,6 +50,8 @@ Local::Application.routes.draw do
     match "reports/confirmed",    :to => "reports#confirmed"
     match "reports/not_confirmed",    :to => "reports#not_confirmed"
     
+    match "users/search", :to => "users#search"
+    
     
     resources :reports
     resources :message_formats

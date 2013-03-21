@@ -72,12 +72,18 @@
   <div style="padding-left: 20px;">
       <% User::APPS.each do |app| %>
         <%= tag_row  do%>
-          <%= check_box_tag "user[apps][]", app, @user.apps.include?(app), :class => "user_checkbox_app", :disabled => "disabled" %>
+          <% if app == User::APP_MDO %>
+            <%= check_box_tag "user[apps][]", app, @user.apps.include?(app), :class => "user_checkbox_app" , :disabled => "disabled" %>
+            <%= hidden_field_tag "user[apps][]", app %>
+          <% else %>
+            <%= check_box_tag "user[apps][]", app, @user.apps.include?(app), :class => "user_checkbox_app" %>
+            <%= hidden_field_tag "user[apps][]", "" %>
+          <% end %>  
           <span title="This option is disabled. Contact your admin for more info"> <%= app.humanize %> </span>
         <% end %>
       <% end %>
   </div>      
-  <%= hidden_field_tag "user[apps][]", "" %>
+  
 <% end %>
 <br />
 

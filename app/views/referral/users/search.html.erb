@@ -1,0 +1,55 @@
+<%= content_for :breadcrumb do %>
+	<%= breadcrumb [
+			{"User" => nil}
+		] %>
+<%end %>
+
+<%= form_tag referral_users_search_path(), :method => "get", :class =>"form-search" do %>
+  <div class="alert alert-success well" >
+    <%= tag_row :class => "input-append input-block-level span3", "style" => "padding-top:5px;" do %>
+            <%= text_field_tag :query, params[:query], :class =>"search-query", :placeholder =>"Type to search"  %>
+            <button type="submit" class="btn">Search</button>
+            
+    <% end %>
+    <div class="clear-layout">&nbsp;</div>   
+  </div>        
+        
+
+  <%= list_header "List of MD0 User", @users %>
+
+  <div>
+	<table class="table"> 
+		<thead>
+			<tr>
+				<th> Name </th>
+				<th> Email </th>
+				<th> Phone </th>
+				<th> Role </th>
+				<th> Place </th>
+				<th> Status </th>
+                                <th> Referral?</th>
+				<th width="100"> Action</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<% @users.each do |user| %>
+			  <tr>
+				<td> <%= highlight(user.user_name, params[:query]) %> </td>
+				<td> <%= user.email %> </td>
+				<td> <%= highlight(user.phone_number, params[:query])  %> </td>
+				<td> <%= user.role %> </td>
+				<td> <%= user.place.nil? ? "" : highlight(user.place.description, params[:query])  %>
+				<td> <%= user.status_description %> </td>
+                                <td> <%= user.is_from_referral? ? "Yes" : "No"  %> </td>
+				<td> 
+					<%= link_to "Edit", edit_referral_user_path(user) %> |
+					<%= link_to "Delete", referral_user_path(user), :method => :delete, :confirm => "Are you sure to remove"%>
+				</td>
+			  </tr>
+			<% end %>
+		</tbody>
+	</table>
+    </div>
+  <% end %>         
+          

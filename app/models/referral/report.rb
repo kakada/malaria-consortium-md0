@@ -188,17 +188,18 @@ module Referral
     
     def self.as_csv
        CSV.generate do |csv|
-        colunm_names = ["Slip code", "From", "Text", "Ignored?", "Confirmed?", "Error?"]
+        colunm_names = ["From", "Slip", "Text", "Ignored?", "Confirmed?", "Error?"]
         5.times.each do |i| 
-          colunm_names << Referral::Field.label(i+1) 
+          colunm_names << Referral::Field.field_label(i+1) 
+          colunm_names << Referral::Field.meaning_label(i+1) 
         end
         colunm_names << "Date"
         
         csv << colunm_names
         
         all.each do |report|
-          row  = [ report.slip_code,
-                   report.type,
+          row  = [ report.type,
+                   report.slip_code,
                    report.text,
                    report.ignored ? "Yes" : "No",
                    report.confirm_from ? report.confirm_from.phone_number + "(#{report.confirm_from.user_name})" : "",
@@ -207,6 +208,8 @@ module Referral
            
           5.times.each do |i|
             row << (report.send("field#{i+1}") || "")
+            row << (report.send("meaning#{i+1}") || "")
+            
           end  
           
           row << report.created_at         

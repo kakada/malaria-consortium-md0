@@ -54,9 +54,9 @@
         <h4> SMS(s) sent </h4>
         <table class="table">
           <tr>
-            <td width="150">To</td>
-            <td>Text sent</td>
-            <td width="100">From</td>
+            <th width="150">To</th>
+            <th>Text sent</th>
+            <th width="100">From</th>
           </tr>
 
           <% @messages.each do |message| %>
@@ -89,7 +89,7 @@
           <% @report.attributes.each do |name, value|  %>
             <tr > 
               <td> <%= name %> </td>
-              <td> : 
+              <td>  
                    <%=  ( (@report.class == Referral::HCReport || @report.class == Referral::ClinicReport) && name == "error_message") ? @report.error_message_translate : value  %>
               </td>
             </tr>

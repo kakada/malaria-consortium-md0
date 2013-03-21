@@ -32,7 +32,7 @@ module Referral
       
     def index
       report_type 
-      @reports = @reports.includes(:confirm_from)
+      @reports = @reports.includes(:confirm_from).order("id desc")
       respond_to do |format|
         format.html { @reports = @reports.paginate :page => @page, :per_page => PerPage}
         format.csv  { render :json => @reports.as_csv }

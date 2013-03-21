@@ -18,7 +18,7 @@ describe Referral::Parser do
     length     =  Referral::ConstraintType::Validator.get_validator("Length", 1 )
     collection = Referral::ConstraintType::Validator.get_validator("Collection", "F,M" )
     
-    @fieldAge = Referral::Field.create! :position => 1, :meaning => "Age", :template => "Age" #Field1
+    @fieldAge = Referral::Field.create! :position => 1, :meaning => "Age", :template => "Age should be between 10 to 80" #Field1
     @fieldSex = Referral::Field.create! :position => 2, :meaning => "Sex", :template => "Sex" #Field2
     
     constraintAge = @fieldAge.constraints.build
@@ -41,8 +41,8 @@ describe Referral::Parser do
             #@parser = Referral::Parser.new({:text=>"09712345678.001.25.M"})
             parser = Referral::Parser.new({})
             parser.scan_dynamic_format(30, "Field1")
-            parser.options[:field1].should_not be_nil
             parser.options[:field1].should eq 30
+            parser.options[:meaning1].should eq "Age"
         end
 
         it "should raise exception :invalid_validator for field that does not exist " do

@@ -163,6 +163,7 @@ class Referral::Parser
            raise_error validator_name
          else
            @options[validator_name.downcase.to_sym] = text
+           @options[field.meaning_report_column.to_sym] = field.meaning
          end
        end
      end

@@ -1,27 +1,38 @@
-<div style="text-align: right;">
-  <%=link_to '<i class="icon-book"></i> Export'.html_safe, current_url(request.fullpath), :class => "btn" %>
-</div>
-<br />
 <%= form_tag referral_report_delate_all_path do %>
-  <table class="table">
+  <div> 
+      <div style="float: right">
+        <%=link_to '<i class="icon-book"></i> Export'.html_safe, current_url(request.fullpath), :class => "btn" %>
+      </div>
+
+      <div style="float:left;" >
+        <input type="button" class="btn btn-danger" title="Remove all selected reports" value="x" id="submit_delete" />
+      </div>
+    
+      <div class="clear:both;" > &nbsp;</div>
+  </div> 
+ 
+  <br />
+  <table class="table" id ="column_toggle" >
     <tr>
-      <th style="text-align: center;" >
-        <input type="button" class="btn btn-danger" value="Remove" id="submit_delete" /> </a> <br />
+      <th style="text-align: left;" >
         <input type="checkbox" id="report_toggle" />
+        
         <input type="hidden" value="-1" name="referral_report[]" />
         
       </th>
-      <th>SlipCode</td>
-      <th>From</td>
+      <th>Slip</td>
       <th>Text</td>
       <th>Ignored</td>
       <th>Confirm</td>
       <th>Error</td>
       <% 5.times.each do |i| %>
-        <th class="dym_field"><%=  Referral::Field.label(i+1) %></th>
+        <th class="dym_field">
+          <%=  Referral::Field.field_label(i+1) %> 
+        </th>
+        
       <% end %>
       <th>Date</td>
-      <th width="205">Action</th>
+      <th>Action</th>
     </tr>
     <% @reports.each do |report| %>
         <%
@@ -37,17 +48,18 @@
           txt_class = report.error ? "txt_error" : ""
 
         %>
-        <tr>
-            <td style="text-align: center;"> <input type="checkbox" class="report-items" name="referral_report[]" value="<%= report.id %>" /> </td>
+    <tr title="<%= report.type %>" >
+            <td style="text-align: left;"> <input type="checkbox" class="report-items" name="referral_report[]" value="<%= report.id %>" /> </td>
+            
             <td class="<%= txt_class %>"  > <%= highlight(report.slip_code, params[:query]) %> </td>
-            <td class="<%= txt_class %>"  > <%= report.type %> </td>
-            <td class="<%= txt_class %>"  title="<%= report.text %>"> <%= highlight(truncate(report.text, :length => 80), params[:query]) %> </td>
+            <td style="text-overflow:ellipsis; width: 40px;"  class="<%= txt_class %>"  title="<%= report.text %>"> 
+                  <%= highlight(truncate(report.text, :length => 80), params[:query]) %> </td>
             <td class="<%= txt_class %>"  ><%= ignored  %> </td>
             <td class="<%= txt_class %>"  >
                 <% if report.confirm_from %>
-              <span title="<%= "#{report.confirm_from.sender.phone_number} - #{report.confirm_from.place.description}"  %>" > Yes </span>
+                    <span title="<%= "#{report.confirm_from.sender.phone_number} - #{report.confirm_from.place.description}"  %>" > Yes </span>
                 <% else %>
-
+                    No
                 <% end %>
 
             </td>
@@ -55,8 +67,12 @@
             <% 5.times.each do |i| %>
               <td class="dym_field <%= txt_class %>">
                   <% text = report.send("field#{i+1}") || ""  %>
+                  <%= highlight( text , params[:query])  %> / 
+              
+                  <% text = report.send("meaning#{i+1}") || ""  %>
                   <%= highlight( text , params[:query])  %>
               </td>
+              
             <% end %>
             <td title="<%=report.created_at %>"><%=distance_of_time_in_words_to_now report.created_at%></td>  
             <td> 
@@ -92,6 +108,7 @@
     });
   }
   
+    
   $(function(){
     toggle();
     submitDelete();

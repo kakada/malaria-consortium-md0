@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130103100134) do
+ActiveRecord::Schema.define(:version => 20130321011455) do
 
   create_table "alert_pf_notifications", :force => true do |t|
     t.integer  "user_id"
@@ -99,6 +99,11 @@ ActiveRecord::Schema.define(:version => 20130103100134) do
     t.string   "field3"
     t.string   "field4"
     t.string   "field5"
+    t.string   "meaning1"
+    t.string   "meaning2"
+    t.string   "meaning3"
+    t.string   "meaning4"
+    t.string   "meaning5"
   end
 
   create_table "reports", :force => true do |t|

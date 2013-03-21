@@ -24,7 +24,10 @@ module Referral
     
     before_validation :fill_data 
     after_destroy :clean_validator
-    
+     
+    def meaning_report_column
+       "meaning#{self.position}"
+    end
     
     def clean_validator
       field = self.name;
@@ -75,6 +78,14 @@ module Referral
     
     def self.columnize i
       self::FieldName + "#{i}"
+    end
+    
+    def self.meaning_label i
+       "Meaning#{i}"
+    end
+    
+    def self.field_label i
+      "#{self::FieldName}#{i}"
     end
     
     def self.label i

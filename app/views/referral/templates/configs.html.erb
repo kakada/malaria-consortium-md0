@@ -3,37 +3,37 @@
         margin-left : 0px;
    }
 </style>
-<%
-  title = {
-    0 => "Private provider Template",
-    3 => "HealthCenter Template",
-    5 => "Error Template"
-  }
-  i = 0 
-%>
 
 <%= form_tag referral_templates_update_configs_path, :method => "post" do %>
-  
-     <%Templates::KeyReferrals.each do |key, value|  %>
-      <% if i==0 || i==3 || i==5 %>
-        <h3 class="row-fluid htitle "> <%= title[i] %> </h3>
-      <%end%>
-      
-      <div style="background: #fff;padding:10px;" >
-            <b><%=label_tag "", "#{value[:label]}", :style=> "display:inline;" %> </b>
-            <% if !value[:hint].nil?  %>
-            : <span style="font-size: 90%;">(<%= value[:hint] %>)</span>
-            <% end %>
-            <%= text_area_tag "templates[#{key}]", Setting[key],:id => "#{key}",  :style=> "width:90%;height: 60px;" %>
-            <div>
-              <% value[:params].each do |item| %>
-                <a href="#" class="parameter_link" data-id="<%=key%>" >{<%= item %>}</a>
-              <% end %>
-            </div>  
+     <%
+       template_sections = [
+         {:title => "Private provider Template" , :templates =>  Templates::KeyReferrals[0..2]},
+         {:title => "HealthCenter Template", :templates => Templates::KeyReferrals[3..4]},
+         {:title => "Error Template", :templates => Templates::KeyReferrals[5..-1]},
+         
+       ]
+     %>  
+
+     <% template_sections.each do |section| %>
+      <div class="well" >
+          <h3 class="row-fluid htitle "> <%= section[:title] %> </h3>
+          <% section[:templates].each do |template| %>
+             <div style="padding-bottom:20px;padding-left: 50px;" >
+                  <b><%=label_tag "#{template[:key]}", "#{template[:label]}", :style=> "display:inline;" %> </b>
+                  <% if !template[:hint].nil?  %>
+                  : <span style="font-size: 90%;">(<%= template[:hint] %>)</span>
+                  <% end %>
+                  <%= text_area_tag "templates[#{template[:key]}]", Setting[template[:key]], :id => "#{template[:key]}",  :style=> "width:90%;height: 60px;" %>
+                  <div>
+                    <% template[:params].each do |item| %>
+                      <a href="#" class="parameter_link" data-id="<%=template[:key]%>" >{<%= item %>}</a>
+                    <% end %>
+                  </div>  
+            </div>
+          <% end %>
       </div>
-      <% i= i+1 %>  
-    <% end %> 
-   <input type="submit" value=" Save " class="btn btn-danger" />
+     <% end %>
+     <input type="submit" value=" Save " class="btn btn-danger" />
 <%end %>
 
 <% content_for :js do %>

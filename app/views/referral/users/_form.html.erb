@@ -69,14 +69,17 @@
 
 <%=tag_row do %>
   <%= form.label :apps_mask, "Application" %>
-  <% User::APPS.each do |app| %>
-    <%= tag_row  do%>
-      <%= check_box_tag "user[apps][]", app, @user.apps.include?(app), :class => "user_checkbox_app" %>
-      <%= app.humanize %>
-    <% end %>
-  <% end %>
+  <div style="padding-left: 20px;">
+      <% User::APPS.each do |app| %>
+        <%= tag_row  do%>
+          <%= check_box_tag "user[apps][]", app, @user.apps.include?(app), :class => "user_checkbox_app", :disabled => "disabled" %>
+          <span title="This option is disabled. Contact your admin for more info"> <%= app.humanize %> </span>
+        <% end %>
+      <% end %>
+  </div>      
   <%= hidden_field_tag "user[apps][]", "" %>
 <% end %>
+<br />
 
 <%=tag_row do %>
 	<%= form.label ""  %>

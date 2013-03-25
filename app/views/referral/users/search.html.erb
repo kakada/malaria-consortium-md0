@@ -35,9 +35,9 @@
 		<tbody>
 			<% @users.each do |user| %>
 			  <tr>
-				<td> <%= highlight(user.user_name, params[:query]) %> </td>
+				<td> <%= user.user_name.nil? ? "" : highlight(user.user_name, params[:query]) %> </td>
 				<td> <%= user.email %> </td>
-				<td> <%= highlight(user.phone_number, params[:query])  %> </td>
+				<td> <%= user.phone_number.nil? ? "" : highlight(user.phone_number, params[:query])  %> </td>
 				<td> <%= user.role %> </td>
 				<td> <%= user.place.nil? ? "" : highlight(user.place.description, params[:query])  %>
 				<td> <%= user.status_description %> </td>

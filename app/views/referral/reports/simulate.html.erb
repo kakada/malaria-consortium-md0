@@ -87,11 +87,14 @@
             </tr>
 
           <% @report.attributes.each do |name, value|  %>
+            
             <tr > 
               <td> <%= name %> </td>
-              <td>  
-                   <%=  ( (@report.class == Referral::HCReport || @report.class == Referral::ClinicReport) && name == "error_message") ? @report.error_message_translate : value  %>
-              </td>
+              <% if (@report.class == Referral::HCReport || @report.class == Referral::ClinicReport) && name == "error_message"  %>
+                <td title="<%=  value %>" ><%= @report.error_message_translate %></td>
+              <% else %>
+                <td> <%= value  %></td>
+              <%  end %>
             </tr>
           <% end %>
           </table> 

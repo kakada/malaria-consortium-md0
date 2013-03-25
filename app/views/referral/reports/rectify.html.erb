@@ -11,9 +11,9 @@
 
   <div class="well span4" >    
       <h4> Rectify Message </h4>
-      <% if !@error.blank? %>
-        <div class="alert alert-error">
-          <%=   @error.class == Array  ? @error[0][:body] : @error  %>
+      <% if @error[:error] %>
+        <div class="alert alert-error" title="<%= @error[:raw] %>">
+          <%= @error[:message]  %>
         </div>
       <% end %>
 

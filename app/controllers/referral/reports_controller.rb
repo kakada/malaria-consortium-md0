@@ -132,28 +132,31 @@ module Referral
     
     def apply
       @report = Referral::Report.find params[:id]
-      @error = ""
+      @error = {:error => false, :message => "", :raw => ""}
       @from   = params[:from]
       @body   = params[:body]   
       
       message_proxy = MessageProxy.new(:from => @from, :body => @body, :guid => "")
       message_proxy.analyse_number
       if message_proxy.params[:error]
-          @error = message_proxy.generate_error(message_proxy.params)
+          @error = { :error => true, :message => message_proxy.params[:error_message]  }
       else
         if !message_proxy.params[:sender].is_from_referral?
-          @error = "Not register in referral system"
+          @error = { :error => true, :message =>  "Not register in referral system" }
         else
            @rectify_report = Referral::Report::decode message_proxy.params.dup
            if(@rectify_report.error)
-             @error = @rectify_report.translate_message_for(@rectify_report.error_message)
+             @error = { :error => true, 
+                        :message =>  @rectify_report.translate_message_for(@rectify_report.error_message),
+                        :raw => @rectify_report.error_message
+                        }
            else
               _store_rectified_report
               _send_alert_to_other  
            end
         end
       end
-      if(!@error.blank?)
+      if(@error[:error])
           render :rectify
       else  
         flash["notice"] = "Report <b> #{@report.text} </b>has been rectified"
@@ -182,11 +185,12 @@ module Referral
     def toggle
       begin
         report = Referral::Report.find(params[:id])
-        report.ignored = !report.ignored
+        current = report.ignored
+        report.ignored = !current
         report.save!
-        msg = "Report has been ignored"
+        msg = current ? "Report has been unignored" : "Report has been ignored"     
       rescue 
-        msg = "Failed to ignore report. Try it again"
+        msg = current ?  "Failed to unignore report. Try it again" : "Failed to ignore report. Try it again"
       end
       flash[:notice] = msg
       redirect_to request.env["HTTP_REFERER"]
@@ -197,8 +201,8 @@ module Referral
         report = Referral::Report.find(params[:id])
         report.destroy
         flash[:notice] = "Report has been deleted"
-      rescue
-        flash[:error] = "Failed to delete report. Try it again"
+      rescue Exception => e
+        flash[:error] = "Failed to delete report with error : " + e.message
       end
       
       url = request.env["HTTP_REFERER"]
@@ -209,9 +213,12 @@ module Referral
       reports = Referral::Report.where(["id in (:reports)", :reports => params[:referral_report]]);
       count = 0
       reports.each do |report|
-         if report.destroy
-            count = count +1
-         end
+        begin
+          report.destroy
+          count = count +1
+        rescue Exception => e
+          flash[:error] = "Failed to delete report with error : " + e.message
+        end
       end
       flash[:notice] = "#{count} reports have been removed";
       redirect_to request.env["HTTP_REFERER"]

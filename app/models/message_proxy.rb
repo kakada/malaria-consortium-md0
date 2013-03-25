@@ -36,9 +36,7 @@ class MessageProxy
     end
  end 
  
- def generate_error options
-
-    
+ def generate_error options   
     if !options[:sender] 
         # no sender dont_store any report
         #save_mdo_error

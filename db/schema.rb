@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130321011455) do
+ActiveRecord::Schema.define(:version => 20130325034234) do
 
   create_table "alert_pf_notifications", :force => true do |t|
     t.integer  "user_id"
@@ -105,6 +105,11 @@ ActiveRecord::Schema.define(:version => 20130321011455) do
     t.string   "meaning4"
     t.string   "meaning5"
   end
+
+  add_index "referral_reports", ["confirm_from_id"], :name => "referral_reports_confirm_from_id_fk"
+  add_index "referral_reports", ["place_id"], :name => "referral_reports_place_id_fk"
+  add_index "referral_reports", ["send_to_health_center_id"], :name => "referral_reports_send_to_health_center_id_fk"
+  add_index "referral_reports", ["sender_id"], :name => "referral_reports_sender_id_fk"
 
   create_table "reports", :force => true do |t|
     t.string   "malaria_type"

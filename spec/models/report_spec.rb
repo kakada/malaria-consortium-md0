@@ -8,13 +8,13 @@ describe Report do
     @village = @health_center.villages.make :code => '12345678'
     @health_center.villages.make :code => '87654321'
 
-    @hc_user = @health_center.users.make :phone_number => "8558190"
-    @vmw_user = @village.users.make :phone_number => "8558191"
-    @od_user1 = @od.users.make :phone_number => "8558192"
-    @od_user2 = @od.users.make :phone_number => "8558193"
+    @hc_user = @health_center.users.make :phone_number => "85581900000"
+    @vmw_user = @village.users.make :phone_number => "85581910000"
+    @od_user1 = @od.users.make :phone_number => "85581920000"
+    @od_user2 = @od.users.make :phone_number => "85581930000"
 
-    @valid_message = {:from => "sms://8558190", :body => "F123M012345678"}
-    @valid_vmw_message = {:from => "sms://8558191", :body => "F123M0."}
+    @valid_message = {:from => "sms://85581900000", :body => "F123M012345678"}
+    @valid_vmw_message = {:from => "sms://85581910000", :body => "F123M0."}
   end
 
   describe "create report" do

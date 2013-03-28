@@ -23,11 +23,11 @@ describe VMWReport do
    
    it "should return single case message translated" do
      village = Village.make :name => "Kkkk"
-     sender  = User.make :phone_number => "099123456", :place => village
+     sender  = User.make :phone_number => "85599123456", :place => village
     
      report = VMWReport.make :malaria_type => "F", :sex => "Female", :age => 20, :day => 28, :village => village, :place => village, :sender => sender
       
-     report.single_case_message.should eq "test_result => Pf, malaria_type => F,sex => Female, age => 20, day => 28, village => Kkkk,contact_number => 099123456"
+     report.single_case_message.should eq "test_result => Pf, malaria_type => F,sex => Female, age => 20, day => 28, village => Kkkk,contact_number => 85599123456"
    end
    
    describe "valid_alert" do
@@ -52,16 +52,16 @@ describe VMWReport do
           village = Village.make :parent => hc11, :code => "00000001", :name => "Ponhea Krek"
 
           # sender user
-          village_user = User.make :place => village, :phone_number => "012123456"
+          village_user = User.make :place => village, :phone_number => "85512123456"
 
           #hc admin
-          hc_user1     = User.make :place => hc11 ,   :phone_number => "012223457"
-          hc_user2     = User.make :place => hc11 ,   :phone_number => "012223458"
+          hc_user1     = User.make :place => hc11 ,   :phone_number => "85512223457"
+          hc_user2     = User.make :place => hc11 ,   :phone_number => "85512223458"
 
           # Od admin
-          od_user1 = User.make :place =>od1, :phone_number => "012323456"
-          od_user2 = User.make :place =>od1, :phone_number => "012323457"
-          od_user3 = User.make :place =>od1, :phone_number => "012323458"
+          od_user1 = User.make :place =>od1, :phone_number => "85512323456"
+          od_user2 = User.make :place =>od1, :phone_number => "85512323457"
+          od_user3 = User.make :place =>od1, :phone_number => "85512323458"
 
           # template
           Setting[:successful_non_mobile_village_report] = "village: messsage has been sent "
@@ -73,14 +73,14 @@ describe VMWReport do
           report = VMWReport.make(:place => village, :sender => village_user)
           report = VMWReport.make(:place => village, :sender => village_user)
 
-          alert_hc = [ {:to=>"sms://012223457", :body=>"hc: single case", :from=>"malariad0://system"}, 
-                      {:to=>"sms://012223458", :body=>"hc: single case", :from=>"malariad0://system"} ]
+          alert_hc = [ {:to=>"sms://85512223457", :body=>"hc: single case", :from=>"malariad0://system"}, 
+                      {:to=>"sms://85512223458", :body=>"hc: single case", :from=>"malariad0://system"} ]
 
-          alert_od = [ {:to=>"sms://012323456", :body=>"od: aggregated", :from=>"malariad0://system"}, 
-                      {:to=>"sms://012323457", :body=>"od: aggregated", :from=>"malariad0://system"}, 
-                      {:to=>"sms://012323458", :body=>"od: aggregated", :from=>"malariad0://system"}]
+          alert_od = [ {:to=>"sms://85512323456", :body=>"od: aggregated", :from=>"malariad0://system"}, 
+                      {:to=>"sms://85512323457", :body=>"od: aggregated", :from=>"malariad0://system"}, 
+                      {:to=>"sms://85512323458", :body=>"od: aggregated", :from=>"malariad0://system"}]
 
-          alert_village = {:to=>"sms://012123456", :body=>"village: messsage has been sent ", :from=>"malariad0://system"}
+          alert_village = {:to=>"sms://85512123456", :body=>"village: messsage has been sent ", :from=>"malariad0://system"}
 
           alerts = alert_hc + alert_od + [alert_village]
 
@@ -105,16 +105,16 @@ describe VMWReport do
           village = Village.make :parent => hc11, :code => "00000001", :name => "Ponhea Krek"
 
           # sender user
-          village_user = User.make :place => village, :phone_number => "012123456"
+          village_user = User.make :place => village, :phone_number => "85512123456"
 
           #hc admin
-          hc_user1     = User.make :place => hc11 ,   :phone_number => "012223457"
-          hc_user2     = User.make :place => hc11 ,   :phone_number => "012223458"
+          hc_user1     = User.make :place => hc11 ,   :phone_number => "85512223457"
+          hc_user2     = User.make :place => hc11 ,   :phone_number => "85512223458"
 
           # Od admin
-          od_user1 = User.make :place =>od1, :phone_number => "012323456"
-          od_user2 = User.make :place =>od1, :phone_number => "012323457"
-          od_user3 = User.make :place =>od1, :phone_number => "012323458"
+          od_user1 = User.make :place =>od1, :phone_number => "85512323456"
+          od_user2 = User.make :place =>od1, :phone_number => "85512323457"
+          od_user3 = User.make :place =>od1, :phone_number => "85512323458"
 
           # template
           Setting[:successful_non_mobile_village_report] = "village: messsage has been sent "
@@ -126,10 +126,10 @@ describe VMWReport do
           report = VMWReport.make(:place => village, :sender => village_user)
           report = VMWReport.make(:place => village, :sender => village_user)
 
-          alert_hc = [ {:to=>"sms://012223457", :body=>"hc: single case", :from=>"malariad0://system"}, 
-                      {:to=>"sms://012223458", :body=>"hc: single case", :from=>"malariad0://system"} ]
+          alert_hc = [ {:to=>"sms://85512223457", :body=>"hc: single case", :from=>"malariad0://system"}, 
+                      {:to=>"sms://85512223458", :body=>"hc: single case", :from=>"malariad0://system"} ]
 
-          alert_village = {:to=>"sms://012123456", :body=>"village: messsage has been sent ", :from=>"malariad0://system"}
+          alert_village = {:to=>"sms://85512123456", :body=>"village: messsage has been sent ", :from=>"malariad0://system"}
 
           alerts = alert_hc +  [alert_village]
 
@@ -140,7 +140,7 @@ describe VMWReport do
      
      describe "with no threshold" do
        it "should alert to health_center, sender and always alert to od" do
-         od1 = OD.make :code => "0001"
+          od1 = OD.make :code => "0001"
           od2 = OD.make :code => "0002"
 
           hc11 = HealthCenter.make  :parent => od1, :code => "000001"
@@ -155,16 +155,16 @@ describe VMWReport do
           village = Village.make :parent => hc11, :code => "00000001", :name => "Ponhea Krek"
 
           # sender user
-          village_user = User.make :place => village, :phone_number => "012123456"
+          village_user = User.make :place => village, :phone_number => "85512123456"
 
           #hc admin
-          hc_user1     = User.make :place => hc11 ,   :phone_number => "012223457"
-          hc_user2     = User.make :place => hc11 ,   :phone_number => "012223458"
+          hc_user1     = User.make :place => hc11 ,   :phone_number => "85512223457"
+          hc_user2     = User.make :place => hc11 ,   :phone_number => "85512223458"
 
           # Od admin
-          od_user1 = User.make :place =>od1, :phone_number => "012323456"
-          od_user2 = User.make :place =>od1, :phone_number => "012323457"
-          od_user3 = User.make :place =>od1, :phone_number => "012323458"
+          od_user1 = User.make :place =>od1, :phone_number => "85512323456"
+          od_user2 = User.make :place =>od1, :phone_number => "85512323457"
+          od_user3 = User.make :place =>od1, :phone_number => "85512323458"
 
           # template
           Setting[:successful_non_mobile_village_report] = "village: messsage has been sent "
@@ -173,15 +173,15 @@ describe VMWReport do
 
           report = VMWReport.make(:place => village, :sender => village_user)
 
-          alert_hc = [ {:to=>"sms://012223457", :body=>"hc: single case", :from=>"malariad0://system"}, 
-                       {:to=>"sms://012223458", :body=>"hc: single case", :from=>"malariad0://system"} ]
+          alert_hc = [ {:to=>"sms://85512223457", :body=>"hc: single case", :from=>"malariad0://system"}, 
+                       {:to=>"sms://85512223458", :body=>"hc: single case", :from=>"malariad0://system"} ]
 
-          alert_od = [ {:to=>"sms://012323456", :body=>"hc: single case", :from=>"malariad0://system"}, 
-                       {:to=>"sms://012323457", :body=>"hc: single case", :from=>"malariad0://system"}, 
-                       {:to=>"sms://012323458", :body=>"hc: single case", :from=>"malariad0://system"}]
+          alert_od = [ {:to=>"sms://85512323456", :body=>"hc: single case", :from=>"malariad0://system"}, 
+                       {:to=>"sms://85512323457", :body=>"hc: single case", :from=>"malariad0://system"}, 
+                       {:to=>"sms://85512323458", :body=>"hc: single case", :from=>"malariad0://system"}]
 
 
-          alert_village = {:to=>"sms://012123456", :body=>"village: messsage has been sent ", :from=>"malariad0://system"}
+          alert_village = {:to=>"sms://85512123456", :body=>"village: messsage has been sent ", :from=>"malariad0://system"}
 
           alerts = alert_hc + alert_od + [alert_village]
           report.valid_alerts.should =~ alerts

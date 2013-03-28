@@ -5,7 +5,7 @@ describe User do
     @valid_attributes = {
       :user_name => "value for user_name",
       :password => "value for password",
-      :phone_number => "123456"
+      :phone_number => "85512666555"
     }
   end
 
@@ -17,6 +17,14 @@ describe User do
     user = User.new(@valid_attributes.merge(:phone_number=>""))
     user.save
     User.count.should == 0
+  end
+  
+  it "should not allow in valid phone format" do
+    attr = @valid_attributes.merge(:phone_number=>"85500011")
+    count = User.count
+    user = User.new(attr)
+    user.save
+    User.count.should eq count
   end
 
   it "should provide the correct parser" do
@@ -35,7 +43,7 @@ describe User do
         :user_name => ["foo","bar"],
         :email => ["foo@yahoo.com","bar@yahoo.com"],
         :password => ["123456", "234567"],
-        :phone_number => ["0975553553", "0975425678"],
+        :phone_number => ["855975553553", "855975425678"],
         :place_code => ["Pro1","Pro2"],
         :role => [User::Roles[0], User::Roles[1] ]
     }
@@ -131,53 +139,54 @@ describe User do
     end
 
     it "should be unique" do
-      valid_user = User.create! :user_name => 'foo', :password => '123456', :phone_number => '123567', :email => "foo@foo.com"
-      invalid_user = User.new :user_name => 'foo2', :password => '123456', :phone_number => '123568', :email => "foo@foo.com"
+      valid_user = User.create! :user_name => 'foo', :password => '123456', :phone_number => '85512123567', :email => "foo@foo.com"
+      invalid_user = User.new :user_name => 'foo2', :password => '123456', :phone_number  => '85597123568', :email => "foo@foo.com"
       invalid_user.valid?.should be_false
     end
   end
 
   describe "username validations" do
     it "should be unique" do
-      valid_user = User.create! :user_name => 'foo', :password => '123456', :phone_number => '123567'
-      invalid_user = User.new :user_name => 'foo', :password => '123456', :phone_number => '123568'
+      valid_user = User.create! :user_name => 'foo', :password => '123456', :phone_number => '85512123567'
+      invalid_user = User.new   :user_name => 'foo', :password => '123456', :phone_number => '85597123568'
       invalid_user.valid?.should be_false
     end
   end
 
   describe "phone number validations" do
     it "should not create users with invalid phone number" do
-      invalid_user = User.new :user_name => 'foo', :password => '123456', :phone_number => '1239123-1392132'
-      invalid_user.valid?.should be_false
-      invalid_user.errors.size.should == 1
-      invalid_user.errors[:phone_number].should_not == nil
+      expect {
+        invalid_user = User.new :user_name => 'foo', :password => '123456', :phone_number => '1239123-1392132'
+        invalid_user.save 
+      }.to change{User.count}.by(0)
+      
     end
 
     it "should create users with valid phone number" do
-      valid_user = User.new :user_name => 'foo', :password => '123456', :phone_number => '123567'
+      valid_user = User.new :user_name => 'foo', :password => '123456', :phone_number => '85588123567'
       valid_user.valid?.should be_true
     end
 
     it "should be unique" do
-      valid_user = User.create! :user_name => 'foo', :password => '123456', :phone_number => '123567'
-      invalid_user = User.new :user_name => 'foo2', :password => '123456', :phone_number => '123567'
+      valid_user = User.create! :user_name => 'foo', :password => '123456', :phone_number => '85570123567'
+      invalid_user = User.new :user_name => 'foo2', :password => '123456',  :phone_number => '85570123567'
       invalid_user.valid?.should be_false
     end
   end
 
   describe "role validations" do
     it "should be in the list of roles" do
-      valid_user = User.create! :user_name => 'foo', :password => '123456', :phone_number => '123567', :role => 'admin'
-      valid_user2 = User.create! :user_name => 'foo2', :password => '1234562', :phone_number => '1235672', :role => 'national'
-
-      invalid_user = User.new :user_name => 'foo23', :password => '12345623', :phone_number => '12356723', :role => 'foo'
+      valid_user = User.create! :user_name => 'foo',   :password => '123456',  :phone_number => '85570123561', :role => 'admin'
+      valid_user2 = User.create! :user_name => 'foo2', :password => '1234562', :phone_number => '85570123562', :role => 'national'
+        
+      invalid_user = User.new :user_name => 'foo23', :password => '12345623', :phone_number => '85570123500', :role => 'foo'
       invalid_user.valid?.should be_false
     end
   end
 
   describe "either has a phone number or a username AND a password AND an email" do
     it "should be valid if it only has a phone number" do
-      valid_user = User.new :phone_number => '123456'
+      valid_user = User.new :phone_number => '85515123456'
       valid_user.valid?.should be_true
     end
 
@@ -208,13 +217,13 @@ describe User do
     end
 
     it "should set custom attributes for new user in village" do
-      @nuntium_api.should_receive(:set_custom_attributes).with('sms://123', {:application => 'MD0-Staging'})
-      User.create! :phone_number => '123', :place => Village.make
+      @nuntium_api.should_receive(:set_custom_attributes).with('sms://85516000111', {:application => 'MD0-Staging'})
+      User.create! :phone_number => '85516000111', :place => Village.make
     end
 
     it "should not set custom attributes for user in province" do
       @nuntium_api.should_not_receive(:set_custom_attributes)
-      User.create! :phone_number => '123', :place => Province.make
+      User.create! :phone_number => '85516000112', :place => Province.make
     end
 
     it "should not set custom attributes if it has no phone" do
@@ -223,40 +232,41 @@ describe User do
     end
 
     it "should unset custom attributes if moved to province" do
-      u = User.create! :phone_number => '123', :place => Village.make
-      @nuntium_api.should_receive(:set_custom_attributes).with('sms://123', {:application => nil})
+      u = User.create! :phone_number => '85516000113', :place => Village.make
+      @nuntium_api.should_receive(:set_custom_attributes).with('sms://85516000113', {:application => nil})
       u.place = Province.make
       u.save!
     end
 
     it "should clear the custom attribute when the phone is unset" do
-      u = User.create! :user_name => 'user', :password => '123456', :email => 'user@email.com', :phone_number => '123', :place => Village.make
-      @nuntium_api.should_receive(:set_custom_attributes).with('sms://123', {:application => nil})
+      u = User.create! :user_name => 'user', :password => '123456', :email => 'user@email.com',
+                       :phone_number => '85516000114', :place => Village.make
+      @nuntium_api.should_receive(:set_custom_attributes).with('sms://85516000114', {:application => nil})
       u.phone_number = nil
       u.save!
     end
 
     it "should clear custom attributes but not set new ones when moving to province with new number" do
-      u = User.create! :phone_number => '123', :place => Village.make
-      @nuntium_api.should_receive(:set_custom_attributes).with('sms://123', {:application => nil})
-      @nuntium_api.should_not_receive(:set_custom_attributes).with('sms://456', anything)
-      u.phone_number = '456'
+      u = User.create! :phone_number => '85516000115', :place => Village.make
+      @nuntium_api.should_receive(:set_custom_attributes).with('sms://85516000115', {:application => nil})
+      @nuntium_api.should_not_receive(:set_custom_attributes).with('sms://85516000456', anything)
+      u.phone_number = '85516000456'
       u.place = Province.make
       u.save!
     end
 
     it "should not set or clear custom attributes for new or updated province user" do
       @nuntium_api.should_not_receive(:set_custom_attributes)
-      u = User.create! :phone_number => '123', :place => Province.make
-      u.phone_number = '456'
+      u = User.create! :phone_number => '85516000116', :place => Province.make
+      u.phone_number = '85516000119'
       u.save!
     end
 
     it "should delete custom attributes when a user is deleted" do
       @nuntium_api.should_receive(:set_custom_attributes)
-      user = User.create! :phone_number => '123', :place => Village.make
+      user = User.create! :phone_number => '85516000111', :place => Village.make
 
-      @nuntium_api.should_receive(:set_custom_attributes).with('sms://123', {:application => nil})
+      @nuntium_api.should_receive(:set_custom_attributes).with('sms://85516000111', {:application => nil})
       user.destroy
     end
   end
@@ -324,21 +334,21 @@ describe User do
        @other = Village.make
 
        @v1 = User.make :user_name => "vuser1" , :phone_number => "85597888120" , :place => @village
-       @v2 = User.make :user_name => "vuser2", :phone_number => "8559736634664", :place => @village, :status => false
-       @v3 = User.make :user_name => "vuser3", :phone_number => "8559736634665", :place => @village
+       @v2 = User.make :user_name => "vuser2", :phone_number  =>  "85597366346", :place => @village, :status => false
+       @v3 = User.make :user_name => "vuser3", :phone_number  =>  "85597366345", :place => @village
 
 
-       @v4 = User.make :user_name => "vuser4", :phone_number => "8559712536477", :place => @other
+       @v4 = User.make :user_name => "vuser4", :phone_number => "85597124537", :place => @other
        
 
        @h1 = User.make :user_name => "huser" , :phone_number => "85597888121", :place => @village.health_center
-       @h2 = User.make :user_name => "dara", :phone_number => "85597888122", :place => @village.health_center
+       @h2 = User.make :user_name => "dara", :phone_number   => "85597888122", :place => @village.health_center
 
        @d1 = User.make :user_name => "bopha",  :phone_number => "85597888123", :place => @village.od, :status => false
        @d2 = User.make :user_name => "thuna" , :phone_number => "85597888127", :place => @village.od
 
       
-       @p1 = User.make :user_name => "ratha", :phone_number => "85597888124", :place => @village.province
+       @p1 = User.make :user_name => "ratha", :phone_number  => "85597888124", :place => @village.province
        @p2 = User.make :user_name => "vibol" , :phone_number => "85597888125", :place => @village.province, :status => false
 
        @p3 = User.make :user_name => "rathana" , :phone_number => "85597888126", :place => @village.province
@@ -402,8 +412,8 @@ describe User do
        @village = Village.make
 
        @v1 = User.make :user_name => "vuser1" , :phone_number => "85597888120", :place => @village
-       @v2 = User.make :user_name => "vuser2", :phone_number => "8559736634664", :place => @village, :status => false
-       @v3 = User.make :user_name => "vuser3", :phone_number => "8559736634665", :place => @village
+       @v2 = User.make :user_name => "vuser2", :phone_number => "85597366346", :place => @village, :status => false
+       @v3 = User.make :user_name => "vuser3", :phone_number => "85597356346", :place => @village
 
        @h1 = User.make :user_name => "huser" , :phone_number => "85597888121", :place => @village.health_center
        @h2 = User.make :user_name => "dara", :phone_number => "85597888122", :place => @village.health_center
@@ -474,7 +484,7 @@ describe User do
         :email => "valid@yahoo.com" ,
         :password => "123456" ,
         :password_confirmation => "123456",
-        :phone_number => "0975553553" ,
+        :phone_number => "855975553553" ,
         :intended_place_code => @od.description
       }
       

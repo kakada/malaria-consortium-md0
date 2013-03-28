@@ -37,8 +37,8 @@ module Referral
   	def update
   		@user = User.find params[:id]
   		if @user.update_params params[:user]
-        flash.now["notice"] = "Successfully Updated"
-	      render :edit
+        flash["notice"] = "Successfully Updated"
+        redirect_to params[:md0].blank? ? referral_users_path : referral_users_search_path(:query => params[:query]) 
   		else
   		  flash["error"] = "Failed to update"
 	      render :edit

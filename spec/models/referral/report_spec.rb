@@ -8,13 +8,13 @@ describe Referral::Report do
     @village = @health_center.villages.make :code => '12345678'
     @health_center.villages.make :code => '87654321'
 
-    @hc_user = @health_center.users.make :phone_number => "8558190"
-    @vmw_user = @village.users.make :phone_number => "8558191"
-    @od_user1 = @od.users.make :phone_number => "8558192"
-    @od_user2 = @od.users.make :phone_number => "8558193"
+    @hc_user = @health_center.users.make :phone_number => "85581900000"
+    @vmw_user = @village.users.make :phone_number => "85581910000"
+    @od_user1 = @od.users.make :phone_number => "85581920000"
+    @od_user2 = @od.users.make :phone_number => "85581930000"
 
-    @valid_message = {:from => "sms://8558190", :body => "F123M012345678"}
-    @valid_vmw_message = {:from => "sms://8558191", :body => "F123M0."}
+    @valid_message = {:from => "sms://85581900000", :body => "F123M012345678"}
+    @valid_vmw_message = {:from => "sms://85581910000", :body => "F123M0."}
   end
   
   describe "create report" do
@@ -71,7 +71,7 @@ describe Referral::Report do
   
   describe "translate message for a key template" do
     it "should translate correctly" do
-      report = Referral::Report.new  :phone_number     => "012123456",
+      report = Referral::Report.new  :phone_number     => "85512123456",
                                     :place            => @od,
                                     :slip_code        => "BTB001001" ,
                                     :book_number      => "001",
@@ -98,7 +98,7 @@ describe Referral::Report do
                                     :sender => @od_user1,
                                     :error_message => "invalid_code"
     messages = report.error_alert          
-    messages.should eq :to=>"sms://8558192", :body=>"You have sent an invalid message: xxx xxx xxx" , :from => MessageProxy.app_name
+    messages.should eq :to=>"sms://85581920000", :body=>"You have sent an invalid message: xxx xxx xxx" , :from => MessageProxy.app_name
   end
   
   describe "generate_alert" do

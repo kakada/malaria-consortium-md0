@@ -18,7 +18,7 @@ describe "UserImport" do
       users[0].should be_valid
       users[0].user_name.should eq('user1')
       users[0].email.should eq("dya1@yaho.com")
-      users[0].phone_number.should eq("98764309")
+      users[0].phone_number.should eq("85598764309")
       users[0].password.should eq("123456")
       users[0].intended_place_code.should eq("01")
       users[0].role.should eq("admin")
@@ -48,7 +48,7 @@ describe "UserImport" do
       user = User.first
       user.user_name.should eq('user1')
       user.email.should eq("dya1@yaho.com")
-      user.phone_number.should eq("98764309")
+      user.phone_number.should eq("85598764309")
       user.place.should eq(province)
       user.role.should eq("admin")
     end

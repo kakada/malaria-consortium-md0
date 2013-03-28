@@ -73,3 +73,10 @@ th{
     border-radius: 5px 5px 5px 5px;
     box-shadow: 2px 2px 6px #666666;
 }
+.no-bg{
+    background-color: #fff;
+}
+.field{
+    font-weight: bold;
+    text-decoration: underline;
+}

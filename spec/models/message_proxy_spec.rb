@@ -7,18 +7,18 @@ describe MessageProxy do
     @village = @health_center.villages.make :code => '12345678'
     @health_center.villages.make :code => '87654321'
 
-    @hc_user = @health_center.users.make :phone_number => "8558190", :apps => [User::APP_MDO, User::APP_REFERAL]
-    @hc_user_disable_both = @health_center.users.make :phone_number => "8558199", :status => false, :apps => [User::APP_MDO, User::APP_REFERAL]
-    @hc_user_disable_referral = @health_center.users.make :phone_number => "85581910", :status => false, :apps => [User::APP_REFERAL]
+    @hc_user = @health_center.users.make :phone_number => "85581900000", :apps => [User::APP_MDO, User::APP_REFERAL]
+    @hc_user_disable_both = @health_center.users.make :phone_number => "85581990000", :status => false, :apps => [User::APP_MDO, User::APP_REFERAL]
+    @hc_user_disable_referral = @health_center.users.make :phone_number => "85581960000", :status => false, :apps => [User::APP_REFERAL]
     
-    @vmw_user = @village.users.make :phone_number => "8558191"
-    @village_user_both = @village.users.make :phone_number => "8558192",  :status => true, :apps => [User::APP_MDO, User::APP_REFERAL], :role => User::ROLE_REF_PROVIDER
-    @village_user_ref  = @village.users.make :phone_number => "8558193",  :status => true, :apps => [User::APP_REFERAL ], :role => User::ROLE_REF_PROVIDER
+    @vmw_user = @village.users.make :phone_number => "85581910000"
+    @village_user_both = @village.users.make :phone_number => "85581920000",  :status => true, :apps => [User::APP_MDO, User::APP_REFERAL], :role => User::ROLE_REF_PROVIDER
+    @village_user_ref  = @village.users.make :phone_number => "85581930000",  :status => true, :apps => [User::APP_REFERAL ], :role => User::ROLE_REF_PROVIDER
 
-    @valid_message = {:from => "sms://8558190", :body => "F123M012345678"}
-    @valid_vmw_message = {:from => "sms://8558191", :body => "F123M0."}
+    @valid_message = {:from => "sms://85581900000", :body => "F123M012345678"}
+    @valid_vmw_message = {:from => "sms://85581910000", :body => "F123M0."}
     
-    @options = {:from => "8558190", :body => "FM12344", :guid => "AC0193740283"}
+    @options = {:from => "85581900000", :body => "FM12344", :guid => "AC0193740283"}
     
   end
   
@@ -38,13 +38,13 @@ describe MessageProxy do
     end
     
     it "should have error with access define for error" do
-      user = @province.users.make :phone_number => "123456654321"
+      user = @province.users.make
    
 
-      proxy = MessageProxy.new @options.merge(:from => "123456654321")
+      proxy = MessageProxy.new @options.merge(:from => user.phone_number)
       proxy.analyse_number
       proxy.params.should eq({ 
-                              :sender_address => "123456654321",
+                              :sender_address => user.phone_number,
                               :nuntium_token => "AC0193740283",
                               :text => "FM12344" ,
                               :error => true, 
@@ -73,7 +73,7 @@ describe MessageProxy do
       options = { :sender => nil, 
                   :error => true ,
                   :to => "9087726", 
-                  :sender_address => "9087726",
+                  :sender_address => "85590877260",
                   :text => "xxxx",
                   :error_message => MessageProxy.unknown_user      
       }
@@ -101,7 +101,7 @@ describe MessageProxy do
                   :place  => @hc_user_disable_both.place,
                   :error  => true ,
                   :to     => "9087726", 
-                  :sender_address => "9087726",
+                  :sender_address => "85590877260",
                   :text => "",
                   :error_message => MessageProxy.access_denied      
       }
@@ -124,7 +124,7 @@ describe MessageProxy do
                   :place  => @hc_user_disable_referral.place,
                   :error  => true ,
                   :to     => "9087726", 
-                  :sender_address => "9087726",
+                  :sender_address => "85590877260",
                   :text => "",
                   :error_message => MessageProxy.access_denied      
       }

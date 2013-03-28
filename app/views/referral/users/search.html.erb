@@ -5,9 +5,9 @@
 <%end %>
 
 <%= form_tag referral_users_search_path(), :method => "get", :class =>"form-search" do %>
-  <div class="alert alert-success well" >
-    <%= tag_row :class => "input-append input-block-level span3", "style" => "padding-top:5px;" do %>
-            <%= text_field_tag :query, params[:query], :class =>"search-query", :placeholder =>"Type to search"  %>
+  <div class="alert" >
+    <%= tag_row :class => "input-append input-block-level", "style" => "padding-top:20px;" do %>
+            <%= text_field_tag :query, params[:query], :class =>"search-query span5", :placeholder =>"Enter: User name, Phone number, Place code, or Place name"  %>
             <button type="submit" class="btn">Search</button>
             
     <% end %>
@@ -43,7 +43,7 @@
 				<td> <%= user.status_description %> </td>
                                 <td> <%= user.is_from_referral? ? "Yes" : "No"  %> </td>
 				<td> 
-					<%= link_to "Edit", edit_referral_user_path(user) %> |
+					<%= link_to "Edit", edit_referral_user_path({:id => user, :md0 => true, :query => params[:query]}) %> |
 					<%= link_to "Delete", referral_user_path(user), :method => :delete, :confirm => "Are you sure to remove"%>
 				</td>
 			  </tr>

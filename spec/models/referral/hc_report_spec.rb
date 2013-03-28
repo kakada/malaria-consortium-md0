@@ -12,23 +12,23 @@ describe Referral::HCReport do
     
     @v1  = @hc1.villages.make :name => "v1", :code => "1010101010"
     
-    @v_user1 = @v1.users.make :phone_number => "85581999", :apps => [User::APP_REFERAL], :status => true
+    @v_user1 = @v1.users.make :phone_number => "85581999000", :apps => [User::APP_REFERAL], :status => true
     
-    @hc_user11 = @hc1.users.make :phone_number => "8558190", :apps => [User::APP_REFERAL], :status => true
-    @hc_user12 = @hc1.users.make :phone_number => "8558191", :apps => [User::APP_REFERAL, User::APP_MDO], :status => true
-    @hc_user13 = @hc1.users.make :phone_number => "8558192", :apps => [User::APP_REFERAL], :status => false
-    @hc_user14 = @hc1.users.make :phone_number => "8558193", :apps => [User::APP_MDO], :status => true
+    @hc_user11 = @hc1.users.make :phone_number => "85581900000", :apps => [User::APP_REFERAL], :status => true
+    @hc_user12 = @hc1.users.make :phone_number => "85581910000", :apps => [User::APP_REFERAL, User::APP_MDO], :status => true
+    @hc_user13 = @hc1.users.make :phone_number => "85581920000", :apps => [User::APP_REFERAL], :status => false
+    @hc_user14 = @hc1.users.make :phone_number => "85581930000", :apps => [User::APP_MDO], :status => true
     
-    @hc_user21 = @hc2.users.make :phone_number => "8558180", :apps => [User::APP_REFERAL], :status => true
-    @hc_user22 = @hc2.users.make :phone_number => "8558181", :apps => [User::APP_REFERAL, User::APP_MDO], :status => true
-    @hc_user23 = @hc2.users.make :phone_number => "8558182", :apps => [User::APP_REFERAL], :status => false
-    @hc_user24 = @hc2.users.make :phone_number => "8558183", :apps => [User::APP_MDO], :status => true
+    @hc_user21 = @hc2.users.make :phone_number => "85581800000", :apps => [User::APP_REFERAL], :status => true
+    @hc_user22 = @hc2.users.make :phone_number => "85581810000", :apps => [User::APP_REFERAL, User::APP_MDO], :status => true
+    @hc_user23 = @hc2.users.make :phone_number => "85581820000", :apps => [User::APP_REFERAL], :status => false
+    @hc_user24 = @hc2.users.make :phone_number => "85581830000", :apps => [User::APP_MDO], :status => true
     
-    @od_user1 = @od.users.make :phone_number => "8558195", :apps => [User::APP_REFERAL], :status => true
-    @od_user2 = @od.users.make :phone_number => "8558196"
-    @od_user3 = @od.users.make :phone_number => "8558197", :apps => [User::APP_REFERAL,User::APP_MDO], :status => true
+    @od_user1 = @od.users.make :phone_number => "85581950000", :apps => [User::APP_REFERAL], :status => true
+    @od_user2 = @od.users.make :phone_number => "85581960000"
+    @od_user3 = @od.users.make :phone_number => "85581970000", :apps => [User::APP_REFERAL,User::APP_MDO], :status => true
     
-    @valid_message = {:from => "sms://8558192", :body => "F123M012345678", :guid => "123456"}
+    @valid_message = {:from => "sms://85581920000", :body => "F123M012345678", :guid => "123456"}
   end
   
   it "should return valid report" do
@@ -50,8 +50,8 @@ describe Referral::HCReport do
                                           :text          => "xxx-xxx"
     messages = hc_report.valid_alerts 
     
-    messages.should =~ [{:to=>"sms://85581999", :body=>"A msg from HC: 12345678 - hc1 with Slip: 100100", :from=>"malariad0://system"}, 
-                        {:to=>"sms://8558180", :body=>"Your msg has been send to 123456 - BatDamBong with Slip: 100100 Original message: xxx-xxx", :from=>"malariad0://system"}
+    messages.should =~ [{:to=>"sms://85581999000", :body=>"A msg from HC: 12345678 - hc1 with Slip: 100100", :from=>"malariad0://system"}, 
+                        {:to=>"sms://85581800000", :body=>"Your msg has been send to 123456 - BatDamBong with Slip: 100100 Original message: xxx-xxx", :from=>"malariad0://system"}
                        ]
   end
   

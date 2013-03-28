@@ -10,7 +10,7 @@ describe AlertPfNotificationController do
       :email => "admin@yahoo.com",
       :password => "123456",
       :intended_place_code =>"pcode1",
-      :phone_number => "0975553553",
+      :phone_number => "855975553553",
       :role => User::Roles[0]
     }
     @user = User.create! @attribute

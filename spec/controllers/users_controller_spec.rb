@@ -10,7 +10,7 @@ describe UsersController do
       :email => "admin@yahoo.com",
       :password => "123456",
       :intended_place_code =>"pcode1",
-      :phone_number => "0975553553",
+      :phone_number => "855975553553",
       :role => User::Roles[0]
     }
     @user = User.create! @attribute
@@ -84,7 +84,7 @@ describe UsersController do
       before(:each) do
         User.stub!(:find).with(1).and_return(@user)
         @user.stub!(:update_attributes).and_return(false)
-        @update_attrib_invalid = @attribute.merge :id=>1 , :email=>"format@", :phone_number=>"eytwr"
+        @update_attrib_invalid = @attribute.merge :id=>1 , :email=>"format@", :phone_number=>"855975553553"
       end
 
       it "should find a user and return an user obj" do

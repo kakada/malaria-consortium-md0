@@ -7,8 +7,8 @@ describe Referral::Parser do
     @village_clinic = @hc_hc.villages.make
     
     user          = User.make :user_name => "bopha",  :phone_number => "85597888123", :place => od
-    @user_clinic  = User.make  :place => @village_clinic, :phone_number => "855111111"
-    @user_hc      = User.make  :place => @hc_hc, :phone_number => "855222222" 
+    @user_clinic  = User.make  :place => @village_clinic, :phone_number => "85511111100"
+    @user_hc      = User.make  :place => @hc_hc, :phone_number => "85522222200" 
     
     @params = { :text => "0971234567KPS001001123456", :sender => user }
     @hc = HealthCenter.make :code => "123456"

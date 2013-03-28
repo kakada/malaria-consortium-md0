@@ -9,7 +9,7 @@ describe HealthCenterReport do
    
   it "should return single case message translated" do
      hc = HealthCenter.make :name => "Kkkk"
-     sender = User.make :phone_number => "099123456", :place => hc
+     sender = User.make :phone_number => "85599123456", :place => hc
      
      
     
@@ -19,7 +19,7 @@ describe HealthCenterReport do
      Setting[:single_hc_case_template] = "hc :{health_center}, test_result => {test_result}, malaria_type => {malaria_type},sex => {sex}, age => {age}, day => {day}, village => {village},contact_number => {contact_number}"
     
      
-     report.single_case_message.should eq "hc :Kkkk, test_result => Pf, malaria_type => F,sex => Female, age => 20, day => 28, village => #{report.village.name},contact_number => 099123456"
+     report.single_case_message.should eq "hc :Kkkk, test_result => Pf, malaria_type => F,sex => Female, age => 20, day => 28, village => #{report.village.name},contact_number => 85599123456"
   end
   
   describe "valid_alert" do
@@ -42,13 +42,13 @@ describe HealthCenterReport do
           hc24 = HealthCenter.make  :parent => od2, :code => "000014" 
 
           #hc admin
-          hc_user1     = User.make :place => hc11 ,   :phone_number => "012223457"
-          hc_user2     = User.make :place => hc11 ,   :phone_number => "012223458"
+          hc_user1     = User.make :place => hc11 ,   :phone_number => "85512223457"
+          hc_user2     = User.make :place => hc11 ,   :phone_number => "85512223458"
 
           # Od admin
-          od_user1 = User.make :place =>od1, :phone_number => "012323456"
-          od_user2 = User.make :place =>od1, :phone_number => "012323457"
-          od_user3 = User.make :place =>od1, :phone_number => "012323458"
+          od_user1 = User.make :place =>od1, :phone_number => "85512323456"
+          od_user2 = User.make :place =>od1, :phone_number => "85512323457"
+          od_user3 = User.make :place =>od1, :phone_number => "85512323458"
 
           # template
           Setting[:single_hc_case_template] = "hc: message sent"
@@ -60,13 +60,13 @@ describe HealthCenterReport do
           report = HealthCenterReport.make(:place => hc11, :sender => hc_user1)
           report = HealthCenterReport.make(:place => hc11, :sender => hc_user1)
 
-          alert_hc = [{:to=>"sms://012223458", :body=>"hc: message sent", :from=>"malariad0://system"}]
+          alert_hc = [{:to=>"sms://85512223458", :body=>"hc: message sent", :from=>"malariad0://system"}]
 
-          alert_od = [{:to=>"sms://012323456", :body=>"hc: aggregate report", :from=>"malariad0://system"}, 
-                      {:to=>"sms://012323457", :body=>"hc: aggregate report", :from=>"malariad0://system"}, 
-                      {:to=>"sms://012323458", :body=>"hc: aggregate report", :from=>"malariad0://system"}]
+          alert_od = [{:to=>"sms://85512323456", :body=>"hc: aggregate report", :from=>"malariad0://system"}, 
+                      {:to=>"sms://85512323457", :body=>"hc: aggregate report", :from=>"malariad0://system"}, 
+                      {:to=>"sms://85512323458", :body=>"hc: aggregate report", :from=>"malariad0://system"}]
 
-          alert_sender = {:to=>"sms://012223457", :body=>"hc: send back", :from=>"malariad0://system"}
+          alert_sender = {:to=>"sms://85512223457", :body=>"hc: send back", :from=>"malariad0://system"}
           alerts = alert_hc + alert_od + [alert_sender]
 
           report.valid_alerts.should =~ alerts
@@ -86,13 +86,13 @@ describe HealthCenterReport do
           hc24 = HealthCenter.make  :parent => od2, :code => "000014" 
 
           #hc admin
-          hc_user1     = User.make :place => hc11 ,   :phone_number => "012223457"
-          hc_user2     = User.make :place => hc11 ,   :phone_number => "012223458"
+          hc_user1     = User.make :place => hc11 ,   :phone_number => "85512223457"
+          hc_user2     = User.make :place => hc11 ,   :phone_number => "85512223458"
 
           # Od admin
-          od_user1 = User.make :place =>od1, :phone_number => "012323456"
-          od_user2 = User.make :place =>od1, :phone_number => "012323457"
-          od_user3 = User.make :place =>od1, :phone_number => "012323458"
+          od_user1 = User.make :place =>od1, :phone_number => "85512323456"
+          od_user2 = User.make :place =>od1, :phone_number => "85512323457"
+          od_user3 = User.make :place =>od1, :phone_number => "85512323458"
 
           # template
           Setting[:single_hc_case_template] = "hc: message sent"
@@ -104,9 +104,9 @@ describe HealthCenterReport do
           report = HealthCenterReport.make(:place => hc11, :sender => hc_user1)
           report = HealthCenterReport.make(:place => hc11, :sender => hc_user1)
 
-          alert_hc = [{:to=>"sms://012223458", :body=>"hc: message sent", :from=>"malariad0://system"}]
+          alert_hc = [{:to=>"sms://85512223458", :body=>"hc: message sent", :from=>"malariad0://system"}]
 
-          alert_sender = {:to=>"sms://012223457", :body=>"hc: send back", :from=>"malariad0://system"}
+          alert_sender = {:to=>"sms://85512223457", :body=>"hc: send back", :from=>"malariad0://system"}
           alerts = alert_hc + [alert_sender]
 
           report.valid_alerts.should =~ alerts
@@ -129,13 +129,13 @@ describe HealthCenterReport do
           hc24 = HealthCenter.make  :parent => od2, :code => "000014" 
 
           #hc admin
-          hc_user1     = User.make :place => hc11 ,   :phone_number => "012223457"
-          hc_user2     = User.make :place => hc11 ,   :phone_number => "012223458"
+          hc_user1     = User.make :place => hc11 ,   :phone_number => "85512223457"
+          hc_user2     = User.make :place => hc11 ,   :phone_number => "85512223458"
 
           # Od admin
-          od_user1 = User.make :place =>od1, :phone_number => "012323456"
-          od_user2 = User.make :place =>od1, :phone_number => "012323457"
-          od_user3 = User.make :place =>od1, :phone_number => "012323458"
+          od_user1 = User.make :place =>od1, :phone_number => "85512323456"
+          od_user2 = User.make :place =>od1, :phone_number => "85512323457"
+          od_user3 = User.make :place =>od1, :phone_number => "85512323458"
 
           # template
           Setting[:single_hc_case_template] = "hc: message sent"
@@ -146,13 +146,13 @@ describe HealthCenterReport do
           report = HealthCenterReport.make(:place => hc11, :sender => hc_user1)
 
             
-          alert_hc = [{:to=>"sms://012223458", :body=>"hc: message sent", :from=>"malariad0://system"}]
+          alert_hc = [{:to=>"sms://85512223458", :body=>"hc: message sent", :from=>"malariad0://system"}]
           
-          alert_od = [{:to=>"sms://012323456", :body=>"hc: message sent", :from=>"malariad0://system"}, 
-                      {:to=>"sms://012323457", :body=>"hc: message sent", :from=>"malariad0://system"}, 
-                      {:to=>"sms://012323458", :body=>"hc: message sent", :from=>"malariad0://system"}]
+          alert_od = [{:to=>"sms://85512323456", :body=>"hc: message sent", :from=>"malariad0://system"}, 
+                      {:to=>"sms://85512323457", :body=>"hc: message sent", :from=>"malariad0://system"}, 
+                      {:to=>"sms://85512323458", :body=>"hc: message sent", :from=>"malariad0://system"}]
                     
-          alert_sender = {:to=>"sms://012223457", :body=>"hc: send back", :from=>"malariad0://system"}
+          alert_sender = {:to=>"sms://85512223457", :body=>"hc: send back", :from=>"malariad0://system"}
 
         
           alerts = alert_hc + alert_od + [alert_sender]

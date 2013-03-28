@@ -110,11 +110,11 @@ class User < ActiveRecord::Base
   validates_inclusion_of :role, :in => (Roles + Roles_Ref), :allow_nil => true
   validates_uniqueness_of :user_name, :allow_nil => true, :message => 'Belongs to another user'
   validates_uniqueness_of :phone_number, :allow_nil => true, :message => 'Belongs to another user', :if => :phone_number?
-  validates_presence_of :phone_number,
-                        :if => Proc.new {|user| user.email.blank? || user.user_name.blank? || user.encrypted_password.blank?},
-                        :message => "Phone can't be blank, unless you provide a username, a password and an email"
+
   validates_format_of :phone_number, :with => /^\d+$/, :unless => Proc.new {|user| user.phone_number.blank?}, :message => "Only numbers allowed"
   validate :intended_place_code_must_exist
+  
+  validate :phone_number_fmt
 
   before_save :set_place_class_and_hierarchy, :if => :place_id?
   before_save :set_nuntium_custom_attributes
@@ -126,7 +126,15 @@ class User < ActiveRecord::Base
   #default_scope where(["role != ? AND role != ? ", ROLE_REF_PROVIDER , ROLE_REF_HC ])
   
   
-  
+  def phone_number_fmt
+    if (email.blank? || user_name.blank? || encrypted_password.blank?) && phone_number.blank?
+        errors.add(:base,"Phone can't be blank, unless you provide a username, a password and an email")
+    end
+
+    if(!phone_number.blank? && (phone_number =~/^855\d{8,9}$/).nil? )
+        errors.add(:base, "Phone number must start with 855 and followed by 8 to 9 digits without space. eg 855125553553")
+    end
+  end
   
   def write_places_csv source_file
     File.open(places_csv_file_name,"w+b") do |file|

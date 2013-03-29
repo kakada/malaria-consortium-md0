@@ -13,7 +13,7 @@
         <%end%>
 
       <%=tag_row do %>
-              <%= form.label :email %>
+              <%= form.label :email, "Email", :no_mark => true  %>
               <%= form.email_field :email %>
         <%end%>
 
@@ -24,7 +24,7 @@
 
       <% if @user.new_record? %>
         <%=tag_row do %>
-              <%= form.label :password %>
+              <%= form.label :password, "Passwor", :no_mark => true %>
               <%= form.password_field :password %>
           <%end%>
 

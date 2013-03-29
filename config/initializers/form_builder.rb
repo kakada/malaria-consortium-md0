@@ -1,6 +1,8 @@
 class ActionView::Helpers::FormBuilder
 	alias :orig_label :label
 	def label(method, content_or_options = nil, options = nil, &block)
+    return orig_label(method, content_or_options , options , &block) if(!options.nil? && !options[:no_mark].nil?)
+    
 		if content_or_options && content_or_options.class == Hash
 			options = content_or_options
 		else
@@ -12,8 +14,10 @@ class ActionView::Helpers::FormBuilder
 		content = content
 		required_mark = ''
 		required_text = options[:"field-required"]  || '*'
+    
 		required_mark = object.class.validators_on(method).map(&:class).include?(ActiveModel::Validations::PresenceValidator) ? "<span class='field-required' >#{required_text}</span>" : "" 
-		content = content 
+		
+    content = content 
 
 		self.orig_label(method, options ) do
 			(content + required_mark).html_safe

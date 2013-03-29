@@ -2,7 +2,7 @@ module Referral
   class UsersController < ReferralController
 
   	def index
-  		@title = "User management"
+  		@referral_title = "User management"
 	    @page = get_page
 
 	    if params[:query].present?
@@ -19,7 +19,7 @@ module Referral
   	end
     
     def search
-      @title = "Search for user: #{params[:query]}"; 
+      @referral_title = "Search for user: #{params[:query]}"; 
 	    @page = get_page
 
 	    if params[:query].present?
@@ -32,6 +32,7 @@ module Referral
 
   	def edit
   		@user = User.find params[:id]
+      @referral_title = "Edit user- #{@user.phone_number}"
   	end
 
   	def update
@@ -47,6 +48,7 @@ module Referral
 
     def new
     	@user = User.new(:apps => [User::APP_REFERAL])
+      @referral_title = "Create new user"
     end
 
     def create

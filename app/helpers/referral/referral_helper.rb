@@ -1,7 +1,7 @@
 module Referral
   module ReferralHelper
   	def referral_title
-		@referral_title ? "#{@referral_title}-#{referral_app}": referral_app		
+		@referral_title ? "#{@referral_title}": referral_app		
 	end
 
 	def referral_app

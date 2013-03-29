@@ -1,6 +1,7 @@
 module Referral
   class TemplatesController < ReferralController    
     def configs
+      @referral_title = "Message Template"
       @templates = Templates.new
     end
 

@@ -2,11 +2,13 @@ module Referral
   class FieldsController < ReferralController
     def index
       @fields = Referral::Field.all
+      @referral_title = "Field List"
     end
     
     def new
       raise "Name must be provided" if !params[:position].present?
       @field = Referral::Field.new :position => params[:position], :name => Referral::Field.columnize(params[:position])
+      @referral_title = "New Field"
     end
     
     def create
@@ -22,7 +24,7 @@ module Referral
     
     def edit
       @field = Referral::Field.find params[:id]
-     
+      @referral_title = "Edit Field"
     end
     
     def update
@@ -70,6 +72,7 @@ module Referral
     
     def show
       @field = Referral::Field.find params[:id]
+      @referral_title = "Field detail"
     end
     
   end

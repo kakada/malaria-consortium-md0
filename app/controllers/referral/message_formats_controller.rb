@@ -3,6 +3,7 @@ module Referral
     def index
       @clinic = Referral::MessageFormat.clinic
       @hc     = Referral::MessageFormat.health_center
+      @referral_title = "Message Format"
     end
     
     def save

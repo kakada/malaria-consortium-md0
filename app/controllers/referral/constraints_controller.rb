@@ -3,11 +3,13 @@ module Referral
     def index
       @field = Referral::Field.find params[:field_id]
       @constraints = @field.constraints
+      @referral_title = "Constraint List"
     end
     
     def new
       @field = Referral::Field.find params[:field_id]
       @constraint  = @field.constraints.build
+      @referral_title = "New Constraint"
     end
     
     def create
@@ -38,6 +40,7 @@ module Referral
     
     def edit
       render :json => params
+      @referral_title = "Edit Constraint"
     end
     
     def view

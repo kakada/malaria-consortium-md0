@@ -22,7 +22,7 @@ module Referral
     def valid
       report_type 
       @reports = @reports.includes(:confirm_from).no_error.not_ignored
-      
+      @referral_title = "Valid Report"
       respond_to do |format|
         format.html { @reports = @reports.paginate :page => @page, :per_page => PerPage }
         format.csv  { render :text => @reports.as_csv}
@@ -33,6 +33,8 @@ module Referral
     def index
       report_type 
       @reports = @reports.includes(:confirm_from).order("id desc")
+      @referral_title = "Report List"
+      
       respond_to do |format|
         format.html { @reports = @reports.paginate :page => @page, :per_page => PerPage}
         format.csv  { render :json => @reports.as_csv }
@@ -43,6 +45,7 @@ module Referral
     def error
       report_type 
       @reports = @reports.includes(:confirm_from).error
+      @referral_title = "Error Report"
       respond_to do |format|
         format.html { @reports =@reports.paginate :page => @page, :per_page => PerPage}
         format.csv  { render :text => @reports.as_csv}
@@ -53,6 +56,7 @@ module Referral
     def ignored
       report_type 
       @reports = @reports.includes(:confirm_from).ignored
+      @referral_title = "Ignored Report"
       respond_to do |format|
         format.html { @reports =@reports.paginate :page => @page, :per_page => PerPage}
         format.csv  { render :text => @reports.as_csv}
@@ -64,7 +68,7 @@ module Referral
       @reports = Referral::Report.includes(:confirm_from).not_ignored
       
       @reports = @reports.between(params[:from], params[:to])
-      
+      @referral_title = "Search report #{params[:query]}"
       if(!params[:query].blank?)
         @reports = @reports.query(params[:query])
       end
@@ -78,6 +82,7 @@ module Referral
     
     def confirmed
       @reports = Referral::ClinicReport.includes(:confirm_from).confirmed
+      @referral_title = "Confirmed Report"
       respond_to do |format|
         format.html { @reports =@reports.paginate :page => @page, :per_page => PerPage}
         format.csv  { render :text => @reports.as_csv}
@@ -88,6 +93,7 @@ module Referral
     
     def not_confirmed
       @reports = Referral::ClinicReport.includes(:confirm_from).not_confirmed
+      @referral_title = "Not-confirmed Report"
       respond_to do |format|
         format.html { @reports =@reports.paginate :page => @page, :per_page => PerPage}
         format.csv  { render :text => @reports.as_csv}
@@ -98,6 +104,7 @@ module Referral
     
     def duplicated
       @reports = Referral::Report.includes(:confirm_from).duplicated_per_sender
+      @referral_title = "Valid report Duplicated"
       respond_to do |format|
         format.html { @reports = @reports.paginate :page => @page, :per_page => PerPage}
         format.csv  { render :text => @reports.as_csv}
@@ -108,6 +115,7 @@ module Referral
     def edit 
       url = request.env["HTTP_REFERER"]
       session[:from_uri] = url
+      @referral_title = "Edit Report"
       @report = Referral::Report.find params[:id]
     end
     
@@ -125,6 +133,7 @@ module Referral
     end
     
     def rectify
+      @referral_title = "Retify Report"
       @report = Referral::Report.find params[:id]
       @from = @report.sender_address
       @body = @report.text
@@ -168,7 +177,7 @@ module Referral
       @from = params[:from]
       @body = params[:body]
       @guid = params[:guid]
-      
+      @referral_title = "Simulate Report"
       if( request.post?)
         message_proxy = MessageProxy.new(:from => @from, :body => @body, :guid => @guid)
         @messages = message_proxy.process
@@ -183,6 +192,7 @@ module Referral
     end
     
     def toggle
+      @referral_title = "Ignore/UnIgnored Report"
       begin
         report = Referral::Report.find(params[:id])
         current = report.ignored

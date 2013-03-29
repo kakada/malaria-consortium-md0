@@ -105,6 +105,7 @@ Local::Application.routes.draw do
       get 'autocomplete'
       get 'retrieve_parent'
       get 'check_code'
+      get 'search'
     end
 
     resources :users

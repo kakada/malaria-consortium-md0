@@ -101,5 +101,13 @@ class PlacesController < ApplicationController
     @code = params[:code]
     @place = Place.find_by_code(params[:code])
   end
+  
+  def search
+    options = {
+      :query => params[:query],
+      :type => params[:type]
+    }
+    render :json => Place.auto_complete_type_ahead(options)
+  end
 
 end

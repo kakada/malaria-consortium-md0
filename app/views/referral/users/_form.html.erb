@@ -1,4 +1,4 @@
-
+<div class="row-fluid">
   <div class="span6 well">
     <h4 class="htitle"> User form</h4>
       <% url = @user.new_record? ? referral_users_path : referral_user_path(@user) %>
@@ -48,20 +48,20 @@
         %>
         <%=tag_row :id => "ref_clinic", :class=> "#{clinic_hide}" do %>
                 <%= form.label :intended_place_code, "Village" %>
-                <%= form.text_field :intended_place_code, :"data-provide" =>"typeahead",
-                :"data-source" => "#{Village.list}", :autocomplete => "off", :id => "ref_clinic_input" %>
+                <%= form.text_field :intended_place_code, :"data-provide" =>"typeahead", "class" => "typeahead",
+                "data-type" => "Village",:autocomplete => "off", :id => "ref_clinic_input" %>
         <%end%>
 
         <%=tag_row :id=>"ref_hc", :class => "#{hc_hide}" do %>
                 <%= form.label :intended_place_code, "Health Center" %>
-                <%= form.text_field :intended_place_code, :"data-provide" =>"typeahead",
-                :"data-source" => "#{HealthCenter.list}", :autocomplete => "off", :id => "ref_hc_input" %>
+                <%= form.text_field :intended_place_code, :"data-provide" =>"typeahead", "class" => "typeahead",
+                 "data-type" => "HealthCenter", :autocomplete => "off", :id => "ref_hc_input" %>
         <%end%>
 
         <%=tag_row :id=>"ref_facilitator", :class => "#{facilitator_hide}" do %>
                 <%= form.label :intended_place_code, "OD" %>
-                <%= form.text_field :intended_place_code, :"data-provide" =>"typeahead",
-                :"data-source" => "#{OD.list}", :autocomplete => "off", :id => "ref_facilitator_input" %>
+                <%= form.text_field :intended_place_code, :"data-provide" =>"typeahead", "class" => "typeahead",
+                 "data-type" => "OD", :autocomplete => "off", :id => "ref_facilitator_input" %>
         <%end%>
 
 
@@ -99,7 +99,7 @@
       <%end%>
   </div>
 
-<div class="span6 well no-bg" >
+  <div class="span6 well no-bg" >
     <h4 class="htitle"> Tip </h4>
     <p>
     <ul>
@@ -111,9 +111,47 @@
     </ul>
     </p>
   </div>
-
+</div>
 <% content_for :js do %>
-  <script >
+  <script >  
+    function buildTypeAheadPlace() {
+        $('.typeahead').typeahead({
+            source: function (query, process) {
+                var url = "<%=search_places_path %>";
+                var type = this.$element.attr("data-type");
+                return $.get( url , { "query" : query, "type" : type }, function (data) {
+                    return process(data);
+                });
+            }
+        });
+     };
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     function hide(){
       $("#ref_hc, #ref_clinic, #ref_facilitator").hide();
     }
@@ -228,6 +266,7 @@
     $(function(){
       showPlace();
       handleEvent();
+      buildTypeAheadPlace();
 
     });
   </script>

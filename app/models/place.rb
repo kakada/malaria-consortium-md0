@@ -84,15 +84,20 @@ class Place < ActiveRecord::Base
   def short_description
     "#{code} #{name}"
   end
+  
+  def self.auto_complete_type_ahead options
+    places = self.search_for_autocomplete(options).limit(10)
+    result = places.map{|place| place.intended_place_code}
+    result
+  end
 
   def self.search_for_autocomplete(options)
     result = where("1=1")
-
     if !options[:query].blank?
       if options[:query] =~ /^\s*\d+\s*$/
         result = result.where "code LIKE ?", "#{options[:query].strip}%"
       else
-        where "name LIKE :q OR name_kh LIKE :q ", :q => "#{options[:query].strip}%"
+        result = result.where "name LIKE :q OR name_kh LIKE :q ", :q => "#{options[:query].strip}%"
       end  
     end  
 
@@ -100,7 +105,6 @@ class Place < ActiveRecord::Base
         result = result.where "type = :type ", :type => "#{options[:type].strip}"
     end
     result
-    
   end
 
   def get_parent type

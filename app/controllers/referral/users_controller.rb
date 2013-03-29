@@ -9,7 +9,7 @@ module Referral
 	      @query = params[:query].strip
 	    end
       
-      @users = User
+      @users = User.includes(:place)
       if params[:all].blank?
         @users = User.ref_users
       end
@@ -25,7 +25,7 @@ module Referral
 	    if params[:query].present?
 	      @query = params[:query].strip
 	    end
-      @users = User.md0_users
+      @users = User.includes(:place).md0_users
 	    @users = @users.paginate_user :query => @query, :type => @type,:page => (@page || '1').to_i, :per_page => PerPage
     end
     

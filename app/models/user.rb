@@ -108,7 +108,7 @@ class User < ActiveRecord::Base
   before_validation :try_fetch_place
 
   validates_inclusion_of :role, :in => (Roles + Roles_Ref), :allow_nil => true
-  validates_uniqueness_of :user_name, :allow_nil => true, :message => 'Belongs to another user'
+  validates_uniqueness_of :user_name, :allow_nil => true, :allow_blank => true,  :message => 'Belongs to another user'
   validates_uniqueness_of :phone_number, :allow_nil => true, :message => 'Belongs to another user', :if => :phone_number?
 
   validates_format_of :phone_number, :with => /^\d+$/, :unless => Proc.new {|user| user.phone_number.blank?}, :message => "Only numbers allowed"
@@ -116,6 +116,7 @@ class User < ActiveRecord::Base
   
   validate :phone_number_fmt
 
+  before_save :remove_user_name
   before_save :set_place_class_and_hierarchy, :if => :place_id?
   before_save :set_nuntium_custom_attributes
   before_destroy :remove_nuntium_custom_attributes
@@ -125,6 +126,11 @@ class User < ActiveRecord::Base
 
   #default_scope where(["role != ? AND role != ? ", ROLE_REF_PROVIDER , ROLE_REF_HC ])
   
+  def remove_user_name
+     if self.user_name.blank?
+       self.user_name = nil
+     end
+  end
   
   def phone_number_fmt
     if (email.blank? || user_name.blank? || encrypted_password.blank?) && phone_number.blank?

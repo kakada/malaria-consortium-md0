@@ -151,6 +151,13 @@ describe User do
       invalid_user = User.new   :user_name => 'foo', :password => '123456', :phone_number => '85597123568'
       invalid_user.valid?.should be_false
     end
+    
+    it "should accept duplicate empty user" do
+      valid_user = User.create! :user_name => '', :password => '123456', :phone_number => '85512123567'
+      user = User.new   :user_name => '', :password => '123456', :phone_number => '85597123568'
+      user.valid?.should be_true
+    end
+    
   end
 
   describe "phone number validations" do

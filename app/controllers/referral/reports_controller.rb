@@ -238,10 +238,11 @@ module Referral
     private
     
     def _store_rectified_report
-      ["book_number","code_number", "error", "error_message", "field1","field2",
-       "field3","field4","field5","health_center_code","od_name","place","phone_number",
-       "reply_to","sender_address","sender","slip_code","text","od"].each do |field|
-                 @report.send( "#{field}=", @rectify_report.send(field) )
+      ["book_number","code_number", "error", "error_message", 
+        "field1","field2","field3","field4","field5",
+        "meaning1","meaning2","meaning3","meaning4","meaning5","health_center_code","od_name","place","phone_number",
+        "reply_to","sender_address","sender","slip_code","text","od"].each do |field|
+           @report.send( "#{field}=", @rectify_report.send(field) )
        end
        @report.save
     end

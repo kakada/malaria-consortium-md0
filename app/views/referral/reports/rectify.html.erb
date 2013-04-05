@@ -35,22 +35,32 @@
       <% end %>
   </div>
 
-  <div class="span8"> 
+  <div class="span8 well"> 
     <h4> Current report </h4>
-        <%
-        ["book_number","code_number", "error", "error_message_translate", "field1","field2",
-                  "field3","field4","field5","health_center_code","od_name","phone_number",
-                  "reply_to","sender_address","sender","slip_code","text","od_name"].each do |field|
-        %>
          <div class="row-fluid">
-          <div class="span4" >  <%= field  %> </div>
-          <div class="span8" > 
-            <% output =  @report.send(field); %>
-            <%= output.blank? ? "-" : output %>
-          </div>
+            <div class="span4" > Reported from  </div>
+            <div class="span8" > 
+                <%=@report.sender.phone_number %>  
+            </div>
          </div> 
-
-        <% end %>
+    
+        <div class="row-fluid">
+            <div class="span4" > Place </div>
+            <div class="span8" >
+                <%=@report.sender.place.description %>
+            </div>
+         </div>
+    
+    
+         <div class="row-fluid">
+            <div class="span4" > Type  </div>
+            <div class="span8" > <%=@report.class == Referral::HCReport ? "HealthCenter" : "Clinic" %>   </div>
+         </div> 
+    
+         <div class="row-fluid">
+            <div class="span4" > Text  </div>
+            <div class="span8" > <%=@report.text %>   </div>
+         </div> 
     </div>  
   </div>
 </div>

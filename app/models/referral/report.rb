@@ -202,7 +202,7 @@ module Referral
                    report.slip_code,
                    report.text,
                    report.ignored ? "Yes" : "No",
-                   report.confirm_from ? report.confirm_from.phone_number + "(#{report.confirm_from.user_name})" : "",
+                   report.confirm_from ? report.confirm_from.sender.phone_number + "(#{report.confirm_from.sender.user_name})" : "",
                    report.error ?  "Yes" : "No" ,
           ]
            

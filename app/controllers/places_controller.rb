@@ -102,6 +102,12 @@ class PlacesController < ApplicationController
     @place = Place.find_by_code(params[:code])
   end
   
+  def hierachy
+    @places = Place.where([" parent_id = :id", :id => params[:id]])
+    @type = params[:type]
+    render :hierachy , :layout => false
+  end
+  
   def search
     options = {
       :query => params[:query],
@@ -109,5 +115,4 @@ class PlacesController < ApplicationController
     }
     render :json => Place.auto_complete_type_ahead(options)
   end
-
 end

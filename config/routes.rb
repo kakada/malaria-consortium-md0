@@ -106,6 +106,7 @@ Local::Application.routes.draw do
       get 'retrieve_parent'
       get 'check_code'
       get 'search'
+      get 'hierachy'
     end
 
     resources :users

@@ -38,33 +38,60 @@
               <%= form.label :role %>
               <%= form.select :role, User::Roles_Ref.map {|role| [role, role]}, { :include_blank => "Select role"} %>
       <%end%>
-      <div id="ref_place_active">
+    
+    
+      <%=tag_row :id => :_province do  %>
+              <%= form.label :_province, "Province" %>
+              <%= form.select :_province, Province.all.map{|province| [province.intended_place_code, province.id] }, 
+                { :include_blank => "Select Province"}, :class => "_place" , :"data-type" => "province" %>
+      <% end %>
+    
+      <%=tag_row :id => :_od do  %>
+              <%= form.label :_od, "OD" %>
+              <%= form.select :_od, [], { :include_blank => "Select OD"} , :class => "_place", :"data-type" => "od" %>
+      <% end %>
+    
+      <%=tag_row :id => :_healthcenter do  %>
+              <%= form.label :_healthcenter, "Health Center" %>
+              <%= form.select :_province, [], { :include_blank => "Select Health Center"}, :class => "_place", :"data-type" => "healthcenter" %>
+      <% end %>
+      <%=tag_row :id =>  :_village do  %>
+              <%= form.label  :_village, "Village" %>
+              <%= form.select :_village, [], { :include_blank => "Select Village"} %>
+      <% end %>
+      
+    
+    
+    
+    
+    
+      <div id="ref_place_active"> </div>
+      <div style="display:none;">
+       <!--  
+          <%
+            clinic_hide = @user.role == User::ROLE_REF_PROVIDER ? "" : "c-hidden"
+            hc_hide = @user.role == User::ROLE_REF_HC ? "" : "c-hidden"
+            facilitator_hide = @user.role == User::ROLE_REF_FACILITATOR ? "" : "c-hidden"
+          %>
+          <%=tag_row :id => "ref_clinic", :class=> "#{clinic_hide}" do %>
+                  <%= form.label :intended_place_code, "Village" %>
+                  <%= form.text_field :intended_place_code, :"data-provide" =>"typeahead", "class" => "typeahead",
+                  "data-type" => "Village",:autocomplete => "off", :id => "ref_clinic_input" %>
+          <%end%>
 
+          <%=tag_row :id=>"ref_hc", :class => "#{hc_hide}" do %>
+                  <%= form.label :intended_place_code, "Health Center" %>
+                  <%= form.text_field :intended_place_code, :"data-provide" =>"typeahead", "class" => "typeahead",
+                  "data-type" => "HealthCenter", :autocomplete => "off", :id => "ref_hc_input" %>
+          <%end%>
+
+          <%=tag_row :id=>"ref_facilitator", :class => "#{facilitator_hide}" do %>
+                  <%= form.label :intended_place_code, "OD" %>
+                  <%= form.text_field :intended_place_code, :"data-provide" =>"typeahead", "class" => "typeahead",
+                  "data-type" => "OD", :autocomplete => "off", :id => "ref_facilitator_input" %>
+          <%end%>
+       -->
       </div>
-        <%
-          clinic_hide = @user.role == User::ROLE_REF_PROVIDER ? "" : "c-hidden"
-          hc_hide = @user.role == User::ROLE_REF_HC ? "" : "c-hidden"
-          facilitator_hide = @user.role == User::ROLE_REF_FACILITATOR ? "" : "c-hidden"
-        %>
-        <%=tag_row :id => "ref_clinic", :class=> "#{clinic_hide}" do %>
-                <%= form.label :intended_place_code, "Village" %>
-                <%= form.text_field :intended_place_code, :"data-provide" =>"typeahead", "class" => "typeahead",
-                "data-type" => "Village",:autocomplete => "off", :id => "ref_clinic_input" %>
-        <%end%>
-
-        <%=tag_row :id=>"ref_hc", :class => "#{hc_hide}" do %>
-                <%= form.label :intended_place_code, "Health Center" %>
-                <%= form.text_field :intended_place_code, :"data-provide" =>"typeahead", "class" => "typeahead",
-                 "data-type" => "HealthCenter", :autocomplete => "off", :id => "ref_hc_input" %>
-        <%end%>
-
-        <%=tag_row :id=>"ref_facilitator", :class => "#{facilitator_hide}" do %>
-                <%= form.label :intended_place_code, "OD" %>
-                <%= form.text_field :intended_place_code, :"data-provide" =>"typeahead", "class" => "typeahead",
-                 "data-type" => "OD", :autocomplete => "off", :id => "ref_facilitator_input" %>
-        <%end%>
-
-
 
       <%=tag_row do %>
               <%= form.label :status %>
@@ -128,32 +155,6 @@
             }
         });
      };
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     function hide(){
       $("#ref_hc, #ref_clinic, #ref_facilitator").hide();
@@ -231,17 +232,26 @@
 
 
       if( index== 1 ) {
-        if($("#ref_clinic_input").val() == "")
-          errors.push("Please select a Village");
+        //if($("#ref_clinic_input").val() == "")
+        //  errors.push("Please select a Village");
+        if($("#user__village").val() == "")
+           errors.push("Please select a Village");
+        
       }
       if( index== 2 ) {
-        if($("#ref_facilitator_input").val() == "")
-          errors.push("Please select an OD");
+        //if($("#ref_facilitator_input").val() == "")
+        //  errors.push("Please select an OD");
+        if($("#user__od").val() == "")
+            errors.push("Please select an OD");
+        
       }
 
       else if(index == 3) {
-        if($("#ref_hc_input").val() == "" )
-          errors.push("Please select a Health center");
+        //if($("#ref_hc_input").val() == "" )
+        //  errors.push("Please select a Health center");
+        
+        if($("#user__healthcenter").val() == "")
+            errors.push("Please select a Health center");    
       }
 
       checkboxs = $(".user_checkbox_app");
@@ -265,11 +275,41 @@
       return false;
     }
 
+    function handleSelectChange(){
+      $("body").delegate("._place","change", function(){
+          $elm = $(this);
+          id = $elm.val();
+          type =  $elm.attr("data-type");
+        
+          data = { "id" : id, "type" : type  };
+        
+          $.ajax({
+              url: "<%= hierachy_places_path%>",
+              data : data,
+              success : function(response){
+                
+                if(type == "province"){
+                    $("#_od").html(response);
+                }
+                
+                else if(type == "od"){
+                     $("#_healthcenter").html(response);
+                }
+                
+                else if(type == "healthcenter"){
+                    $("#_village").html(response);
+                }
+                
+              }
+          });
+      });
+    }
 
     $(function(){
       showPlace();
       handleEvent();
       buildTypeAheadPlace();
+      handleSelectChange();
 
     });
   </script>

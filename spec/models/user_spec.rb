@@ -34,6 +34,43 @@ describe User do
     parser = User.make(:in_village).report_parser
     parser.class.should == VMWReportParser
   end
+  
+  
+  describe "fetch place id" do
+     before(:each) do
+       @province = Province.make
+       @od = @province.ods.make :code => "001122", :name => "Battambong", :abbr => "BTB"
+       @health_center = @od.health_centers.make
+       @village = @health_center.villages.make :code => '12345678'
+       
+       @valid = { :phone_number => "85512123456", 
+                 :_od => @od.id, 
+                 :_healthcenter => @health_center.id,
+                 :_village => @village.id
+                 }
+     end
+    
+     it "should use od as place_id when role is facilitator" do
+       user = User.new @valid.merge(:role => User::ROLE_REF_FACILITATOR)
+       user.save
+       user.place.class.should eq OD
+     end
+     
+     it "should use healthcenter as place_id when role is healthcenter" do
+       user = User.new @valid.merge(:role => User::ROLE_REF_HC)
+       user.save
+       user.place.class.should eq HealthCenter
+     end
+     
+     it "should use village as place_id when role is clinic" do
+       user = User.new @valid.merge(:role => User::ROLE_REF_PROVIDER)
+       user.save
+       user.place.class.should eq Village
+     end
+     
+     
+    
+  end
 
   it "should create 2 users with valid attributes" do
     Province.create! :name => "Pro1", :code => "Pro1"

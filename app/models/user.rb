@@ -5,6 +5,12 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :password_length => 1..128
 
   attr_accessor :intended_place_code
+  attr_accessor :_province
+  attr_accessor :_od
+  attr_accessor :_healthcenter
+  attr_accessor :_village
+  
+  
   
   ROLE_MC_DEFAULT = "default"
   ROLE_MC_NAT = "national"
@@ -346,10 +352,22 @@ class User < ActiveRecord::Base
   end
 
   def try_fetch_place
+    
     if intended_place_code.present? && (place_id.blank? || place.code != intended_place_code)
       should_be_place = Place.find_by_code intended_place_code
       self.place_id = should_be_place.id unless should_be_place.nil?
     end
+    
+    if self.role == User::ROLE_REF_FACILITATOR
+       self.place_id = self._od
+       
+    elsif self.role == User::ROLE_REF_HC
+       self.place_id = self._healthcenter
+       
+    elsif self.role == User::ROLE_REF_PROVIDER
+       self.place_id = self._village
+    end
+    
   end
 
   def set_nuntium_custom_attributes

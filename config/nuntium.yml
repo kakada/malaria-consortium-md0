@@ -1,8 +1,8 @@
 development:
   url: http://nuntium.instedd.org
-  account: instedd
-  application: MD0-Staging
-  password: "dev c0der"
+  account: referral
+  application: referral
+  password: "123456"
   incoming_username: foo
   incoming_password: foo
 

@@ -14,7 +14,7 @@ module Referral
         @users = User.ref_users
       end
       
-	    @users = @users.paginate_user :query => @query, :type => @type,:page => (@page || '1').to_i, :per_page => PerPage
+	    @users = @users.order("id DESC").paginate_user :query => @query, :type => @type,:page => (@page || '1').to_i, :per_page => PerPage
 	                                
   	end
     

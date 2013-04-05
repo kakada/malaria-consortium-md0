@@ -79,7 +79,10 @@
               <%= tag_row  do%>
                 <% if app == User::APP_MDO %>
                   <%= check_box_tag "user[apps][]", app, @user.apps.include?(app), :class => "user_checkbox_app" , :disabled => "disabled" %>
-                  <%= hidden_field_tag "user[apps][]", app %>
+                  <% if !@user.new_record? %>
+                    <%= hidden_field_tag "user[apps][]", app %>
+                  <%end%>
+          
                 <% else %>
                   <%= check_box_tag "user[apps][]", app, @user.apps.include?(app), :class => "user_checkbox_app" %>
                   <%= hidden_field_tag "user[apps][]", "" %>

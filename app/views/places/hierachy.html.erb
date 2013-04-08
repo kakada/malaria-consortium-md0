@@ -1,14 +1,14 @@
 <% if @type == "province"  %>
-  <%= label_tag :"user[_od]", "OD" %>
-  <%= select_tag :"user[_od]" , options_for_select(@places.all.map{|place| [place.intended_place_code, place.id] }),
+  <%= label_tag :"user[od]", "OD" %>
+  <%= select_tag :"user[od]" , options_for_select(@places.all.map{|place| [place.intended_place_code, place.id] }),
                   :include_blank => "Select OD", :class => "_place" , :"data-type" => "od" %>
 <% elsif @type == "od" %>
-  <%= label_tag :"user[_healthcenter]", "Health Center" %>
-  <%= select_tag :"user[_healthcenter]", options_for_select(@places.all.map{|place| [place.intended_place_code, place.id] }),
+  <%= label_tag :"user[healthcenter]", "Health Center" %>
+  <%= select_tag :"user[healthcenter]", options_for_select(@places.all.map{|place| [place.intended_place_code, place.id] }),
                   :include_blank => "Select Health Center", :class => "_place" , :"data-type" => "healthcenter" %>
 
 <% elsif @type == "healthcenter" %>
-  <%= label_tag :"user[_village]" , "Village" %>
-  <%= select_tag  :"user[_village]", options_for_select(@places.all.map{|place| [place.intended_place_code, place.id] }),
+  <%= label_tag :"user[village]" , "Village" %>
+  <%= select_tag  :"user[village]", options_for_select(@places.all.map{|place| [place.intended_place_code, place.id] }),
                   :include_blank => "Select Village", :"data-type" => "viallage" %>
 <% end %>

@@ -85,6 +85,14 @@ class Place < ActiveRecord::Base
     "#{code} #{name}"
   end
   
+  def self.find_from_parent id
+    if !id.nil?
+      where(["parent_id = :parent_id", { :parent_id => id}])
+    else
+      []
+    end
+  end
+  
   def self.auto_complete_type_ahead options
     places = self.search_for_autocomplete(options).limit(10)
     result = places.map{|place| place.intended_place_code}
@@ -172,4 +180,5 @@ class Place < ActiveRecord::Base
   def intended_parent_code_must_exist
     errors.add :intended_parent_code, "doesn't exist"
   end
+  
 end

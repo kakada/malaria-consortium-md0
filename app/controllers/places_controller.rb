@@ -103,9 +103,8 @@ class PlacesController < ApplicationController
   end
   
   def hierachy
-    @places = Place.where([" parent_id = :id", :id => params[:id]])
-    @type = params[:type]
-    render :hierachy , :layout => false
+    @places = Place.where([" parent_id = :id", :id => params[:id]]).map{|place| [place.intended_place_code, place.id] }
+    render :json => @places
   end
   
   def search

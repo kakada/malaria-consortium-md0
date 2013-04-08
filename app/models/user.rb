@@ -5,12 +5,6 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :password_length => 1..128
 
   attr_accessor :intended_place_code
-  attr_accessor :_province
-  attr_accessor :_od
-  attr_accessor :_healthcenter
-  attr_accessor :_village
-  
-  
   
   ROLE_MC_DEFAULT = "default"
   ROLE_MC_NAT = "national"
@@ -34,6 +28,34 @@ class User < ActiveRecord::Base
   
   Status = [[ "Deactive" , STATUS_DEACTIVE ], ["Active", STATUS_ACTIVE]]
 
+  
+  
+  
+  belongs_to :place
+  
+  
+  has_many :reports, :foreign_key => 'sender_id', :dependent => :destroy
+
+  validates_inclusion_of :role, :in => (Roles + Roles_Ref), :allow_nil => true
+  validates_uniqueness_of :user_name, :allow_nil => true, :allow_blank => true,  :message => 'Belongs to another user'
+  validates_uniqueness_of :phone_number, :allow_nil => true, :message => 'Belongs to another user', :if => :phone_number?
+
+  validates_format_of :phone_number, :with => /^\d+$/, :unless => Proc.new {|user| user.phone_number.blank?}, :message => "Only numbers allowed"
+  validate :intended_place_code_must_exist
+  
+  validate :phone_number_fmt
+
+  before_validation :try_fetch_place
+  before_save :remove_user_name
+  before_save :set_place_class_and_hierarchy, :if => :place_id?
+  before_save :set_nuntium_custom_attributes
+  before_destroy :remove_nuntium_custom_attributes
+
+  # Delegate country, province, etc., to place
+  Place::Types.each { |type| delegate type.tableize.singularize, :to => :place }
+
+  #default_scope where(["role != ? AND role != ? ", ROLE_REF_PROVIDER , ROLE_REF_HC ])
+  
   
   def apps=(selected_apps)
     filter = ( APPS && selected_apps  )
@@ -107,30 +129,6 @@ class User < ActiveRecord::Base
       self.where :status => false
     end
   end
-  
-  belongs_to :place
-  has_many :reports, :foreign_key => 'sender_id', :dependent => :destroy
-
-  before_validation :try_fetch_place
-
-  validates_inclusion_of :role, :in => (Roles + Roles_Ref), :allow_nil => true
-  validates_uniqueness_of :user_name, :allow_nil => true, :allow_blank => true,  :message => 'Belongs to another user'
-  validates_uniqueness_of :phone_number, :allow_nil => true, :message => 'Belongs to another user', :if => :phone_number?
-
-  validates_format_of :phone_number, :with => /^\d+$/, :unless => Proc.new {|user| user.phone_number.blank?}, :message => "Only numbers allowed"
-  validate :intended_place_code_must_exist
-  
-  validate :phone_number_fmt
-
-  before_save :remove_user_name
-  before_save :set_place_class_and_hierarchy, :if => :place_id?
-  before_save :set_nuntium_custom_attributes
-  before_destroy :remove_nuntium_custom_attributes
-
-  # Delegate country, province, etc., to place
-  Place::Types.each { |type| delegate type.tableize.singularize, :to => :place }
-
-  #default_scope where(["role != ? AND role != ? ", ROLE_REF_PROVIDER , ROLE_REF_HC ])
   
   def remove_user_name
      if self.user_name.blank?
@@ -352,20 +350,21 @@ class User < ActiveRecord::Base
   end
 
   def try_fetch_place
-    
     if intended_place_code.present? && (place_id.blank? || place.code != intended_place_code)
       should_be_place = Place.find_by_code intended_place_code
       self.place_id = should_be_place.id unless should_be_place.nil?
     end
+
+    return self.place_id if self.place_id
     
     if self.role == User::ROLE_REF_FACILITATOR
-       self.place_id = self._od
+       self.place_id = self.od_id
        
     elsif self.role == User::ROLE_REF_HC
-       self.place_id = self._healthcenter
+       self.place_id = self.health_center_id
        
     elsif self.role == User::ROLE_REF_PROVIDER
-       self.place_id = self._village
+       self.place_id = self.village_id
     end
     
   end

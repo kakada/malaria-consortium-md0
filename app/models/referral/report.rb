@@ -197,7 +197,7 @@ module Referral
         
         csv << colunm_names
         
-        all.each do |report|
+        find_each(:batch_size => 500) do |report|
           row  = [ report.type,
                    report.slip_code,
                    report.text,

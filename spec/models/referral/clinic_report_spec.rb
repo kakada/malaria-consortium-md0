@@ -2,10 +2,9 @@ require "spec_helper"
 
 describe Referral::ClinicReport do
   before(:each) do
+    
     @province = Province.make
     @od = @province.ods.make :abbr => "BDB", :name => "BatDamBong", :code => "123456"
-    
-    
     
     @hc1 = @od.health_centers.make :name => "hc1", :code => "12345678"
     @hc2 = @od.health_centers.make :name => "hc2"

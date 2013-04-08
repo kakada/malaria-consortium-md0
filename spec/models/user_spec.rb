@@ -44,9 +44,9 @@ describe User do
        @village = @health_center.villages.make :code => '12345678'
        
        @valid = { :phone_number => "85512123456", 
-                 :_od => @od.id, 
-                 :_healthcenter => @health_center.id,
-                 :_village => @village.id
+                 :od_id => @od.id, 
+                 :health_center_id => @health_center.id,
+                 :village_id => @village.id
                  }
      end
     

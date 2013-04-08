@@ -40,24 +40,31 @@
       <%end%>
     
     
-      <%=tag_row :id => :_province do  %>
-              <%= form.label :_province, "Province" %>
-              <%= form.select :_province, Province.all.map{|province| [province.intended_place_code, province.id] }, 
+      <%=tag_row :id => :province do  %>
+              <%= form.label :province_id, "Province" %>
+              <%= form.select :province_id, Province.all.map{|province| [province.intended_place_code, province.id] }, 
                 { :include_blank => "Select Province"}, :class => "_place" , :"data-type" => "province" %>
       <% end %>
     
-      <%=tag_row :id => :_od do  %>
-              <%= form.label :_od, "OD" %>
-              <%= form.select :_od, [], { :include_blank => "Select OD"} , :class => "_place", :"data-type" => "od" %>
+      <%=tag_row :id => :od do  %>
+         <%= form.label :od_id, "OD" %>
+         <%= form.select :od_id,  
+           Place.find_from_parent(@user.province_id).map{|place| [place.intended_place_code, place.id] } , 
+           { :include_blank => "Select OD"} , :class => "_place", :"data-type" => "od" %>
       <% end %>
     
-      <%=tag_row :id => :_healthcenter do  %>
-              <%= form.label :_healthcenter, "Health Center" %>
-              <%= form.select :_province, [], { :include_blank => "Select Health Center"}, :class => "_place", :"data-type" => "healthcenter" %>
+      <%=tag_row :id => :health_center do  %>
+          <%= form.label :health_center_id, "Health Center" %>
+          <%= form.select :health_center_id,  
+            Place.find_from_parent(@user.od_id).map{|place| [place.intended_place_code, place.id] }, 
+            { :include_blank => "Select Health Center"}, :class => "_place", :"data-type" => "health_center" %>
       <% end %>
-      <%=tag_row :id =>  :_village do  %>
-              <%= form.label  :_village, "Village" %>
-              <%= form.select :_village, [], { :include_blank => "Select Village"} %>
+    
+      <%=tag_row :id =>  :village do  %>
+          <%= form.label  :village_id, "Village" %>
+          <%= form.select :village_id,  
+            Place.find_from_parent(@user.health_center_id).map{|place| [place.intended_place_code, place.id] }, 
+            { :include_blank => "Select Village"} %>
       <% end %>
       
     
@@ -234,14 +241,14 @@
       if( index== 1 ) {
         //if($("#ref_clinic_input").val() == "")
         //  errors.push("Please select a Village");
-        if($("#user__village").val() == "")
+        if($("#user_village_id").val() == "")
            errors.push("Please select a Village");
         
       }
       if( index== 2 ) {
         //if($("#ref_facilitator_input").val() == "")
         //  errors.push("Please select an OD");
-        if($("#user__od").val() == "")
+        if($("#user_od_id").val() == "")
             errors.push("Please select an OD");
         
       }
@@ -250,7 +257,7 @@
         //if($("#ref_hc_input").val() == "" )
         //  errors.push("Please select a Health center");
         
-        if($("#user__healthcenter").val() == "")
+        if($("#user_health_center_id").val() == "")
             errors.push("Please select a Health center");    
       }
 
@@ -286,23 +293,56 @@
           $.ajax({
               url: "<%= hierachy_places_path%>",
               data : data,
+              dataType: "json" ,
               success : function(response){
-                
-                if(type == "province"){
-                    $("#_od").html(response);
-                }
-                
-                else if(type == "od"){
-                     $("#_healthcenter").html(response);
-                }
-                
-                else if(type == "healthcenter"){
-                    $("#_village").html(response);
-                }
+                 removeChildrenOptions(type);
+                 console.dir(response);
+                 var childTree = {
+                   "province" : "od",
+                      "od"  : "health_center",
+                    "health_center" : "village"
+                 }
+                 child = childTree[type];
+                 $selectElm = $("#" + buildId(child) );
+                 for(var i=0; i< response.length; i++){
+                   value = response[i][1];
+                   text  = response[i][0];
+                   var option = "<option value='"+ value +"' >" + text + " </option>";
+                   $selectElm.append(option);
+                 }
+      
+              },
+              complete: function(){
                 
               }
+              
           });
       });
+    }
+    
+    function removeChildrenOptions(type){
+      children = [];
+      
+      if(type == "province")
+        children = ["od", "health_center", "village"]
+      
+      if(type == "od")
+        children = ["health_center", "village"]
+      
+      if(type == "health_center")
+        children = [ "village"]
+        
+      for(var i=0; i<children.length ; i++)
+         removeSelectOptions( buildId(children[i]));
+        
+    }
+    
+    function buildId(place){
+      return "user_" + place + "_id" ;
+    }
+
+    function removeSelectOptions(id){
+      $("#" + id +  " option[value !='']" ).remove();
     }
 
     $(function(){

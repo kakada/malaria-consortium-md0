@@ -28,7 +28,7 @@
 				<th> Place </th>
 				<th> Status </th>
                                 <th> Referral?</th>
-				<th width="100"> Action</th>
+				<th width="60"> Action</th>
 			</tr>
 		</thead>
 
@@ -42,9 +42,8 @@
 				<td> <%= user.place.nil? ? "" : highlight(user.place.description, params[:query])  %>
 				<td> <%= user.status_description %> </td>
                                 <td> <%= user.is_from_referral? ? "Yes" : "No"  %> </td>
-				<td> 
-					<%= link_to "Edit", edit_referral_user_path({:id => user, :md0 => true, :query => params[:query]}) %> |
-					<%= link_to "Delete", referral_user_path(user), :method => :delete, :confirm => "Are you sure to remove"%>
+				<td align="center"> 
+					<%= link_to "Edit", edit_referral_user_path({:id => user, :md0 => true, :query => params[:query]}) %>
 				</td>
 			  </tr>
 			<% end %>

@@ -188,7 +188,7 @@ module Referral
     
     def self.as_csv
        CSV.generate do |csv|
-        colunm_names = ["From", "Slip", "Text", "Ignored?", "Confirmed?", "Error?"]
+        colunm_names = ["From", "Sender",  "Slip", "Text", "Ignored?", "Confirmed?", "Error?"]
         5.times.each do |i| 
           colunm_names << Referral::Field.field_label(i+1) 
           colunm_names << Referral::Field.meaning_label(i+1) 
@@ -199,6 +199,7 @@ module Referral
         
         find_each(:batch_size => 500) do |report|
           row  = [ report.type,
+                   report.sender.nil? ? "" : report.sender.phone_number ,
                    report.slip_code,
                    report.text,
                    report.ignored ? "Yes" : "No",

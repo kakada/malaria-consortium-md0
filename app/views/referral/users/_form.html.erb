@@ -9,28 +9,28 @@
         <%= hidden_field_tag :query, params[:query] %>
         <%=tag_row do %>
               <%= form.label :user_name %>
-              <%= form.text_field :user_name %>
+              <%= form.text_field :user_name, :autocomplete => "off" %>
         <%end%>
 
       <%=tag_row do %>
               <%= form.label :email, "Email", :no_mark => true  %>
-              <%= form.email_field :email %>
+              <%= form.email_field :email, :autocomplete => "off" %>
         <%end%>
 
       <%=tag_row do %>
               <%= form.label :phone_number %>
-              <%= form.text_field :phone_number %>
+              <%= form.text_field :phone_number, :autocomplete => "off" %>
         <%end%>
 
       <% if @user.new_record? %>
         <%=tag_row do %>
-              <%= form.label :password, "Passwor", :no_mark => true %>
-              <%= form.password_field :password %>
+              <%= form.label :password, "Password", :no_mark => true %>
+              <%= form.password_field :password , :autocomplete => "off" %>
           <%end%>
 
         <%=tag_row do %>
               <%= form.label :password_confirmation %>
-              <%= form.password_field :password_confirmation %>
+              <%= form.password_field :password_confirmation, :autocomplete => "off" %>
           <%end%>
       <% end %>
 

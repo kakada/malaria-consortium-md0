@@ -25,7 +25,7 @@ module Referral
 	    if params[:query].present?
 	      @query = params[:query].strip
 	    end
-      @users = User.includes(:place).md0_users
+      @users = User.includes(:place).activated.md0_users
 	    @users = @users.paginate_user :query => @query, :type => @type,:page => (@page || '1').to_i, :per_page => PerPage
     end
     

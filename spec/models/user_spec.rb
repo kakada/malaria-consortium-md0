@@ -67,8 +67,39 @@ describe User do
        user.save
        user.place.class.should eq Village
      end
+  end
+  
+  describe "update_params" do
+    before(:each) do
+       @province1 = Province.make
+       
+       @province2 = Province.make
+       
+       @od1 = @province1.ods.make :code => "001122", :name => "Battambong", :abbr => "BTB"
+       @od2 = @province2.ods.make :code => "001133", :name => "Moung", :abbr => "Mg"
+       
+       @health_center = @od1.health_centers.make
+       @village = @health_center.villages.make :code => '12345678'
+       
+       @valid = { :phone_number => "85512123456", 
+                 :od_id => @od1.id, 
+                 :health_center_id => @health_center.id,
+                 :village_id => @village.id,
+                 :role => User::ROLE_REF_FACILITATOR
+                 }
+       @user = User.create! @valid          
+     end
      
+     it "should update place" do
+        attributes = {
+          :od_id => @od2.id
+        }
+        @user.update_params(attributes)
+        @user.od_id.should eq @od2.id
+        @user.province.should eq @province2 
+     end
      
+    
     
   end
 

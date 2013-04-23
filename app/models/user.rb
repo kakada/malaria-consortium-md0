@@ -355,15 +355,15 @@ class User < ActiveRecord::Base
       self.place_id = should_be_place.id unless should_be_place.nil?
     end
 
-    return self.place_id if self.place_id
     
-    if self.role == User::ROLE_REF_FACILITATOR
+    
+    if self.role == User::ROLE_REF_FACILITATOR && self.od_id
        self.place_id = self.od_id
        
-    elsif self.role == User::ROLE_REF_HC
+    elsif self.role == User::ROLE_REF_HC && self.health_center_id
        self.place_id = self.health_center_id
        
-    elsif self.role == User::ROLE_REF_PROVIDER
+    elsif self.role == User::ROLE_REF_PROVIDER && self.village_id
        self.place_id = self.village_id
     end
     

@@ -40,6 +40,9 @@ class Templates
       :params => %w(phone_number slip_code book_number code_number health_center), 
       :label => "Private Provider to Facilitator"},
     
+    { :key => :referral_health_center_facilitator,
+      :params => %w(phone_number slip_code book_number code_number health_center), 
+      :label => "Health Center to Facilitator"},
     
     { :key => :referral_health_center_clinic ,
       :params => %w(slip_code book_number code_number health_center), 

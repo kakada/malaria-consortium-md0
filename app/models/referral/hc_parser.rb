@@ -9,8 +9,11 @@ class Referral::HCParser < Referral::Parser
   end
   
   def analyse_slip_code slip_code
-      report = Referral::ClinicReport.not_ignored.find_by_slip_code(slip_code)
+      report = Referral::ClinicReport.no_error.not_ignored.find_by_slip_code(slip_code)
       raise_error :referral_slip_code_not_exist if report.nil?
+      
+      hc_report = Referral::HCReport.no_error.not_ignored.find_by_slip_code(slip_code)
+      raise_error :referral_slip_code_duplicate if hc_report
   end
   
   def analyse_od_name od_name

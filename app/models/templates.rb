@@ -100,6 +100,10 @@ class Templates
       :params => %w(original_messag message_format), 
       :label => "No slip code found from Clinic",
       :hint => "Slip code that health center sent is not found as a valid slip code in clinic"},
+    { :key => :referral_slip_code_duplicate ,
+      :params => %w(original_messag message_format), 
+      :label => "Duplicated Slip code",
+      :hint => "This slip code has already sent before as a valid slip code in the report(no error, not ignored)"}
     
   ]  
 

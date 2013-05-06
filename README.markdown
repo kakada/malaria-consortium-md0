@@ -1,39 +1,50 @@
 ## Introduction
 
-Malaria Day Zero Alert System is a web base application with SMS service that  enable the health center staff (HC) and village malaria worker (VMW) to send malaria case reporting  from the village or health center via SMS to the system and make automatic SMS alert to supervised health center, operational district (OD), Provincial heath department(PHD), National Level or System Administrator. Online system also provide ability to view  report, manage users and places, set threshold,  send alert to group or individual, and templates message setting. The project is currently being hosted with url http://md0.cnm.gov.org  .
+Malaria Referral System is a web base application with SMS service that  enable the health center staff (HC)
+Private Provider via SMS to the system and make automatic SMS alert. It is built on top of Malaria Day Cero System as an extra module.
 
 ## Overview
 
-The shift over the last few years away from failing drugs to the highly effective artemisinin-based combination therapies (ACTs) has been a breakthrough, and it was hoped that their design as combinations of two efficacious drugs with different modes of action would preserve them for many years of use.  However, recent evidence suggests that artemisinin tolerant/resistant Plasmodium falciparum parasites are present on the Thai-Cambodian border and it is imperative to mount a vigorous response to stop spread from areas where artemisinin resistance has been identified, whilst simultaneously undertaking further research to define the nature and geographical extent of the problem.
-As day-3 reporting model has proved to be an effective mechanism for reporting cases by SMS, and in light of the move towards the elimination of malaria in Cambodia, it has been decided to scale up the system day-0 reporting of all Pf cases from VMWs and health facilities. As the number of cases will be higher for day-0 than day-3 and given the probable need for more widespread implementation it has been decided to move to a more robust internet based platform.
+Reports indicate that more than 70% of malaria patients in Cambodia seek treatment via the private sector.   The Public-Private Mix (PPM) project, initiated by the Cambodia National Malaria Program (CNM) and partners, uses public sector staff to help select and train registered private providers in accordance with National Treatment Guidelines (NTG’s).  Among other things, private providers receive training on appropriate diagnosis, treatment and referral procedures.  In accordance with NTG’s, private providers in malaria risk zones 2 and3 are permitted to diagnose and treat malaria cases although, children under five, pregnant women, and cases of serious/recurrent malaria should be referred to the public sector while private providers in malaria risk zone 1 should refer all malaria patients to the public sector.  
+Mechanisms are in place to gather case data from selected private providers; however, it continues to be problematic to track referrals from the private to the public sector.  This population is often lost to follow up once they leave the private provider’s facility.  The SMS based system being proposed is designed to help more effectively track patients and determine what happens to them after they are referred:  do patients continue seeking treatment, where do they go,  why don’t they go to the public sector, etc?  Without the implementation of a tracking mechanism for these cases, it is impossible to know if these important patients are receiving the treatment they need. 
+
+## Objectives
+
+To develop an SMS system to more effectively track patients that are referred from the private to the public sector.
+Specific Objectives
+  * Follow up patients referred from registered private provider (PP) and monitor whether an SMS system was used to alert the corresponding health facility
+  * To Follow up patients that never reached the health facility and assess what determining factors contributed to not accessing the public sector
+  * To assess the user friendliness and acceptability of the SMS referral system to the private providers, the patient, and the public health facilities
+
+
 
 ## Features
 
-* Import places(Health clinic and its geographic location information) and  users (Village Malaria Worker, Health Center, Operational Disrict, Provincial, National, admin).
-* Custom Alert Message.
-* SMS report update from HC and VMW(Village Malaria Worker).
-* Error message back to sender on fail SMS update.
-* Log all invalid SMS (error messages).
-* Display Last error SMS received in a day from each number.
-* Ability to edit and Mark error message as investigated.
-* Set HC threshold rules for alert message to OD.
-* Set Village threshold rules for alert message to OD.
-* SMS alert setting for Operational District (report every cases or report base on threshold).
-* SMS alert setting for Provincial, National, and Admin.
-* Alert message to supervising HC.
-* System recognition of   SMS report format.
-* Listing duplicate SMS report.
-* Ability to edit incoming SMS report.
-* Display D0 data  aggregation on the map with timeline filtering options View  places that have or not have report case.
-* Send blast messages
-* Reminder notification to VMW and HC after Falciparum case has been reported
-* Remove reminder notification to VMW and HC after Falciparum case report has been ignored
+  * Integrate with Malaria day zero alert system
+  * Register private provider and health center staff to send and receive SMS
+  * Register dynamic field(s) to receive SMS report from private provider and health center staff
+  * Add validation for dynamic field
+  * Design its own accepted SMS format dynamically
+  * Ability to define different accepted SMS format for private provider and health center
+  * Customizable system reply SMS templates
+  * Report dashboard
 
-## Format Parser
 
-  * {Malaria_Type}{Age}{Gender}{Day}[Mobile_Patient]
-  * Malaria_Type must be: Facipharum(F), Mixed(M), Vivax(V), Negative(N)
-  * Age must be a digit number
-  * Gender must be: Male(M), Female(F)
-  * Day must be: 0, 3, 28
-  * Mobile_Patient: dot(.) for VMW and 99999999 for HC
+## SMS Accepted format
+
+There are predefined fields for constructing sms accepted format for private provider and health center 
+ 
+  *  {phone_number} {od} {book_number} {code_number} {slip_code} {health_center}
+
+There are also dynamic fields to be defined on the fly and will be available along with predefined fields to construct Accepted SMS ej:
+
+## Private provider accepted SMS
+  * {phone_number} {od} {book_number} {code_number} {slip_code} {health_center} {malaria_type} {sex} {number_of_day_affected}
+
+## Health center accepted SMS
+
+  * {slip_code} {number_of_day_number_of_day_treatment}
+
+## Where 
+
+{malaria_type}, {sex}, {number_of_day_affected},{number_of_day_number_of_day_treatment} are dynamic fields defined by Admin.

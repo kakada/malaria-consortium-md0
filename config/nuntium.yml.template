@@ -1,0 +1,23 @@
+development:
+  url: http://nuntium.instedd.org
+  account: your_nuntium_account
+  application: your_nuntium_application_name
+  password: your_nuntium_application_password
+  incoming_username: incoming_username
+  incoming_password: incoming_password
+
+production:
+  url: http://nuntium.instedd.org
+  account: your_nuntium_account
+  application: your_nuntium_application_name
+  password: your_nuntium_application_password
+  incoming_username: incoming_username
+  incoming_password: incoming_password
+
+test:
+  url: http://nuntium.instedd.org
+  account: your_nuntium_account
+  application: your_nuntium_application_name
+  password: your_nuntium_application_password
+  incoming_username: incoming_username
+  incoming_password: incoming_password
